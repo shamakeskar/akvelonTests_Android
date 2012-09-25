@@ -74,7 +74,19 @@ public final class Logger {
      * Type in log all elements with level and parameters.
      */
     public static void logElements() {
-        logElements(false, false);
+        logElements(false, false, null);
+    }
+
+    /**
+     * Type in log all elements with level and parameters.
+     * 
+     * @param onlyVisible
+     *            if <b>true</b> then will log only visible elements
+     * @param onlyShown
+     *            if <b>true</b> then will log only shown elements
+     */
+    public static void logElements(boolean onlyVisible, boolean onlyShown) {
+        logElements(onlyVisible, onlyShown, null);
     }
 
     /**
@@ -84,10 +96,12 @@ public final class Logger {
      *            if <b>true</b> then will log only visible elements
      * @param onlyShown
      *            if <b>true</b> then will log only shown elements
+     * @param filter
+     *            class of widgets to log. If null then log all.
      * @param inDP
      *            if <b>true</b> then write location and size in inches
      */
-    public static void logElements(boolean onlyVisible, boolean onlyShown) {
+    public static void logElements(boolean onlyVisible, boolean onlyShown, String filter) {
         Solo solo = DataProvider.getInstance().getSolo();
         Formatter formatter;
         String type = null;
@@ -173,6 +187,9 @@ public final class Logger {
             }
 
             boolean isLog = true;
+            if (filter != null){
+                isLog = type.equals(filter);
+            }
             if (onlyVisible) {
                 isLog = (element.getVisibility() == 0);
             }

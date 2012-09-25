@@ -21,10 +21,8 @@ import com.linkedin.android.tests.data.DataProvider;
  */
 public final class LayoutUtils {
 
-    public static final float screenWidth = ScreenResolution.getScreenWidth()
-            / ScreenResolution.getScreenDensity();
-    public static final float screenHeight = ScreenResolution.getScreenHeight()
-            / ScreenResolution.getScreenDensity();
+    public static final float screenWidth = ScreenResolution.getScreenWidthDP();
+    public static final float screenHeight = ScreenResolution.getScreenHeightDP();
 
     public static final Rect2DP UPPER_LEFT_BUTTON_LAYOUT = new Rect2DP(0, 0, 55.0f, 82.0f);
     public static final Rect2DP UPPER_RIGHT_BUTTON_LAYOUT = new Rect2DP(screenWidth - 59.0f, 0,

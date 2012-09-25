@@ -85,9 +85,18 @@ public class ScreenYou extends BaseProfileScreen {
         verifySearchBar();
 
         verifyRightButtonInNavigationBar("Settings");
+        
+        //Logger.logElements(false, false, "ImageButton");
 
         ImageButton shareButton = getSolo().getImageButton(0);
         ImageButton sendButton = getSolo().getImageButton(1);
+        
+        /*new Rect2DP(shareButton).logParameters();
+        new Rect2DP(sendButton).logParameters();
+        Logger.d("lrb=" + (LayoutUtils.isViewPlacedInLayout(shareButton, LayoutUtils.LEFT_BUTTON_LAYOUT)
+                && LayoutUtils.isViewPlacedInLayout(sendButton,
+                        LayoutUtils.RIGHT_BUTTON_LAYOUT)));
+        Logger.d("horis=" + ViewUtils.isViewsPlacedInLineHorizontally(shareButton, sendButton));*/
 
         Assert.assertNotNull("'Share' button is not present", shareButton);
         Assert.assertNotNull("'Send' button is not present", sendButton);

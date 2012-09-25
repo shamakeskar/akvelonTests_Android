@@ -1,7 +1,6 @@
 package com.linkedin.android.screens.common;
 
 import junit.framework.Assert;
-
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,6 +13,7 @@ import com.linkedin.android.screens.you.ScreenYou;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
+import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.WaitActions;
@@ -92,6 +92,8 @@ public class ScreenExpose {
                 getGroupsAndMoreLayout(), GROUPS_AND_MORE_LAYOUT_RECT);
 
         screenFromWhichExposeOpened.verifyINButton();
+        
+        HardwareActions.takeCurrentActivityScreenshot("Expose");
     }
 
     /**

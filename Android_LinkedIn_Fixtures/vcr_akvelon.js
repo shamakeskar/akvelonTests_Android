@@ -103,8 +103,8 @@ http.createServer(function (request, response) {
                 fs.mkdirSync(folderkey, "0777");
             }
 
-			//Replace depecated in windows file names symbol '?' to symbol '#'.
-			filename = filename.replace("?", "#");
+			//Replace depecated in windows file names symbol '?' to symbol '#' and symbol '*' to symbol '%'.
+			filename = filename.replace("?", "#").replace("*", "%");
             filename = folderkey + "/" + filename;
 
             var id;

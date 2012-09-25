@@ -76,11 +76,12 @@ public class YouScreenTests extends BaseTestCase {
 
         // Login and open You screen.
         ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
-        ScreenYou screenYou = screenUpdates.openExposeScreen().openYouScreen();
+        ScreenExpose screenExpose = screenUpdates.openExposeScreen();
+        ScreenYou screenYou = screenExpose.openYouScreen();
         Logger.i(DONE + "You screen loads properly");
 
         // Tap on IN. Verify Expose.
-        ScreenExpose screenExpose = screenYou.openExposeScreen();
+        screenExpose = screenYou.openExposeScreen();
         Logger.i(DONE + "Expose screen loads properly");
 
         // Open You screen. Verify.
