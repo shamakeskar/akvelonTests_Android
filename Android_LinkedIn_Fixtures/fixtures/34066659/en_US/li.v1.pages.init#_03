@@ -1,0 +1,1 @@
+{"config":{"wirAlert":{"day":3,"hour":11,"minute":39,"enabled":true},"addressBookImport":{"enabled":false},"crittercism":{"enabled":true}},"buckets":{"rateApp":"A","homeNewsNum":{"name":"two","payload":{"count":2,"viewkey":"m_abtest_1_optionC","clickkey":"m_abtest_1_optionC_tap"}},"mobileSSO":{"name":"A","payload":{"enabled":false}}}}
