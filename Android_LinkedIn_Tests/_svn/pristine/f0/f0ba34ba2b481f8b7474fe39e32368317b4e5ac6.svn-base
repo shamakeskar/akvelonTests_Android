@@ -1,0 +1,55 @@
+package com.linkedin.android.tests.data;
+
+import junit.framework.Assert;
+import android.view.View;
+
+import com.linkedin.android.utils.Logger;
+
+/**
+ * Class for work with string ID's of UI elements in LinkedIn.apk.
+ * 
+ * @author alexey.makhalov
+ * @created Sep 4, 2012 3:21:16 PM
+ */
+public class Id {
+    // CONSTANTS ------------------------------------------------------------
+    // Target package.
+    public static final String ANDROID_PACKAGE_NAME = "android";
+	
+    // PROPERTIES -----------------------------------------------------------
+	
+    // CONSTRUCTORS ---------------------------------------------------------
+	
+    // METHODS --------------------------------------------------------------
+	/**
+	 * Returns integer ID by string ID
+	 * 
+	 * @param name is existing ViewIdName enum (string ID)
+	 * @return
+	 */
+    private static int getIdByName(ViewIdName idName) {
+        int id  = DataProvider.getInstance().getSolo().getCurrentActivity().getResources()
+        		.getIdentifier(idName.toString(), null, null);
+        
+        if (id <= 0) {
+        	Logger.logElements(true, true);
+            Assert.assertTrue("Can't get ID by name: " + idName, id > 0);
+        }
+        return id;
+	}
+	
+	/**
+	 * Returns View by string ID
+	 * 
+	 * @param name is existing ViewIdName enum (string ID)
+	 * @return
+	 */
+	public static View getViewByName(ViewIdName idName) {
+    	View view = DataProvider.getInstance().getSolo().getView(getIdByName(idName));
+        if (view == null) {
+        	Logger.logElements(true, true);
+        	Assert.assertNotNull("Can't get View by name: " + idName, view);
+        }
+        return view;
+	}
+}

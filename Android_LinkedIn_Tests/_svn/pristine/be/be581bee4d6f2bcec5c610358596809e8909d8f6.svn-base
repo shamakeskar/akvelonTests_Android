@@ -1,0 +1,166 @@
+package com.linkedin.android.screens.more;
+
+import junit.framework.Assert;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.linkedin.android.screens.base.BaseINScreen;
+import com.linkedin.android.utils.HardwareActions;
+import com.linkedin.android.utils.LayoutUtils;
+import com.linkedin.android.utils.Rect2DP;
+import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.viewUtils.ViewUtils;
+
+/**
+ * Class for Discussion Detail screen.
+ * 
+ * @author Aleksey.Chichagov
+ * @created Aug 30, 2012 1:35:37 PM
+ */
+public class ScreenDiscussionDetails extends BaseINScreen {
+    // CONSTANTS ------------------------------------------------------------
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.groups.GroupPostActivity";
+    public static final String ACTIVITY_SHORT_CLASSNAME = "GroupPostActivity";
+
+    static final Rect2DP UP_ARROW_BUTTON = new Rect2DP(225, 25, 43, 55);
+    static final Rect2DP DOWN_ARROW_BUTTON = new Rect2DP(267, 25, 43, 55);
+
+    // PROPERTIES -----------------------------------------------------------
+
+    // CONSTRUCTORS ---------------------------------------------------------
+    public ScreenDiscussionDetails() {
+        super(ACTIVITY_CLASSNAME);
+    }
+
+    // METHODS --------------------------------------------------------------
+    @Override
+    public void verify() {
+        Assert.assertTrue("Title '.. of ..' is not present", getSolo().getText(0).getText()
+                .toString().indexOf("of") > -1);
+
+        ImageButton likeButton = getSolo().getImageButton(0);
+        ImageButton commentButton = getSolo().getImageButton(1);
+
+        Assert.assertTrue("'Like' button is not present (or its coordinates are wrong)",
+                LayoutUtils.isViewPlacedInLayout(likeButton,
+                        LayoutUtils.LOWER_LEFT_OF_2_BUTTONS_LAYOUT));
+        Assert.assertTrue("'Comment' button is not present (or its coordinates are wrong)",
+                LayoutUtils.isViewPlacedInLayout(commentButton,
+                        LayoutUtils.LOWER_RIGHT_OF_2_BUTTONS_LAYOUT));
+
+        ImageView upArrowButton = LayoutUtils.getImageViewByItsLayoutAndSize(
+                LayoutUtils.UP_ARROW_BUTTON_LAYOUT, UP_ARROW_BUTTON.width, UP_ARROW_BUTTON.height,
+                Rect2DP.DEFAULT_ACCURACY_OF_COMPARING);
+
+        ImageView downArrowButton = LayoutUtils.getImageViewByItsLayoutAndSize(
+                LayoutUtils.DOWN_ARROW_BUTTON_LAYOUT, DOWN_ARROW_BUTTON.width,
+                DOWN_ARROW_BUTTON.height, Rect2DP.DEFAULT_ACCURACY_OF_COMPARING);
+
+        Assert.assertNotNull("'Up arrow' button is not presented", upArrowButton);
+        Assert.assertNotNull("'Down arrow' button is not presented", downArrowButton);
+
+        verifyINButton();
+
+        HardwareActions.takeCurrentActivityScreenshot("Discussion detail screen");
+    }
+
+    @Override
+    public void waitForMe() {
+        WaitActions.waitMultiplyActivities(new String[] { ACTIVITY_SHORT_CLASSNAME });
+    }
+
+    @Override
+    public String getActivityShortClassName() {
+        return ACTIVITY_SHORT_CLASSNAME;
+    }
+
+    /**
+     * Taps on 'Like' button.
+     */
+    public void tapOnLikeButton() {
+        ImageButton likeButton = getSolo().getImageButton(0);
+        ViewUtils.tapOnView(likeButton, "Like");
+    }
+
+    /**
+     * Taps on 'Comment' button.
+     */
+    public void tapOnCommentButton() {
+        ImageButton commentButton = getSolo().getImageButton(1);
+        ViewUtils.tapOnView(commentButton, "Comment");
+    }
+
+    /**
+     * Taps on up arrow button.
+     */
+    public void tapOnUpArrowButton() {
+        ImageView upArrowButton = LayoutUtils.getImageViewByItsLayoutAndSize(
+                LayoutUtils.UP_ARROW_BUTTON_LAYOUT, UP_ARROW_BUTTON.width, UP_ARROW_BUTTON.height,
+                Rect2DP.DEFAULT_ACCURACY_OF_COMPARING);
+
+        ViewUtils.tapOnView(upArrowButton, "up arrow button");
+    }
+
+    /**
+     * Taps on down arrow button.
+     */
+    public void tapOnDownArrowButton() {
+        ImageView downArrowButton = LayoutUtils.getImageViewByItsLayoutAndSize(
+                LayoutUtils.DOWN_ARROW_BUTTON_LAYOUT, DOWN_ARROW_BUTTON.width,
+                DOWN_ARROW_BUTTON.height, Rect2DP.DEFAULT_ACCURACY_OF_COMPARING);
+
+        ViewUtils.tapOnView(downArrowButton, "down arrow button");
+    }
+
+    /**
+     * Opens 'Comment' screen.
+     * 
+     * @return {@codeScreenCommentDiscussion} with just opened 'Comment' screen.
+     */
+    public ScreenCommentDiscussion openCommentScreen() {
+        tapOnCommentButton();
+        return new ScreenCommentDiscussion();
+    }
+
+    /**
+     * Taps on image of connection, who create discussion.
+     */
+    public void tapOnConnectionProfile() {
+        // TODO complete implement
+        ImageView connection = getSolo().getImage(6);
+        ViewUtils.tapOnView(connection, "Connection profile");
+    }
+
+    /**
+     * Taps on 'People Likes This' label.
+     */
+    public void tapOnPeopleLikeThisLabel() {
+        int firstTextIndex = 0;
+        Assert.assertTrue("'Comments' view not presented", getSolo().searchText("Comments"));
+        for (TextView view : getSolo().getCurrentTextViews(null)) {
+            if (view.isShown()) {
+                firstTextIndex++;
+                String textOfView = view.getText().toString();
+                if (textOfView.equalsIgnoreCase("Comments")) {
+                    break;
+                }
+            }
+        }
+        TextView groupView = getSolo().getText(firstTextIndex);
+        Assert.assertTrue("'People like this' Label is not present.", groupView.getText()
+                .toString().indexOf("people like this") > -1
+                || groupView.getText().toString().indexOf("person likes this") > -1);
+        ViewUtils.tapOnView(groupView, "'People Like This' label");
+    }
+
+    /**
+     * Opens 'Likes' screen.
+     * 
+     * @return {@code ScreenLikes} with just opened 'Likes' screen.
+     */
+    public ScreenLikes openPeopleLikeThis() {
+        tapOnPeopleLikeThisLabel();
+        return new ScreenLikes();
+    }
+}

@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Review id="alexey.makhalov">
+  <ReviewIssue id="H73Q9ROV">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-15 :: 00:16:30:319 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:16:24:814 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="42">src/com/linkedin/android/screens/common/ScreenExpose.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>New method waitForMe() in ScreenExpose.</Summary>
+    <Description>To be stable, we need to wait before verify</Description>
+    <Annotation>Outdated</Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H73QCNEI">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-15 :: 00:18:44:730 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:16:44:288 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="147">src/com/linkedin/android/screens/you/ScreenSettings.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>Addition to tapOnConfigureServerURLPopup() </Summary>
+    <Description>HardwareActions.scrollDown() before tap</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H73QIRPM">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-15 :: 00:23:30:250 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:17:10:395 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="26">src/com/linkedin/android/tests/data/ViewIdName.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>new view IDs are added: NUS_LIST_ITEM, LIKE_BUTTON, LIKE_TEXT, NEW_SERVER.</Summary>
+    <Description></Description>
+    <Annotation>Outdated</Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H73QMTVN">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-15 :: 00:26:39:683 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:17:32:345 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="146">src/com/linkedin/android/screens/you/ScreenSettings.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>Text fix in comment</Summary>
+    <Description></Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H73QUFT5">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-15 :: 00:32:34:697 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:20:47:872 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="165">src/com/linkedin/android/screens/you/ScreenSettings.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>New method</Summary>
+    <Description></Description>
+    <Annotation>Please write name of method in 'Summary' or in 'Description'. Write logs for 'enterText' and 'tap' actions.</Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.invalidWontfix</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H73S8CC5">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-15 :: 01:11:22:997 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:22:22:454 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="71">src/com/linkedin/android/tests/YouScreenTests.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>test35974365 was rewrote.</Summary>
+    <Description></Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H742VBVV">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-15 :: 06:09:11:659 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:22:37:631 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="45">src/com/linkedin/android/screens/updates/ScreenUpdates.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>move LINKEDIN_TODAY_LABEL to class constants</Summary>
+    <Description></Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H7435UG0">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-15 :: 06:17:22:272 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:23:02:802 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="91">src/com/linkedin/android/screens/updates/ScreenUpdates.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>Extra wait condotion is added</Summary>
+    <Description></Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H743AMAR">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-15 :: 06:21:04:995 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:23:36:656 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="103">src/com/linkedin/android/screens/base/BaseINScreen.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>logElements is added in case of IN button isn't present.</Summary>
+    <Description></Description>
+    <Annotation>Please remove all logs from code after debugging!</Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.invalidWontfix</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78OQUKC">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:32:38:844 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:24:39:108 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="137">src/com/linkedin/android/screens/updates/ScreenUpdates.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>new private method</Summary>
+    <Description></Description>
+    <Annotation>Please write name of method in issue. Comment all delays. </Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.invalidWontfix</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78OSFAT">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:33:52:373 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:25:53:361 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="167">src/com/linkedin/android/screens/updates/ScreenUpdates.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>New helper function</Summary>
+    <Description></Description>
+    <Annotation>Please write helper name in issue.</Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78OW2O6">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:36:42:630 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:28:32:806 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="312">src/com/linkedin/android/screens/updates/ScreenUpdates.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>Condition is added to fix NullPointerException</Summary>
+    <Description></Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78P013W">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:39:47:228 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:28:52:449 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="101">src/com/linkedin/android/screens/updates/ScreenSharedNewsDetails.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>Use String ID instead of getSolo().getImageButton(0)</Summary>
+    <Description></Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78P22H8">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:41:22:316 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:29:44:774 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="121">src/com/linkedin/android/screens/updates/ScreenSharedNewsDetails.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>New Helper openAddCommentScreen() is added</Summary>
+    <Description></Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78P49JD">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:43:04:777 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 12:31:02:006 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="191">src/com/linkedin/android/screens/updates/ScreenSharedNewsDetails.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>New Helper openSendToConnectionScreen() is added.</Summary>
+    <Description></Description>
+    <Annotation>Please describe in more detail in the commentary to function as it does</Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.invalidWontfix</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78P772W">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:45:21:560 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 13:04:08:571 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="19">src/com/linkedin/android/screens/updates/ScreenAddComment.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>New Helper class for com.linkedin.android.home.AddCommentActivity</Summary>
+    <Description></Description>
+    <Annotation>In waitForMe use 'getSolo().waitForActivity(name)' if you wait 1 activity. tapOnSendButton - wrong comment. typeRandomUpdateText is better write as typeUpdateText(String updateText) where if updateText=null then type random text.</Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.invalidWontfix</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78P9US3">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:47:25:587 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 14:42:15:758 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="181">src/com/linkedin/android/screens/ScreenLogin.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>Checking for CalendarSplash is added</Summary>
+    <Description></Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78PBAZT">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:48:33:257 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 14:42:42:830 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="132">src/com/linkedin/android/screens/ScreenLogin.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>New Helper isCalendarSplashPresents() is added.</Summary>
+    <Description></Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78PFDL9">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:51:43:245 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 14:42:57:788 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="53">src/com/linkedin/android/screens/common/ScreenAddConnections.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>Famous bug: verify() without waiting is fixed.</Summary>
+    <Description></Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78PLR0A">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:56:40:570 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 14:47:20:943 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="1157">src/com/linkedin/android/tests/UpdatesScreenTests.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>test 35973635 is implemented</Summary>
+    <Description></Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+</Review>

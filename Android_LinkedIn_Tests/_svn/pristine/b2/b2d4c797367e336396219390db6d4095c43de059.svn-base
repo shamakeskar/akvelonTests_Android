@@ -1,0 +1,96 @@
+package com.linkedin.android.screens.you;
+
+import junit.framework.Assert;
+import android.widget.Button;
+import android.widget.ImageButton;
+
+import com.linkedin.android.utils.HardwareActions;
+import com.linkedin.android.utils.Rect2DP;
+import com.linkedin.android.utils.asserts.ViewAssertUtils;
+import com.linkedin.android.utils.viewUtils.ViewUtils;
+
+/**
+ * Class for test Profile to invite screen.
+ * 
+ * @author vasily.gancharov
+ * @created Aug 23, 2012 18:40:37 PM
+ */
+public class ScreenProfileOfNotConnectedUser extends ScreenProfile {
+
+    // CONSTANTS ------------------------------------------------------------
+    static final Rect2DP INVITE_TO_CONNECT_BUTTON_RECT = new Rect2DP(112.0f, 212.0f, 96.0f, 40.0f);
+    static final Rect2DP FORWARD_IMAGE_BUTTON_RECT = new Rect2DP(182.0f, 212.0f, 130.0f, 40.0f);
+    
+    public static final Rect2DP INVITE_TO_CONNECT_BUTTON_LAYOUT = new Rect2DP(0, 208, 180.0f, 151.0f);
+    public static final Rect2DP FORWARD_IMAGE_BUTTON_LAYOUT = new Rect2DP(180.0f, 208.0f, 134.0f, 151.0f);
+    
+    static final int INVITE_TO_CONNECT_BUTTON_INDEX = 0;
+    static final int FORWARD_IMAGE_BUTTON_INDEX = 0;
+    
+    // CONSTRUCTORS ---------------------------------------------------------
+    public ScreenProfileOfNotConnectedUser() {
+        super();
+    }
+    
+    // METHODS --------------------------------------------------------------
+    @Override
+    public void verify() {
+        super.verify();
+        
+        Button inviteToConnectButton = getInviteToConnectButton();
+        ViewAssertUtils.assertViewIsPlacedInLayout("'Invite to connect' button is not present",
+                inviteToConnectButton, INVITE_TO_CONNECT_BUTTON_LAYOUT);
+
+        ImageButton forwardButton = getForwardButton();
+        ViewAssertUtils.assertViewIsPlacedInLayout("'Forward' button is not present",
+                forwardButton, FORWARD_IMAGE_BUTTON_LAYOUT);
+        
+        Assert.assertTrue(
+                "'Invite to connect' and 'Forward' buttons are not placed 'in-line' horizontally",
+                ViewUtils.isViewsPlacedInLineHorizontally(inviteToConnectButton, forwardButton));
+        
+        HardwareActions.takeCurrentActivityScreenshot("Profile to invite screen");
+    }
+    
+    /**
+     * Gets 'Invite to connect' image button
+     * 
+     * @return Call image button
+     */
+    private Button getInviteToConnectButton() {
+        return getSolo().getButton(INVITE_TO_CONNECT_BUTTON_INDEX);
+    }
+
+    /**
+     * Gets 'Forward' image button
+     * 
+     * @return Forward image button
+     */
+    private ImageButton getForwardButton() {
+        return getSolo().getImageButton(FORWARD_IMAGE_BUTTON_INDEX);
+    }
+    
+    /**
+     * Taps on 'Invite to connect' button.
+     */
+    public void tapOnInviteToConnectButton() {
+        Button inviteToConnectButton = getInviteToConnectButton();
+        ViewUtils.tapOnView(inviteToConnectButton, "'Invite to connect' button");
+        
+        // TODO: Implement verifying of 2 toasts at same time
+        // Verify 'Sending invite...' toast is shown.
+        // newMessageScreen.verifyToast("Sending invite");
+        // Logger.i("Done: Verify 'Sending invite...' toast is shown.");
+
+        // Verify 'Invite sent' toast is shown.
+    }
+    
+    /**
+     * Taps on 'Forward' button.
+     */
+    public void tapOnForwardButton() {
+        ImageButton forwardButton = getForwardButton();
+        ViewUtils.tapOnView(forwardButton, "'Forward' button.");
+    }
+    
+}

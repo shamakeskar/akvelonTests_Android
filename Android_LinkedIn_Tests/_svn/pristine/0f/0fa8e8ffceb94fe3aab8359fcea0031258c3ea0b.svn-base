@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Review id="vasily.gancharov">
+  <ReviewIssue id="H77GJ904">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 14:55:01:204 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 15:38:27:896 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="22">src/com/linkedin/android/tests/data/ViewIdName.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>ViewIdName was changed from enum to class</Summary>
+    <Description>ViewIdName was changed from enum to class. Now all resource ids will be stored in screens in which they used.</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H77GY69O">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 15:06:37:500 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 15:55:49:408 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="28">src/com/linkedin/android/screens/common/ScreenExpose.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>ScreenExpose</Summary>
+    <Description>Please review all methods from this class.</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H77HQZ0X">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 15:29:01:137 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 15:59:48:626 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="34">src/com/linkedin/android/tests/data/Id.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>getViewByName was refactored</Summary>
+    <Description>public static View getViewByName(ViewIdName idName) {
+        Solo solo = DataProvider.getInstance().getSolo();
+        int viewId = getIdByName(idName);
+        View view = solo.getView(viewId);
+        if (null == view) {
+            Logger.logElements(true, true);
+            Assert.fail("Can't get View by name: " + idName);
+        }
+        return view;
+    }</Description>
+    <Annotation>Please remove all debug logs from code after complete!</Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.invalidWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H77JNU3R">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 16:22:34:023 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 16:38:26:503 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="49">src/com/linkedin/android/tests/data/Id.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>getIdByName (debug logs were removed)</Summary>
+    <Description>private static int getIdByName(ViewIdName idName) {
+        Solo solo = DataProvider.getInstance().getSolo();
+        Activity currentActivity = solo.getCurrentActivity();
+        Assert.assertNotNull("There is no current activity", currentActivity);
+
+        Resources currentResources = currentActivity.getResources();
+        Assert.assertNotNull("There is no resources on current activity", currentResources);
+
+        int id = currentResources.getIdentifier(idName.toString(), null, null);
+
+        Assert.assertTrue("Can't get ID by name: " + idName, id &gt; 0);
+        return id;
+    }</Description>
+    <Annotation></Annotation>
+    <Revision>getIdByName</Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H77M4D40">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 17:31:24:384 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 18:00:45:952 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="67">src/com/linkedin/android/screens/updates/ScreenUpdates.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>getLinkedInTodayBannerText</Summary>
+    <Description>"Can't wait for LINKEDIN TODAY text" error occur in ScreenUpdates - issue fixed;</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H77QO5QY">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 19:38:46:426 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 20:06:47:348 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="203">src/com/linkedin/android/screens/common/ScreenExpose.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>visibility verification was fixed in assertExposeMenuTextView method (ScreenExpose class);</Summary>
+    <Description>Assert.assertTrue("'" + textViewText + "' TextView not shown", textView.getVisibility() == View.VISIBLE);</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78NMR22">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:01:28:058 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 11:52:20:547 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="59">src/com/linkedin/android/screens/common/ScreenNewMessage.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>tapOnSendButton () - verification of "Sending message" and "Message sent" toasts added</Summary>
+    <Description>public void tapOnSendButton() {
+        Button sendButton = getSolo().getButton(0);
+        verifyTwoToastsStart("Sending message", "Message sent");
+        ViewUtils.tapOnView(sendButton, "'Send' button");
+        verifyTwoToastsEnd();
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78YOZEE">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 16:11:07:958 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 16:35:26:995 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="55">src/com/linkedin/android/tests/SearchScreenTests.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>test35974341</Summary>
+    <Description>Review of test 35974341.</Description>
+    <Annotation>Please write dots in end of each comment. I corrected it.</Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+</Review>

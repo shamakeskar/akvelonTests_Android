@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Review id="aleksey.chichagov">
+  <ReviewIssue id="H77R38D9">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 19:50:29:661 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 20:05:21:433 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="540">src/com/linkedin/android/screens/updates/ScreenUpdates.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary> tapOnNewConnectionsRollUp()</Summary>
+    <Description>    /*
+     * Taps on 'New Connection' roll up.
+     */
+    public void tapOnNewConnectionsRollUp() {
+        getSolo().searchText("have new connections", 1, true, false);
+        TextView textView = ViewUtils.searchTextViewInActivity("have new connections", false);
+        ViewUtils.tapOnView(textView, textView.getText().toString());
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H77R444Q">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 19:51:10:826 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 20:05:58:895 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="135">src/com/linkedin/android/screens/more/ScreenDiscussionDetails.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>tapOnPeopleLikeThisLabel</Summary>
+    <Description>    /**
+     * Taps on 'People Likes This' label.
+     */
+    public void tapOnPeopleLikeThisLabel() {
+        int count = 0;
+        boolean condition = getSolo().searchText("people like this", 1, true, false);
+        if (!condition) {
+            count = 1;
+            HardwareActions.scrollUp();
+            condition = getSolo().searchText("person likes this", 1, true, false);
+        }
+        Assert.assertTrue("'People Like This' label is not present.", condition);
+        TextView likeLabel;
+        if(count == 0){
+            likeLabel=ViewUtils.searchTextViewInActivity("people like this", false);
+        }
+        else {
+            likeLabel=ViewUtils.searchTextViewInActivity("person likes this", false);
+        }
+        ViewUtils.tapOnView(likeLabel, "'People Like This' label");
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H77R75BL">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 19:53:32:337 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 20:06:21:014 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="150">src/com/linkedin/android/screens/more/ScreenYourGroup.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>openDiscussionWithLike</Summary>
+    <Description>    /**
+     * Opens 'Discussion Details' with like.
+     * 
+     * @return {@code ScreenDiscussionDetails} with just opened 'Discussion
+     *         Details' screen
+     */
+    public ScreenDiscussionDetails openDiscussionWithLike() {
+        Assert.assertTrue("'Like' label is not presented",
+                getSolo().searchText("Like", 1, true, false));
+        TextView likeLabel = ViewUtils.searchTextViewInActivity("Like", false);
+        ViewUtils.tapOnView(likeLabel, "'Like' label");
+        return new ScreenDiscussionDetails();
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H7H6HW17">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-24 :: 10:11:43:339 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-24 :: 10:12:43:150 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="1430">src/com/linkedin/android/tests/UpdatesScreenTests.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>test35974205</Summary>
+    <Description>startFixture("35974205");
+        Logger.i(START_TEST + "35974205: 'NUS - New Connection Roll up'");
+
+        // STEP 1
+        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
+        ScreenNewConnectionsRollUp rollUp = screenUpdates.openNewConnectionsRollUpScreen();
+        Logger.i(DONE + "The New Connections Roll Up Page shows up");
+
+        // STEP 2
+        ScreenNewConnectionDetails rollUpDetails = rollUp.openNewConnectionDetails();
+        Logger.i(DONE + "The New Connections Details Page shows up");
+
+        // STEP 3
+        ScreenProfileOfConnectedUser profile1 = rollUpDetails.openYourConectionProfile();
+        Assert.assertTrue("Degree not found or not eqvivalent 1", profile1.getNumberOfDegree() == 1);
+        Logger.i(DONE + "The Your Connection Profile Page shows up and verify degree");
+
+        // STEP 4
+        HardwareActions.pressBack();
+        rollUpDetails = new ScreenNewConnectionDetails();
+        Logger.i(DONE + "The New Connections Details Page shows up");
+
+        // STEP 5
+        ScreenProfileOfNotConnectedUser p = rollUpDetails.openConnectionsConnectionProfile();
+        Assert.assertTrue("Degree not found or not eqvivalent 2", p.getNumberOfDegree() == 2);
+        Logger.i(DONE + "The Connection`s Connection Profile Page shows up and verify degree");
+
+        // STEP 6
+        HardwareActions.pressBack();
+        rollUpDetails = new ScreenNewConnectionDetails();
+        HardwareActions.pressBack();
+        rollUp = new ScreenNewConnectionsRollUp();
+        Logger.i(DONE + "The New Connections Roll Up Page shows up");
+
+        // STEP 7
+        HardwareActions.pressBack();
+        HardwareActions.scrollUp();
+        screenUpdates = new ScreenUpdates();
+        Logger.i(DONE + "The NUS Page shows up");
+        
+        Logger.i(PASS + "35974205");</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H7H6P2Y0">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-24 :: 10:17:18:888 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-24 :: 10:17:47:746 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="713">src/com/linkedin/android/screens/updates/ScreenUpdates.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>tapOnNewConnectionsRollUp </Summary>
+    <Description>Logger.i("Searching new connections roll up...");
+        Assert.assertTrue("Roll up not found",
+                getSolo().searchText("people have new connections", 1, true, false));
+
+        Logger.i("Tapping on new connections roll up");
+        getSolo().clickOnText("people have new connections");</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H7H6VUXU">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-24 :: 10:22:35:106 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-24 :: 10:23:00:672 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="69">src/com/linkedin/android/screens/you/ScreenProfileOfNotConnectedUser.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>getProfileDegree </Summary>
+    <Description> private ImageView getProfileDegree() {
+        View degree = Id.getViewByName(DEGREE);
+        if (degree instanceof ImageView) {
+            return (ImageView) degree;
+        }
+        return null;
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H7H6WHO9">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-24 :: 10:23:04:569 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-24 :: 10:23:20:985 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="82">src/com/linkedin/android/screens/you/ScreenProfileOfNotConnectedUser.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>getNumberOfDegree</Summary>
+    <Description>public int getNumberOfDegree() {
+        return ContactInfoUtils.getContactDegree(getProfileDegree());
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+</Review>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Review id="alexey.makhalov">
+  <ReviewIssue id="H7DRM9JF">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-22 :: 00:51:54:699 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-24 :: 10:44:33:001 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="19">src/com/linkedin/android/screens/base/ScreenMessage.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>New abstract class (continue)</Summary>
+    <Description>moved to base and fixed</Description>
+    <Annotation>waitForMe - rewrite body to with "getSolo().waitForActivity" - we wait single activity!</Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.invalidWontfix</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+</Review>

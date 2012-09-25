@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Review id="vasily.gancharov">
+  <ReviewIssue id="H71JWF9S">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-13 :: 11:42:37:648 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-13 :: 11:42:45:917 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="304">src/com/linkedin/android/screens/inbox/ScreenInbox.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>getInboxContentForCompare</Summary>
+    <Description>public List&lt;BasicNameValuePair&gt; getInboxContentForCompare() {
+        final int lastIndexOfListItemToCompare = FIRST_MESSAGE_IN_MESSAGES_LIST_INDEX + 2;
+
+        ListView messagesList = getMessagesList();
+        Assert.assertNotNull("There is no 'Messages' list on screen", messagesList);
+        Assert.assertTrue("'Messages' list is empty", isMessagesListNotEmpty());
+        List&lt;BasicNameValuePair&gt; inboxContent = new ArrayList&lt;BasicNameValuePair&gt;();
+
+        for (int i = FIRST_MESSAGE_IN_MESSAGES_LIST_INDEX; i &lt;= lastIndexOfListItemToCompare; i++) {
+            LinearLayout messageLayout = ViewGroupUtils.getChildViewByIndexSafely(messagesList, i,
+                    LinearLayout.class);
+            if (null == messageLayout) {
+                continue;
+            }
+            String senderName = getMessageSenderName(messageLayout);
+            String subject = getMessageSubject(messageLayout);
+            inboxContent.add(new BasicNameValuePair(senderName, subject));
+        }
+        return inboxContent;
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+</Review>

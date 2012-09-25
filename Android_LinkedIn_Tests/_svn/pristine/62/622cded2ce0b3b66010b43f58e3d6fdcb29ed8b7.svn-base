@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Review id="alexey.makhalov">
+  <ReviewIssue id="H743AMAR">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-14 :: 19:21:04:995 PDT</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-21 :: 01:42:46:365 PDT</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="103">src/com/linkedin/android/screens/base/BaseINScreen.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>logElements is added in case of IN button isn't present.</Summary>
+    <Description>fixed, please review again.</Description>
+    <Annotation>Please remove all logs from code after debugging!</Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78OQUKC">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 00:32:38:844 PDT</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-21 :: 01:42:51:160 PDT</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="137">src/com/linkedin/android/screens/updates/ScreenUpdates.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>new private method isSharedNewsDetailsScreen()</Summary>
+    <Description>fixed, please review again.</Description>
+    <Annotation>Please write name of method in issue. Comment all delays. </Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78P49JD">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 00:43:04:777 PDT</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-21 :: 01:42:36:513 PDT</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="203">src/com/linkedin/android/screens/updates/ScreenSharedNewsDetails.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>New Helper openSendToConnectionScreen() is added.</Summary>
+    <Description>fixed, please review again.</Description>
+    <Annotation>Please describe in more detail in the commentary to function as it does</Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H78P772W">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-18 :: 00:45:21:560 PDT</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-21 :: 01:42:33:014 PDT</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="19">src/com/linkedin/android/screens/updates/ScreenAddComment.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>New Helper class for com.linkedin.android.home.AddCommentActivity</Summary>
+    <Description>fixed, please review again.</Description>
+    <Annotation>In waitForMe use 'getSolo().waitForActivity(name)' if you wait 1 activity. tapOnSendButton - wrong comment. typeRandomUpdateText is better write as typeUpdateText(String updateText) where if updateText=null then type random text.</Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H7BDNPTH">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-19 :: 21:45:35:477 PDT</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-21 :: 01:42:27:904 PDT</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="20">src/com/linkedin/android/screens/common/ScreenMessage.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>New abstract class</Summary>
+    <Description>fixed, please review again.</Description>
+    <Annotation>Wrong comments. Fiixed. 1. Please rewrite typeRandomSubject() and typeRandomMessage() to typeRandomSubject(String subject) and typeRandomMessage(String message). And if its parameters == EMPTY_LINE or null, then it will be random strings. 2. Why makeToFieldActive() have enterText?</Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H7D4SPOE">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-21 :: 03:13:04:382 PDT</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-21 :: 03:13:29:315 PDT</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="1416">src/com/linkedin/android/tests/UpdatesScreenTests.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>test35974167</Summary>
+    <Description>new test</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H7D4TR30">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-21 :: 03:13:52:860 PDT</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-21 :: 03:14:05:766 PDT</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="244">src/com/linkedin/android/screens/updates/ScreenUpdates.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>isSharedNewsDetailsScreen()</Summary>
+    <Description>input param is added</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H7D4UAZL">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-21 :: 03:14:18:657 PDT</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-21 :: 03:14:28:812 PDT</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="277">src/com/linkedin/android/screens/updates/ScreenUpdates.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>openAnySharedNewsArticleDetailsScreen()</Summary>
+    <Description>input param is added</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+</Review>

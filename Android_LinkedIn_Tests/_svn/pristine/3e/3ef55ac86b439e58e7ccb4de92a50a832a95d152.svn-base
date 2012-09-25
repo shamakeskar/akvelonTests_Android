@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Review id="vasily.gancharov">
+  <ReviewIssue id="H70K6QL3">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:02:52:695 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:26:27:273 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="358">src/com/linkedin/android/screens/inbox/ScreenInbox.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>isSenderName</Summary>
+    <Description>private boolean isSenderName(TextView textView) {
+        if (null == textView) {
+            return false;
+        }
+
+        ViewParent textViewParent = textView.getParent();
+        if (!(textViewParent instanceof RelativeLayout)) {
+            return false;
+        }
+        RelativeLayout textViewParentLayout = (RelativeLayout) textViewParent;
+        TextView senderName = ViewGroupUtils.getChildViewByIndexSafely(textViewParentLayout,
+                MESSAGE_SENDER_NAME_INDEX, TextView.class);
+        if (textView != senderName) {
+            return false;
+        }
+        ViewParent textViewParentLayoutParent = textViewParentLayout.getParent();
+        if (!(textViewParentLayoutParent instanceof LinearLayout)) {
+            return false;
+        }
+        LinearLayout messageListItemLayout = (LinearLayout) textViewParentLayoutParent;
+        ViewParent messagesList = messageListItemLayout.getParent();
+        return messagesList instanceof ListView;
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H70K7J13">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:03:29:559 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:27:44:729 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="181">src/com/linkedin/android/screens/inbox/ScreenInbox.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>searchMessageBySenderName</Summary>
+    <Description>public TextView searchMessageBySenderName(String senderName) {
+        final int numberOfTimesToScrollDown = 10;
+
+        boolean isScreenCanBeScrolled = true;
+        for (int i = 0; i &lt; numberOfTimesToScrollDown; i++) {
+            TextView senderNameTextView = searchMessageBySenderNameInActivity(senderName);
+            if (null != senderNameTextView) {
+                return senderNameTextView;
+            }
+            if (!isScreenCanBeScrolled) {
+                HardwareActions.delay(DataProvider.DEFAULT_DELAY_TIME);
+            }
+            isScreenCanBeScrolled = getSolo().scrollDown();
+        }
+        return null;
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H70K87ME">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:04:01:430 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:51:03:861 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="439">src/com/linkedin/android/screens/inbox/ScreenInbox.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>getMessageInfoLayout</Summary>
+    <Description>private RelativeLayout getMessageInfoLayout(LinearLayout messageLayout) {
+        return ViewGroupUtils.getChildViewByIndexSafely(messageLayout, MESSAGE_INFO_LAYOUT_INDEX,
+                RelativeLayout.class);
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H70K8H1P">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:04:13:645 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:51:56:383 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="420">src/com/linkedin/android/screens/inbox/ScreenInbox.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>getTextViewValueFromMessageInfoLayout</Summary>
+    <Description>private String getTextViewValueFromMessageInfoLayout(LinearLayout messageLayout,
+            int textViewIndex) {
+        RelativeLayout messageInfoLayout = getMessageInfoLayout(messageLayout);
+        TextView textView = ViewGroupUtils.getChildViewByIndexSafely(messageInfoLayout,
+                textViewIndex, TextView.class);
+        String textViewValue = null == textView ? null : textView.getText().toString();
+        return textViewValue;
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H70K8PIK">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:04:24:620 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:52:39:937 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="402">src/com/linkedin/android/screens/inbox/ScreenInbox.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>getMessageSubject</Summary>
+    <Description>private String getMessageSubject(LinearLayout messageLayout) {
+        return getTextViewValueFromMessageInfoLayout(messageLayout, MESSAGE_SUBJECT_INDEX);
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H70K8WCR">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:04:33:483 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:52:49:161 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="390">src/com/linkedin/android/screens/inbox/ScreenInbox.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>getMessageSenderName</Summary>
+    <Description>private String getMessageSenderName(LinearLayout messageLayout) {
+        return getTextViewValueFromMessageInfoLayout(messageLayout, MESSAGE_SENDER_NAME_INDEX);
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.validWontfix</Resolution>
+    <Status>item.status.label.closed</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H70K99HU">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:04:50:514 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-12 :: 19:57:45:909 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="304">src/com/linkedin/android/screens/inbox/ScreenInbox.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>getInboxContentForCompare</Summary>
+    <Description>public List&lt;BasicNameValuePair&gt; getInboxContentForCompare() {
+        final int minNumerOfListItemsToCompare = 6;
+
+        ListView messagesList = getMessagesList();
+        Assert.assertNotNull("There is no 'Messages' list on screen", messagesList);
+        Assert.assertTrue("'Messages' list is empty", isMessagesListNotEmpty());
+        List&lt;BasicNameValuePair&gt; inboxContent = new ArrayList&lt;BasicNameValuePair&gt;();
+
+        for (int i = FIRST_MESSAGE_IN_MESSAGES_LIST_INDEX; i &lt; minNumerOfListItemsToCompare; i++) {
+            LinearLayout messageLayout = ViewGroupUtils.getChildViewByIndexSafely(messagesList, i,
+                    LinearLayout.class);
+            if (null == messageLayout) {
+                continue;
+            }
+            String senderName = getMessageSenderName(messageLayout);
+            String subject = getMessageSubject(messageLayout);
+            inboxContent.add(new BasicNameValuePair(senderName, subject));
+        }
+        return inboxContent;
+    }</Description>
+    <Annotation>What is minNumerOfListItemsToCompare?</Annotation>
+    <Revision></Revision>
+    <Resolution>item.resolution.label.unsureValidity</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+</Review>

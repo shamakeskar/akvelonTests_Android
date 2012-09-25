@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Review id="vasily.gancharov">
+  <ReviewIssue id="H77G6R4X">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 14:45:18:177 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 14:46:04:434 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="175">src/com/linkedin/android/utils/WaitActions.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>waitForText</Summary>
+    <Description>public static void waitForText(String textToWait, String errorMesage) {
+        final int defaultMinimumNumberOfMatches = 1;
+
+        if (null == textToWait || null == errorMesage) {
+            return;
+        }
+        Solo solo = DataProvider.getInstance().getSolo();
+        boolean isTextPresented = solo.waitForText(textToWait, defaultMinimumNumberOfMatches,
+                DataProvider.WAIT_DELAY_DEFAULT);
+        Assert.assertTrue(errorMesage, isTextPresented);
+    }</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H77GJ904">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 14:55:01:204 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 14:55:09:664 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="22">src/com/linkedin/android/tests/data/ViewIdName.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>ViewIdName was changed from enum to class</Summary>
+    <Description>ViewIdName was changed from enum to class. Now all resource ids will be stored in screens in which they used.</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+  <ReviewIssue id="H77GY69O">
+    <ReviewIssueMeta>
+      <CreationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 15:06:37:500 MSK</CreationDate>
+      <LastModificationDate format="yyyy-MM-dd :: HH:mm:ss:SSS z">2012-09-17 :: 15:06:57:879 MSK</LastModificationDate>
+    </ReviewIssueMeta>
+    <ReviewerId>alexander.makarov</ReviewerId>
+    <AssignedTo>alexander.makarov</AssignedTo>
+    <File line="28">src/com/linkedin/android/screens/common/ScreenExpose.java</File>
+    <Type>item.type.label.other</Type>
+    <Severity>item.severity.label.normal</Severity>
+    <Summary>ScreenExpose</Summary>
+    <Description>Please review all methods from this class.</Description>
+    <Annotation></Annotation>
+    <Revision></Revision>
+    <Resolution>item.label.unset</Resolution>
+    <Status>item.status.label.open</Status>
+  </ReviewIssue>
+</Review>
