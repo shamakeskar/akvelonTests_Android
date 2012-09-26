@@ -97,15 +97,15 @@ public abstract class BaseDiscussionDetailsScreen extends BaseINScreen {
     }
 
     /**
-     * Taps on 'Like' button.
+     * Taps on 'Like' button. Verifies that toast and 'people like this' row are
+     * appeared.
      */
-    public void tapOnLikeButton() {
-
+    public void likeUpdate() {
         int likesNumberBeforeTap = getLikesNumber();
 
         ImageButton likeButton = getLikeButton();
-        // TODO add toasts verification here
         ViewUtils.tapOnView(likeButton, "Like");
+        verifyToast("Update Liked");
 
         int likesNumberAfterTap = getLikesNumber();
         TextView likesCounter = getLikesCounter();
@@ -113,8 +113,27 @@ public abstract class BaseDiscussionDetailsScreen extends BaseINScreen {
         Assert.assertNotNull(
                 "'people like this' label is not presented after tapping on 'Like' button",
                 likesCounter);
-        Assert.assertTrue("Wrong number of likes",
-                likesNumberBeforeTap < likesNumberAfterTap);
+        Assert.assertTrue("Wrong number of likes (expected: " + (++likesNumberBeforeTap)
+                + ", present: " + likesNumberAfterTap + ")",
+                likesNumberBeforeTap == likesNumberAfterTap);
+    }
+
+    /**
+     * Taps on 'Unlike' button. Verifies that toast is appeared.
+     */
+    public void unlikeUpdate() {
+        // TODO not checked tapOnUnlikeButton
+        int likesNumberBeforeTap = getLikesNumber();
+
+        ImageButton likeButton = getLikeButton();
+        ViewUtils.tapOnView(likeButton, "Unlike");
+        verifyToast("Update UnLiked");
+
+        int likesNumberAfterTap = getLikesNumber();
+
+        Assert.assertTrue("Wrong number of likes (expected: " + (--likesNumberBeforeTap)
+                + ", present: " + likesNumberAfterTap + ")",
+                likesNumberBeforeTap == likesNumberAfterTap);
     }
 
     /**

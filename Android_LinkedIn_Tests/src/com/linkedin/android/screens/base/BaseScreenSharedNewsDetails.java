@@ -87,14 +87,14 @@ public abstract class BaseScreenSharedNewsDetails extends BaseINScreen {
         Logger.i("Tapping on 'Forward' button");
         getSolo().clickOnImageButton(2);
 
-        getSolo().waitForText("Cancel", 1, DataProvider.WAIT_DELAY_DEFAULT);
+        if (getSolo().searchText("Share"))
+            nr++;
+        if (getSolo().searchText("Send to Connection"))
+            nr++;
+        if (getSolo().searchText("Reply Privately"))
+            nr++;
 
-        if (getSolo().waitForText("Share"))
-            nr++;
-        if (getSolo().waitForText("Send to Connection"))
-            nr++;
-        if (getSolo().waitForText("Reply Privately"))
-            nr++;
+        getSolo().searchText("Cancel");
         // TODO: May be better to return ArrayList of String
         // But it is not necessary now.
         return nr;

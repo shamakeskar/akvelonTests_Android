@@ -37,6 +37,8 @@ public class SampleTests extends BaseTestCase {
         Logger.d("asjsdfjksdfol");
         screenUpdates.openFirstViralUpdate();
 
+        View view = getSolo().getView(564566);
+        view.getDrawingCache();
     }
 
     /**

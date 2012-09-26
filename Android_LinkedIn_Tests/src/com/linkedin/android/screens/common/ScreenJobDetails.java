@@ -20,7 +20,9 @@ public class ScreenJobDetails extends BaseINScreen {
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.jsbridge.JobsActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "JobsActivity";
     static final float COORDINATE_OF_SAVE_UNSAVE_JOB_XDP = 100 * 2 / 3;
-    static final float COORDINATE_OF_SAVE_UNSAVE_JOB_YDP = 180;
+    static final float COORDINATE_OF_SAVE_UNSAVE_JOB_YDP1 = 180;
+    static final float COORDINATE_OF_SAVE_UNSAVE_JOB_YDP2 = 200;
+    static final float COORDINATE_OF_SAVE_UNSAVE_JOB_YDP3 = 223;
     static final float COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_XDP = 100 / 3;
     static final float COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_YDP = 493;
 
@@ -52,13 +54,66 @@ public class ScreenJobDetails extends BaseINScreen {
     }
 
     /**
-     * Taps on 'Save \ Unsave job' button.
+     * Taps on 'Save \ Unsave job' button and verify what it changed.
      */
     public void tapOnSaveUnsaveJob() {
         Logger.i("Tapping on Save/Unsave button");
+
+        int colorOfFirstPoint = HardwareActions.saveCurrentScreenScreenshotInBitmap().getPixel(
+                (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity()),
+                (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_YDP1 * ScreenResolution.getScreenDensity()));
+
+        int colorOfSecondPoint = HardwareActions.saveCurrentScreenScreenshotInBitmap().getPixel(
+                (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity()),
+                (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_YDP2 * ScreenResolution.getScreenDensity()));
+
+        int colorOfThirdPoint = HardwareActions.saveCurrentScreenScreenshotInBitmap().getPixel(
+                (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity()),
+                (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_YDP3 * ScreenResolution.getScreenDensity()));
+
         getSolo().clickOnScreen(
                 COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity(),
-                COORDINATE_OF_SAVE_UNSAVE_JOB_YDP * ScreenResolution.getScreenDensity());
+                COORDINATE_OF_SAVE_UNSAVE_JOB_YDP1 * ScreenResolution.getScreenDensity());
+        HardwareActions.delay(5);
+
+        int colorOfFirstChangePoint = HardwareActions
+                .saveCurrentScreenScreenshotInBitmap()
+                .getPixel(
+                        (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution
+                                .getScreenDensity()),
+                        (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_YDP1 * ScreenResolution
+                                .getScreenDensity()));
+
+        getSolo().clickOnScreen(
+                COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity(),
+                COORDINATE_OF_SAVE_UNSAVE_JOB_YDP2 * ScreenResolution.getScreenDensity());
+        HardwareActions.delay(5);
+
+        int colorOfSecondChangePoint = HardwareActions
+                .saveCurrentScreenScreenshotInBitmap()
+                .getPixel(
+                        (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution
+                                .getScreenDensity()),
+                        (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_YDP2 * ScreenResolution
+                                .getScreenDensity()));
+
+        getSolo().clickOnScreen(
+                COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity(),
+                COORDINATE_OF_SAVE_UNSAVE_JOB_YDP3 * ScreenResolution.getScreenDensity());
+        HardwareActions.delay(5);
+
+        int colorOfThirdChangePoint = HardwareActions
+                .saveCurrentScreenScreenshotInBitmap()
+                .getPixel(
+                        (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution
+                                .getScreenDensity()),
+                        (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_YDP3 * ScreenResolution
+                                .getScreenDensity()));
+
+        Assert.assertTrue(
+                "Save/Unsave button not changed",
+                !((colorOfFirstPoint == colorOfFirstChangePoint)
+                        && (colorOfSecondPoint == colorOfSecondChangePoint) && (colorOfThirdPoint == colorOfThirdChangePoint)));
     }
 
     /**
@@ -75,14 +130,15 @@ public class ScreenJobDetails extends BaseINScreen {
                 COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_XDP * ScreenResolution.getScreenDensity(),
                 COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_YDP * ScreenResolution.getScreenDensity());
     }
-    
+
     /**
      * Opens Job Details screen.
+     * 
      * @return ScreenJobDetails.
      */
     public ScreenJobDetails openRecommendedJob() {
         tapOnRecommendedJob();
-        
+
         return new ScreenJobDetails();
     }
 }

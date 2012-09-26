@@ -72,7 +72,6 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
     @Override
     public void tearDown() throws Exception {
         // Logout in end of test.
-
         LoginActions.logout();
 
         // Stop fixtures for current test

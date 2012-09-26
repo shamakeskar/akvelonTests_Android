@@ -37,7 +37,9 @@ public class ScreenUpdatedProfileDetails extends BaseINScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-
+        Assert.assertTrue("Wrong activity (expected " + ACTIVITY_SHORT_CLASSNAME, getSolo()
+                .getCurrentActivity().getClass().getSimpleName().equals(ACTIVITY_SHORT_CLASSNAME));
+        
         WaitActions.waitForText(DETAILS_LABEL, "There is no '" + DETAILS_LABEL + "' label.");
 
         verifyINButton();

@@ -392,7 +392,9 @@ public class ScreenUpdates extends BaseINScreen {
      */
     public ScreenViralUpdate openFirstViralUpdate() {
         // RegExp for "Like" or "Comment".
-        final Pattern pattern = Pattern.compile(".*Like.*|.*Comment.*");
+        final Pattern regexpLikeComment = Pattern.compile(".*Like.*|.*Comment.*");
+        // RegExp for news date.
+        final Pattern regexpDate = Pattern.compile("^(\\d{1,}) (\\D{1,}) ago$");
         // Flag that it row contain label with company name.
         boolean isRowWithCompany;
 
@@ -400,13 +402,9 @@ public class ScreenUpdates extends BaseINScreen {
         ListView listView = getSolo().getCurrentListViews().get(0);
         
         // Scroll list to end or MAX_SCROLLS times.
-        final int MAX_SCROLLS = 4;
-        for (int j = 0; getSolo().scrollDownList(0) && j < MAX_SCROLLS; j++) {
-            
-            HardwareActions.delay(5);// Wait for ListView load more rows.
-            
-            Logger.d("Scrollllllllllllllllllllllllllllllll");
-            
+        final int MAX_SCROLLS = 15;
+        boolean isNeedScroll = true;
+        for (int j = 0; isNeedScroll && j < MAX_SCROLLS; j++) {
             /*int i = 0;
             for (View view : getSolo().getViews(listView)) {
                 if (view.getClass().getSimpleName().equals("TextView")){
@@ -416,28 +414,67 @@ public class ScreenUpdates extends BaseINScreen {
                     i++;
                 }
             }*/
+            
+            // Check all views.
             isRowWithCompany = false;
+            int counter = -1;
+            int lastPos = 0;
             for (View view : getSolo().getViews(listView)) {
+                // If must be label.
                 if (view.getClass().getSimpleName().equals("TextView")){
                     String string = ((TextView)view).getText().toString();
+                    counter++;
+                    // If must be not empty string.
                     if (string.length() > 0){
-                        if (string.equals(StringData.test_own_company)) {
+                        //TODO
+                        if (string.equals(/*StringData.test_own_company*/"habrahabr.ru")) {
+                            // If find string with company name.
+                            
+                            Logger.d(">>>Title found");
+                            
                             isRowWithCompany = true;
-                        } else if (isRowWithCompany){
-                            Matcher matcher = pattern.matcher(string);
-                            if (matcher.find()) {
-                                // If "Like|Comment" found then it is ViralUpdate.
-                                
-                                Logger.d("String from ViralUpdate=" + string);
-                                isRowWithCompany = false;
+                            lastPos = counter;
+                        } else {
+                            // If find below string with company name.
+                            if (isRowWithCompany){
+                                int dif = counter - lastPos;
+                                if (dif == 1){
+                                    // Next string after company name must be news date.
+                                    Matcher matcher = regexpDate.matcher(string);
+                                    // If it not news date then in wrong NUS - break.
+                                    if (!matcher.find()) break;
+                                    
+                                    Logger.d(">>>>>>Date found");
+                                    Logger.logElements(false, false, "TextView");
+                                    
+                                } else if (2 < dif && dif < 5){
+                                    // In range (2,5) strings after company name must be "Like" or "Comment".
+                                    Matcher matcher = regexpLikeComment.matcher(string);
+                                    if (matcher.find()) {
+                                        // If "Like|Comment" found then it is ViralUpdate.
+                                        
+                                        Logger.d(">>>>>>>>>ViralUpdate found");
+                                        
+                                        isRowWithCompany = false;
+                                    }
+                                } else {
+                                    // If previous conditions not completed then current row wrong.
+                                    break;
+                                }
                             }
                         }
                     }
                 }
             }
+            
+            isNeedScroll = getSolo().scrollDownList(0);
+            HardwareActions.delay(5);// Wait for ListView load more rows.
+            
+            Logger.d("Scrollllllllllllllllllllllllllllllll");
+            
         }
 
-        Logger.logElements(false, false);
+        //Logger.logElements(false, false);
 
         return /*new ScreenViralUpdate()*/null;
     }
@@ -773,7 +810,7 @@ public class ScreenUpdates extends BaseINScreen {
     }
 
     /**
-     * Gets LINKEDIN TODAY banner
+     * Returns LINKEDIN TODAY banner text ("LINKEDIN_TODAY" or "News").
      * 
      * @return LINKEDIN TODAY {@code String} banner
      */

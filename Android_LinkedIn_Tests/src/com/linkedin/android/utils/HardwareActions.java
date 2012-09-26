@@ -3,8 +3,8 @@ package com.linkedin.android.utils;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import junit.framework.Assert;
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.os.Environment;
 import android.util.Log;
@@ -138,12 +138,13 @@ public class HardwareActions {
 
             File screenShotDir = new File(folder);
             if (!screenShotDir.exists()) {
-//                Assert.assertTrue("Cannot creat folder " + folder, screenShotDir.mkdirs());
+                // Assert.assertTrue("Cannot creat folder " + folder,
+                // screenShotDir.mkdirs());
                 if (!screenShotDir.mkdirs()) {
                     Logger.d("Cannot create folder " + folder);
                     return;
                 }
-                
+
             }
             FileOutputStream fos = new FileOutputStream(new File(screenShotDir, name + EXTEN));
             try {
@@ -343,4 +344,17 @@ public class HardwareActions {
     // sync.wait();
     // }
     // }
+    /**
+     * Save screenshot of current screen in Bitmap.
+     * 
+     * @return Bitmap image of current screen.
+     */
+    public static Bitmap saveCurrentScreenScreenshotInBitmap() {
+        View view = DataProvider.getInstance().getSolo().getCurrentActivity().getWindow()
+                .getDecorView();
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+        Bitmap screenshot = view.getDrawingCache();
+        return screenshot;
+    }
 }

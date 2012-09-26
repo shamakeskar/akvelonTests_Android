@@ -42,11 +42,11 @@ public class ScreenExpose {
     private static final String MESSAGES_LABEL = "Messages";
     private static final String GROUPS_AND_MORE_LABEL = "Groups & More";
 
-    private static final Rect2DP UPDATES_LAYOUT_RECT = new Rect2DP(0.0f, 90.0f, 160.0f, 223.0f);
-    private static final Rect2DP YOU_LAYOUT_RECT = new Rect2DP(160.0f, 90.0f, 160.0f, 223.0f);
-    private static final Rect2DP MESSAGES_LAYOUT_RECT = new Rect2DP(0.0f, 312.0f, 160.0f, 223.0f);
-    private static final Rect2DP GROUPS_AND_MORE_LAYOUT_RECT = new Rect2DP(160.0f, 312.0f, 160.0f,
-            223.0f);
+    private static final Rect2DP UPDATES_LAYOUT_RECT = new Rect2DP(0.0f, 84.0f, 160.0f, 228.0f);
+    private static final Rect2DP YOU_LAYOUT_RECT = new Rect2DP(160.0f, 84.0f, 160.0f, 228.0f);
+    private static final Rect2DP MESSAGES_LAYOUT_RECT = new Rect2DP(0.0f, 308.0f, 160.0f, 228.0f);
+    private static final Rect2DP GROUPS_AND_MORE_LAYOUT_RECT = new Rect2DP(160.0f, 308.0f, 160.0f,
+            228.0f);
 
     // PROPERTIES -----------------------------------------------------------
     private BaseINScreen screenFromWhichExposeOpened;
@@ -74,7 +74,7 @@ public class ScreenExpose {
 
         WaitActions.waitForText(UPDATES_LABEL, "Cannot wait to open 'Expose'");
         WaitActions.waitForText(GROUPS_AND_MORE_LABEL, "Cannot wait to open 'Expose'");
-
+        
         assertExposeMenuTextView(UPDATES_LABEL);
         ViewAssertUtils.assertViewIsPlacedInLayout("'Updates' layout is not present",
                 getUpdatesLayout(), UPDATES_LAYOUT_RECT);
