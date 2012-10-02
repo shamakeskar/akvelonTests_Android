@@ -12,6 +12,7 @@ import com.jayway.android.robotium.solo.Solo;
 import com.linkedin.android.fixtures.ServerRequestResponseUtils;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.StringUtils;
 
@@ -26,12 +27,15 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
     public static final String START_TEST = "Start test ";
     public static final String DONE = "Done: ";
     public static final String PASS = "Pass: ";
+    public static final String END_TEST = "Test over.-------------------------------------------------------------------";
     private static final String START_FIXTURES_FOR_TEST_REMOTE_METHOD_NAME = "startFixturesForTest";
     private static final String STOP_FIXTURES_FOR_CURRENT_TEST_REMOTE_METHOD_NAME = "stopFixturesForCurrentTest";
 
     // PROPERTIES -----------------------------------------------------------
     // Flag with fixtures test server state.
     private static boolean isFixturesStartedForCurrentTest = false;
+    // Flag that current test is pass.
+    private static boolean isCurrentTestPass;
 
     // Launcher Activity class.
     private static Class<?> launcherActivityClass;
@@ -42,6 +46,9 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
             throw new RuntimeException(e);
         }
     }
+    
+    // TODO variable for disable logout in end of each test.
+    protected boolean DISABLE_LOGOUT = false;
 
     // CONSTRUCTORS ---------------------------------------------------------
     /**
@@ -71,8 +78,19 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
 
     @Override
     public void tearDown() throws Exception {
+        Logger.i(END_TEST);
+        
+        if (!isCurrentTestPass) {
+            Logger.i("Current activity: " + getSolo().getCurrentActivity().getClass().getCanonicalName());
+            Logger.logElements();
+            HardwareActions.takeCurrentActivityScreenshot("Screenshot for fail in " + DataProvider.getInstance().getCurrentTestId());
+        }
+
         // Logout in end of test.
-        LoginActions.logout();
+        if (!DISABLE_LOGOUT) {
+            LoginActions.logout();
+            DISABLE_LOGOUT = false;// It will work only for 1 test.
+        }
 
         // Stop fixtures for current test
         // Important! Make it after logout to be in loggedOut state.
@@ -93,7 +111,7 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
      * 
      * @return {@code Solo} object
      */
-    public Solo getSolo() {
+    protected Solo getSolo() {
         return DataProvider.getInstance().getSolo();
     }
 
@@ -104,7 +122,7 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
      * @param fixtureName
      *            name fixture to run
      */
-    public void startFixture(String fixtureName) {
+    protected void startFixture(String fixtureName) {
         final String testNumberParamName = "testNumber";
 
         ArrayList<BasicNameValuePair> paramsToPassToServer = new ArrayList<BasicNameValuePair>();
@@ -128,7 +146,7 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
     /**
      * Stops fixtures for current test and verifies are they stopped correctly
      */
-    private void stopFixturesForCurrentTest() {
+    protected void stopFixturesForCurrentTest() {
         String responseFromServer = ServerRequestResponseUtils.sendRequestToDefaultServer(
                 STOP_FIXTURES_FOR_CURRENT_TEST_REMOTE_METHOD_NAME, null);
         boolean isFixturesStopped = ServerRequestResponseUtils.OPERATION_COMPLETE_SUCCESSFULLY_MESSAGE
@@ -138,4 +156,27 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
                         + responseFromServer, isFixturesStopped);
     }
 
+    /**
+     * Must be called at start of each test.
+     * Saves <b>testId</b> and <b>testName</b> for caller.
+     * Logs string like "Start test <i>testName</i>: '<i>testName</i>'"
+     * 
+     * @param testId - id of test like "XXXXXXXX" (from PT)
+     * @param testName - name of test
+     */
+    protected void startTest(String testId, String testName){
+        Assert.assertTrue("Wrong test ID", testId.length() == 8);
+        Logger.i(START_TEST + testId + ": '" + testName + "'");
+        DataProvider.getInstance().setCurrentTestIdAndName(testId, testName);
+        isCurrentTestPass = false;
+    }
+
+    /**
+     * Must be called if test is pass.
+     * Logs string like "Pass: '<i>testId</i>'"
+     */
+    protected void passTest(){
+        Logger.i(PASS + DataProvider.getInstance().getCurrentTestId());
+        isCurrentTestPass = true;
+    }
 }

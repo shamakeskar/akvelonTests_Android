@@ -46,9 +46,7 @@ public final class ThreadUtils {
             try {
                 objectToWait.wait();
             } catch (InterruptedException e) {
-                Assert.assertTrue(
-                        "Test case stopped unexpectedly during call of 'wait' method (ThreadUtils class)",
-                        false);
+                Assert.fail("Test case stopped unexpectedly during call of 'wait' method (ThreadUtils class)");
             }
         }
     }

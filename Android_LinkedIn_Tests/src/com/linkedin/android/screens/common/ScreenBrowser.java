@@ -2,12 +2,17 @@ package com.linkedin.android.screens.common;
 
 import junit.framework.Assert;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.updates.ScreenShareNewsArticle;
+import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
+import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -21,6 +26,8 @@ public class ScreenBrowser extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.common.WebViewActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "WebViewActivity";
+    private static final ViewIdName WEB_PROGRESS_BAR = new ViewIdName("webProgress");
+    private static final ViewIdName WEB_PAGE_TITLE = new ViewIdName("navigation_bar_title");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -32,6 +39,11 @@ public class ScreenBrowser extends BaseINScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
+        verifyCurrentActivity();
+
+        // Wait full loading web view.
+        WaitActions.waitForProgressBarDisappear(0, DataProvider.WAIT_DELAY_DEFAULT);
+
         ImageButton previousPageButton = getSolo().getImageButton(0);
         ImageButton nextPageButton = getSolo().getImageButton(1);
         ImageButton refreshButton = getSolo().getImageButton(2);
@@ -68,6 +80,28 @@ public class ScreenBrowser extends BaseINScreen {
         return ACTIVITY_SHORT_CLASSNAME;
     }
 
+    /**
+     * Wait while page content is loaded
+     */
+    public void waitForPageContentLoaded() {
+        ProgressBar progress = (ProgressBar)Id.getViewByName(WEB_PROGRESS_BAR);
+        if (progress.isShown() == false)
+            return;
+        Logger.i("Wait for page content is fully loaded");
+        while(progress.isShown());
+    }
+    
+    /**
+     * Get page title
+     * 
+     * @return
+     *      String contains page title
+     */
+    public String getPageTitle() {
+        TextView title = (TextView)Id.getViewByName(WEB_PAGE_TITLE);
+        return title.getText().toString();
+    }
+    
     /**
      * Taps on Forward button.
      */

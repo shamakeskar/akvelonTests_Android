@@ -2,8 +2,6 @@ package com.linkedin.android.screens.updates;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import junit.framework.Assert;
 import android.graphics.Rect;
@@ -26,12 +24,13 @@ import com.linkedin.android.screens.more.ScreenDiscussionDetailsFromRecentUpdate
 import com.linkedin.android.screens.you.ScreenYou;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.RegexpPatterns;
 import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Logger;
-import com.linkedin.android.utils.Rect2DP;
+import com.linkedin.android.utils.RegexpUtils;
 import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.StringDefaultValues;
 import com.linkedin.android.utils.WaitActions;
@@ -57,15 +56,12 @@ public class ScreenUpdates extends BaseINScreen {
     public static final String NEWS_ARTICLE_SUMMARY_SHARED_BY_CURRENT_USER_WITHOUT_COMMENT = "You shared this";
 
     public static final int RECENT_UPDATES_LIST_VIEW_INDEX = 0;
+    
+    public static final int UPDATES_LIST_FIRST_ITEM_INDEX = 2;
 
     static final Rect SHARE_BUTTON_RECT = new Rect(398, 42, 82, 74);
     // ImageButton: like it button
     private static final ViewIdName LIKE_BUTTON = new ViewIdName("like_button");
-
-    // Container for ViralUpdate
-    private static final ViewIdName NUS_SIMPLE_RICH_ROW = new ViewIdName("nus_simple_rich_row");
-    // Updates list
-    private static final ViewIdName UPDATES_LIST = new ViewIdName("list");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -160,7 +156,7 @@ public class ScreenUpdates extends BaseINScreen {
      *         Details' screen.
      */
     public ScreenSharedNewsDetails openAnyUpdateWithLinkSharedByYourConnection() {
-        ArrayList<TextView> exceptions = new ArrayList<TextView>(); 
+        ArrayList<TextView> exceptions = new ArrayList<TextView>();
         do {
             TextView link = ViewUtils.searchTextViewInActivity(".com", exceptions, false);
             if (link == null) {
@@ -171,17 +167,15 @@ public class ScreenUpdates extends BaseINScreen {
                     return null;
             }
             int textColor = link.getCurrentTextColor();
-            if (link.getText().toString().startsWith("http://") == false &&
-                    link.isShown() &&
-                    textColor == 0xff999490) {
-                getSolo().clickOnView(link);
+            if (link.getText().toString().startsWith("http://") == false && link.isShown()
+                    && textColor == 0xff999490) {
+                ViewUtils.tapOnView(link, "Update with link");
                 if (isSharedNewsDetailsScreen(3))
                     return new ScreenSharedNewsDetails();
             }
             exceptions.add(link);
         } while (true);
     }
-
 
     /**
      * Opens {@code ScreenDiscussionDetailsFromRecentUpdates} of first found
@@ -288,7 +282,7 @@ public class ScreenUpdates extends BaseINScreen {
         int waiting_time = 8;
         // wait after tap on screen. We don't know what screen will be actually
         // open
-        HardwareActions.delay(waiting_time);
+        WaitActions.delay(waiting_time);
         if (getSolo().getCurrentActivity().getClass().getSimpleName()
                 .equals(ScreenSharedNewsDetails.ACTIVITY_SHORT_CLASSNAME)) {
             ImageButton likeButton = (ImageButton) Id.getViewByName(LIKE_BUTTON);
@@ -305,7 +299,7 @@ public class ScreenUpdates extends BaseINScreen {
                 .equals(ACTIVITY_SHORT_CLASSNAME) == false) {
             HardwareActions.pressBack();
             // wait for back to prev screen.
-            HardwareActions.delay(waiting_time);
+            WaitActions.delay(waiting_time);
         }
         return false;
     }
@@ -386,97 +380,103 @@ public class ScreenUpdates extends BaseINScreen {
     }
 
     /**
-     * Opens first Viral Update (in first NUS_SIMPLE_RICH_ROW).
+     * Taps on first Viral Update (in first NUS_SIMPLE_RICH_ROW).
      * 
-     * @return {@code ScreenViralUpdate} object.
+     * @return <b>true</b> if tap, <b>false</b> if cannot find Viral Update.
      */
-    public ScreenViralUpdate openFirstViralUpdate() {
-        // RegExp for "Like" or "Comment".
-        final Pattern regexpLikeComment = Pattern.compile(".*Like.*|.*Comment.*");
-        // RegExp for news date.
-        final Pattern regexpDate = Pattern.compile("^(\\d{1,}) (\\D{1,}) ago$");
+    public boolean tapOnFirstViralUpdate() {
         // Flag that it row contain label with company name.
         boolean isRowWithCompany;
+        // String with content of ViralUpdate for log.
+        String contentForLog;
 
         // Get list with NUS.
         ListView listView = getSolo().getCurrentListViews().get(0);
-        
+
         // Scroll list to end or MAX_SCROLLS times.
-        final int MAX_SCROLLS = 15;
+        final int MAX_SCROLLS = 30;
         boolean isNeedScroll = true;
         for (int j = 0; isNeedScroll && j < MAX_SCROLLS; j++) {
-            /*int i = 0;
-            for (View view : getSolo().getViews(listView)) {
-                if (view.getClass().getSimpleName().equals("TextView")){
-                    if (((TextView)view).getText().length() > 0){
-                        Logger.d(i + ": " + ((TextView)view).getText());
-                    }
-                    i++;
-                }
-            }*/
-            
-            // Check all views.
+            /*
+             * int i = 0; for (View view : getSolo().getViews(listView)) { if
+             * (view.getClass().getSimpleName().equals("TextView")){ if
+             * (((TextView)view).getText().length() > 0){ Logger.d(i + ": " +
+             * ((TextView)view).getText()); } i++; } }
+             */
+
+            // Initialize variables for search.
             isRowWithCompany = false;
-            int counter = -1;
-            int lastPos = 0;
+            int counter = -1;// Counter in views list
+            int lastPos = 0;// Last position of company name in TextViews list
+            contentForLog = StringDefaultValues.EMPTY_STRING;
+            // Check all views.
             for (View view : getSolo().getViews(listView)) {
                 // If must be label.
-                if (view.getClass().getSimpleName().equals("TextView")){
-                    String string = ((TextView)view).getText().toString();
+                if (view.getClass().getSimpleName().equals("TextView")) {
+                    String string = ((TextView) view).getText().toString();
                     counter++;
                     // If must be not empty string.
-                    if (string.length() > 0){
-                        //TODO
-                        if (string.equals(/*StringData.test_own_company*/"habrahabr.ru")) {
+                    if (string.length() > 0) {
+                        if (string.equals(StringData.test_own_company)) {
                             // If find string with company name.
-                            
-                            Logger.d(">>>Title found");
-                            
+                            contentForLog = string + "|";
                             isRowWithCompany = true;
                             lastPos = counter;
                         } else {
                             // If find below string with company name.
-                            if (isRowWithCompany){
+                            if (isRowWithCompany) {
                                 int dif = counter - lastPos;
-                                if (dif == 1){
-                                    // Next string after company name must be news date.
-                                    Matcher matcher = regexpDate.matcher(string);
-                                    // If it not news date then in wrong NUS - break.
-                                    if (!matcher.find()) break;
-                                    
-                                    Logger.d(">>>>>>Date found");
-                                    Logger.logElements(false, false, "TextView");
-                                    
-                                } else if (2 < dif && dif < 5){
-                                    // In range (2,5) strings after company name must be "Like" or "Comment".
-                                    Matcher matcher = regexpLikeComment.matcher(string);
-                                    if (matcher.find()) {
-                                        // If "Like|Comment" found then it is ViralUpdate.
-                                        
-                                        Logger.d(">>>>>>>>>ViralUpdate found");
-                                        
+                                if (dif == 1) {
+                                    // Next string after company name must be
+                                    // news date.
+                                    if (!RegexpUtils.isCanBeFound(string,
+                                            RegexpPatterns.DATE_LIKE_10_HOURS_AGO)) {
+                                        // If it not news date then current row
+                                        // is
+                                        // not ViralUpdate.
+                                        contentForLog = StringDefaultValues.EMPTY_STRING;
                                         isRowWithCompany = false;
                                     }
-                                } else {
-                                    // If previous conditions not completed then current row wrong.
-                                    break;
+                                } else if (2 < dif && dif < 10) {
+                                    // In range (2,10) strings after company
+                                    // name must be "Like" or "Comment".
+                                    contentForLog += string.substring(0, (string.length() > 20 ? 20
+                                            : string.length()))
+                                            + "|";
+                                    if (RegexpUtils.isCanBeFound(string,
+                                            RegexpPatterns.LIKE_OR_COMMIT)) {
+                                        // If "Like|Comment" found then it is
+                                        // ViralUpdate.
+                                        Logger.i("Tapping on ViralUpdate '" + contentForLog + "'");
+                                        getSolo().clickOnView(view);
+                                        return true;
+                                    }
+                                } else if (dif >= 10) {
+                                    // If previous conditions not completed then
+                                    // current row is not ViralUpdate.
+                                    contentForLog = StringDefaultValues.EMPTY_STRING;
+                                    isRowWithCompany = false;
                                 }
                             }
                         }
                     }
                 }
             }
-            
-            isNeedScroll = getSolo().scrollDownList(0);
-            HardwareActions.delay(5);// Wait for ListView load more rows.
-            
-            Logger.d("Scrollllllllllllllllllllllllllllllll");
-            
+
+            isNeedScroll = ListViewUtils.scrollToNewItems();
         }
+        return false;
+    }
 
-        //Logger.logElements(false, false);
+    /**
+     * Opens first Viral update.
+     * 
+     * @return {@code ScreenViralUpdate} object.
+     */
+    public ScreenViralUpdate openFirstViralUpdate() {
+        Assert.assertTrue("Not found Viral Updates on Updates screen", tapOnFirstViralUpdate());
 
-        return /*new ScreenViralUpdate()*/null;
+        return new ScreenViralUpdate();
     }
 
     /**
@@ -531,10 +531,6 @@ public class ScreenUpdates extends BaseINScreen {
      *         otherwise
      */
     public boolean isArticleHasImageDisplayedAlongWithSummary(String commentToArticle) {
-
-        Logger.i("Check there is image displayed along with summary for news article with comment: "
-                + commentToArticle);
-
         RelativeLayout commentedNewsArticleRelativeLayout = getCommentedNewsArticleRelativeLayout(commentToArticle);
         RelativeLayout visibleArticleSummaryWithImageRelativeLayout = getVisibleArticleSummaryWithImageRelativeLayout(
                 commentedNewsArticleRelativeLayout, commentToArticle);
@@ -677,14 +673,15 @@ public class ScreenUpdates extends BaseINScreen {
 
         View newsImageView = layout.getChildAt(newsImageViewIndex);
         View newsArticleSummaryTextView = layout.getChildAt(newsArticleSummaryTextViewIndex);
+
         boolean isNewsImageViewExist = (newsImageView instanceof ImageView)
                 && newsImageView.getVisibility() == View.VISIBLE;
         boolean isNewsArticleSummaryTextViewExist = (newsArticleSummaryTextView instanceof TextView)
                 && newsArticleSummaryTextView.getVisibility() == View.VISIBLE;
 
-        Logger.i("There is no news article image for article with following comment: "
+        Assert.assertTrue("There is no news article image for article with following comment: "
                 + commentToArticle, isNewsImageViewExist);
-        Logger.i("There is article summary text for article with following comment: "
+        Assert.assertTrue("There is article summary text for article with following comment: "
                 + commentToArticle, isNewsArticleSummaryTextViewExist);
 
         return isNewsImageViewExist && isNewsArticleSummaryTextViewExist;
@@ -711,34 +708,60 @@ public class ScreenUpdates extends BaseINScreen {
     }
 
     /**
-     * Gets first {@code RelativeLayout} NUS cell on screen.
+     * Gets parent {@code RelativeLayout} for main elements (news article label,
+     * image, etc) of Updates list item with specified
+     * {@code updatesListItemIndex}.
      * 
-     * @return {@code RelativeLayout} NUS cell on screen, <b>null</b> if it is
-     *         not exist.
+     * @param updatesListItemIndex
+     *            Index of Updates list item to get the layout.
+     * 
+     * @return parent {@code RelativeLayout} for main elements (news article
+     *         label, image, etc) of first Updates list item, or <b>null</b> if
+     *         such layout doesn't exist.
      */
-    public RelativeLayout getFirstCell() {
-        TextView timeAgoTextView = null;
-        for (TextView view : getSolo().getCurrentTextViews(null)) {
-            String textOfView = view.getText().toString();
-            if ((textOfView.indexOf("hours ago") != -1) || (textOfView.indexOf("hour ago") != -1)
-                    || (textOfView.indexOf("mins ago") != -1)
-                    || (textOfView.indexOf("min ago") != -1)
-                    || (textOfView.indexOf("secs ago") != -1)
-                    || (textOfView.indexOf("sec ago") != -1)
-                    || (textOfView.indexOf("days ago") != -1)
-                    || (textOfView.indexOf("day ago") != -1)
-                    || (textOfView.indexOf("months ago") != -1)
-                    || (textOfView.indexOf("month ago") != -1)) {
-                timeAgoTextView = view;
-                break;
-            }
+    public RelativeLayout getUpdatesListItemMainElementsParentLayout(int updatesListItemIndex) {
+        ListView updatesList = getRecentUpdatesList();
+        LinearLayout updatesListItem = ViewGroupUtils.getChildViewByIndexSafely(updatesList,
+                updatesListItemIndex, LinearLayout.class);
+
+        RelativeLayout sharedNewsArticleMainElementsParentLayout = getUpdatesListItemMainElementsParentLayout(updatesListItem);
+        return sharedNewsArticleMainElementsParentLayout;
+    }
+
+    /**
+     * Gets parent {@code RelativeLayout} for main elements (news article label,
+     * image, etc) of Updates list item with specified {@code newsArticleLayout}
+     * 
+     * @param updatesListItemLayout
+     *            {@code LinearLayout} of Updates list item
+     * @return parent {@code RelativeLayout} for main elements (news article
+     *         label, image, etc) of Updates list item with specified
+     *         {@code newsArticleLayout} or <b>null</b> if there is no such
+     *         {@code RelativeLayout}.
+     */
+    private RelativeLayout getUpdatesListItemMainElementsParentLayout(
+            LinearLayout updatesListItemLayout) {
+        final int firstRecentUpdatesListItemMainSectionIndex = 1;
+        final int firstRecentUpdatesListItemMainSectionSecondDegreeIndex = 0;
+
+        if (null == updatesListItemLayout) {
+            return null;
         }
 
-        if (timeAgoTextView.getParent() instanceof RelativeLayout) {
-            return (RelativeLayout) (timeAgoTextView.getParent());
+        RelativeLayout firstRecentUpdatesListItemMainSection = ViewGroupUtils
+                .getChildViewByIndexSafely(updatesListItemLayout,
+                        firstRecentUpdatesListItemMainSectionIndex, RelativeLayout.class);
+
+        if (null == firstRecentUpdatesListItemMainSection) {
+            return null;
         }
 
-        return null;
+        RelativeLayout firstRecentUpdatesListItemMainSectionSecondDegree = ViewGroupUtils
+                .getChildViewByIndexSafely(firstRecentUpdatesListItemMainSection,
+                        firstRecentUpdatesListItemMainSectionSecondDegreeIndex,
+                        RelativeLayout.class);
+
+        return firstRecentUpdatesListItemMainSectionSecondDegree;
     }
 
     /**
@@ -862,7 +885,7 @@ public class ScreenUpdates extends BaseINScreen {
      */
     public ScreenNewConnectionsRollUp openNewConnectionsRollUpScreen() {
         tapOnNewConnectionsRollUp();
-        HardwareActions.waitForScreenUpdate();
+        WaitActions.waitForScreenUpdate();
         return new ScreenNewConnectionsRollUp();
     }
 
@@ -885,9 +908,7 @@ public class ScreenUpdates extends BaseINScreen {
      */
     public ScreenUpdatedProfileDetails openProfileRollUpScreen() {
         tapOnProfileRollUp();
-
-        ScreenUpdatedProfileDetails screenUpdatedProfileDetails = new ScreenUpdatedProfileDetails();
-        return screenUpdatedProfileDetails;
+        return new ScreenUpdatedProfileDetails();
     }
 
     /**

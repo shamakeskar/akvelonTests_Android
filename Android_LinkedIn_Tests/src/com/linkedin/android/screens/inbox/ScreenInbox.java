@@ -3,9 +3,10 @@ package com.linkedin.android.screens.inbox;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.apache.http.message.BasicNameValuePair;
 
-import junit.framework.Assert;
 import android.view.View;
 import android.view.ViewParent;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import com.linkedin.android.screens.common.ScreenSearch;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
+import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
@@ -188,7 +190,7 @@ public class ScreenInbox extends BaseINScreen {
                 return senderNameTextView;
             }
             if (!isScreenCanBeScrolled) {
-                HardwareActions.delay(DataProvider.DEFAULT_DELAY_TIME);
+                WaitActions.delay(DataProvider.DEFAULT_DELAY_TIME);
             }
             isScreenCanBeScrolled = getSolo().scrollDown();
         }

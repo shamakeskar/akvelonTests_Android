@@ -178,7 +178,7 @@ public class ScreenLinkedInToday extends BaseINScreen {
         }
 
         // wait while 'News' list loading
-        HardwareActions.delay(newsListExpectedLoadTimeSec);
+        WaitActions.delay(newsListExpectedLoadTimeSec);
 
         int newsArticlesCount = newsList.getChildCount();
         for (int i = 0; i < newsArticlesCount; i++) {

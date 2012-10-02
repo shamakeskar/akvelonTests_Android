@@ -1,11 +1,12 @@
 package com.linkedin.android.utils;
 
+import java.util.ArrayList;
+
 import junit.framework.Assert;
 import android.graphics.Point;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.jayway.android.robotium.solo.Solo;
 import com.linkedin.android.tests.data.DataProvider;
 
 /**
@@ -22,6 +23,36 @@ public final class WaitActions {
     // CONSTRUCTORS ---------------------------------------------------------
 
     // METHODS --------------------------------------------------------------
+
+    /**
+     * Default delay function.
+     */
+    public static void waitForScreenUpdate() {
+        DataProvider.getInstance().getSolo().sleep(DataProvider.DEFAULT_DELAY_TIME);
+    }
+
+    /**
+     * Custom delay function.
+     * 
+     * @param sec
+     *            is time in seconds.
+     */
+    public static void delay(int sec) {
+        DataProvider.getInstance().getSolo().sleep(sec * 1000);
+    }
+
+    /**
+     * Custom delay function.
+     * 
+     * @param sec
+     *            is time in seconds.
+     */
+    public static void delay(float sec) {
+        sec *= 1000.0;
+        int time = ((Float) sec).intValue();
+        DataProvider.getInstance().getSolo().sleep(time);
+    }
+
     /**
      * Waiting until the coordinates of "view" will not "location"
      * 
@@ -31,13 +62,7 @@ public final class WaitActions {
      *            is {@code Point} object of expected location
      * @param timeout
      *            is timeout. If 0 then will be
-     *                       {@DataProvider.WAIT_DELAY_DEFAULT
-     * 
-     * 
-     * 
-     * 
-     * 
-     * }
+     *            {@code DataProvider.WAIT_DELAY_DEFAULT}
      * @param message
      *            is error message
      */
@@ -68,6 +93,7 @@ public final class WaitActions {
      * @param timeout
      *            is timeout. If 0 then will be
      *                       {@DataProvider.WAIT_DELAY_DEFAULT
+     * 
      * 
      * 
      * 
@@ -141,8 +167,10 @@ public final class WaitActions {
     /**
      * Method for wait single activity.
      * 
-     * @param activityShortName is name of Activity for wait
-     * @param screenName is name of screen to log error message
+     * @param activityShortName
+     *            is name of Activity for wait
+     * @param screenName
+     *            is name of screen to log error message
      */
     public static void waitSingleActivity(String activityShortName, String screenName) {
         Assert.assertTrue(
@@ -152,31 +180,51 @@ public final class WaitActions {
     }
 
     /**
+     * Waits until {@code ProgressBar} with index <b>indexOfProgressBar</b> is
+     * disappear or <b>timeoutInMs</b> is over.
+     * 
+     * @param indexOfProgressBar
+     *            - index of {@code ProgressBar} for check in
+     *            solo.getCurrentProgressBars().
+     * @param timeoutInMs
+     *            - timeout in milliseconds.
+     */
+    public static void waitForProgressBarDisappear(int indexOfProgressBar, int timeoutInMs) {
+        // List of progress bars.
+        ArrayList<ProgressBar> progressBars = DataProvider.getInstance().getSolo()
+                .getCurrentProgressBars();
+        // If list size less that index then wait is complete.
+        if (progressBars.size() < indexOfProgressBar + 1)
+            return;
+        // ProgressBar for check.
+        ProgressBar pb = progressBars.get(indexOfProgressBar);
+        // Id of ProgressBar at start of helper.
+        int idForCheck = pb.getId();
+        
+        int waitStepsCount = timeoutInMs / DataProvider.WAIT_DELAY_STEP;
+        for (int i = 0; i < waitStepsCount; i++) {
+            progressBars = DataProvider.getInstance().getSolo().getCurrentProgressBars();
+            // If list size less that index then wait is complete.
+            if (progressBars.size() < indexOfProgressBar + 1){
+                return;
+            }
+            pb = progressBars.get(indexOfProgressBar);
+            // If it other or hidden ProgressBar then wait is complete.
+            if (pb.getId() != idForCheck || pb.getWidth() == 0 || pb.getHeight() == 0){
+                return;
+            }
+
+            delay(DataProvider.WAIT_DELAY_STEP * 0.001f);
+        }
+        Assert.fail("Timeout error for progress bar");
+    }
+
+    /**
      * Waits until {@code ProgressBar} disappear from screen. If
      * {@code ProgressBar} does not disappear than shows error.
      */
     public static void waitForProgressBarDisappear() {
-        final int minimumNumberOfMatches = 1;
-        final int progressBarWaitTimeout = 1;
-        final int numberOfAttemptsToCheckIfProgressBarDissapears = 10;
-        final int waitTimeOfScreenUpdateAfterProgressBarDissapearsSec = 4;
-
-        Solo solo = DataProvider.getInstance().getSolo();
-        boolean isProgressBarOnScreen = true;
-
-        Logger.i("Wait for progress bar disappears");
-        for (int i = 0; i < numberOfAttemptsToCheckIfProgressBarDissapears; i++) {
-            isProgressBarOnScreen = solo.waitForView(ProgressBar.class, minimumNumberOfMatches,
-                    progressBarWaitTimeout, false);
-            if (!isProgressBarOnScreen) {
-                break;
-            }
-            HardwareActions.waitForScreenUpdate();
-        }
-
-        Assert.assertFalse("Spinner is not disappeared", isProgressBarOnScreen);
-        Logger.i("Progress bar is disappeared.");
-        HardwareActions.delay(waitTimeOfScreenUpdateAfterProgressBarDissapearsSec);
+        waitForProgressBarDisappear(0, DataProvider.WAIT_PROGRESSBAR_DISAPPEAR);
     }
 
     /**
@@ -197,5 +245,41 @@ public final class WaitActions {
         boolean isTextPresented = DataProvider.getInstance().getSolo()
                 .waitForText(textToWait, 1, DataProvider.WAIT_DELAY_DEFAULT);
         Assert.assertTrue(errorMessage, isTextPresented);
+    }
+
+    /**
+     * Waits until <b>progressBarView</b> progress is <b>desiredProgress</b> or
+     * <b>timeoutInMs</b> is over.
+     * 
+     * @param progressBarView
+     *            - view of progress bar for check.
+     * @param timeoutInMs
+     *            - timeout in milliseconds.
+     * @param desiredProgress
+     *            - expected value of progress.
+     */
+    public static void waitForProgressBarFill(ProgressBar progressBarView, int timeoutInMs,
+            int desiredProgress) {
+        int waitStepsCount = timeoutInMs / DataProvider.WAIT_DELAY_STEP;
+        for (int i = 0; i < waitStepsCount; i++) {
+            if (progressBarView.getProgress() >= desiredProgress) {
+                return;
+            }
+            delay(DataProvider.WAIT_DELAY_STEP * 0.001f);
+        }
+        Assert.fail("Timeout error for progress bar");
+    }
+
+    /**
+     * Waits until <b>progressBarView</b> progress is 100 or <b>timeoutInMs</b>
+     * is over.
+     * 
+     * @param progressBarView
+     *            - view of progress bar for check
+     * @param timeoutInMs
+     *            - timeout in milliseconds.
+     */
+    public static void waitForProgressBarFill(ProgressBar progressBarView, int timeoutInMs) {
+        waitForProgressBarFill(progressBarView, timeoutInMs, 100);
     }
 }

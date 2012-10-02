@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import com.linkedin.android.screens.common.ScreenNewMessage;
 import com.linkedin.android.screens.common.ScreenReplyMessage;
 import com.linkedin.android.screens.updates.ScreenAddComment;
+import com.linkedin.android.screens.you.ScreenProfile;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
@@ -14,6 +15,7 @@ import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 public abstract class BaseScreenSharedNewsDetails extends BaseINScreen {
 
@@ -67,7 +69,7 @@ public abstract class BaseScreenSharedNewsDetails extends BaseINScreen {
 
     @Override
     public void waitForMe() {
-        WaitActions.waitMultiplyActivities(new String[] { ACTIVITY_SHORT_CLASSNAME });
+        WaitActions.waitSingleActivity(ACTIVITY_SHORT_CLASSNAME, "Shared screen");
     }
 
     @Override
@@ -106,9 +108,7 @@ public abstract class BaseScreenSharedNewsDetails extends BaseINScreen {
     public void tapOnLikeButton() {
         ImageButton likeButton = (ImageButton) Id.getViewByName(LIKE_BUTTON);
         Assert.assertTrue("'Like' button is not present.", likeButton.isShown());
-
-        Logger.i("Tapping on 'Like' button");
-        getSolo().clickOnView(likeButton);
+        ViewUtils.tapOnView(likeButton, "'Like' button");
     }
 
     /**
@@ -197,5 +197,12 @@ public abstract class BaseScreenSharedNewsDetails extends BaseINScreen {
 
         getSolo().clickOnView(connectionProfileSectionChevron);
     }
-
+    
+    /**
+     * Opens Connection Profile whos create dicussion.
+     */
+    public ScreenProfile openConnectionProfile() {
+        tapOnConnectionProfile();
+        return new ScreenProfile();
+    }
 }

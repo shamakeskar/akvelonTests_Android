@@ -25,6 +25,7 @@ public class ScreenJobDetails extends BaseINScreen {
     static final float COORDINATE_OF_SAVE_UNSAVE_JOB_YDP3 = 223;
     static final float COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_XDP = 100 / 3;
     static final float COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_YDP = 493;
+    static final int WAIT_FOR_SCREEN_LOAD_COMPLETELY = 15;
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -36,6 +37,8 @@ public class ScreenJobDetails extends BaseINScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
+        // TODO: rewrite.
+        WaitActions.delay(WAIT_FOR_SCREEN_LOAD_COMPLETELY);
         Assert.assertTrue("'Job Details' label is not present",
                 getSolo().waitForText("Job Details", 1, DataProvider.WAIT_DELAY_LONG, false, false));
 
@@ -45,7 +48,9 @@ public class ScreenJobDetails extends BaseINScreen {
 
     @Override
     public void waitForMe() {
-        WaitActions.waitMultiplyActivities(new String[] { ACTIVITY_SHORT_CLASSNAME });
+        Assert.assertTrue("Cannot wait to launch activity '" + ACTIVITY_SHORT_CLASSNAME + "'",
+                getSolo()
+                        .waitForActivity(ACTIVITY_SHORT_CLASSNAME, DataProvider.WAIT_DELAY_DEFAULT));
     }
 
     @Override
@@ -54,9 +59,10 @@ public class ScreenJobDetails extends BaseINScreen {
     }
 
     /**
-     * Taps on 'Save \ Unsave job' button and verify what it changed.
+     * Taps on 'Save \ Unsave job' button, wait for button change color and
+     * verify what it changed.
      */
-    public void tapOnSaveUnsaveJob() {
+    public void saveOrUnsaveJob() {
         Logger.i("Tapping on Save/Unsave button");
 
         int colorOfFirstPoint = HardwareActions.saveCurrentScreenScreenshotInBitmap().getPixel(
@@ -74,7 +80,7 @@ public class ScreenJobDetails extends BaseINScreen {
         getSolo().clickOnScreen(
                 COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity(),
                 COORDINATE_OF_SAVE_UNSAVE_JOB_YDP1 * ScreenResolution.getScreenDensity());
-        HardwareActions.delay(5);
+        WaitActions.delay(DataProvider.WAIT_SAVE_UNSAVE_JOB_BUTTON_CHANGED);
 
         int colorOfFirstChangePoint = HardwareActions
                 .saveCurrentScreenScreenshotInBitmap()
@@ -87,7 +93,7 @@ public class ScreenJobDetails extends BaseINScreen {
         getSolo().clickOnScreen(
                 COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity(),
                 COORDINATE_OF_SAVE_UNSAVE_JOB_YDP2 * ScreenResolution.getScreenDensity());
-        HardwareActions.delay(5);
+        WaitActions.delay(DataProvider.WAIT_SAVE_UNSAVE_JOB_BUTTON_CHANGED);
 
         int colorOfSecondChangePoint = HardwareActions
                 .saveCurrentScreenScreenshotInBitmap()
@@ -100,7 +106,7 @@ public class ScreenJobDetails extends BaseINScreen {
         getSolo().clickOnScreen(
                 COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity(),
                 COORDINATE_OF_SAVE_UNSAVE_JOB_YDP3 * ScreenResolution.getScreenDensity());
-        HardwareActions.delay(5);
+        WaitActions.delay(DataProvider.WAIT_SAVE_UNSAVE_JOB_BUTTON_CHANGED);
 
         int colorOfThirdChangePoint = HardwareActions
                 .saveCurrentScreenScreenshotInBitmap()
@@ -117,15 +123,17 @@ public class ScreenJobDetails extends BaseINScreen {
     }
 
     /**
-     * Taps on latest recommended job.
+     * Scroll down to bottom of screen, wait that scroll over and taps on latest
+     * recommended job.
      */
     public void tapOnRecommendedJob() {
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 40; i++) {
             getSolo().drag(ScreenResolution.getScreenWidth() / 2,
                     ScreenResolution.getScreenWidth() / 2, ScreenResolution.getScreenHeight() - 50,
                     50, 3);
         }
 
+        Logger.i("Tapping on recommended job");
         getSolo().clickOnScreen(
                 COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_XDP * ScreenResolution.getScreenDensity(),
                 COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_YDP * ScreenResolution.getScreenDensity());
@@ -138,7 +146,6 @@ public class ScreenJobDetails extends BaseINScreen {
      */
     public ScreenJobDetails openRecommendedJob() {
         tapOnRecommendedJob();
-
         return new ScreenJobDetails();
     }
 }

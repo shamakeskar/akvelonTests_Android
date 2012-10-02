@@ -277,7 +277,8 @@ public final class ViewUtils {
     }
 
     /**
-     * Taps on specified {@code view}
+     * Taps on specified {@code view}.
+     * Logs "Tapping on <i>viewName</i>"
      * 
      * @param view
      *            view to tap

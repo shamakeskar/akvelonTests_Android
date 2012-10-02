@@ -10,7 +10,6 @@ import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.ContactInfoUtils;
 import com.linkedin.android.utils.HardwareActions;
-import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.asserts.ViewAssertUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
@@ -46,7 +45,7 @@ public class ScreenProfileOfNotConnectedUser extends ScreenProfile {
     @Override
     public void verify() {
         super.verify();
-        
+
         Button inviteToConnectButton = getInviteToConnectButton();
         ViewAssertUtils.assertViewIsPlacedInLayout("'Invite to connect' button is not present",
                 inviteToConnectButton, INVITE_TO_CONNECT_BUTTON_LAYOUT);
@@ -59,7 +58,7 @@ public class ScreenProfileOfNotConnectedUser extends ScreenProfile {
                 "'Invite to connect' and 'Forward' buttons are not placed 'in-line' horizontally",
                 ViewUtils.isViewsPlacedInLineHorizontally(inviteToConnectButton, forwardButton));
 
-        HardwareActions.takeCurrentActivityScreenshot("Profile to invite screen");
+        HardwareActions.takeCurrentActivityScreenshot("ProfileNotConnectedUser screen");
     }
 
     /**
@@ -103,9 +102,9 @@ public class ScreenProfileOfNotConnectedUser extends ScreenProfile {
     }
 
     /**
-     * Taps on 'Invite to connect' button.
+     * Taps on 'Invite to connect' button and checks toasts.
      */
-    public void tapOnInviteToConnectButton() {
+    public void inviteByTappingOnInviteToConnectButton() {
         Button inviteToConnectButton = getInviteToConnectButton();
 
         verifyTwoToastsStart("Sending invitation", "Invitation sent");

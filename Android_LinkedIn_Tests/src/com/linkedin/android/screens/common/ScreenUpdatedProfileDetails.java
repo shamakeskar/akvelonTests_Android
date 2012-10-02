@@ -6,12 +6,10 @@ import android.widget.ListView;
 
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.updates.ScreenSingleUpdatedProfileDetails;
-import com.linkedin.android.utils.HardwareActions;
-import com.linkedin.android.utils.Logger;
-import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
+import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
  * Class for "Updated profile details" ("Profile roll up") screen.
@@ -47,7 +45,7 @@ public class ScreenUpdatedProfileDetails extends BaseINScreen {
         // TODO replace with wait action.
         // Wait while 'Updated profiles' list loads.
         final int listLoadDelaySec = 3;
-        HardwareActions.delay(listLoadDelaySec);
+        WaitActions.delay(listLoadDelaySec);
         
         assertUpdatedProfilesList();
     }
@@ -90,8 +88,7 @@ public class ScreenUpdatedProfileDetails extends BaseINScreen {
      */
     public void tapOnFirstItemFromUpdatedProfilesList() {
         LinearLayout firstItemFromUpdatedProfilesList = getFirstItemFromUpdatedProfilesList();
-  
-        getSolo().clickOnView(firstItemFromUpdatedProfilesList);
+        ViewUtils.tapOnView(firstItemFromUpdatedProfilesList, "first user in list");
     }
 
     /**

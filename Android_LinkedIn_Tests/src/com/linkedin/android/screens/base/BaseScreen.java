@@ -1,6 +1,7 @@
 package com.linkedin.android.screens.base;
 
 import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
 import android.app.Activity;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import com.jayway.android.robotium.solo.Solo;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.utils.Logger;
+import com.linkedin.android.utils.StringDefaultValues;
+import com.linkedin.android.utils.StringUtils;
 import com.linkedin.android.utils.ThreadUtils;
 
 /**
@@ -24,6 +27,8 @@ public abstract class BaseScreen<T extends Activity> {
     private Class<T> clazz;
 
     private final Object lockObjectForTwoToastsVerification = new Object();
+    private static String exceptionFromVerifyTwoToasts;
+    private static boolean isStopThreadFromVerifyTwoToasts;
 
     // CONSTRUCTORS ---------------------------------------------------------
     /**
@@ -31,13 +36,14 @@ public abstract class BaseScreen<T extends Activity> {
      * name.
      * 
      * Standard implement is: {@code super(solo, ACTIVITY_SHORT_CLASSNAME);}
+     * 
      * @param activityName
      *            is activity class name
      */
     @SuppressWarnings("unchecked")
     public BaseScreen(String activityName) {
         waitForMe();
-                
+
         try {
             this.clazz = (Class<T>) Class.forName(activityName);
         } catch (ClassNotFoundException e) {
@@ -47,7 +53,7 @@ public abstract class BaseScreen<T extends Activity> {
         }
         verify();
     }
-        
+
     // ABSTRACT METHODS -----------------------------------------------------
     /**
      * Verify screen.
@@ -92,16 +98,6 @@ public abstract class BaseScreen<T extends Activity> {
     }
 
     /**
-     * Assert current activity.
-     */
-    public void assertCurrentActivity() {
-        for (Activity a : getSolo().getAllOpenedActivities()) {
-            Logger.d(a.getClass().getName());
-        }
-        Assert.assertEquals(clazz, getSolo().getCurrentActivity().getClass());
-    }
-
-    /**
      * Checks that opened current activity.
      * 
      * @return <b>true</b> if opened current activity.
@@ -140,10 +136,12 @@ public abstract class BaseScreen<T extends Activity> {
      *            text that must be displayed in second toast.
      */
     public void verifyTwoToastsStart(String firstToastText, String secondToastText) {
+        exceptionFromVerifyTwoToasts = StringDefaultValues.EMPTY_STRING;
         AsyncToastsVerifier asyncToastVerifier = new AsyncToastsVerifier(firstToastText,
                 secondToastText, lockObjectForTwoToastsVerification);
-        Thread newThread = new Thread(asyncToastVerifier);
-        newThread.start();
+        isStopThreadFromVerifyTwoToasts = false;
+        Thread thread = new Thread(asyncToastVerifier);
+        thread.start();
     }
 
     /**
@@ -154,9 +152,14 @@ public abstract class BaseScreen<T extends Activity> {
      */
     public void verifyTwoToastsEnd() {
         ThreadUtils.wait(lockObjectForTwoToastsVerification, lockObjectForTwoToastsVerification);
+        isStopThreadFromVerifyTwoToasts = true;
+        
+        if (!StringUtils.isNullOrEmpty(exceptionFromVerifyTwoToasts)) {
+            Assert.fail(exceptionFromVerifyTwoToasts);
+        }
     }
 
-    /***
+    /**
      * Types text to specified text field
      * 
      * @param fieldIndex
@@ -173,7 +176,7 @@ public abstract class BaseScreen<T extends Activity> {
         getSolo().enterText(fieldIndex, text2Type);
     }
 
-    /***
+    /**
      * Taps on specified {@code button}
      * 
      * @param button
@@ -187,13 +190,15 @@ public abstract class BaseScreen<T extends Activity> {
         Logger.i("Tapping on '" + buttonName + "' button");
         getSolo().clickOnView(button);
     }
-    
+
     /**
-     * Verifies current {@code Activity}.
+     * Verifies current {@code Activity} (returned by
+     * getActivityShortClassName()).
      */
     protected void verifyCurrentActivity() {
         Assert.assertTrue("Wrong activity " + getActivityShortClassName(), getSolo()
-                .getCurrentActivity().getClass().getSimpleName().equals(getActivityShortClassName()));
+                .getCurrentActivity().getClass().getSimpleName()
+                .equals(getActivityShortClassName()));
     }
 
     /**
@@ -213,7 +218,11 @@ public abstract class BaseScreen<T extends Activity> {
          * Constructor for AsyncToastVerifier class
          * 
          * @param firstToastText
-         *            text that must be displayed in the toast.
+         *            text that must be displayed in the first toast.
+         * @param secondToast
+         *            text that must be displayed in the second toast.
+         * @param lock
+         *            object to lock thread
          */
         public AsyncToastsVerifier(String firstToastText, String secondToast, Object lock) {
             this.firstToastText = firstToastText;
@@ -229,12 +238,19 @@ public abstract class BaseScreen<T extends Activity> {
             if (null == lock) {
                 return;
             }
-            verifyToast(firstToastText);
-            verifyToast(secondToastText);
-            synchronized (lock) {
-                lock.notify();
+            try {
+                // Check toasts.
+                verifyToast(firstToastText);
+                verifyToast(secondToastText);
+            } catch (final AssertionFailedError e) {
+                // If receive exception then save it
+                exceptionFromVerifyTwoToasts = e.getMessage();
             }
-
+            // Call notify to break wait for "lock"
+            while (!isStopThreadFromVerifyTwoToasts)
+                synchronized (lock) {
+                    lock.notify();
+                }
         }
 
     }

@@ -74,7 +74,7 @@ public class ScreenNewConnectionsRollUp extends BaseINScreen {
      */
     public void tapOnFirstRollUp() {
         TextView rollUp = getConnectionRollUp();
-        HardwareActions.waitForScreenUpdate();
+        WaitActions.waitForScreenUpdate();
         ViewUtils.tapOnView(rollUp, "'Connection Roll Up' view");
     }
 
@@ -83,7 +83,7 @@ public class ScreenNewConnectionsRollUp extends BaseINScreen {
      */
     public void tapOnSecondRollUp() {
         TextView textView = getSolo().getText(4);
-        HardwareActions.waitForScreenUpdate();
+        WaitActions.waitForScreenUpdate();
         ViewUtils.tapOnView(textView, "'Connection Roll Up' view");
     }
 

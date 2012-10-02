@@ -51,6 +51,7 @@ public class ScreenAddConnections extends BaseScreen {
         ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
 
         while(getSolo().waitForText("Loading...")); // wait utill content is loaded
+        while(getSolo().waitForText("Loading...")); // we should wait twice
 
         getSolo().waitForText(CONNECTIONS_LABEL, 1, DataProvider.WAIT_DELAY_DEFAULT);
         assertConnectionsLabelPresent();

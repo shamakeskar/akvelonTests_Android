@@ -29,6 +29,7 @@ public class LoginTests extends BaseTestCase {
      * failed.
      */
     public void test34632369() {
+        DISABLE_LOGOUT = true;// No login in this test.
         startFixture("34632369");
         Logger.i(START_TEST + "34632369: 'Log in - Fail.'");
 

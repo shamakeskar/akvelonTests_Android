@@ -78,7 +78,7 @@ public class ScreenSharedNewsDetails extends BaseScreenSharedNewsDetails {
     }
     
     /**
-     * Gets {@code RelativeLayout} of shared news placed in body of article;
+     * Returns {@code RelativeLayout} of shared news placed in body of article;
      * 
      * @return {@code RelativeLayout} of shared news placed in body of article;
      */
@@ -96,7 +96,7 @@ public class ScreenSharedNewsDetails extends BaseScreenSharedNewsDetails {
     }
     
     /**
-     * Gets text of shared news header.
+     * Returns text of shared news header.
      * @return text of shared news header if it was found, else <b>null</b>.
      */
     public String getSharedNewsHeader() {
@@ -127,5 +127,4 @@ public class ScreenSharedNewsDetails extends BaseScreenSharedNewsDetails {
             exceptions.add(link);
         } while (true);
     }
-
 }

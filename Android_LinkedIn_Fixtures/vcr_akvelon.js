@@ -51,30 +51,27 @@ var OPERATION_COMPLETE_SUCCESSFULLY_MESSAGE = "ok";
 // HTTP Server.
 http.createServer(function (request, response) {
     
-	var requestUrl = request.url;
-	var isNewTestStarted = false;
-	
-	if (requestUrl.match(/^\/startFixturesForTest/))
-	{
-		isNewTestStarted = setCurrentTestNumber(requestUrl, response);
-	}
-	
-	if (isNewTestStarted)
-	{
-		prepareForTest();
-	}
-	
-	if (requestUrl.match(/^\/stopFixturesForCurrentTest/) && recordkey != EMPTY_STRING)
-	{
-		console.log("Following test finished: " + recordkey);
-		recordkey = EMPTY_STRING;
-		response.write(OPERATION_COMPLETE_SUCCESSFULLY_MESSAGE);
-		response.end();
-	}
-	
-	//TODO stop server when all tests complete
-		
-	//console.log(request);
+    var requestUrl = request.url;
+    var isNewTestStarted = false;
+
+    if (requestUrl.match(/^\/startFixturesForTest/)) {
+        isNewTestStarted = setCurrentTestNumber(requestUrl, response);
+    }
+
+    if (isNewTestStarted) {
+        prepareForTest();
+    }
+
+    if (requestUrl.match(/^\/stopFixturesForCurrentTest/) && recordkey != EMPTY_STRING) {
+        console.log("Following test finished: " + recordkey);
+        recordkey = EMPTY_STRING;
+        response.write(OPERATION_COMPLETE_SUCCESSFULLY_MESSAGE);
+        response.end();
+    }
+    
+    //TODO stop server when all tests complete
+
+    //console.log(request);
     //If url is data request, we want to intercept and proxy it
     if (request.url.match(/^\/data/) && recordkey != EMPTY_STRING) {
 
@@ -87,7 +84,7 @@ http.createServer(function (request, response) {
         var fd = null,
             folderkey = null,
             filename = null;
-			
+            
         if (record || replay) {
             //Filter out unnecessary parameters to record
             filename = url.replace(/nc\=[0-9]+/, "").replace(/since\=[0-9]+/, "").replace(/isince\=[0-9]+/, "").replace(/\//g, "\.").replace(/:/, "\.").replace(/authToken=\=[a-zA-Z0-9]+/, "");
@@ -103,8 +100,8 @@ http.createServer(function (request, response) {
                 fs.mkdirSync(folderkey, "0777");
             }
 
-			//Replace depecated in windows file names symbol '?' to symbol '#' and symbol '*' to symbol '%'.
-			filename = filename.replace("?", "#").replace("*", "%");
+            //Replace depecated in windows file names symbol '?' to symbol '#' and symbol '*' to symbol '%'.
+            filename = filename.replace(/\?/g, "#").replace(/\*/g, "%");
             filename = folderkey + "/" + filename;
 
             var id;
@@ -206,119 +203,102 @@ http.createServer(function (request, response) {
 
 function setCurrentTestNumber(requestUrl, response)
 {
-	console.log(EMPTY_STRING);
-	var testNumber = getCurrentTestNumberFromRequestUrl(requestUrl);
-	if (null == response)
-	{
-		console.log("[ERROR/currentTest] - can not resporse to test (response object is null)");
-		return false;
-	}
-	if (!isFixturesExistForTest(testNumber))
-	{
-		recordkey = EMPTY_STRING;
-		var errorMessage = "[ERROR/currentTest] - There is no fixtures for following test: " + testNumber;
-		console.log(errorMessage);
-		response.write(errorMessage);
-		response.end();
-		return false;
-	}
-	recordkey = testNumber; 
-	response.write(OPERATION_COMPLETE_SUCCESSFULLY_MESSAGE);
-	response.end();
-	console.log("Start fixtures for test: " + recordkey);
-	return true;
+    console.log(EMPTY_STRING);
+    var testNumber = getCurrentTestNumberFromRequestUrl(requestUrl);
+    if (null == response) {
+        console.log("[ERROR/currentTest] - can not resporse to test (response object is null)");
+        return false;
+    }
+    if (!isFixturesExistForTest(testNumber)) {
+        recordkey = EMPTY_STRING;
+        var errorMessage = "[ERROR/currentTest] - There is no fixtures for following test: " + testNumber;
+        console.log(errorMessage);
+        response.write(errorMessage);
+        response.end();
+        return false;
+    }
+    recordkey = testNumber; 
+    response.write(OPERATION_COMPLETE_SUCCESSFULLY_MESSAGE);
+    response.end();
+    console.log("Start fixtures for test: " + recordkey);
+    return true;
 }
 
-function getCurrentTestNumberFromRequestUrl(requestUrl)
-{
-	var requestParamName_Values = getRequestParamName_ValuePairs(requestUrl);
-	if (null == requestParamName_Values)
-	{
-		console.log("[ERROR/currentTest] - Wrong 'set current test' request format: " + requestUrl);
-		return null;
-	}
-	
-	var testNumber = requestParamName_Values[TEST_NUMBER_PARAM_NAME];
-	return testNumber;
+function getCurrentTestNumberFromRequestUrl(requestUrl) {
+    var requestParamName_Values = getRequestParamName_ValuePairs(requestUrl);
+    if (null == requestParamName_Values) {
+        console.log("[ERROR/currentTest] - Wrong 'set current test' request format: " + requestUrl);
+        return null;
+    }
+
+    var testNumber = requestParamName_Values[TEST_NUMBER_PARAM_NAME];
+    return testNumber;
 }
 
-function getRequestParamName_ValuePairs(requestUrl)
-{
-	var mainRequestUrl_ParamsExpectedLength = 2;
-	var paramsIndexInMainRequestUrl_Params = 1; 
+function getRequestParamName_ValuePairs(requestUrl) {
+    var mainRequestUrl_ParamsExpectedLength = 2;
+    var paramsIndexInMainRequestUrl_Params = 1; 
 
-	if (null == requestUrl)
-	{
-		return null;
-	}
-	var mainRequestUrl_Params = requestUrl.split("?");
-	if (!isArrayLengthGreaterOrEqualsTo(mainRequestUrl_Params, mainRequestUrl_ParamsExpectedLength))
-	{
-		return null;
-	}
-	var requestUrlParams = mainRequestUrl_Params[paramsIndexInMainRequestUrl_Params];
-	return separateParamNameValuePairs(requestUrlParams);
+    if (null == requestUrl) {
+        return null;
+    }
+    var mainRequestUrl_Params = requestUrl.split("?");
+    if (!isArrayLengthGreaterOrEqualsTo(mainRequestUrl_Params, mainRequestUrl_ParamsExpectedLength)) {
+        return null;
+    }
+    var requestUrlParams = mainRequestUrl_Params[paramsIndexInMainRequestUrl_Params];
+    return separateParamNameValuePairs(requestUrlParams);
 }
 
-function separateParamNameValuePairs(joinedParamName_ValuePairs)
-{
-	var urlName_ValuePairsSeparator = "&";
-	
-	if (null == joinedParamName_ValuePairs)
-	{
-		return null;
-	}
-	var arrayOfJoinedParamName_ValuePairs = joinedParamName_ValuePairs.split(urlName_ValuePairsSeparator);
-	return splitParamNamesFromValues(arrayOfJoinedParamName_ValuePairs);
+function separateParamNameValuePairs(joinedParamName_ValuePairs) {
+    var urlName_ValuePairsSeparator = "&";
+
+    if (null == joinedParamName_ValuePairs) {
+        return null;
+    }
+    var arrayOfJoinedParamName_ValuePairs = joinedParamName_ValuePairs.split(urlName_ValuePairsSeparator);
+    return splitParamNamesFromValues(arrayOfJoinedParamName_ValuePairs);
 }
 
-function splitParamNamesFromValues(arrayOfJoinedParamName_ValuePairs)
-{
-	var urlName_ValueSeparator = "=";
-	var separatedName_ValueArrayExpectedLength = 2;
-	var nameIndexInSeparatedName_ValueArray = 0;
-	var valueIndexInSeparatedName_ValueArray = 1;
+function splitParamNamesFromValues(arrayOfJoinedParamName_ValuePairs) {
+    var urlName_ValueSeparator = "=";
+    var separatedName_ValueArrayExpectedLength = 2;
+    var nameIndexInSeparatedName_ValueArray = 0;
+    var valueIndexInSeparatedName_ValueArray = 1;
 
-	var separatedName_ValuePairs = {};
-	if (null == arrayOfJoinedParamName_ValuePairs)
-	{
-		return null;
-	}
-	
-	for (var i = 0; i < arrayOfJoinedParamName_ValuePairs.length; i++)
-	{
-		var joinedName_Value = arrayOfJoinedParamName_ValuePairs[i];
-		var separatedName_Value = joinedName_Value.split(urlName_ValueSeparator);
-		if (!isArrayLengthGreaterOrEqualsTo(separatedName_Value,separatedName_ValueArrayExpectedLength))
-		{
-			continue;
-		}
-		var name = separatedName_Value[nameIndexInSeparatedName_ValueArray];
-		var value = separatedName_Value[valueIndexInSeparatedName_ValueArray];
-		separatedName_ValuePairs[name] = value;
-	}
-	
-	return separatedName_ValuePairs;
+    var separatedName_ValuePairs = {};
+    if (null == arrayOfJoinedParamName_ValuePairs) {
+        return null;
+    }
+
+    for (var i = 0; i < arrayOfJoinedParamName_ValuePairs.length; i++) {
+        var joinedName_Value = arrayOfJoinedParamName_ValuePairs[i];
+        var separatedName_Value = joinedName_Value.split(urlName_ValueSeparator);
+        if (!isArrayLengthGreaterOrEqualsTo(separatedName_Value,separatedName_ValueArrayExpectedLength)) {
+            continue;
+        }
+        var name = separatedName_Value[nameIndexInSeparatedName_ValueArray];
+        var value = separatedName_Value[valueIndexInSeparatedName_ValueArray];
+        separatedName_ValuePairs[name] = value;
+    }
+
+    return separatedName_ValuePairs;
 }
 
-function isFixturesExistForTest(testNumber)
-{
-	if (null == testNumber || EMPTY_STRING === testNumber)
-	{
-		return false;
-	}
-	var pathToTestFixtures = FIXTURES_DIR + testNumber;
-	return path.existsSync(pathToTestFixtures);
+function isFixturesExistForTest(testNumber) {
+    if (null == testNumber || EMPTY_STRING === testNumber) {
+        return false;
+    }
+    var pathToTestFixtures = FIXTURES_DIR + testNumber;
+    return path.existsSync(pathToTestFixtures);
 }
 
-function isArrayLengthGreaterOrEqualsTo(array, expectedLength)
-{
-	return null != array && null != expectedLength && array.length >= expectedLength;
+function isArrayLengthGreaterOrEqualsTo(array, expectedLength) {
+    return null != array && null != expectedLength && array.length >= expectedLength;
 }
 
-function prepareForTest()
-{
-	names = new Array();
+function prepareForTest() {
+    names = new Array();
     counters = new Array();
 }
 
@@ -339,9 +319,8 @@ if (recordkey == undefined) {
 }
 
 var proxyModeMessage = "Proxying mode: " + mode_arr[0];
-if (recordkey != EMPTY_STRING)
-{
-	proxyModeMessage += ", directory: " + (recordkey ? recordkey : "");
+if (recordkey != EMPTY_STRING) {
+    proxyModeMessage += ", directory: " + (recordkey ? recordkey : "");
 }
 console.log(proxyModeMessage);
 console.log("Proxying locahost:8080 => " + host + ":" + port);

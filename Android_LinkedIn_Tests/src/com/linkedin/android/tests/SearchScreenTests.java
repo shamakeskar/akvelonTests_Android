@@ -82,7 +82,7 @@ public class SearchScreenTests extends BaseTestCase {
         screenNewMessage.typeSubject(null);
 
         // Tap on Send button and back to "Profile of connected user" screen.
-        screenNewMessage.tapOnSendButton();
+        screenNewMessage.sendMessage();
         screenProfileOfConnectedUser = new ScreenProfileOfConnectedUser();
         Logger.i(DONE + "'Profile of connected user' screen loads properly.");
 
@@ -109,7 +109,7 @@ public class SearchScreenTests extends BaseTestCase {
 
         // TODO verify toasts
         // Tap on Invite button.
-        screenProfileOfNotConnectedUser.tapOnInviteToConnectButton();
+        screenProfileOfNotConnectedUser.inviteByTappingOnInviteToConnectButton();
 
         // Back to Search screen.
         HardwareActions.pressBack();

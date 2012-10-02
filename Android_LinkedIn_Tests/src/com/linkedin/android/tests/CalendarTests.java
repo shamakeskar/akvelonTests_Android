@@ -1,7 +1,6 @@
 package com.linkedin.android.tests;
 
 import junit.framework.Assert;
-import android.widget.Button;
 
 import com.linkedin.android.screens.ScreenLogin;
 import com.linkedin.android.screens.common.ScreenNewMessage;
@@ -11,10 +10,9 @@ import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.screens.you.ScreenProfileOfConnectedUser;
 import com.linkedin.android.screens.you.ScreenProfileOfNotConnectedUser;
 import com.linkedin.android.tests.data.StringData;
-import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
-import com.linkedin.android.utils.viewUtils.ViewUtils;
+import com.linkedin.android.utils.WaitActions;
 
 /**
  * Tests for Calendar screen.
@@ -67,7 +65,7 @@ public class CalendarTests extends BaseTestCase {
 
         // Tap 'Sync all'.
         loginScreen.handleSyncContactsDialog("Sync all");
-        HardwareActions.waitForScreenUpdate();
+        WaitActions.waitForScreenUpdate();
 
         // Tap on 'Add Calendar' button.
         loginScreen.handleCalendarSplashAddCalendar();
@@ -97,9 +95,9 @@ public class CalendarTests extends BaseTestCase {
         Assert.assertNotNull("Not connected profile not found on meeting", notConnectedProfile);
 
         // Tap on the Send Invitation button.
-        notConnectedProfile.tapOnInviteToConnectButton();
+        notConnectedProfile.inviteByTappingOnInviteToConnectButton();
         Logger.i(DONE + "Verify 'Sending invitation' and 'Invitation sent' toasts are shown.");
-        HardwareActions.waitForScreenUpdate();
+        WaitActions.waitForScreenUpdate();
 
         // Go back on Event Screen (All Attendees).
         HardwareActions.pressBack();
@@ -120,23 +118,23 @@ public class CalendarTests extends BaseTestCase {
         newMessageScreen.typeMessage(testMessage);
 
         // Tap on send button.
-        newMessageScreen.tapOnSendButton();
+        newMessageScreen.sendMessage();
 
         Logger.i(DONE + "Verify 'Sending message' and 'Message sent' toasts are shown.");
-        HardwareActions.waitForScreenUpdate();
+        WaitActions.waitForScreenUpdate();
 
         // Go back on Event Screen.
         HardwareActions.pressBack();
-        HardwareActions.waitForScreenUpdate();
+        WaitActions.waitForScreenUpdate();
         HardwareActions.pressBack();
         screenEvent = new ScreenCalendarEventDetail();
         screenEvent.tapOnViewAllAttendees();
 
         // Go back on Calendar Screen.
         HardwareActions.pressBack();
-        HardwareActions.waitForScreenUpdate();
+        WaitActions.waitForScreenUpdate();
         HardwareActions.pressBack();
-        HardwareActions.waitForScreenUpdate();
+        WaitActions.waitForScreenUpdate();
 
         // Scroll down to load more data. Then hit Today button.
         getSolo().scrollToBottom();

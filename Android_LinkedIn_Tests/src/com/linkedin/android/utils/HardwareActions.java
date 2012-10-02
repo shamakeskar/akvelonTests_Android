@@ -91,35 +91,6 @@ public class HardwareActions {
     }
 
     /**
-     * Default delay function.
-     */
-    public static void waitForScreenUpdate() {
-        DataProvider.getInstance().getSolo().sleep(DataProvider.DEFAULT_DELAY_TIME);
-    }
-
-    /**
-     * Custom delay function.
-     * 
-     * @param sec
-     *            is time in seconds.
-     */
-    public static void delay(int sec) {
-        DataProvider.getInstance().getSolo().sleep(sec * 1000);
-    }
-
-    /**
-     * Custom delay function.
-     * 
-     * @param sec
-     *            is time in seconds.
-     */
-    public static void delay(float sec) {
-        sec *= 1000.0;
-        int time = ((Float) sec).intValue();
-        DataProvider.getInstance().getSolo().sleep(time);
-    }
-
-    /**
      * Take screenshot from {@code View} in default directory.
      * 
      * @param view
@@ -345,7 +316,7 @@ public class HardwareActions {
     // }
     // }
     /**
-     * Save screenshot of current screen in Bitmap.
+     * Returns {@code Bitmap} for current screen.
      * 
      * @return Bitmap image of current screen.
      */

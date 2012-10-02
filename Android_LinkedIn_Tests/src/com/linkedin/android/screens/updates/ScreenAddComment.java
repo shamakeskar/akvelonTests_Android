@@ -8,7 +8,6 @@ import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Logger;
-import com.linkedin.android.utils.WaitActions;
 
 /**
  * Screen to add comment.

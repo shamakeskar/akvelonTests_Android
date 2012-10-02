@@ -27,12 +27,20 @@ public class DataProvider {
     public static final int WAIT_DELAY_DEFAULT = 20000;
     // Long time delay in ms.
     public static final int WAIT_DELAY_LONG = 50000;
+    // Delay for Save/Unsave button change in sec.
+    public static final float WAIT_SAVE_UNSAVE_JOB_BUTTON_CHANGED = 5.0f;
+    // Default timeout for wait until progress bar disappear.
+    public static final int WAIT_PROGRESSBAR_DISAPPEAR = 4000;
 
     // PROPERTIES -----------------------------------------------------------
     // Solo object.
     private Solo solo;
     // Current test tag.
     private String currentTestTag;
+    // Current test ID.
+    private String currentTestId;
+    // Current test name.
+    private String currentTestName;
 
     // CONSTRUCTORS ---------------------------------------------------------
 
@@ -87,5 +95,36 @@ public class DataProvider {
      */
     public void setSolo(Solo solo) {
         this.solo = solo;
+    }
+
+    /**
+     * Returns current test ID.
+     * 
+     * @return current test ID
+     */
+    public String getCurrentTestId() {
+        return currentTestId;
+    }
+
+    /**
+     * Sets current test ID.
+     * 
+     * @param currentTestId
+     *            current test ID
+     * @param currentTestName
+     *            current test name
+     */
+    public void setCurrentTestIdAndName(String currentTestId, String currentTestName) {
+        this.currentTestId = currentTestId;
+        this.currentTestName = currentTestName;
+    }
+
+    /**
+     * Returns current test name.
+     * 
+     * @return current test name
+     */
+    public String getCurrentTestName() {
+        return currentTestName;
     }
 }

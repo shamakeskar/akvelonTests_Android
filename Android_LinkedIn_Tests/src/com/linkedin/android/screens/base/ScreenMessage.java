@@ -5,6 +5,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.linkedin.android.screens.common.ScreenAddConnections;
+import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
@@ -21,6 +23,8 @@ public abstract class ScreenMessage extends BaseScreen {
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.messages.MessageComposeActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "MessageComposeActivity";
 
+    // "Add users" button (below "Share").
+    public final static ViewIdName ADD_USERS_BUTTON = new ViewIdName("add_users_button");
 
     // CONSTRUCTORS ---------------------------------------------------------
     public ScreenMessage() {
@@ -40,7 +44,8 @@ public abstract class ScreenMessage extends BaseScreen {
                 getSolo().waitForText(getHeader()));
 
         Button sendButton = getSolo().getButton(0);
-        ImageView addConnectionButton = getSolo().getImage(0);
+        ImageView addConnectionButton = (ImageView) Id.getViewByName(ADD_USERS_BUTTON);
+        //getSolo().getImage(0);
 
         Assert.assertNotNull("'Send' button is not presented", sendButton);
         Assert.assertNotNull("'Add' button is not presented", addConnectionButton);
@@ -50,7 +55,7 @@ public abstract class ScreenMessage extends BaseScreen {
 
     @Override
     public void waitForMe() {
-        WaitActions.waitMultiplyActivities(new String[] { ACTIVITY_SHORT_CLASSNAME });
+        getSolo().waitForActivity(ACTIVITY_SHORT_CLASSNAME);
     }
 
     @Override
@@ -63,8 +68,15 @@ public abstract class ScreenMessage extends BaseScreen {
      */
     public void tapOnSendButton() {
         Button sendButton = getSolo().getButton(0);
-        verifyTwoToastsStart("Sending message", "Message sent");
         ViewUtils.tapOnView(sendButton, "'Send' button");
+    }
+
+    /**
+     * Taps on 'Send' button and verify toasts.
+     */
+    public void sendMessage() {
+        verifyTwoToastsStart("Sending message", "Message sent");
+        tapOnSendButton();
         verifyTwoToastsEnd();
     }
 

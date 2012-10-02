@@ -13,6 +13,7 @@ import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
+import com.linkedin.android.utils.WaitActions;
 
 /**
  * Class for actions with login/logout.
@@ -84,7 +85,7 @@ public final class LoginActions {
             if (DataProvider.getInstance().getSolo().getCurrentActivity().getClass()
                     .getSimpleName().equals(START_VIDEO_ACTIVITY_SHORT_CLASSNAME)) {
                 isExit = false;
-                HardwareActions.waitForScreenUpdate();
+                WaitActions.waitForScreenUpdate();
             }
             if (isExit) {
                 if (i == 0)
@@ -128,7 +129,7 @@ public final class LoginActions {
         screenSettings.tapOnSignOutButton();
 
         // Wait for Sign Out happens.
-        HardwareActions.waitForScreenUpdate();
+        WaitActions.waitForScreenUpdate();
     }
 
 }

@@ -24,24 +24,45 @@ public class Id {
 
     // METHODS --------------------------------------------------------------
     /**
+     * Gets {@code View} of specified {@code viewType} by its {@code idName}.
+     * 
+     * @param idName
+     *            view id name.
+     * @param viewType
+     *            type of required view.
+     * @return {@code View} of specified {@code viewType} with {@code idName} or
+     *         <b>null</b> if there is no such view.
+     */
+    public static <T extends View> T getViewByName(ViewIdName idName, Class<T> viewType) {
+        View view = getViewByName(idName);
+        if (!viewType.isInstance(view)) {
+            return null;
+        }
+        @SuppressWarnings("unchecked")
+        T viewOfSpecifiedType = (T) view;
+        return viewOfSpecifiedType;
+    }
+
+    /**
      * Gets {@code View} by it's {@code idName}.
      * 
-     * @param name
+     * @param idName
      *            view id name
-     * @return {@code View} with specified {@code idName}
+     * @return {@code View} with specified {@code idName} or <b>null</b> if not
+     *         found.
      */
     public static View getViewByName(ViewIdName idName) {
         Solo solo = DataProvider.getInstance().getSolo();
         int viewId = getIdByName(idName);
         return solo.getView(viewId);
     }
-    
+
     /**
      * Gets view id by it's {@code idName}.
      * 
-     * @param name
-     *            view id name
-     * @return id of view with specified {@code idName}
+     * @param idName
+     *            view id name.
+     * @return id of view with specified {@code idName}.
      */
     private static int getIdByName(ViewIdName idName) {
         Solo solo = DataProvider.getInstance().getSolo();
@@ -55,5 +76,17 @@ public class Id {
 
         Assert.assertTrue("Can't get ID by name: " + idName, id > 0);
         return id;
+    }
+    
+    /**
+     * Returns id for <b>idName</b>.
+     * 
+     * @param idName is ID name for resource.
+     * @return integer value of resource ID or <b>0</b> if not found.
+     */
+    public static int getIdByIdName(String idName){
+        Solo solo = DataProvider.getInstance().getSolo();
+        Activity currentActivity = solo.getCurrentActivity();
+        return currentActivity.getResources().getIdentifier(idName, null, null);
     }
 }

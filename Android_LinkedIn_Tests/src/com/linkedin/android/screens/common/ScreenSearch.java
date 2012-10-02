@@ -1,8 +1,18 @@
 package com.linkedin.android.screens.common;
 
 import junit.framework.Assert;
+import android.view.View;
+import android.view.ViewParent;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseScreen;
+import com.linkedin.android.screens.you.ScreenProfileOfConnectedUser;
+import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Logger;
@@ -13,15 +23,6 @@ import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
-import android.view.View;
-import android.view.ViewParent;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 /**
  * Class for test Search screen.
  * 
@@ -31,6 +32,7 @@ import android.widget.TextView;
 // NOTE: this screen is not inherited from BaseINScreen
 // because there is no IN button here.
 // So here are methods to work with search bar.
+@SuppressWarnings("rawtypes")
 public class ScreenSearch extends BaseScreen {
 
     // CONSTANTS ------------------------------------------------------------
@@ -137,6 +139,22 @@ public class ScreenSearch extends BaseScreen {
     }
 
     /**
+     * Opens profile of connected user with name <b>connectionName</b>.
+     * 
+     * @param connectionName is name of user to open profile screen
+     * @return
+     */
+    public ScreenProfileOfConnectedUser open1dConnectionProfileScreen(String connectionName) {
+        TextView name = getSolo().getText(connectionName, false);
+        Assert.assertNotNull("Cannot find connection with name '" + connectionName + "' in list", name);
+
+        Logger.i("Tapping on connection '" + name.getText() + "' in list");
+        getSolo().clickOnView(name);
+        
+        return new ScreenProfileOfConnectedUser();
+    }
+
+    /**
      * Search for contact with specified {@code contactName}
      * 
      * @param contactName
@@ -150,9 +168,9 @@ public class ScreenSearch extends BaseScreen {
         typeTextIntoSearchBar(contactName);
 
         // wait while progress bar appears
-        HardwareActions.delay(progressBarAppearanceWaitTimeSec);
+        WaitActions.delay(progressBarAppearanceWaitTimeSec);
         // wait while search results appear
-        WaitActions.waitForProgressBarDisappear();
+        WaitActions.waitForProgressBarDisappear(0, DataProvider.WAIT_DELAY_DEFAULT);
         HardwareActions.takeCurrentActivityScreenshot("Search contact '" + contactName + "'");
 
         View firstVisibleConnectionFromList = getFirstVisibleConnectionFromList();

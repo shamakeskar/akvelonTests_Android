@@ -71,25 +71,6 @@ public final class Logger {
     }
 
     /**
-     * Type in log all elements with level and parameters.
-     */
-    public static void logElements() {
-        logElements(false, false, null);
-    }
-
-    /**
-     * Type in log all elements with level and parameters.
-     * 
-     * @param onlyVisible
-     *            if <b>true</b> then will log only visible elements
-     * @param onlyShown
-     *            if <b>true</b> then will log only shown elements
-     */
-    public static void logElements(boolean onlyVisible, boolean onlyShown) {
-        logElements(onlyVisible, onlyShown, null);
-    }
-
-    /**
      * Type in log elements with level and parameters.
      * 
      * @param onlyVisible
@@ -116,7 +97,10 @@ public final class Logger {
         ANDROID_VIEW_NAMES convertedType;
 
         formatter = new Formatter();
-        d(formatter.format("%5s %15s%4s %4s %4s %4s %5s %25s %15s", "Level", "Type", "X", "Y",
+        if (filter != null)
+            d("Settings for log: onlyVisible=" + onlyVisible + ", onlyShown=" + onlyShown
+                    + ", filter=" + filter);
+        d(formatter.format("%5s %15s%4s %4s %4s %4s %5s %30s %15s", "Level", "Type", "X", "Y",
                 "Width", "Height", "Shown", "ID:Package:Type/Entry", ">>>Custom").toString());
         d("=========================================================================================================================");
         formatter.close();
@@ -165,7 +149,9 @@ public final class Logger {
             convertedType = ANDROID_VIEW_NAMES.getType(type);
             switch (convertedType) {
             case BUTTON:
-                custom = ">>> Name='" + ((Button) element).getText() + "'";
+                custom = ">>> Name='" + ((Button) element).getText() + "', isEnabled="
+                        + ((Button) element).isEnabled() + "', isClickable="
+                        + ((Button) element).isClickable();
                 break;
             case TEXT_VIEW:
             case EDIT_TEXT:
@@ -177,17 +163,17 @@ public final class Logger {
             case PROGRESS_BAR:
                 custom = ">>> Progress=" + ((ProgressBar) element).getProgress();
                 break;
-            // case IMAGE_VIEW:
-            // custom = "w=" + ((ImageView) element).getWidth() + ", h="
-            // + ((ImageView) element).getHeight();
-            // break;
-            // case IMAGE_BUTTON:
-            // custom = "Progress=" + ((ImageButton) element).get;
-            // break;
+            case IMAGE_VIEW:
+                custom = ">>> isEnabled=" + ((ImageView) element).isEnabled() + "', isClickable="
+                        + ((ImageView) element).isClickable();
+                // break;
+                // case IMAGE_BUTTON:
+                // custom = "Progress=" + ((ImageButton) element).get;
+                // break;
             }
 
             boolean isLog = true;
-            if (filter != null){
+            if (filter != null) {
                 isLog = type.equals(filter);
             }
             if (onlyVisible) {
@@ -204,6 +190,35 @@ public final class Logger {
                 formatter.close();
             }
         }
+    }
+
+    /**
+     * Type in log all elements with level and parameters.
+     */
+    public static void logElements() {
+        logElements(false, false, null);
+    }
+
+    /**
+     * Type in log all elements with type <b>filter</b>.
+     * 
+     * @param filter
+     *            class of widgets to log. If null then log all.
+     */
+    public static void logElements(String filter) {
+        logElements(false, false, filter);
+    }
+
+    /**
+     * Type in log all elements with level and parameters.
+     * 
+     * @param onlyVisible
+     *            if <b>true</b> then will log only visible elements
+     * @param onlyShown
+     *            if <b>true</b> then will log only shown elements
+     */
+    public static void logElements(boolean onlyVisible, boolean onlyShown) {
+        logElements(onlyVisible, onlyShown, null);
     }
 
     /**

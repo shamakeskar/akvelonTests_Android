@@ -70,7 +70,7 @@ public class ScreenProfileOfConnectedUser extends ScreenProfile {
                 ViewUtils.isViewsPlacedInLineHorizontally(callButton, sendMessageButton)
                         && ViewUtils.isViewsPlacedInLineHorizontally(callButton, forwardButton));
 
-        HardwareActions.takeCurrentActivityScreenshot("Profile from my contacts screen");
+        HardwareActions.takeCurrentActivityScreenshot("ProfileConnectedUser screen");
     }
 
     /**
