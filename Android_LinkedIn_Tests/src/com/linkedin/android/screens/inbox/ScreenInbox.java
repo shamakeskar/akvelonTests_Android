@@ -9,6 +9,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.view.View;
 import android.view.ViewParent;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,16 +17,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.linkedin.android.popups.PopupCompose;
 import com.linkedin.android.screens.base.BaseINScreen;
-import com.linkedin.android.screens.common.ScreenNewMessage;
 import com.linkedin.android.screens.common.ScreenSearch;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
-import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
  * Class for Inbox screen.
@@ -35,8 +36,8 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenInbox extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.messages.MessageListActivity";
-    public static final String ACTIVITY_SHORT_CLASSNAME = "MessageListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.notifications.NotificationCenterActivity";
+    public static final String ACTIVITY_SHORT_CLASSNAME = "NotificationCenterActivity";
 
     public static final int MESSAGES_LIST_VIEW_INDEX = 0;
 
@@ -61,6 +62,8 @@ public class ScreenInbox extends BaseINScreen {
     private static final String DECLINE_INVITATION_BUTTON_LABEL = "Decline invitation";
 
     private static final int FIRST_MESSAGE_IN_MESSAGES_LIST_INDEX = 3;
+    // Delay for wait completely load Inbox webview.
+    static final int WAIT_FOR_SCREEN_LOAD_COMPLETELY = 15;
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -71,25 +74,31 @@ public class ScreenInbox extends BaseINScreen {
 
     // METHODS --------------------------------------------------------------
     @Override
-    public void verify() {
-        getSolo().assertCurrentActivity(
-                "Wrong activity (expected " + ACTIVITY_CLASSNAME + ", get "
-                        + getSolo().getCurrentActivity().getClass().getName() + ")",
-                ACTIVITY_SHORT_CLASSNAME);
-
+    public void verify() {    	
+    	verifyCurrentActivity();
+    	
+    	//Wait for screen load completely
+    	WaitActions.delay(WAIT_FOR_SCREEN_LOAD_COMPLETELY);
+ 
         // Verify presence IN Button.
         verifyINButton();
-
+        
         // Verify presence Compose button
         verifyComposeButton();
 
-        Assert.assertTrue("'Invitations' label is not present on Updates screen", getSolo()
-                .searchText("Invitations", 1, false));
-
-        Assert.assertTrue("'Messages' label is not present on Updates screens", getSolo()
-                .searchText("Messages", 1, false));
-
-        HardwareActions.takeCurrentActivityScreenshot("Inbox screen");
+		// Search WebView
+        boolean isWebView = false;
+		for (View view : getSolo().getCurrentViews()) {
+			if (view instanceof WebView) {
+				isWebView = true;
+				break;
+			}
+		}
+		
+		// Verify presence WebView
+		Assert.assertTrue("WebView is not present on Updates screens", isWebView);
+            
+        HardwareActions.takeCurrentActivityScreenshot("Inbox screen");            
     }
 
     @Override
@@ -146,18 +155,17 @@ public class ScreenInbox extends BaseINScreen {
         }
         getSolo().clickOnView(firstMessage);
     }
-
+    
     /**
-     * Opens 'New Message' screen.
+     * Opens 'Compose' popup.
      * 
-     * @return {@code ScreenNewMessage} with just opened 'New Message' screen.
+     * @return {@code PopupCompose}.
      */
-    public ScreenNewMessage openNewMessageScreen() {
-        tapOnComposeButton();
-        tapOnNewMessageOnPopup();
-
-        return new ScreenNewMessage();
+    public PopupCompose openPopupCompose() {
+        tapOnComposeButton();       
+        return new PopupCompose();
     }
+    
 
     /**
      * Opens first message from "Messages" list
@@ -339,7 +347,7 @@ public class ScreenInbox extends BaseINScreen {
         TextView senderNameTextView;
 
         do {
-            senderNameTextView = ViewUtils.searchTextViewInActivity(senderName,
+            senderNameTextView = TextViewUtils.searchTextViewInActivity(senderName,
                     nonSenderNameTextViews, true);
             if (isSenderName(senderNameTextView)) {
                 return senderNameTextView;
@@ -484,28 +492,6 @@ public class ScreenInbox extends BaseINScreen {
         ImageView button = ViewGroupUtils.getChildViewByIndexSafely(connectionInfoLayout,
                 buttonIndex, ImageView.class);
         return button;
-    }
-
-    /**
-     * Taps on New Message on popup.
-     */
-    private void tapOnNewMessageOnPopup() {
-        Assert.assertNotNull("'New Message' button is not present.",
-                getSolo().searchText("New Message"));
-
-        Logger.i("Tapping on 'New Message' button");
-        getSolo().clickOnText("New Message");
-    }
-
-    /**
-     * Taps on New Invitation on popup.
-     */
-    private void tapOnNewInvitationOnPopup() {
-        Assert.assertNotNull("'New Invitation' button is not present.",
-                getSolo().searchText("New Invitation"));
-
-        Logger.i("Tapping on 'New Invitation' button");
-        getSolo().clickOnText("New Invitation");
     }
 
     /**

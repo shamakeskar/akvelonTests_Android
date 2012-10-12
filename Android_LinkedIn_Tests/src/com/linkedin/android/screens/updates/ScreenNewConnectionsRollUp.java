@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -59,12 +60,12 @@ public class ScreenNewConnectionsRollUp extends BaseINScreen {
     private TextView getConnectionRollUp() {
         HardwareActions.scrollUp();
         if (getSolo().searchText("new connections.", 1, true, false)) {
-            return ViewUtils.searchTextViewInActivity("new connections.", false);
+            return TextViewUtils.searchTextViewInActivity("new connections.", false);
         }
 
         HardwareActions.scrollUp();
         if (getSolo().searchText("is now connected", 1, true, false)) {
-            return ViewUtils.searchTextViewInActivity("is now connected", false);
+            return TextViewUtils.searchTextViewInActivity("is now connected", false);
         }
         return null;
     }

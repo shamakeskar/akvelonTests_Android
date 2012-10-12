@@ -34,7 +34,7 @@ public class YouScreenTests extends BaseTestCase {
      */
     public void test33848279() {
         startFixture("33848279");
-        Logger.i("Start test 33848279: 'You. Verify data and scroll down.'");
+        startTest("33848279", "You. Verify data and scroll down.");
 
         // Login and open Inbox screen.
         ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
@@ -61,7 +61,7 @@ public class YouScreenTests extends BaseTestCase {
                 getSolo().searchText("Websites", 1, false, false));
         Logger.i("Done: Verify new data is shown after scroll down.");
 
-        Logger.i(PASS + "33848279");
+        passTest();
     }
     
     /**
@@ -72,7 +72,7 @@ public class YouScreenTests extends BaseTestCase {
      */
     public void test35974365() {
         startFixture("35974365");
-        Logger.i(START_TEST + "35974365: 'YOU - Expose.'");
+        startTest("35974365", "YOU - Expose.");
 
         // Login and open You screen.
         ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
@@ -88,6 +88,6 @@ public class YouScreenTests extends BaseTestCase {
         screenExpose.openYouScreen();
         Logger.i(DONE + "Data loads properly when reaching Expose and going back to the YOU page");
 
-        Logger.i(PASS + "35974365");
+        passTest();
     }
 }

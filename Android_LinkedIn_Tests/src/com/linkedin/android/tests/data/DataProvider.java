@@ -28,7 +28,7 @@ public class DataProvider {
     // Long time delay in ms.
     public static final int WAIT_DELAY_LONG = 50000;
     // Delay for Save/Unsave button change in sec.
-    public static final float WAIT_SAVE_UNSAVE_JOB_BUTTON_CHANGED = 5.0f;
+    public static final float WAIT_SAVE_UNSAVE_JOB_BUTTON_CHANGED = 10.0f;
     // Default timeout for wait until progress bar disappear.
     public static final int WAIT_PROGRESSBAR_DISAPPEAR = 4000;
 

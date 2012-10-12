@@ -22,6 +22,7 @@ import com.linkedin.android.utils.StringUtils;
  * @author alexander.makarov
  * @created Aug 2, 2012 1:16:59 PM
  */
+@SuppressWarnings("rawtypes")
 public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
     // CONSTANTS ------------------------------------------------------------
     public static final String START_TEST = "Start test ";
@@ -81,14 +82,18 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
         Logger.i(END_TEST);
         
         if (!isCurrentTestPass) {
-            Logger.i("Current activity: " + getSolo().getCurrentActivity().getClass().getCanonicalName());
             Logger.logElements();
             HardwareActions.takeCurrentActivityScreenshot("Screenshot for fail in " + DataProvider.getInstance().getCurrentTestId());
         }
 
         // Logout in end of test.
         if (!DISABLE_LOGOUT) {
-            LoginActions.logout();
+            try{
+                LoginActions.logout();
+            } catch (Exception e) {
+                Logger.e("Cannot logout at end of test.", e);
+            }
+        } else {
             DISABLE_LOGOUT = false;// It will work only for 1 test.
         }
 
@@ -178,5 +183,12 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
     protected void passTest(){
         Logger.i(PASS + DataProvider.getInstance().getCurrentTestId());
         isCurrentTestPass = true;
+    }
+    
+    /**
+     * Disables logout at end for current test.
+     */
+    protected void disableLogoutAtEndForCurrentTest() {
+        DISABLE_LOGOUT = true;
     }
 }

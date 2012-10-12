@@ -171,6 +171,29 @@ public final class StringData {
     public static final String atest6_email = "akvtest26@mail.ru";
     public static final String atest7_email = "akvtest27@mail.ru";
     public static final String atest_password = "BrainBench";
+    
+ // Acount of the employee of the Company kompashka with connection to test
+    public static final String test_email_kompashka_employee = "kompashka.employee@gmail.com";
+    public static final String test_password_kompashka_employee = "therd@123";
+    public static final String test_email_kompashka_employee_name = "Kompash Ka";
+    public static final String test_email_kompashka_employee_short_name = " Kompash K. ";
+
+    // Accounts of the followers of the Company kompashka with connections to test
+    public static final String test_email_kompashka_follower1 = "akvtest33@mail.ru";
+    public static final String test_password_kompashka_follower1 = "BrainBench";
+    public static final String test_email_kompashka_follower1_name = "Akvelon AkvelonTest";
+
+    public static final String test_email_kompashka_follower2 = "akvtest43@mail.ru";
+    public static final String test_password_kompashka_follower2 = "BrainBench";
+    public static final String test_email_kompashka_follower2_name = "test43 akvtest";
+
+    public static final String test_email_kompashka_follower3 = "akvtest44@mail.ru";
+    public static final String test_password_kompashka_follower3 = "BrainBench";
+    public static final String test_email_kompashka_follower3_name = "akvtest test 44";
+
+    public static final String test_email_kompashka_follower4 = "akvtest46@mail.ru";
+    public static final String test_password_kompashka_follower4 = "BrainBench";
+    public static final String test_email_kompashka_follower4_name = "akvelon test46";
     // PROPERTIES -----------------------------------------------------------
 
     // CONSTRUCTORS ---------------------------------------------------------

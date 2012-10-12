@@ -67,7 +67,7 @@ public class ScreenProfileOfNotConnectedUser extends ScreenProfile {
      * @return {@code ImageView} degree of profile.
      */
     private ImageView getProfileDegree() {
-        View degree = Id.getViewByName(DEGREE);
+        View degree = Id.getViewByViewIdName(DEGREE);
         if (degree instanceof ImageView) {
             return (ImageView) degree;
         }

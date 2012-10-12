@@ -63,7 +63,7 @@ public class ScreenCalendar extends BaseINScreen {
      * Taps on Calendar.
      */
     static public ScreenCalendar tapOnCalendarBigImage() {
-        View calendarBigImage = Id.getViewByName(NUS_SPOTLIGHT_CALENDAR_IMAGE);
+        View calendarBigImage = Id.getViewByViewIdName(NUS_SPOTLIGHT_CALENDAR_IMAGE);
         ViewUtils.tapOnView(calendarBigImage, "calendar big image");
         return new ScreenCalendar();
     }

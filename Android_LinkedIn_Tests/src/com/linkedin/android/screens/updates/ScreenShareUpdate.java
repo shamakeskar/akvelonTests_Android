@@ -16,6 +16,7 @@ import com.linkedin.android.utils.WaitActions;
  * @author Dmitry.Somov
  * @created Aug 20, 2012 6:18:41 PM
  */
+@SuppressWarnings("rawtypes")
 public class ScreenShareUpdate extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.home.UpdateStatusActivity";

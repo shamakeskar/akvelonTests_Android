@@ -15,6 +15,7 @@ import com.linkedin.android.utils.Logger;
  * @author alexey.makhalov
  * @created Sep 17, 2012 6:18:41 PM
  */
+@SuppressWarnings("rawtypes")
 public class ScreenAddComment extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.home.AddCommentActivity";
@@ -52,7 +53,7 @@ public class ScreenAddComment extends BaseScreen {
                 LayoutUtils.isViewPlacedInLayout(sendButton,
                 LayoutUtils.UPPER_RIGHT_BUTTON_LAYOUT)); 
         
-        HardwareActions.takeCurrentActivityScreenshot("'Add Comment' screen");
+        HardwareActions.takeCurrentActivityScreenshot("Add Comment screen");
     }
 
     @Override
@@ -102,5 +103,16 @@ public class ScreenAddComment extends BaseScreen {
         getSolo().enterText(0, updateText);
 
         return updateText;
+    }
+    
+    /**
+     * Taps on send button and verify toasts "Posting comment" and "Comment sent".
+     */
+    public void postComment()
+    {
+        verifyTwoToastsStart("Posting comment", "Comment sent");
+        tapOnSendButton();
+        verifyTwoToastsEnd();
+        
     }
 }

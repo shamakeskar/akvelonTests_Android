@@ -58,7 +58,7 @@ public class HardwareActions {
      * Pressing Back button
      */
     public static void pressBack() {
-        Logger.i("Tapping on Back button");
+        Logger.i("Tapping on hardware Back button");
         DataProvider.getInstance().getSolo().goBack();
     }
 
@@ -66,7 +66,7 @@ public class HardwareActions {
      * Pressing Menu button
      */
     public static void pressMenu() {
-        Logger.i("Tapping on Menu button");
+        Logger.i("Tapping on hardware Menu button");
         DataProvider.getInstance().getSolo().sendKey(Solo.MENU);
     }
 
@@ -86,7 +86,7 @@ public class HardwareActions {
      * Pressing Home button
      */
     public static void pressHome() {
-        Logger.i("Tapping on Home button");
+        Logger.i("Tapping on hardware Home button");
         DataProvider.getInstance().getSolo().sendKey(KeyEvent.KEYCODE_HOME);
     }
 

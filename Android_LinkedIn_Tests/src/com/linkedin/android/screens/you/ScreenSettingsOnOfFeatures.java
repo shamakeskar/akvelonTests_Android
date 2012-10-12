@@ -8,6 +8,7 @@ import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 
+@SuppressWarnings("rawtypes")
 public class ScreenSettingsOnOfFeatures extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.debug.ConfigFeaturesActivity";

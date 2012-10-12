@@ -2,7 +2,9 @@ package com.linkedin.android.tests;
 
 import junit.framework.Assert;
 
-import com.linkedin.android.screens.ScreenLogin;
+import android.widget.Button;
+
+import com.linkedin.android.screens.common.ScreenLogin;
 import com.linkedin.android.screens.common.ScreenNewMessage;
 import com.linkedin.android.screens.updates.ScreenCalendar;
 import com.linkedin.android.screens.updates.ScreenCalendarEventDetail;
@@ -13,6 +15,7 @@ import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
  * Tests for Calendar screen.
@@ -28,6 +31,132 @@ public class CalendarTests extends BaseTestCase {
     // CONSTRUCTORS ---------------------------------------------------------
     public CalendarTests() {
         super(CalendarTests.class.getSimpleName());
+    }
+
+    /**
+     * Test case 34632415: 'Log in - success - Calendar disabled'
+     * 
+     * Log in with a correct username & correct password. Verify Log in is
+     * succeed. Tap on "Sync all" when prompted about Contact Sync. Tap on
+     * "Learn More" when reaching the Calendar Splash Page. Tap on the Back
+     * button from the Learn More page. Tap on the Cross sign to dismiss the
+     * Calendar Splash page. Tap on the Blue bubble to dismiss it. Verify once
+     * the Calendar Splash Page and the bubble are dismissed the user reach the
+     * NUS page. Verify Updates screen loads properly. Verify the Hero Slot
+     * doesn't display the Calendar.
+     */
+    public void test34632415() {
+        startFixture("34632415");
+        startTest("34632415", "Log in - success - Calendar disabled");
+
+        // Verify Login screen.
+        ScreenLogin loginScreen = new ScreenLogin();
+
+        // Type credentials and tap 'Sign In'.
+        loginScreen.typeEmail(StringData.test_email);
+        loginScreen.typePassword(StringData.test_password);
+        loginScreen.tapOnSignInButton();
+
+        // Tap 'Sync all'.
+        Assert.assertTrue("'Sync all' text is not present", getSolo().waitForText("Sync all"));
+        Logger.i("Tapping on 'Sync all' text");
+        getSolo().clickOnText("Sync all");
+
+        // Verify Calendar splash screen.
+        loginScreen.waitForCalendarSplashScreen();
+
+        // Tap 'Learn More' text. Verify Learn More splash screen.
+        if (getSolo().searchText("Learn More")) {
+            Logger.i("Tapping on 'Learn More' text");
+            getSolo().clickOnText("Learn More");
+        }
+        loginScreen.verifyLearnMoreSplashScreen();
+
+        // Tap 'Back'. Verify Calendar splash screen.
+        HardwareActions.pressBack();
+        loginScreen.waitForCalendarSplashScreen();
+
+        // Handle CalendarSplash.
+        loginScreen.handleCalendarSplash();
+
+        // Handle blue hint for IN button.
+        loginScreen.handleInButtonHint();
+
+        // Verify Updates screen.
+        ScreenUpdates screenUpdates = new ScreenUpdates();
+        Logger.i(DONE
+                + " Verify once the Calendar Splash Page and the bubble are dismissed the user reach the NUS page.");
+        Logger.i(DONE + "Verify Updates screen loads properly.");
+
+        // Check the Hero Slot doesn't display the Calendar
+        Assert.assertTrue("Calendar is present in Hero Slot",
+                !screenUpdates.isCalendarPresentInHeroSlot());
+        Logger.i(DONE + "Verify the Hero Slot doesn't display the Calendar.");
+
+        passTest();
+    }
+
+    /**
+     * Test case 34632447: 'Log in - success - Calendar enabled.'
+     * 
+     * Log in with a correct username & correct password. Verify Log in is
+     * succeed. Tap on "Sync all" when prompted about Contact Sync. Tap on
+     * "Learn More" when reaching the Calendar Splash Page. Tap on the Back
+     * button from the Learn More page. Tap on "Add Calendar" to enable Calendar
+     * feature. Verify once the Calendar Splash Page and the bubble are
+     * dismissed the user reach the NUS page. Verify Updates screen loads
+     * properly. Verify the Hero Slot displays the Calendar feature.
+     */
+    public void test34632447() {
+        startFixture("34632447");
+        startTest("34632447", "Log in - success - Calendar enabled.");
+
+        // Verify Login screen.
+        ScreenLogin loginScreen = new ScreenLogin();
+
+        // Type credentials and tap 'Sign In'.
+        loginScreen.typeEmail(StringData.test_email);
+        loginScreen.typePassword(StringData.test_password);
+        loginScreen.tapOnSignInButton();
+
+        // Tap 'Sync all'.
+        Assert.assertTrue("'Sync all' text is not present", getSolo().waitForText("Sync all"));
+        Logger.i("Tapping on 'Sync all' text");
+        getSolo().clickOnText("Sync all");
+
+        // Verify Calendar splash screen.
+        loginScreen.waitForCalendarSplashScreen();
+
+        // Tap 'Learn More' text. Verify Learn More splash screen.
+        if (getSolo().searchText("Learn More")) {
+            Logger.i("Tapping on 'Learn More' text");
+            getSolo().clickOnText("Learn More");
+        }
+        loginScreen.verifyLearnMoreSplashScreen();
+
+        // Tap 'Back'. Verify Calendar splash screen.
+        HardwareActions.pressBack();
+        loginScreen.waitForCalendarSplashScreen();
+
+        // Tap on 'Add Calendar' button.
+        Button addCalendarButton = getSolo().getButton("Add Calendar");
+        ViewUtils.tapOnView(addCalendarButton, "'Add Calendar' button");
+
+        // Handle blue hint for IN button.
+        loginScreen.handleInButtonHint();
+
+        // Verify Updates screen.
+        ScreenUpdates screenUpdates = new ScreenUpdates();
+        Logger.i(DONE
+                + "Verify once the Calendar Splash Page and the bubble are dismissed the user reach the NUS page.");
+        Logger.i(DONE + "Verify Updates screen loads properly.");
+
+        // Check the Hero Slot displays the Calendar feature.
+        Assert.assertTrue("Calendar is not present in Hero Slot",
+                screenUpdates.isCalendarPresentInHeroSlot());
+        Logger.i(DONE + "Verify the Hero Slot displays the Calendar feature.");
+
+        passTest();
     }
 
     // METHODS --------------------------------------------------------------
@@ -52,8 +181,7 @@ public class CalendarTests extends BaseTestCase {
      */
     public void test34632799() {
         startFixture("34632799");
-
-        Logger.i(START_TEST + "34632799: 'NUS - Calendar.'");
+        startTest("34632799", "NUS - Calendar.");
 
         // Verify Login screen.
         ScreenLogin loginScreen = new ScreenLogin();
@@ -150,6 +278,6 @@ public class CalendarTests extends BaseTestCase {
                 screenCalendar.isOnToday());
         Logger.i(DONE + "Verify go back to Today's first event on 'Calendar'.");
 
-        Logger.i(PASS + "34632799");
+        passTest();
     }
 }

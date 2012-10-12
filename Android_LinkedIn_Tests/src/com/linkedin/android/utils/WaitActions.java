@@ -6,8 +6,10 @@ import junit.framework.Assert;
 import android.graphics.Point;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 
 /**
  * Class for wait actions.
@@ -91,15 +93,7 @@ public final class WaitActions {
      * @param rect
      *            is {@code Rect2DP} object of expected location
      * @param timeout
-     *            is timeout. If 0 then will be
-     *                       {@DataProvider.WAIT_DELAY_DEFAULT
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * }
+     *            is timeout. If 0 then will be <b>WAIT_DELAY_DEFAULT</b>
      * @param message
      *            is error message
      */
@@ -165,7 +159,24 @@ public final class WaitActions {
     }
 
     /**
-     * Method for wait single activity.
+     * Method for wait single activity. If cannot wait then generate exception
+     * "Cannot wait to launch activity for <i>screenName</i> screen".
+     * 
+     * @param activityShortName
+     *            is name of Activity for wait
+     * @param screenName
+     *            is name of screen to log error message
+     * @param timeout
+     *            is timeout for wait {@code Activity} in ms
+     */
+    public static void waitSingleActivity(String activityShortName, String screenName, int timeout) {
+        Assert.assertTrue("Cannot wait to launch activity for " + screenName + " screen",
+                DataProvider.getInstance().getSolo().waitForActivity(activityShortName, timeout));
+    }
+
+    /**
+     * Method for wait single activity. If cannot wait then generate exception
+     * "Cannot wait to launch activity for <i>screenName</i> screen".
      * 
      * @param activityShortName
      *            is name of Activity for wait
@@ -173,10 +184,7 @@ public final class WaitActions {
      *            is name of screen to log error message
      */
     public static void waitSingleActivity(String activityShortName, String screenName) {
-        Assert.assertTrue(
-                "Cannot wait to launch activity for " + screenName + " screen",
-                DataProvider.getInstance().getSolo()
-                        .waitForActivity(activityShortName, DataProvider.WAIT_DELAY_DEFAULT));
+        waitSingleActivity(activityShortName, screenName, DataProvider.WAIT_DELAY_DEFAULT);
     }
 
     /**
@@ -200,17 +208,17 @@ public final class WaitActions {
         ProgressBar pb = progressBars.get(indexOfProgressBar);
         // Id of ProgressBar at start of helper.
         int idForCheck = pb.getId();
-        
+
         int waitStepsCount = timeoutInMs / DataProvider.WAIT_DELAY_STEP;
         for (int i = 0; i < waitStepsCount; i++) {
             progressBars = DataProvider.getInstance().getSolo().getCurrentProgressBars();
             // If list size less that index then wait is complete.
-            if (progressBars.size() < indexOfProgressBar + 1){
+            if (progressBars.size() < indexOfProgressBar + 1) {
                 return;
             }
             pb = progressBars.get(indexOfProgressBar);
             // If it other or hidden ProgressBar then wait is complete.
-            if (pb.getId() != idForCheck || pb.getWidth() == 0 || pb.getHeight() == 0){
+            if (pb.getId() != idForCheck || pb.getWidth() == 0 || pb.getHeight() == 0) {
                 return;
             }
 
@@ -281,5 +289,27 @@ public final class WaitActions {
      */
     public static void waitForProgressBarFill(ProgressBar progressBarView, int timeoutInMs) {
         waitForProgressBarFill(progressBarView, timeoutInMs, 100);
+    }
+
+    /**
+     * Waits until 'Loading' TextView disappear or until <i>timeoutInMs</i> is
+     * over.
+     * 
+     * @param timeoutInMs
+     *            is timeout in ms for wait until 'Loading' is disappear. If
+     *            <i>timeoutInMs</i> <= 0 then will be
+     *            <b>WAIT_DELAY_DEFAULT</b>.
+     */
+    public static void waitForLoadingDisappear(int timeoutInMs) {
+        timeoutInMs = timeoutInMs > 0 ? timeoutInMs : DataProvider.WAIT_DELAY_DEFAULT;
+        TextView loading = TextViewUtils.searchTextViewInActivity("Loading…", true);
+        int waitStepsCount = timeoutInMs / DataProvider.WAIT_DELAY_STEP;
+        for (int i = 0; i < waitStepsCount; i++) {
+            if (loading == null) {
+                return;
+            }
+            delay(DataProvider.WAIT_DELAY_STEP * 0.001f);
+        }
+        Assert.fail("Timeout error for 'Loading...' label");
     }
 }

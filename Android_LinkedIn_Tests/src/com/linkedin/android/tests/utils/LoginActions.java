@@ -3,9 +3,11 @@ package com.linkedin.android.tests.utils;
 import junit.framework.Assert;
 
 import com.jayway.android.robotium.solo.Solo;
-import com.linkedin.android.screens.ScreenLogin;
+import com.linkedin.android.popups.PopupMessageCancel;
+import com.linkedin.android.popups.PopupMessageExit;
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.common.ScreenExpose;
+import com.linkedin.android.screens.common.ScreenLogin;
 import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.screens.you.ScreenSettings;
 import com.linkedin.android.screens.you.ScreenYou;
@@ -51,18 +53,28 @@ public final class LoginActions {
      */
     public static ScreenUpdates openUpdatesScreenOnStart(String email, String password) {
         Logger.i("Try open Updates screen");
+        ScreenUpdates screenUpdates = null;
+        
+        // Not on IN screen.
         if (!isWeAreOnINScreen()) {
             // Wait until start video disappear if present.
             handleStartVideo();
 
-            // Find expected screens.
+            // Login.
             if (ScreenLogin.isOnLoginScreen()) {
                 // If on Login screen then login as test user.
                 ScreenLogin loginScreen = new ScreenLogin();
-                loginScreen.login(email, password);
+                screenUpdates = loginScreen.login(email, password);
+            } else {
+                Assert.fail("Not implemented case: It is not IN and not Login screen");
             }
+        } else if (ScreenUpdates.isOnUpdatesScreen()) {
+            screenUpdates = new ScreenUpdates();
+        } else {
+            BaseINScreen.tapOnINButton();
+            ScreenExpose screenExpose = new ScreenExpose(null);
+            screenUpdates = screenExpose.openUpdatesScreen();
         }
-        ScreenUpdates screenUpdates = new ScreenUpdates();
         Logger.i("We are on Updates screen.");
         return screenUpdates;
     }
@@ -99,9 +111,10 @@ public final class LoginActions {
     }
 
     /**
-     * Opens Login screen.
+     * Opens Login screen from any screen.
      */
     public static void logout() {
+        Logger.i("Start log out");
         // If on Login screen, then return.
         if (ScreenLogin.isOnLoginScreen())
             return;
@@ -113,10 +126,23 @@ public final class LoginActions {
         // Go to IN screen.
         while (!isWeAreOnINScreen()) {
             HardwareActions.pressBack();
+            // Handle MessageExit popup if present.
+            WaitActions.waitForScreenUpdate();// Wait new screen.
+            if (PopupMessageExit.isOnMessageExitPopup()) {
+                new PopupMessageExit().tapOnYesButton();
+                WaitActions.waitForScreenUpdate();// Wait previous screen.
+            } else if (PopupMessageCancel.isOnMessageCancelPopup()){
+                new PopupMessageCancel().tapOnYesButton();
+                WaitActions.waitForScreenUpdate();// Wait previous screen.
+            }
         }
-        // Open You screen.
-        BaseINScreen.tapOnINButton();
-        ScreenExpose.tapOnYouButton();
+        // Open You screen if not present.
+        if (!ScreenYou.isOnYouScreen()) {
+            BaseINScreen.tapOnINButton();
+            ScreenExpose.tapOnYouButton();
+        } else {
+            solo.scrollToTop();
+        }
         ScreenYou screenYou = new ScreenYou();
 
         // Open Settings Screen.
@@ -129,7 +155,7 @@ public final class LoginActions {
         screenSettings.tapOnSignOutButton();
 
         // Wait for Sign Out happens.
-        WaitActions.waitForScreenUpdate();
+        WaitActions.waitSingleActivity(ScreenLogin.ACTIVITY_SHORT_CLASSNAME, "Login", DataProvider.WAIT_DELAY_LONG);
+        Logger.i("Log out complete");
     }
-
 }

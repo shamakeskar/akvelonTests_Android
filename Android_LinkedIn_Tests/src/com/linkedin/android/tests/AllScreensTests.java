@@ -11,7 +11,6 @@ import com.linkedin.android.screens.you.ScreenYou;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.utils.ApplicationUtils;
 import com.linkedin.android.utils.ConversionUnits;
-import com.linkedin.android.utils.Logger;
 
 /**
  * Complex tests for all screens.
@@ -46,7 +45,7 @@ public class AllScreensTests extends BaseTestCase {
      * content).
      */
     public void test33848425() {
-        Logger.i(START_TEST + "33848425: 'Check correct work after background.'");
+        startTest("33848425", "Check correct work after background.");
 
         // Login and open Updates screen.
         ScreenUpdates updates = LoginActions.openUpdatesScreenOnStart();
@@ -68,7 +67,7 @@ public class AllScreensTests extends BaseTestCase {
         // Open Expose screen
         ScreenExpose screenExpose = updates.openExposeScreen();
         // Open "Inbox" screen
-        ScreenInbox screenInbox = screenExpose.openMessagesScreen();
+        ScreenInbox screenInbox = screenExpose.openInboxScreen();
 
         // Verify test data present in "Inbox" screen
         assertScreenInboxForTest33848425(screenInbox);
@@ -102,7 +101,7 @@ public class AllScreensTests extends BaseTestCase {
         // Open Expose screen
         screenExpose = screenYou.openExposeScreen();
         // Open "Inbox" screen
-        screenInbox = screenExpose.openMessagesScreen();
+        screenInbox = screenExpose.openInboxScreen();
 
         // Verify test data present in "Inbox" screen
         assertScreenInboxForTest33848425(screenInbox);
@@ -140,7 +139,7 @@ public class AllScreensTests extends BaseTestCase {
         // Open Expose screen
         screenExpose = screenYou.openExposeScreen();
         // Open "Inbox" screen
-        screenInbox = screenExpose.openMessagesScreen();
+        screenInbox = screenExpose.openInboxScreen();
 
         // Verify test data present in "Inbox" screen
         assertScreenInboxForTest33848425(screenInbox);
@@ -175,7 +174,7 @@ public class AllScreensTests extends BaseTestCase {
         // Open Expose screen
         screenExpose = screenYou.openExposeScreen();
         // Open "Inbox" screen
-        screenInbox = screenExpose.openMessagesScreen();
+        screenInbox = screenExpose.openInboxScreen();
 
         // Verify test data present in "Inbox" screen
         assertScreenInboxForTest33848425(screenInbox);
@@ -213,7 +212,7 @@ public class AllScreensTests extends BaseTestCase {
         // Open Expose screen
         screenExpose = screenYou.openExposeScreen();
         // Open "Inbox" screen
-        screenInbox = screenExpose.openMessagesScreen();
+        screenInbox = screenExpose.openInboxScreen();
 
         // Verify test data present in "Inbox" screen
         assertScreenInboxForTest33848425(screenInbox);
@@ -252,7 +251,7 @@ public class AllScreensTests extends BaseTestCase {
         // Open Expose screen
         screenExpose = screenYou.openExposeScreen();
         // Open "Inbox" screen
-        screenInbox = screenExpose.openMessagesScreen();
+        screenInbox = screenExpose.openInboxScreen();
 
         // Verify test data present in "Inbox" screen
         assertScreenInboxForTest33848425(screenInbox);
@@ -260,7 +259,7 @@ public class AllScreensTests extends BaseTestCase {
         // Logout
         LoginActions.logout();
 
-        Logger.i(PASS + "33848425");
+        passTest();
     }
 
     // TEST 33848425 HELPER METHODS

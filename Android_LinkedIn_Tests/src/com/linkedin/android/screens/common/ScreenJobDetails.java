@@ -23,9 +23,10 @@ public class ScreenJobDetails extends BaseINScreen {
     static final float COORDINATE_OF_SAVE_UNSAVE_JOB_YDP1 = 180;
     static final float COORDINATE_OF_SAVE_UNSAVE_JOB_YDP2 = 200;
     static final float COORDINATE_OF_SAVE_UNSAVE_JOB_YDP3 = 223;
-    static final float COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_XDP = 100 / 3;
-    static final float COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_YDP = 493;
-    static final int WAIT_FOR_SCREEN_LOAD_COMPLETELY = 15;
+    static final float COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_XDP = 50;
+    static final float COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_YDP = ScreenResolution
+            .getScreenHeightDP() - 50;
+    static final int WAIT_FOR_SCREEN_LOAD_COMPLETELY = 25;
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -60,11 +61,16 @@ public class ScreenJobDetails extends BaseINScreen {
 
     /**
      * Taps on 'Save \ Unsave job' button, wait for button change color and
-     * verify what it changed.
+     * verify what it changed.It click on bottom of screen at first, because
+     * this screen not work correctly and button became clickable only after
+     * first click.
      */
     public void saveOrUnsaveJob() {
         Logger.i("Tapping on Save/Unsave button");
-
+        getSolo().clickOnScreen(ScreenResolution.getScreenWidth() / 2,
+                ScreenResolution.getScreenHeight() / 2);
+        // Delay after first click for wait that screen is stable.
+        WaitActions.waitForScreenUpdate();
         int colorOfFirstPoint = HardwareActions.saveCurrentScreenScreenshotInBitmap().getPixel(
                 (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity()),
                 (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_YDP1 * ScreenResolution.getScreenDensity()));
@@ -80,6 +86,7 @@ public class ScreenJobDetails extends BaseINScreen {
         getSolo().clickOnScreen(
                 COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity(),
                 COORDINATE_OF_SAVE_UNSAVE_JOB_YDP1 * ScreenResolution.getScreenDensity());
+        // Wait for button change color
         WaitActions.delay(DataProvider.WAIT_SAVE_UNSAVE_JOB_BUTTON_CHANGED);
 
         int colorOfFirstChangePoint = HardwareActions
@@ -93,6 +100,7 @@ public class ScreenJobDetails extends BaseINScreen {
         getSolo().clickOnScreen(
                 COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity(),
                 COORDINATE_OF_SAVE_UNSAVE_JOB_YDP2 * ScreenResolution.getScreenDensity());
+        // Wait for button change color
         WaitActions.delay(DataProvider.WAIT_SAVE_UNSAVE_JOB_BUTTON_CHANGED);
 
         int colorOfSecondChangePoint = HardwareActions
@@ -106,6 +114,7 @@ public class ScreenJobDetails extends BaseINScreen {
         getSolo().clickOnScreen(
                 COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity(),
                 COORDINATE_OF_SAVE_UNSAVE_JOB_YDP3 * ScreenResolution.getScreenDensity());
+        // Wait for button change color
         WaitActions.delay(DataProvider.WAIT_SAVE_UNSAVE_JOB_BUTTON_CHANGED);
 
         int colorOfThirdChangePoint = HardwareActions
@@ -123,21 +132,28 @@ public class ScreenJobDetails extends BaseINScreen {
     }
 
     /**
-     * Scroll down to bottom of screen, wait that scroll over and taps on latest
-     * recommended job.
+     * Scroll down to bottom of screen, wait that scroll is done and taps on
+     * latest recommended job. Its need double click because Screen JobDetails
+     * don't open if you click one time.
      */
     public void tapOnRecommendedJob() {
-        for (int i = 0; i < 40; i++) {
+        for (int i = 0; i < 30; i++) {
             getSolo().drag(ScreenResolution.getScreenWidth() / 2,
                     ScreenResolution.getScreenWidth() / 2, ScreenResolution.getScreenHeight() - 50,
                     50, 3);
         }
-
+        // Delay for wait that content is loaded.
+        WaitActions.waitForScreenUpdate();
         Logger.i("Tapping on recommended job");
         getSolo().clickOnScreen(
                 COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_XDP * ScreenResolution.getScreenDensity(),
                 COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_YDP * ScreenResolution.getScreenDensity());
-    }
+        // Delay after first click for wait that screen is stable.
+        WaitActions.waitForScreenUpdate();
+        getSolo().clickOnScreen(
+                COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_XDP * ScreenResolution.getScreenDensity(),
+                COORDINATE_OF_RECOMMENDED_JOB_IN_BOTTOM_YDP * ScreenResolution.getScreenDensity());
+    };
 
     /**
      * Opens Job Details screen.

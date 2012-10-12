@@ -61,8 +61,7 @@ public class ScreenNewsArticleDetailsFromLinkedInToday extends ScreenNewsArticle
                 "Wrong activity (expected " + ACTIVITY_CLASSNAME + ", get "
                         + getSolo().getCurrentActivity().getClass().getName() + ")",
                 ACTIVITY_SHORT_CLASSNAME);
-        Assert.assertTrue("Title '.. of ..' is not present", getSolo().getText(0).getText()
-                .toString().indexOf("of") > -1);
+        verifyArticleNumberTitle();
 
         verifyUpArrowButton();
 
@@ -82,8 +81,6 @@ public class ScreenNewsArticleDetailsFromLinkedInToday extends ScreenNewsArticle
         Assert.assertTrue("'Forward' button is not present (or its coordinates are wrong)",
                 LayoutUtils.isViewPlacedInLayout(forwardButton,
                         LayoutUtils.LOWER_RIGHT_OF_2_BUTTONS_LAYOUT));
-
-        verifyArticleNumberTitle();
 
         verifyImage();
 

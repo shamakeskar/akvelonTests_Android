@@ -11,8 +11,10 @@ import java.util.regex.Pattern;
  */
 public final class RegexpPatterns {
     // CONSTANTS ------------------------------------------------------------
-    // RegExp for news date (like '10 hours ago').
+	// RegExp for news date (like '10 hours ago').
     public final static Pattern DATE_LIKE_10_HOURS_AGO = Pattern.compile("^(\\d{1,}) (\\D{1,}) ago$");
+    // RegExp for news date (like 'October 1').
+    public final static Pattern DATE_LIKE_OCTOBER_1 = Pattern.compile("^(\\D{1,}) (\\d{1,2})$");
     // RegExp for "Like" or "Comment".
     public final static Pattern LIKE_OR_COMMIT = Pattern.compile(".*Like.*|.*Comment.*");
     // RegExp for string like "10 followers".

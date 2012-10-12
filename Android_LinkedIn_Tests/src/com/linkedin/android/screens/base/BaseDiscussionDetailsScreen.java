@@ -15,6 +15,7 @@ import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.StringDefaultValues;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.asserts.ViewAssertUtils;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -176,7 +177,8 @@ public abstract class BaseDiscussionDetailsScreen extends BaseINScreen {
      * Taps on image of connection, who create discussion.
      */
     public void tapOnDiscussionAuthorProfile() {
-        View discussionAuthorSectionChevron = Id.getViewByName(DISCUSSION_AUTHOR_SECTION_CHEVRON);
+        View discussionAuthorSectionChevron = Id
+                .getViewByViewIdName(DISCUSSION_AUTHOR_SECTION_CHEVRON);
         Assert.assertNotNull("There is no chevron in 'Discussion author' section",
                 discussionAuthorSectionChevron);
 
@@ -197,9 +199,9 @@ public abstract class BaseDiscussionDetailsScreen extends BaseINScreen {
         Assert.assertTrue("'People Like This' label is not present.", condition);
         TextView likeLabel;
         if (count == 0) {
-            likeLabel = ViewUtils.searchTextViewInActivity("people like this", false);
+            likeLabel = TextViewUtils.searchTextViewInActivity("people like this", false);
         } else {
-            likeLabel = ViewUtils.searchTextViewInActivity("person likes this", false);
+            likeLabel = TextViewUtils.searchTextViewInActivity("person likes this", false);
         }
         ViewUtils.tapOnView(likeLabel, "'People Like This' label");
     }
@@ -221,7 +223,7 @@ public abstract class BaseDiscussionDetailsScreen extends BaseINScreen {
      */
     public TextView getLikesCounter() {
         HardwareActions.scrollUp();
-        TextView peopleLikeThisCounter = ViewUtils.searchTextViewInActivity(
+        TextView peopleLikeThisCounter = TextViewUtils.searchTextViewInActivity(
                 PEOPLE_LIKE_THIS_COUNTER_LABEL, false);
         return peopleLikeThisCounter;
     }

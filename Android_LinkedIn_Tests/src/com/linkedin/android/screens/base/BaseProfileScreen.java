@@ -67,7 +67,7 @@ public abstract class BaseProfileScreen extends BaseINScreen {
      * @return {@code ImageView} profile photo
      */
     protected ImageView getProfilePhoto() {
-        return (ImageView)Id.getViewByName(PHOTO_ID);
+        return (ImageView)Id.getViewByViewIdName(PHOTO_ID);
     }
 
     // VERIFICATION METHODS -------------------------------------------------

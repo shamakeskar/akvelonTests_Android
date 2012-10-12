@@ -26,7 +26,7 @@ public final class ListViewUtils {
     // PROPERTIES -----------------------------------------------------------
 
     // CONSTRUCTORS ---------------------------------------------------------
-    
+
     // METHODS --------------------------------------------------------------
 
     /**
@@ -87,7 +87,7 @@ public final class ListViewUtils {
     public static ListView getListViewFromCurrentScreenByIndex(int listViewIndex) {
         Solo solo = DataProvider.getInstance().getSolo();
         ArrayList<ListView> allListViewsFromLayout = solo.getCurrentListViews();
-        return ViewUtils.getViewByIndex(allListViewsFromLayout, listViewIndex);
+        return ImageViewUtils.getViewByIndex(allListViewsFromLayout, listViewIndex);
     }
 
     /**
@@ -116,12 +116,15 @@ public final class ListViewUtils {
         }
         return listView.getChildAt(childIndex);
     }
-    
+
     /**
-     * Scroll list with index <b>listIndex</b> on one screen down. After that wait <b>delayForLoading</b>.
+     * Scroll list with index <b>listIndex</b> on one screen down. After that
+     * wait <b>delayForLoading</b>.
      * 
-     * @param listIndex - is index of list to scroll
-     * @param delayForLoading - is delay in seconds for wait after scroll
+     * @param listIndex
+     *            - is index of list to scroll
+     * @param delayForLoading
+     *            - is delay in seconds for wait after scroll
      * @return <b>true</b> if can scroll more, <b>false</b> if it end of list.
      */
     public static boolean scrollToNewItems(int listIndex, float delayForLoading) {
@@ -130,23 +133,26 @@ public final class ListViewUtils {
         WaitActions.delay(delayForLoading);// Wait for ListView load more rows.
         return isEnd;
     }
-    
+
     /**
-     * Scroll list with index <b>listIndex</b> on one screen down. After that wait WAIT_LOADING_ITEMS_AFTER_SCROLL.
+     * Scroll list with index <b>listIndex</b> on one screen down. After that
+     * wait WAIT_LOADING_ITEMS_AFTER_SCROLL.
      * 
-     * @param listIndex - is index of list to scroll
+     * @param listIndex
+     *            - is index of list to scroll
      * @return <b>true</b> if can scroll more, <b>false</b> if it end of list.
      */
-    public static boolean scrollToNewItems(int listIndex){
+    public static boolean scrollToNewItems(int listIndex) {
         return scrollToNewItems(listIndex, WAIT_LOADING_ITEMS_AFTER_SCROLL);
     }
-    
+
     /**
-     * Scroll list with index <b>0</b> on one screen down. After that wait WAIT_LOADING_ITEMS_AFTER_SCROLL.
+     * Scroll list with index <b>0</b> on one screen down. After that wait
+     * WAIT_LOADING_ITEMS_AFTER_SCROLL.
      * 
      * @return <b>true</b> if can scroll more, <b>false</b> if it end of list.
      */
-    public static boolean scrollToNewItems(){
+    public static boolean scrollToNewItems() {
         return scrollToNewItems(0, WAIT_LOADING_ITEMS_AFTER_SCROLL);
     }
 }

@@ -128,7 +128,7 @@ public class ScreenLinkedInToday extends BaseINScreen {
      * @return top news article label as {@code TextView}
      */
     public TextView getTopNewsArticleLabel() {
-        return (TextView)Id.getViewByName(TOP_NEWS_ARTICLE_LABEL);
+        return (TextView)Id.getViewByViewIdName(TOP_NEWS_ARTICLE_LABEL);
     }
 
     /**
@@ -137,7 +137,7 @@ public class ScreenLinkedInToday extends BaseINScreen {
      * @return 'News' {@code ListView}
      */
     public ListView getNewsList() {
-        return (ListView)Id.getViewByName(NEWS_LIST);
+        return (ListView)Id.getViewByViewIdName(NEWS_LIST);
     }
 
     /**

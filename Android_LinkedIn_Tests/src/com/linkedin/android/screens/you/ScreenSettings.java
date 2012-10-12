@@ -22,6 +22,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  * @author alexander.makarov
  * @created Aug 10, 2012 12:05:37 PM
  */
+@SuppressWarnings("rawtypes")
 public class ScreenSettings extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.settings.SettingsActivity2";
@@ -167,7 +168,7 @@ public class ScreenSettings extends BaseScreen {
      */
     public void setServerURL(String serverURL) {
         tapOnConfigureServerURLPopup();
-        EditText urlText = (EditText)Id.getViewByName(NEW_SERVER);
+        EditText urlText = (EditText)Id.getViewByViewIdName(NEW_SERVER);
         Logger.i("Entering server URL: " + serverURL);
         getSolo().enterText(urlText, serverURL);
         Logger.i("Clicking on '" + SET_SERVER_ADDRESS_TEXT +"' button");

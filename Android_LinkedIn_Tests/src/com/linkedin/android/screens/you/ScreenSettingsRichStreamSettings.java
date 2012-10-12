@@ -8,6 +8,7 @@ import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 
+@SuppressWarnings("rawtypes")
 public class ScreenSettingsRichStreamSettings extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.debug.LIConfigRichStreamActivity";

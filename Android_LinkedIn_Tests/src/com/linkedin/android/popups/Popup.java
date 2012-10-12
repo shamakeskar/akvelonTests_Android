@@ -14,10 +14,10 @@ import com.linkedin.android.utils.Logger;
  * Class for popup views.
  * 
  * @author Dmitry.Somov
- * 
  * @created Aug 21, 2012 2:15:30 PM
  */
-// TODO please add in code checking buttons (if exists on 'popup') and describe precisely why there is a class. (alexander makarov)
+// TODO please add in code checking buttons (if exists on 'popup') and describe
+// precisely why there is a class. (alexander makarov)
 public class Popup {
     // CONSTANTS ------------------------------------------------------------
 
@@ -26,6 +26,12 @@ public class Popup {
     String text;
 
     // CONSTRUCTORS ---------------------------------------------------------
+    /**
+     * Constructor for popup with specified <i>title</i> and <i>text</i>.
+     * 
+     * @param title is title of popup
+     * @param text is text in popup
+     */
     public Popup(String title, String text) {
         this.title = title;
         this.text = text;
@@ -42,7 +48,7 @@ public class Popup {
     }
 
     /**
-     * Method for reduce amount of text for get Solo object.
+     * Returns Solo object.
      * 
      * @return Solo object.
      */

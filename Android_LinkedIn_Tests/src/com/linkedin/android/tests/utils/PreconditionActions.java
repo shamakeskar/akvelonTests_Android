@@ -51,7 +51,6 @@ public class PreconditionActions {
 
         Assert.assertTrue("Parameter 'count' is zero or negative", count > 0);
         String message = null;
-        String messageSubject = null;
 
         LoginActions.logout();
         ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart(senderEmail,
@@ -59,8 +58,7 @@ public class PreconditionActions {
         ScreenExpose screenExpose = screenUpdates.openExposeScreen();
         ScreenYou screenYou = screenExpose.openYouScreen();
 
-        for (Integer i = 0; i < count; i++) {
-
+        for (int i = 0; i < count; i++) {
             ScreenNewMessage screenNewMessage = screenYou.openNewMessageScreen();
             ScreenAddConnections screenAddConnections = screenNewMessage.openAddConnectionsScreen();
 
@@ -68,11 +66,8 @@ public class PreconditionActions {
             screenAddConnections.tapOnDoneButton();
             screenNewMessage = new ScreenNewMessage();
 
-            message = messageBody == null ? screenNewMessage.typeMessage(null) : screenNewMessage
-                    .typeMessage(messageBody);
-
-            messageSubject = messageTitle == null ? screenNewMessage.typeSubject(null)
-                    : screenNewMessage.typeSubject(messageTitle);
+            message = screenNewMessage.typeMessage(messageBody);
+            screenNewMessage.typeSubject(messageTitle);
 
             screenNewMessage.sendMessage();
         }

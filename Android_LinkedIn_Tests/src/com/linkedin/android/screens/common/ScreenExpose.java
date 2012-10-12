@@ -129,11 +129,11 @@ public class ScreenExpose {
     }
 
     /**
-     * Opens 'Messages' screen.
+     * Opens 'Inbox' screen.
      * 
      * @return {@code ScreenInbox} with just opened 'Messages' screen.
      */
-    public ScreenInbox openMessagesScreen() {
+    public ScreenInbox openInboxScreen() {
         tapOnMessagesButton();
         return new ScreenInbox();
     }
@@ -211,7 +211,7 @@ public class ScreenExpose {
      * @return layout (as {@code View}) on which Updates section placed
      */
     private View getUpdatesLayout() {
-        View updatesLayout = Id.getViewByName(UPDATES_PANEL_RESOURCE_NAME);
+        View updatesLayout = Id.getViewByViewIdName(UPDATES_PANEL_RESOURCE_NAME);
         return updatesLayout;
     }
 
@@ -221,7 +221,7 @@ public class ScreenExpose {
      * @return layout (as {@code View}) on which You section placed
      */
     private View getYouLayout() {
-        View updatesLayout = Id.getViewByName(YOU_PANEL_RESOURCE_NAME);
+        View updatesLayout = Id.getViewByViewIdName(YOU_PANEL_RESOURCE_NAME);
         return updatesLayout;
     }
 
@@ -231,7 +231,7 @@ public class ScreenExpose {
      * @return layout (as {@code View}) on which Messages section placed
      */
     private View getMessagesLayout() {
-        View updatesLayout = Id.getViewByName(MESSAGES_PANEL_RESOURCE_NAME);
+        View updatesLayout = Id.getViewByViewIdName(MESSAGES_PANEL_RESOURCE_NAME);
         return updatesLayout;
     }
 
@@ -241,7 +241,7 @@ public class ScreenExpose {
      * @return layout (as {@code View}) on which 'Groups & More' section placed
      */
     private View getGroupsAndMoreLayout() {
-        View updatesLayout = Id.getViewByName(GROUPS_AND_MORE_PANEL_RESOURCE_NAME);
+        View updatesLayout = Id.getViewByViewIdName(GROUPS_AND_MORE_PANEL_RESOURCE_NAME);
         return updatesLayout;
     }
 

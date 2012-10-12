@@ -19,7 +19,7 @@ import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.common.ScreenExpose;
 import com.linkedin.android.screens.common.ScreenJobDetails;
 import com.linkedin.android.screens.common.ScreenSearch;
-import com.linkedin.android.screens.common.ScreenUpdatedProfileDetails;
+import com.linkedin.android.screens.common.ScreenUpdatedProfileRollup;
 import com.linkedin.android.screens.more.ScreenDiscussionDetailsFromRecentUpdates;
 import com.linkedin.android.screens.you.ScreenYou;
 import com.linkedin.android.tests.data.DataProvider;
@@ -35,6 +35,7 @@ import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.StringDefaultValues;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -56,12 +57,16 @@ public class ScreenUpdates extends BaseINScreen {
     public static final String NEWS_ARTICLE_SUMMARY_SHARED_BY_CURRENT_USER_WITHOUT_COMMENT = "You shared this";
 
     public static final int RECENT_UPDATES_LIST_VIEW_INDEX = 0;
-    
+
     public static final int UPDATES_LIST_FIRST_ITEM_INDEX = 2;
 
     static final Rect SHARE_BUTTON_RECT = new Rect(398, 42, 82, 74);
     // ImageButton: like it button
     private static final ViewIdName LIKE_BUTTON = new ViewIdName("like_button");
+
+    // Container for NUS with shared news and like/comment
+    // private static final ViewIdName NUS_SIMPLE_RICH_ROW = new
+    // ViewIdName("nus_simple_rich_row");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -73,14 +78,13 @@ public class ScreenUpdates extends BaseINScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        // Verify current activity.
+        // Verify current activities.
+        String curActivityName = getSolo().getCurrentActivity().getClass().getSimpleName();
         Assert.assertTrue(
                 "Wrong activity (expected " + ACTIVITY_SHORT_CLASSNAME + " or "
-                        + HELPACTIVITY_SHORT_CLASSNAME,
-                getSolo().getCurrentActivity().getClass().getSimpleName()
-                        .equals(ACTIVITY_SHORT_CLASSNAME)
-                        || getSolo().getCurrentActivity().getClass().getSimpleName()
-                                .equals(HELPACTIVITY_SHORT_CLASSNAME));
+                        + HELPACTIVITY_SHORT_CLASSNAME + ")",
+                curActivityName.equals(ACTIVITY_SHORT_CLASSNAME)
+                        || curActivityName.equals(HELPACTIVITY_SHORT_CLASSNAME));
 
         // Verify LINKEDIN TODAY banner present
         getLinkedInTodayBannerText();
@@ -112,6 +116,16 @@ public class ScreenUpdates extends BaseINScreen {
     }
 
     /**
+     * Checks that current screen - Updates.
+     * 
+     * @return <b>true</b> if current screen - Updates.
+     */
+    public static boolean isOnUpdatesScreen() {
+        return getSolo().getCurrentActivity().getClass().getSimpleName()
+                .equals(ACTIVITY_SHORT_CLASSNAME);
+    }
+
+    /**
      * Taps on 'Share' button.
      */
     public void tapOnShareButton() {
@@ -123,7 +137,7 @@ public class ScreenUpdates extends BaseINScreen {
     }
 
     /**
-     * Opens 'Share Update' screen.
+     * Opens 'Share Update' screen by tapping on 'Share' button on nav bar.
      * 
      * @return {@code ShareUpdateScreen} with just opened 'Share Update' screen.
      */
@@ -155,10 +169,10 @@ public class ScreenUpdates extends BaseINScreen {
      * @return {@code ScreenSharedNewsDetails} with just opened 'Shared News
      *         Details' screen.
      */
-    public ScreenSharedNewsDetails openAnyUpdateWithLinkSharedByYourConnection() {
+    public ScreenUpdate openAnyUpdateWithLinkSharedByYourConnection() {
         ArrayList<TextView> exceptions = new ArrayList<TextView>();
         do {
-            TextView link = ViewUtils.searchTextViewInActivity(".com", exceptions, false);
+            TextView link = TextViewUtils.searchTextViewInActivity(".com", exceptions, false);
             if (link == null) {
                 if (getSolo().scrollDown())
                     continue;
@@ -171,7 +185,7 @@ public class ScreenUpdates extends BaseINScreen {
                     && textColor == 0xff999490) {
                 ViewUtils.tapOnView(link, "Update with link");
                 if (isSharedNewsDetailsScreen(3))
-                    return new ScreenSharedNewsDetails();
+                    return new ScreenUpdate();
             }
             exceptions.add(link);
         } while (true);
@@ -207,20 +221,29 @@ public class ScreenUpdates extends BaseINScreen {
      *         on current screen.
      */
     public TextView searchFirstGroupPost() {
-        final String groupLabelFromGroupPost = "Group:";
+        /*final String groupLabelFromGroupPost = "Group:";
 
         ArrayList<TextView> nonNameOfGroupTextViews = new ArrayList<TextView>();
         TextView nameOfGroupFromFirstGroupPost = null;
         do {
             getSolo().searchText(groupLabelFromGroupPost);
-            nameOfGroupFromFirstGroupPost = ViewUtils.searchTextViewInActivity(
+            nameOfGroupFromFirstGroupPost = TextViewUtils.searchTextViewInActivity(
                     groupLabelFromGroupPost, nonNameOfGroupTextViews, false);
             if (isNameOfGroupFromGroupPost(nameOfGroupFromFirstGroupPost)) {
                 return nameOfGroupFromFirstGroupPost;
             }
             nonNameOfGroupTextViews.add(nameOfGroupFromFirstGroupPost);
-        } while (null != nameOfGroupFromFirstGroupPost);
-
+        } while (null != nameOfGroupFromFirstGroupPost);*/
+        int maxCountOfScrolls = 50;
+        boolean isCanScroll = true;
+        
+        for (int i = 0; i < maxCountOfScrolls && isCanScroll; i++) {
+            TextView postedThis = TextViewUtils.searchTextViewInActivity("posted this", false);
+            if (postedThis != null){
+                return postedThis;
+            }
+            isCanScroll = ListViewUtils.scrollToNewItems();
+        }
         return null;
     }
 
@@ -232,7 +255,7 @@ public class ScreenUpdates extends BaseINScreen {
      * @return <b>true</b> if specified {@code textView} is name of group from
      *         group post, <b>false</b> otherwise.
      */
-    private boolean isNameOfGroupFromGroupPost(TextView textView) {
+/*    private boolean isNameOfGroupFromGroupPost(TextView textView) {
         final int nameOfGroupFromGroupPostIndex = 1;
 
         if (null == textView) {
@@ -267,7 +290,7 @@ public class ScreenUpdates extends BaseINScreen {
 
         View recentUpdatesList = (View) textViewParent4Degree.getParent();
         return recentUpdatesList instanceof ListView;
-    }
+    }*/
 
     /**
      * Used by openAnySharedNewsArticleDetailsScreen function
@@ -284,11 +307,12 @@ public class ScreenUpdates extends BaseINScreen {
         // open
         WaitActions.delay(waiting_time);
         if (getSolo().getCurrentActivity().getClass().getSimpleName()
-                .equals(ScreenSharedNewsDetails.ACTIVITY_SHORT_CLASSNAME)) {
-            ImageButton likeButton = (ImageButton) Id.getViewByName(LIKE_BUTTON);
+                .equals(ScreenUpdate.ACTIVITY_SHORT_CLASSNAME)) {
+            ImageButton likeButton = (ImageButton) Id.getViewByViewIdName(LIKE_BUTTON);
             if (likeButton.isShown()) {
-                ScreenSharedNewsDetails newsDetails = new ScreenSharedNewsDetails();
-                int nr = newsDetails.tapOnForwardButton();
+                ScreenUpdate newsDetails = new ScreenUpdate();
+                newsDetails.tapOnForwardButton();
+                int nr = newsDetails.getCountOptionsForForwardPopup().size();
                 HardwareActions.pressBack();
                 // Allow 3/2 when 2 ordered
                 if (nr >= optionsCountInSharePopup)
@@ -312,18 +336,17 @@ public class ScreenUpdates extends BaseINScreen {
      * @return {@code ScreenSharedNewsDetails} with just opened 'News Article
      *         Details' screen. return null if there is no shared news.
      */
-    public ScreenSharedNewsDetails openAnySharedNewsArticleDetailsScreen(
-            int optionsCountInSharePopup) {
+    public ScreenUpdate openAnySharedNewsArticleDetailsScreen(int optionsCountInSharePopup) {
         do {
             getSolo().clickOnScreen(ScreenResolution.getScreenWidth() / 2,
                     ScreenResolution.getScreenHeight() / 2);
             if (isSharedNewsDetailsScreen(optionsCountInSharePopup))
-                return new ScreenSharedNewsDetails();
+                return new ScreenUpdate();
 
             getSolo().clickOnScreen(ScreenResolution.getScreenWidth() / 2,
                     ScreenResolution.getScreenHeight() * 9 / 10);
             if (isSharedNewsDetailsScreen(optionsCountInSharePopup))
-                return new ScreenSharedNewsDetails();
+                return new ScreenUpdate();
         } while (getSolo().scrollDown());
         return null;
     }
@@ -343,7 +366,7 @@ public class ScreenUpdates extends BaseINScreen {
         TextView updateSharedByCurrentUser;
 
         do {
-            updateSharedByCurrentUser = ViewUtils.searchTextViewInActivity(
+            updateSharedByCurrentUser = TextViewUtils.searchTextViewInActivity(
                     currentUserShortenedName, nonNewsUpdatesSharedByCurrentUser, false);
             if (isArticleHasImageDisplayedAlongWithSummary(updateSharedByCurrentUser)) {
                 return updateSharedByCurrentUser;
@@ -354,14 +377,15 @@ public class ScreenUpdates extends BaseINScreen {
     }
 
     /**
-     * Opens first news shared by connection.
+     * Opens first news shared by connection. Additionally opens You screen to
+     * get short name of current user.
      * 
      * @param connectionName
      *            is name of connection who shared news article *
      * @return {@code ScreenSharedNewsDetails} with just opened 'Shared News
      *         Article Details' screen.
      */
-    public ScreenSharedNewsDetails openFirstNewsArticleSharedByYourConnection() {
+    public ScreenUpdate openFirstNewsArticleSharedByYourConnection() {
 
         ScreenExpose screenExpose = openExposeScreen();
         ScreenYou screenYou = screenExpose.openYouScreen();
@@ -376,11 +400,37 @@ public class ScreenUpdates extends BaseINScreen {
         Logger.i("Tapping on news shared by your connection");
         getSolo().clickOnView(firstNewsArticleSharedByYourConnection);
 
-        return new ScreenSharedNewsDetails();
+        return new ScreenUpdate();
     }
 
     /**
-     * Taps on first Viral Update (in first NUS_SIMPLE_RICH_ROW).
+     * Taps on first Update.
+     * 
+     * @return <b>true</b> if tap, <b>false</b> if cannot find Update.
+     */
+    /*
+     * public boolean tapOnFirstUpdate() { Logger.logElements();
+     * 
+     * 
+     * NUS_SIMPLE_RICH_ROW
+     * 
+     * return false; }
+     */
+
+    /**
+     * Opens first Update NUS.
+     * 
+     * @return {@code ScreenUpdate} object
+     */
+    /*
+     * public ScreenUpdate openFirstUpdate() {
+     * Assert.assertTrue("Cannot find Update NUS in list", tapOnFirstUpdate());
+     * 
+     * return new ScreenUpdate(); }
+     */
+
+    /**
+     * Taps on first Viral Update.
      * 
      * @return <b>true</b> if tap, <b>false</b> if cannot find Viral Update.
      */
@@ -430,7 +480,9 @@ public class ScreenUpdates extends BaseINScreen {
                                     // Next string after company name must be
                                     // news date.
                                     if (!RegexpUtils.isCanBeFound(string,
-                                            RegexpPatterns.DATE_LIKE_10_HOURS_AGO)) {
+                                            RegexpPatterns.DATE_LIKE_10_HOURS_AGO) &&
+                                            !RegexpUtils.isCanBeFound(string,
+                                                    RegexpPatterns.DATE_LIKE_OCTOBER_1)) {
                                         // If it not news date then current row
                                         // is
                                         // not ViralUpdate.
@@ -501,10 +553,9 @@ public class ScreenUpdates extends BaseINScreen {
      */
     public ScreenSearch openSearchScreen() {
         EditText searchBar = getSearchBar();
-        getSolo().clickOnView(searchBar);
-        Logger.i("Tapping on 'Search bar'");
-        ScreenSearch searchScreen = new ScreenSearch();
-        return searchScreen;
+        Assert.assertNotNull("Search bar is not present", searchBar);
+        ViewUtils.tapOnView(searchBar, "search bar");
+        return new ScreenSearch();
     }
 
     /**
@@ -576,7 +627,8 @@ public class ScreenUpdates extends BaseINScreen {
         Logger.i("There is no article with following comment: " + commentToArticle, getSolo()
                 .searchText(commentToArticle));
 
-        TextView commentTextView = ViewUtils.searchTextViewInLayout(commentToArticle, null, false);
+        TextView commentTextView = TextViewUtils.searchTextViewInLayout(commentToArticle, null,
+                false);
         return getCommentedNewsArticleRelativeLayout(commentTextView);
     }
 
@@ -868,12 +920,11 @@ public class ScreenUpdates extends BaseINScreen {
     /**
      * Taps on 'New Connection' roll up.
      */
-    public void tapOnNewConnectionsRollUp() {
-        Logger.i("Searching new connections roll up...");
+    public void tapOnFirstNewConnectionsRollUp() {
         Assert.assertTrue("Roll up not found",
                 getSolo().searchText("people have new connections", 1, true, false));
 
-        Logger.i("Tapping on new connections roll up");
+        Logger.i("Tapping on first connections roll up");
         getSolo().clickOnText("people have new connections");
     }
 
@@ -883,8 +934,9 @@ public class ScreenUpdates extends BaseINScreen {
      * @return {@code ScreenNewConnectionsRollUp} with just opened 'New
      *         Connections Roll Up' screen.
      */
-    public ScreenNewConnectionsRollUp openNewConnectionsRollUpScreen() {
-        tapOnNewConnectionsRollUp();
+    public ScreenNewConnectionsRollUp openFirstNewConnectionsRollUp() {
+        tapOnFirstNewConnectionsRollUp();
+        // TODO describe/remove waitForScreenUpdate
         WaitActions.waitForScreenUpdate();
         return new ScreenNewConnectionsRollUp();
     }
@@ -906,22 +958,22 @@ public class ScreenUpdates extends BaseINScreen {
      * 
      * @return just opened {@code ScreenUpdatedProfileDetails} screen.
      */
-    public ScreenUpdatedProfileDetails openProfileRollUpScreen() {
-        tapOnProfileRollUp();
-        return new ScreenUpdatedProfileDetails();
+    public ScreenUpdatedProfileRollup openFirstUpdateProfileRollUpScreen() {
+        tapOnFirstUpdateProfileRollUp();
+        return new ScreenUpdatedProfileRollup();
     }
 
     /**
      * Taps on Profile roll up.
      */
-    public void tapOnProfileRollUp() {
+    public void tapOnFirstUpdateProfileRollUp() {
         final String profileRollUpText = "people have updated their profile";
         final int minimumNumberOfMatches = 1;
 
-        Assert.assertNotNull("There is no text '" + profileRollUpText + "' on current screen",
+        Assert.assertNotNull("Update Profile rollup NUS is not presented",
                 getSolo().searchText(profileRollUpText, minimumNumberOfMatches, true, true));
 
-        Logger.i("Tapping on Profile roll up");
+        Logger.i("Tapping on Update Profile roll up");
         getSolo().clickOnText(profileRollUpText);
     }
 
@@ -956,7 +1008,7 @@ public class ScreenUpdates extends BaseINScreen {
         TextView newsArticleSummarySharedByCurrentUserWithoutCommentTextViews = null;
 
         do {
-            newsArticleSummarySharedByCurrentUserWithoutCommentTextViews = ViewUtils
+            newsArticleSummarySharedByCurrentUserWithoutCommentTextViews = TextViewUtils
                     .searchTextViewInActivity(
                             NEWS_ARTICLE_SUMMARY_SHARED_BY_CURRENT_USER_WITHOUT_COMMENT, true);
             LinearLayout firstNewsArticleSharedByCurrentUserWithoutComment = getNewsArticleSharedByCurrentUserWithoutComment(

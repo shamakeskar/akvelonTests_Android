@@ -1,15 +1,11 @@
 package com.linkedin.android.screens.more;
 
 import junit.framework.Assert;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.utils.HardwareActions;
-import com.linkedin.android.utils.LayoutUtils;
-import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 

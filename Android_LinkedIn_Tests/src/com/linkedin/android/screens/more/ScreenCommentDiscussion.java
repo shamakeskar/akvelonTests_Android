@@ -16,6 +16,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  * @author Aleksey.Chichagov
  * @created Aug 30, 2012 3:48:37 PM
  */
+@SuppressWarnings("rawtypes")
 public class ScreenCommentDiscussion extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.groups.GroupPostCommentAddActivity";
@@ -68,11 +69,12 @@ public class ScreenCommentDiscussion extends BaseScreen {
      * 
      * @return comment
      */
-    public String typeRandomDetailTextOfDiscussion() {
-        String comment = "Comment " + Math.random();
+    public String typeComment(String comment) {
+        if (comment == null)
+            comment = "Comment " + Math.random();
         Assert.assertNotNull("Comment field is not present.", getSolo().getEditText(0));
 
-        Logger.i("Typing random comment: '" + comment + "'");
+        Logger.i("Typing comment: '" + comment + "'");
         getSolo().enterText(0, comment);
 
         return comment;

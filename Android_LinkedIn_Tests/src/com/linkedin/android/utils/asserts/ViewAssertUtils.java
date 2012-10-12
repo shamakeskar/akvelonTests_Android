@@ -1,12 +1,12 @@
 package com.linkedin.android.utils.asserts;
 
-import com.linkedin.android.utils.LayoutUtils;
-import com.linkedin.android.utils.Rect2DP;
-import com.linkedin.android.utils.viewUtils.ViewUtils;
-
 import junit.framework.Assert;
 import android.view.View;
 import android.widget.TextView;
+
+import com.linkedin.android.utils.LayoutUtils;
+import com.linkedin.android.utils.Rect2DP;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 
 /**
  * The class contains 'assert' methods for {@code View}s verification.
@@ -32,6 +32,7 @@ public class ViewAssertUtils {
         boolean isViewPlacedOnSpecifiedLayout = LayoutUtils.isViewPlacedInLayout(view, layout);
         Assert.assertTrue(errorMessage, isViewPlacedOnSpecifiedLayout);
     }
+
     /**
      * Verify that label specified is present on current screen.
      * 
@@ -42,7 +43,7 @@ public class ViewAssertUtils {
         if (null == label) {
             return;
         }
-        TextView recentActivityLabel = ViewUtils.searchTextViewInActivity(label, true);
+        TextView recentActivityLabel = TextViewUtils.searchTextViewInActivity(label, true);
         Assert.assertNotNull("'" + label + "' label is not present", recentActivityLabel);
     }
 }

@@ -53,10 +53,8 @@ public class SearchScreenTests extends BaseTestCase {
      * loads properly. The Updates page loads properly.
      */
     public void test35974341() {
-        // TODO uncomment when fixtures will be recorded for the test
-        // startFixture("35974341");
-        Logger.i(START_TEST
-                + "35974341: 'YOU - Search / Send message Connection / Send invite / go back YOU.'");
+        startFixture("35974341");
+        startTest("35974341", "YOU - Search / Send message Connection / Send invite / go back YOU.");
 
         // Login and open Updates screen.
         ScreenUpdates updatesScreen = LoginActions.openUpdatesScreenOnStart();
@@ -75,16 +73,14 @@ public class SearchScreenTests extends BaseTestCase {
         ScreenNewMessage screenNewMessage = screenProfileOfConnectedUser.openNewMessageScreen();
         Logger.i(DONE + "'New message' screen loads properly.");
 
-        // Type message.
+        // Type random message and subject.
         screenNewMessage.typeMessage(null);
-
-        // Type subject.
         screenNewMessage.typeSubject(null);
 
         // Tap on Send button and back to "Profile of connected user" screen.
         screenNewMessage.sendMessage();
         screenProfileOfConnectedUser = new ScreenProfileOfConnectedUser();
-        Logger.i(DONE + "'Profile of connected user' screen loads properly.");
+        Logger.i(DONE + "Verify the toasts 'Sending message' and 'Message sent' shown up");
 
         // Back to Search screen.
         HardwareActions.pressBack();
@@ -106,20 +102,22 @@ public class SearchScreenTests extends BaseTestCase {
         // Open "Profile of connected user" screen of found contact.
         screenSearch.tapOnFirstVisibleConnectionProfileScreen();
         ScreenProfileOfNotConnectedUser screenProfileOfNotConnectedUser = new ScreenProfileOfNotConnectedUser();
+        Logger.i(DONE + "The Profile Page loads");
 
-        // TODO verify toasts
         // Tap on Invite button.
         screenProfileOfNotConnectedUser.inviteByTappingOnInviteToConnectButton();
+        Logger.i(DONE + "Verify the toasts 'Sending invite...' and 'Invite sent' show up");
 
         // Back to Search screen.
         HardwareActions.pressBack();
         screenSearch = new ScreenSearch();
+        Logger.i(DONE + "The Search page loads properly");
 
         // Back to Updates screen.
         HardwareActions.pressBack();
         updatesScreen = new ScreenUpdates();
         Logger.i(DONE + "Updates screen loads properly.");
 
-        Logger.i(PASS + "35974341");
+        passTest();
     }
 }

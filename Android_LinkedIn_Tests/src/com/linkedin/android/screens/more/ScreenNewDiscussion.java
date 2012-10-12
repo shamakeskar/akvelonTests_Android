@@ -16,6 +16,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  * @author Aleksey.Chichagov
  * @created Aug 30, 2012 12:20:37 PM
  */
+@SuppressWarnings("rawtypes")
 public class ScreenNewDiscussion extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.groups.GroupDiscussionAddActivity";

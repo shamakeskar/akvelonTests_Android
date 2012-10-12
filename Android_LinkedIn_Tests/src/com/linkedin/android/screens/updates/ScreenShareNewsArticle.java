@@ -10,6 +10,7 @@ import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
  * Screen to share news article with comment
@@ -17,6 +18,7 @@ import com.linkedin.android.utils.WaitActions;
  * @author vasily.gancharov
  * @created Aug 13, 2012 1:35:35 PM
  */
+@SuppressWarnings("rawtypes")
 public class ScreenShareNewsArticle extends BaseScreen {
 
     // CONSTANTS ------------------------------------------------------------
@@ -58,7 +60,7 @@ public class ScreenShareNewsArticle extends BaseScreen {
                 LayoutUtils
                         .isViewPlacedInLayout(shareButton, LayoutUtils.UPPER_RIGHT_BUTTON_LAYOUT));
 
-        HardwareActions.takeCurrentActivityScreenshot("'Share News Article' screen.");
+        HardwareActions.takeCurrentActivityScreenshot("Share News Article screen.");
     }
 
     @Override
@@ -114,9 +116,7 @@ public class ScreenShareNewsArticle extends BaseScreen {
      */
     public void tapOnShareButton() {
         Button shareButton = getShareButton();
-
-        Logger.i("Tapping on 'Share' button");
-        getSolo().clickOnView(shareButton);
+        ViewUtils.tapOnView(shareButton, "'Share' button");
     }
 
     /**
@@ -128,5 +128,14 @@ public class ScreenShareNewsArticle extends BaseScreen {
         Button shareButton = getSolo().getButton(SHARE_BUTTON_INDEX);
         Assert.assertNotNull("'Share' button not present", shareButton);
         return shareButton;
+    }
+    
+    /**
+     * Shares the news by tapping on Share button and verify toasts.
+     */
+    public void shareNews() {
+        verifyTwoToastsStart("Sending update", "Update sent");
+        tapOnShareButton();
+        verifyTwoToastsEnd();
     }
 }

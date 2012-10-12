@@ -2,7 +2,7 @@ package com.linkedin.android.tests;
 
 import junit.framework.Assert;
 
-import com.linkedin.android.screens.ScreenLogin;
+import com.linkedin.android.screens.common.ScreenLogin;
 import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.utils.Logger;
 
@@ -29,9 +29,9 @@ public class LoginTests extends BaseTestCase {
      * failed.
      */
     public void test34632369() {
-        DISABLE_LOGOUT = true;// No login in this test.
+        disableLogoutAtEndForCurrentTest();// No login at end in this test.
         startFixture("34632369");
-        Logger.i(START_TEST + "34632369: 'Log in - Fail.'");
+        startTest("34632369", "Log in - Fail.");
 
         // Open Login screen.
         ScreenLogin screenLogin = new ScreenLogin();
@@ -51,6 +51,6 @@ public class LoginTests extends BaseTestCase {
                 getSolo().waitForText("Oops, please check your email address and password"));
         Logger.i(DONE + "Verify that log in failed.");
         
-        Logger.i(PASS + "34632369");
+        passTest();
     }
 }

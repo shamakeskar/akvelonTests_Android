@@ -15,6 +15,7 @@ import com.linkedin.android.utils.Rect2DP;
  * @author alexander.makarov
  * @created Aug 6, 2012 4:35:35 PM
  */
+@SuppressWarnings("rawtypes")
 public abstract class BaseINScreen extends BaseScreen {
 
     // CONSTANTS ------------------------------------------------------------
@@ -50,7 +51,7 @@ public abstract class BaseINScreen extends BaseScreen {
     public static ImageView getINButton() {
         for (ImageView view : getSolo().getCurrentImageViews()) {
             if (view == null)
-                return null;
+                continue;        	
             if (LayoutUtils.isViewPlacedInLayout(view, LayoutUtils.UPPER_LEFT_BUTTON_LAYOUT)) {
                 Rect2DP viewRect = new Rect2DP(view);
                 if (viewRect.isSizeEqual(IN_BUTTON_RECT.width, IN_BUTTON_RECT.height, 1.0f)) {

@@ -1,5 +1,7 @@
 package com.linkedin.android.tests.data;
 
+import java.util.ArrayList;
+
 import junit.framework.Assert;
 import android.app.Activity;
 import android.content.res.Resources;
@@ -34,7 +36,7 @@ public class Id {
      *         <b>null</b> if there is no such view.
      */
     public static <T extends View> T getViewByName(ViewIdName idName, Class<T> viewType) {
-        View view = getViewByName(idName);
+        View view = getViewByViewIdName(idName);
         if (!viewType.isInstance(view)) {
             return null;
         }
@@ -44,49 +46,75 @@ public class Id {
     }
 
     /**
-     * Gets {@code View} by it's {@code idName}.
+     * Returns {@code View} by it's {@code idName}.
      * 
      * @param idName
      *            view id name
      * @return {@code View} with specified {@code idName} or <b>null</b> if not
      *         found.
      */
-    public static View getViewByName(ViewIdName idName) {
+    public static View getViewByViewIdName(ViewIdName idName) {
         Solo solo = DataProvider.getInstance().getSolo();
-        int viewId = getIdByName(idName);
+        int viewId = getIdByViewIdName(idName);
         return solo.getView(viewId);
     }
 
     /**
-     * Gets view id by it's {@code idName}.
+     * Returns view id by it's {@code idName}.
      * 
      * @param idName
      *            view id name.
      * @return id of view with specified {@code idName}.
      */
-    private static int getIdByName(ViewIdName idName) {
-        Solo solo = DataProvider.getInstance().getSolo();
-        Activity currentActivity = solo.getCurrentActivity();
-        Assert.assertNotNull("There is no current activity", currentActivity);
+    private static int getIdByViewIdName(ViewIdName idName) {
+        Activity currentActivity = DataProvider.getInstance().getSolo().getCurrentActivity();
+        Assert.assertNotNull("Error getting current Activity", currentActivity);
+        Resources resources = currentActivity.getResources();
+        Assert.assertNotNull("Error getting Resources form current Activity", resources);
 
-        Resources currentResources = currentActivity.getResources();
-        Assert.assertNotNull("There is no resources on current activity", currentResources);
-
-        int id = currentResources.getIdentifier(idName.toString(), null, null);
-
-        Assert.assertTrue("Can't get ID by name: " + idName, id > 0);
+        int id = resources.getIdentifier(idName.toString(), null, null);
         return id;
     }
-    
+
     /**
      * Returns id for <b>idName</b>.
      * 
-     * @param idName is ID name for resource.
+     * @param idName
+     *            is ID name for resource.
      * @return integer value of resource ID or <b>0</b> if not found.
      */
-    public static int getIdByIdName(String idName){
+    public static int getIdByIdName(String idName) {
         Solo solo = DataProvider.getInstance().getSolo();
         Activity currentActivity = solo.getCurrentActivity();
         return currentActivity.getResources().getIdentifier(idName, null, null);
+    }
+
+    /**
+     * Returns {@code ArrayList} of {@code View} with specified id.
+     * 
+     * @param viewsId
+     *            ID of views
+     * @return {@code ArrayList} of {@code View} with specified ID
+     */
+    public static ArrayList<View> getListOfViewById(int viewsId) {
+        ArrayList<View> list = new ArrayList<View>();
+        for (View view : DataProvider.getInstance().getSolo().getViews()) {
+            if (view.getId() == viewsId) {
+                list.add(view);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * Returns {@code ArrayList} of {@code View} by {@code ViewIdName}
+     * 
+     * @param idName
+     *            {@code ViewIdName} of views
+     * @return {@code ArrayList} of {@code View} with specified
+     *         {@code ViewIdName}
+     */
+    public static ArrayList<View> getListOfViewByViewIdName(ViewIdName idName) {
+        return getListOfViewById(getIdByViewIdName(idName));
     }
 }

@@ -1,6 +1,6 @@
 package com.linkedin.android.screens.common;
 
-import com.linkedin.android.screens.base.ScreenMessage;
+import com.linkedin.android.screens.base.BaseScreenMessage;
 
 
 /**
@@ -9,7 +9,7 @@ import com.linkedin.android.screens.base.ScreenMessage;
  * @author nikita.chehomov
  * @created Aug 22, 2012 3:28:23 PM
  */
-public class ScreenNewMessage extends ScreenMessage {
+public class ScreenNewMessage extends BaseScreenMessage {
     // CONSTANTS ------------------------------------------------------------
     private static final String HEADER = "New Message";
 

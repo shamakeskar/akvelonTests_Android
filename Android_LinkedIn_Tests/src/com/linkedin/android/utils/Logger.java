@@ -64,10 +64,11 @@ public final class Logger {
     /**
      * Logs message as 'error' with correct tag.
      * 
-     * @param message
+     * @param message is message to log.
+     * @param exception is exception to log. 
      */
-    public static void e(String message, Throwable tr) {
-        Log.e(DataProvider.getInstance().getCurrentTestTag(), message, tr);
+    public static void e(String message, Throwable exception) {
+        Log.e(DataProvider.getInstance().getCurrentTestTag(), message, exception);
     }
 
     /**
@@ -97,9 +98,8 @@ public final class Logger {
         ANDROID_VIEW_NAMES convertedType;
 
         formatter = new Formatter();
-        if (filter != null)
-            d("Settings for log: onlyVisible=" + onlyVisible + ", onlyShown=" + onlyShown
-                    + ", filter=" + filter);
+        d("Settings for log: onlyVisible=" + onlyVisible + ", onlyShown=" + onlyShown
+                    + ", filter=" + filter + ". Current Activity: " + solo.getCurrentActivity().getClass().getSimpleName());
         d(formatter.format("%5s %15s%4s %4s %4s %4s %5s %30s %15s", "Level", "Type", "X", "Y",
                 "Width", "Height", "Shown", "ID:Package:Type/Entry", ">>>Custom").toString());
         d("=========================================================================================================================");
@@ -150,7 +150,7 @@ public final class Logger {
             switch (convertedType) {
             case BUTTON:
                 custom = ">>> Name='" + ((Button) element).getText() + "', isEnabled="
-                        + ((Button) element).isEnabled() + "', isClickable="
+                        + ((Button) element).isEnabled() + ", isClickable="
                         + ((Button) element).isClickable();
                 break;
             case TEXT_VIEW:
@@ -164,7 +164,7 @@ public final class Logger {
                 custom = ">>> Progress=" + ((ProgressBar) element).getProgress();
                 break;
             case IMAGE_VIEW:
-                custom = ">>> isEnabled=" + ((ImageView) element).isEnabled() + "', isClickable="
+                custom = ">>> isEnabled=" + ((ImageView) element).isEnabled() + ", isClickable="
                         + ((ImageView) element).isClickable();
                 // break;
                 // case IMAGE_BUTTON:
@@ -272,5 +272,29 @@ public final class Logger {
         for (Activity activity : DataProvider.getInstance().getSolo().getAllOpenedActivities()) {
             d("  " + (i++) + " activity=" + activity.getClass().getName().substring(21));
         }
+    }
+
+    /**
+     * Logs to debug {@code ArrayList} like "<i>number</i> + ":
+     * " + <i>element_of_list</i>.toString()"
+     * 
+     * @param list
+     *            is {@code ArrayList} to log
+     */
+    public static void logArrayList(@SuppressWarnings("rawtypes") ArrayList list) {
+        int i = 0;
+        for (Object object : list) {
+            Logger.d(i + ": " + object.toString());
+            i++;
+        }
+    }
+
+    /**
+     * Logs to debug name of current activity.
+     */
+    public static void logCurrentActivity() {
+        d("Current activity: "
+                + DataProvider.getInstance().getSolo().getCurrentActivity().getClass()
+                        .getSimpleName());
     }
 }

@@ -3,6 +3,7 @@ package com.linkedin.android.screens.you;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseProfileScreen;
+import com.linkedin.android.screens.common.ScreenNewMessage;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.asserts.ScreenAssertUtils;
@@ -69,7 +70,17 @@ public class ScreenProfile extends BaseProfileScreen {
         TextView sendToConnectionButton = getSolo().getText("Send to Connection");
         ViewUtils.tapOnView(sendToConnectionButton, "'Send to Connection' button");
     }
-
+    
+    /**
+     * Tap on Message button and opens 'New message' screen.
+     * 
+     * @return {@code ScreenNewMessage} with just opened 'New message' screen.
+     */
+    public ScreenNewMessage openNewMessage() {
+    	ViewUtils.tapOnView(getSolo().getImageButton(1), "Message button");
+    	return new ScreenNewMessage();
+    }
+    
     /**
      * Taps on Email on Popup.
      */

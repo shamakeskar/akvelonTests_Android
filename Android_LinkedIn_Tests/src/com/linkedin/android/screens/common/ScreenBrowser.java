@@ -12,7 +12,6 @@ import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
-import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -67,7 +66,7 @@ public class ScreenBrowser extends BaseINScreen {
                 LayoutUtils.isViewPlacedInLayout(forwardButton,
                         LayoutUtils.LOWER_RIGHT_OF_4_BUTTONS_LAYOUT));
 
-        HardwareActions.takeCurrentActivityScreenshot("BrowserScreen");
+        HardwareActions.takeCurrentActivityScreenshot("Browser");
     }
 
     @Override
@@ -84,24 +83,24 @@ public class ScreenBrowser extends BaseINScreen {
      * Wait while page content is loaded
      */
     public void waitForPageContentLoaded() {
-        ProgressBar progress = (ProgressBar)Id.getViewByName(WEB_PROGRESS_BAR);
+        ProgressBar progress = (ProgressBar) Id.getViewByViewIdName(WEB_PROGRESS_BAR);
         if (progress.isShown() == false)
             return;
-        Logger.i("Wait for page content is fully loaded");
-        while(progress.isShown());
+        // TODO set timeout - may be infinite loop
+        while (progress.isShown())
+            ;
     }
-    
+
     /**
      * Get page title
      * 
-     * @return
-     *      String contains page title
+     * @return String contains page title
      */
     public String getPageTitle() {
-        TextView title = (TextView)Id.getViewByName(WEB_PAGE_TITLE);
+        TextView title = (TextView) Id.getViewByViewIdName(WEB_PAGE_TITLE);
         return title.getText().toString();
     }
-    
+
     /**
      * Taps on Forward button.
      */

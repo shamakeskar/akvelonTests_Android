@@ -27,6 +27,7 @@ public class ServerRequestResponseUtils {
     // Please write there you IP's if needed, but commit in SVN only as comments!
 //  public static final String SERVICE_CONNECTION_STRING = "http://192.168.3.127:8080/";//Alexey Makhalov
 //  public static final String SERVICE_CONNECTION_STRING = "http://192.168.9.14:8080/";//Alexander Makarov
+//  public static final String SERVICE_CONNECTION_STRING = "http://192.168.19.63:8080/";//Vladimir Belyakov
     
     // Response about successful operation from test server.
     public static final String OPERATION_COMPLETE_SUCCESSFULLY_MESSAGE = "ok";

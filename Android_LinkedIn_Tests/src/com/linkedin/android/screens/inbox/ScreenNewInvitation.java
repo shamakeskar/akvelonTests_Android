@@ -16,6 +16,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  * @author nikita.chehomov
  * @created Sep 13, 2012 9:13:23 PM
  */
+@SuppressWarnings("rawtypes")
 public class ScreenNewInvitation extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.invitations.InviteByEmailActivity";

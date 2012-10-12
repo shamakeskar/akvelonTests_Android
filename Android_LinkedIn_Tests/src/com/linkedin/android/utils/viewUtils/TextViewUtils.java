@@ -148,5 +148,127 @@ public class TextViewUtils {
         int horizontalOffsetRelativelyScreenStart = (int) (horizontalOffsetRelativelyTextView + textViewPositionX);
         return horizontalOffsetRelativelyScreenStart;
     }
+    
+    /**
+     * Searches for the {@code TextView} object with {@code text} in current
+     * activity
+     * 
+     * @param text
+     *            string for searching.
+     * @param isStrictEqual
+     *            if <b>true</b> returns {@code TextView} object with text that
+     *            equals specified text, else returns {@code TextView} object
+     *            with text that contains specified text.
+     * @return {@code TextView} object with specified text.
+     */
+    public static TextView searchTextViewInActivity(String text, boolean isStrictEqual) {
+        return searchTextViewInActivity(text, null, isStrictEqual);
+    }
 
+    /**
+     * Searches for the {@code TextView} object with {@code text} in current
+     * activity
+     * 
+     * @param text
+     *            string for searching.
+     * @param exceptions
+     *            {@code List} of {@code TextView} that must not be returned by
+     *            the method
+     * @param isStrictEqual
+     *            if <b>true</b> returns {@code TextView} object with text that
+     *            equals specified text, else returns {@code TextView} object
+     *            with text that contains specified text.
+     * @return {@code TextView} object with specified text.
+     */
+    public static TextView searchTextViewInActivity(String text, List<TextView> exceptions,
+            boolean isStrictEqual) {
+        Solo solo = DataProvider.getInstance().getSolo();
+        List<View> allActivityViews = solo.getViews();
+        if (null == allActivityViews) {
+            return null;
+        }
+
+        for (View view : allActivityViews) {
+
+            if (!(view instanceof TextView) || (null != exceptions && exceptions.contains(view))) {
+                continue;
+            }
+
+            TextView currentTextView = (TextView) view;
+            String currentTextViewValue = currentTextView.getText().toString();
+            if (StringUtils.isStringsEquals(currentTextViewValue, text, isStrictEqual)) {
+                return currentTextView;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Searches for the {@code TextView} object with {@code text} in
+     * {@code parentView}. If {@code parentView} is <b>null</b> the method will
+     * search {@code TextView} object with {@code text} from list of TextViews
+     * that currently on screen.
+     * 
+     * @param text
+     *            is string for searching (only visible).
+     * @param parentView
+     *            is layout for search, <b>null</b> for search in all visible
+     *            part of screen.
+     * @param isSctrictEqual
+     *            if <b>true</b> returns {@code TextView} object with text that
+     *            equals current text, else returns {@code TextView} object with
+     *            text that contains current text.
+     * @return {@code TextView} object with current text.
+     */
+    public static TextView searchTextViewInLayout(String text, View parentView,
+            boolean isSctrictEqual) {
+        Solo solo = DataProvider.getInstance().getSolo();
+
+        for (TextView view : solo.getCurrentTextViews(parentView)) {
+            String textOfView = view.getText().toString();
+            if (textOfView.indexOf(text) != -1) {
+                if (isSctrictEqual) {
+                    if (textOfView.equals(text)) {
+                        return view;
+                    }
+                } else {
+                    return view;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Searches for the all {@code TextView} objects with {@code text} in
+     * {@code parentView}. If {@code parentView} is <b>null</b> the method will
+     * search {@code TextView} object with {@code text} from list of TextViews
+     * that currently on screen.
+     * 
+     * @param text
+     *            is string for searching (only visible).
+     * @param parentView
+     *            is layout for search, <b>null</b> for search in all visible
+     *            part of screen.
+     * @param isSctrictEqual
+     *            if <b>true</b> returns {@code TextView} object with text that
+     *            equals current text, else returns {@code TextView} object with
+     *            text that contains current text.
+     * @return {@code ArrayList} of {@code TextView} objects with {@code text}.
+     */
+    public static ArrayList<TextView> getTextViewsInLayout(String text, View parentView,
+            boolean isStrictEqual) {
+        ArrayList<TextView> foundTextViews = new ArrayList<TextView>();
+        Solo solo = DataProvider.getInstance().getSolo();
+
+        for (TextView currentTextView : solo.getCurrentTextViews(parentView)) {
+
+            String currentTextViewValue = currentTextView.getText().toString();
+            if (StringUtils.isStringsEquals(currentTextViewValue, text, isStrictEqual)) {
+                foundTextViews.add(currentTextView);
+            }
+        }
+        return foundTextViews;
+    }
 }

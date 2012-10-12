@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.linkedin.android.screens.base.BaseProfileScreen;
 import com.linkedin.android.screens.common.ScreenNewMessage;
 import com.linkedin.android.screens.common.ScreenSearch;
-import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.data.ViewIdName;
@@ -22,6 +21,7 @@ import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.StringDefaultValues;
+import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -50,7 +50,8 @@ public class ScreenYou extends BaseProfileScreen {
     static final String WHOVIEWYOUPROFILE_BUTTON_TEXT = "Who's viewed your profile";
     static final String COMPANY_WEBSITE_BUTTON_TEXT = "Company Website";
     static final String LINKEDIN_SIGNIN_BUTTON_TEXT = "LinkedinSignIn";
-    
+    static final String SETTINGS_TEXT = "Settings";
+
     // TextView: current user name
     private static final ViewIdName NAME = new ViewIdName("name");
 
@@ -84,43 +85,41 @@ public class ScreenYou extends BaseProfileScreen {
 
         verifySearchBar();
 
-        verifyRightButtonInNavigationBar("Settings");
+        verifyRightButtonInNavigationBar(SETTINGS_TEXT);
         
-        //Logger.logElements(false, false, "ImageButton");
-
         ImageButton shareButton = getSolo().getImageButton(0);
         ImageButton sendButton = getSolo().getImageButton(1);
         
-        /*new Rect2DP(shareButton).logParameters();
-        new Rect2DP(sendButton).logParameters();
-        Logger.d("lrb=" + (LayoutUtils.isViewPlacedInLayout(shareButton, LayoutUtils.LEFT_BUTTON_LAYOUT)
-                && LayoutUtils.isViewPlacedInLayout(sendButton,
-                        LayoutUtils.RIGHT_BUTTON_LAYOUT)));
-        Logger.d("horis=" + ViewUtils.isViewsPlacedInLineHorizontally(shareButton, sendButton));*/
-
         Assert.assertNotNull("'Share' button is not present", shareButton);
         Assert.assertNotNull("'Send' button is not present", sendButton);
 
         Assert.assertTrue(
                 "'Share' and 'Send' buttons are not present (or their coordinates are wrong)",
                 LayoutUtils.isViewPlacedInLayout(shareButton, LayoutUtils.LEFT_BUTTON_LAYOUT)
-                && LayoutUtils.isViewPlacedInLayout(sendButton,
-                        LayoutUtils.RIGHT_BUTTON_LAYOUT)
-                && ViewUtils.isViewsPlacedInLineHorizontally(shareButton, sendButton));
+                        && LayoutUtils.isViewPlacedInLayout(sendButton,
+                                LayoutUtils.RIGHT_BUTTON_LAYOUT)
+                        && ViewUtils.isViewsPlacedInLineHorizontally(shareButton, sendButton));
 
         HardwareActions.takeCurrentActivityScreenshot("You screen");
     }
 
     @Override
     public void waitForMe() {
-        Assert.assertTrue("Cannot wait to launch activity '" + ACTIVITY_SHORT_CLASSNAME + "'",
-                getSolo()
-                        .waitForActivity(ACTIVITY_SHORT_CLASSNAME, DataProvider.WAIT_DELAY_DEFAULT));
+        WaitActions.waitSingleActivity(ACTIVITY_SHORT_CLASSNAME, "You");
     }
 
     @Override
     public String getActivityShortClassName() {
         return ACTIVITY_SHORT_CLASSNAME;
+    }
+    
+    /**
+     * Checks that opened You screen.
+     * 
+     * @return <b>true</b> if current screen - You screen. 
+     */
+    public static boolean isOnYouScreen(){
+        return getSolo().getCurrentActivity().getClass().getSimpleName().equals(ACTIVITY_SHORT_CLASSNAME);
     }
 
     /**
@@ -191,7 +190,7 @@ public class ScreenYou extends BaseProfileScreen {
      * @return current user name
      */
     public String getCurrentUserName() {
-        View userNameView = Id.getViewByName(NAME);
+        View userNameView = Id.getViewByViewIdName(NAME);
         if (!(userNameView instanceof TextView)) {
             return StringDefaultValues.EMPTY_STRING;
         }
@@ -206,12 +205,9 @@ public class ScreenYou extends BaseProfileScreen {
      * @return shortened current user name (17 symbols)
      */
     public String getCurrentUserShortenedName() {
-        final int currentUserShortenedNameStartPosition = 0;
-        final int currentUserShortenedNameLength = 17;
-
         String currentUserName = getCurrentUserName();
-        String currentUserShortenedName = currentUserName.substring(
-                currentUserShortenedNameStartPosition, currentUserShortenedNameLength);
+        // Reduce user name to 17 symbols
+        String currentUserShortenedName = currentUserName.substring(0, 17);
         return currentUserShortenedName;
     }
 

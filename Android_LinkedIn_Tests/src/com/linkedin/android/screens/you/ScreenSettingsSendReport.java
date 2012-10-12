@@ -10,6 +10,7 @@ import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
+@SuppressWarnings("rawtypes")
 public class ScreenSettingsSendReport extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.debug.ReportProblemActivity";

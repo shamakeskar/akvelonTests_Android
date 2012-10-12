@@ -20,7 +20,9 @@ import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.asserts.ScreenAssertUtils;
+import com.linkedin.android.utils.viewUtils.ImageViewUtils;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -126,31 +128,28 @@ public class ScreenSearch extends BaseScreen {
 
     /**
      * Taps on first item from Connection list
-     * 
      */
     public void tapOnFirstVisibleConnectionProfileScreen() {
         View firstVisibleConnectionFromList = getFirstVisibleConnectionFromList();
-        if (null == firstVisibleConnectionFromList) {
-            return;
-        }
-
-        Logger.i("Tapping on first connection in list");
-        getSolo().clickOnView(firstVisibleConnectionFromList);
+        Assert.assertNotNull("Connection list is empty", firstVisibleConnectionFromList);
+        ViewUtils.tapOnView(firstVisibleConnectionFromList, "first connection in list");
     }
 
     /**
      * Opens profile of connected user with name <b>connectionName</b>.
      * 
-     * @param connectionName is name of user to open profile screen
+     * @param connectionName
+     *            is name of user to open profile screen
      * @return
      */
     public ScreenProfileOfConnectedUser open1dConnectionProfileScreen(String connectionName) {
         TextView name = getSolo().getText(connectionName, false);
-        Assert.assertNotNull("Cannot find connection with name '" + connectionName + "' in list", name);
+        Assert.assertNotNull("Cannot find connection with name '" + connectionName + "' in list",
+                name);
 
         Logger.i("Tapping on connection '" + name.getText() + "' in list");
         getSolo().clickOnView(name);
-        
+
         return new ScreenProfileOfConnectedUser();
     }
 
@@ -178,43 +177,42 @@ public class ScreenSearch extends BaseScreen {
             return null;
         }
         LinearLayout firstVisibleConnectionLayout = (LinearLayout) firstVisibleConnectionFromList;
-        TextView foundContactNameTextView = ViewUtils.searchTextViewInLayout(contactName,
+        TextView foundContactNameTextView = TextViewUtils.searchTextViewInLayout(contactName,
                 firstVisibleConnectionLayout, true);
         return foundContactNameTextView;
     }
 
     /**
-     * Gets degree {@code ImageView} of contact 
-     * with specified {@code contactName} 
+     * Gets degree {@code ImageView} of contact with specified
+     * {@code contactName}
      * 
      * @param contactName
-     *          contact name to get degree {@code ImageView} 
-     * @return contact degree {@code ImageView} or 
-     *         <b>null</b> if contact null/has no degree    
+     *            contact name to get degree {@code ImageView}
+     * @return contact degree {@code ImageView} or <b>null</b> if contact
+     *         null/has no degree
      */
     public ImageView getContactDegree(TextView contactName) {
         int indexOfContactDegreeImageView = 2;
-        
+
         RelativeLayout contactNameLayout = getContactItemLayout(contactName);
         if (null == contactNameLayout) {
             return null;
         }
-        ImageView contactDegreeImageView = ViewUtils.getImageViewFromLayoutByIndex(contactNameLayout,
-                indexOfContactDegreeImageView);
+        ImageView contactDegreeImageView = ImageViewUtils.getImageViewFromLayoutByIndex(
+                contactNameLayout, indexOfContactDegreeImageView);
         return contactDegreeImageView;
     }
-    
+
     /**
-     * Gets parent layout of {@code contactNameLayout} 
+     * Gets parent layout of {@code contactNameLayout}
      * 
      * @param contactName
-     *          contact name
+     *            contact name
      * @return parent {@code RelativeLayout} of {@code contactNameLayout} or
-     *         <b>null</b> if {@code contactNameLayout} has no parent/it's parent 
-     *         not {@code RelativeLayout}     
+     *         <b>null</b> if {@code contactNameLayout} has no parent/it's
+     *         parent not {@code RelativeLayout}
      */
-    private RelativeLayout getContactItemLayout(TextView contactName)
-    {
+    private RelativeLayout getContactItemLayout(TextView contactName) {
         if (null == contactName) {
             return null;
         }
@@ -224,7 +222,7 @@ public class ScreenSearch extends BaseScreen {
             return null;
         }
         RelativeLayout contactNameLayout = (RelativeLayout) contactNameParentView;
-        return contactNameLayout; 
+        return contactNameLayout;
     }
 
     /**
