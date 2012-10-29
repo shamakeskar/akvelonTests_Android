@@ -273,7 +273,9 @@ public class CalendarTests extends BaseTestCase {
 
         // Scroll up to load more data. Then hit Today button.
         getSolo().scrollToTop();
+        WaitActions.waitForScreenUpdate();
         screenCalendar.tapOnTodayButton();
+        WaitActions.waitForScreenUpdate();
         Assert.assertTrue("'Today' button doesn't work on 'Calendar' screen",
                 screenCalendar.isOnToday());
         Logger.i(DONE + "Verify go back to Today's first event on 'Calendar'.");

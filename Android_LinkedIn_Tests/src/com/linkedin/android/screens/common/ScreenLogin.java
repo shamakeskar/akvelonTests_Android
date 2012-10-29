@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import junit.framework.Assert;
 import android.widget.Button;
 
+import com.linkedin.android.popups.PopupSyncContacts;
 import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.tests.data.DataProvider;
@@ -178,8 +179,9 @@ public class ScreenLogin extends BaseScreen {
         typeEmail(email);
         typePassword(password);
         tapOnSignInButton();
-        // Handle sync contacts dialog.
-        handleSyncContactsDialog();
+        
+        PopupSyncContacts psc = new PopupSyncContacts();
+        psc.tapOnDoNotSync();
 
         if (isCalendarSplashPresents()) {
             // Handle CalendarSplash.

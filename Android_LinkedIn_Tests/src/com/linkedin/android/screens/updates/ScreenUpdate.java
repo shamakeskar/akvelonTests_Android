@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.linkedin.android.popups.PopupForward;
 import com.linkedin.android.screens.base.BaseScreenSharedNewsDetails;
-import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Logger;
@@ -59,10 +59,8 @@ public class ScreenUpdate extends BaseScreenSharedNewsDetails {
      */
     public ScreenShareNewsArticle openShareNewsArticleScreen() {
         tapOnForwardButton();
-
-        getSolo().waitForText("Share", 1, DataProvider.WAIT_DELAY_DEFAULT);
-        tapOnShareOnPopup();
-
+        PopupForward popup = new PopupForward(PopupForward.SHARE_TEXT);
+        popup.tapOnOption(PopupForward.SHARE_TEXT);
         return new ScreenShareNewsArticle();
     }
 

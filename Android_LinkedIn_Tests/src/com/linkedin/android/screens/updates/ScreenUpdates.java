@@ -221,25 +221,26 @@ public class ScreenUpdates extends BaseINScreen {
      *         on current screen.
      */
     public TextView searchFirstGroupPost() {
-        /*final String groupLabelFromGroupPost = "Group:";
-
-        ArrayList<TextView> nonNameOfGroupTextViews = new ArrayList<TextView>();
-        TextView nameOfGroupFromFirstGroupPost = null;
-        do {
-            getSolo().searchText(groupLabelFromGroupPost);
-            nameOfGroupFromFirstGroupPost = TextViewUtils.searchTextViewInActivity(
-                    groupLabelFromGroupPost, nonNameOfGroupTextViews, false);
-            if (isNameOfGroupFromGroupPost(nameOfGroupFromFirstGroupPost)) {
-                return nameOfGroupFromFirstGroupPost;
-            }
-            nonNameOfGroupTextViews.add(nameOfGroupFromFirstGroupPost);
-        } while (null != nameOfGroupFromFirstGroupPost);*/
+        /*
+         * final String groupLabelFromGroupPost = "Group:";
+         * 
+         * ArrayList<TextView> nonNameOfGroupTextViews = new
+         * ArrayList<TextView>(); TextView nameOfGroupFromFirstGroupPost = null;
+         * do { getSolo().searchText(groupLabelFromGroupPost);
+         * nameOfGroupFromFirstGroupPost =
+         * TextViewUtils.searchTextViewInActivity( groupLabelFromGroupPost,
+         * nonNameOfGroupTextViews, false); if
+         * (isNameOfGroupFromGroupPost(nameOfGroupFromFirstGroupPost)) { return
+         * nameOfGroupFromFirstGroupPost; }
+         * nonNameOfGroupTextViews.add(nameOfGroupFromFirstGroupPost); } while
+         * (null != nameOfGroupFromFirstGroupPost);
+         */
         int maxCountOfScrolls = 50;
         boolean isCanScroll = true;
-        
+
         for (int i = 0; i < maxCountOfScrolls && isCanScroll; i++) {
             TextView postedThis = TextViewUtils.searchTextViewInActivity("posted this", false);
-            if (postedThis != null){
+            if (postedThis != null) {
                 return postedThis;
             }
             isCanScroll = ListViewUtils.scrollToNewItems();
@@ -255,42 +256,32 @@ public class ScreenUpdates extends BaseINScreen {
      * @return <b>true</b> if specified {@code textView} is name of group from
      *         group post, <b>false</b> otherwise.
      */
-/*    private boolean isNameOfGroupFromGroupPost(TextView textView) {
-        final int nameOfGroupFromGroupPostIndex = 1;
-
-        if (null == textView) {
-            return false;
-        }
-
-        ViewParent textViewParent = textView.getParent();
-        if (!(textViewParent instanceof RelativeLayout)) {
-            return false;
-        }
-        RelativeLayout textViewParentLayout = (RelativeLayout) textViewParent;
-        TextView groupName = ViewGroupUtils.getChildViewByIndexSafely(textViewParentLayout,
-                nameOfGroupFromGroupPostIndex, TextView.class);
-        if (textView != groupName) {
-            return false;
-        }
-
-        ViewParent textViewParent2Degree = textViewParentLayout.getParent();
-        if (!(textViewParent2Degree instanceof RelativeLayout)) {
-            return false;
-        }
-
-        ViewParent textViewParent3Degree = textViewParent2Degree.getParent();
-        if (!(textViewParent3Degree instanceof RelativeLayout)) {
-            return false;
-        }
-
-        ViewParent textViewParent4Degree = textViewParent3Degree.getParent();
-        if (!(textViewParent4Degree instanceof LinearLayout)) {
-            return false;
-        }
-
-        View recentUpdatesList = (View) textViewParent4Degree.getParent();
-        return recentUpdatesList instanceof ListView;
-    }*/
+    /*
+     * private boolean isNameOfGroupFromGroupPost(TextView textView) { final int
+     * nameOfGroupFromGroupPostIndex = 1;
+     * 
+     * if (null == textView) { return false; }
+     * 
+     * ViewParent textViewParent = textView.getParent(); if (!(textViewParent
+     * instanceof RelativeLayout)) { return false; } RelativeLayout
+     * textViewParentLayout = (RelativeLayout) textViewParent; TextView
+     * groupName =
+     * ViewGroupUtils.getChildViewByIndexSafely(textViewParentLayout,
+     * nameOfGroupFromGroupPostIndex, TextView.class); if (textView !=
+     * groupName) { return false; }
+     * 
+     * ViewParent textViewParent2Degree = textViewParentLayout.getParent(); if
+     * (!(textViewParent2Degree instanceof RelativeLayout)) { return false; }
+     * 
+     * ViewParent textViewParent3Degree = textViewParent2Degree.getParent(); if
+     * (!(textViewParent3Degree instanceof RelativeLayout)) { return false; }
+     * 
+     * ViewParent textViewParent4Degree = textViewParent3Degree.getParent(); if
+     * (!(textViewParent4Degree instanceof LinearLayout)) { return false; }
+     * 
+     * View recentUpdatesList = (View) textViewParent4Degree.getParent(); return
+     * recentUpdatesList instanceof ListView; }
+     */
 
     /**
      * Used by openAnySharedNewsArticleDetailsScreen function
@@ -480,8 +471,8 @@ public class ScreenUpdates extends BaseINScreen {
                                     // Next string after company name must be
                                     // news date.
                                     if (!RegexpUtils.isCanBeFound(string,
-                                            RegexpPatterns.DATE_LIKE_10_HOURS_AGO) &&
-                                            !RegexpUtils.isCanBeFound(string,
+                                            RegexpPatterns.DATE_LIKE_10_HOURS_AGO)
+                                            && !RegexpUtils.isCanBeFound(string,
                                                     RegexpPatterns.DATE_LIKE_OCTOBER_1)) {
                                         // If it not news date then current row
                                         // is
@@ -1108,4 +1099,21 @@ public class ScreenUpdates extends BaseINScreen {
         return (LinearLayout) textViewParent4Degree;
     }
 
+    /**
+     * It's verify that current screen has article with specified text and this
+     * article has two images.
+     * 
+     * @param currentText
+     *            is specified text, which you need to verify.
+     */
+    public void isScreenHasImagesDisplayedWithText(String currentText) {
+        Assert.assertTrue("There is no news with '" + currentText + "'",
+                getSolo().waitForText(currentText, 1, DataProvider.WAIT_DELAY_LONG, false, false));
+
+        TextView textView = TextViewUtils.searchTextViewInActivity(currentText, false);
+        RelativeLayout parentLayout = (RelativeLayout) textView.getParent();
+        Assert.assertTrue("There is no images with text '" + currentText + "'",
+                (parentLayout.getChildAt(0) instanceof ImageView)
+                        & (parentLayout.getChildAt(1) instanceof ImageView));
+    }
 }

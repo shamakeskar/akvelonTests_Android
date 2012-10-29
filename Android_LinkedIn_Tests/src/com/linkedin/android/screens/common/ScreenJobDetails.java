@@ -19,6 +19,8 @@ public class ScreenJobDetails extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.jsbridge.JobsActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "JobsActivity";
+    public static final String WEB_ACTIVITY_CLASSNAME = "com.linkedin.android.jsbridge.LiWebViewActivity";
+    public static final String WEB_ACTIVITY_SHORT_CLASSNAME = "LiWebViewActivity";
     static final float COORDINATE_OF_SAVE_UNSAVE_JOB_XDP = 100 * 2 / 3;
     static final float COORDINATE_OF_SAVE_UNSAVE_JOB_YDP1 = 180;
     static final float COORDINATE_OF_SAVE_UNSAVE_JOB_YDP2 = 200;
@@ -49,9 +51,8 @@ public class ScreenJobDetails extends BaseINScreen {
 
     @Override
     public void waitForMe() {
-        Assert.assertTrue("Cannot wait to launch activity '" + ACTIVITY_SHORT_CLASSNAME + "'",
-                getSolo()
-                        .waitForActivity(ACTIVITY_SHORT_CLASSNAME, DataProvider.WAIT_DELAY_DEFAULT));
+        WaitActions.waitMultiplyActivities(new String[] { ACTIVITY_SHORT_CLASSNAME,
+                WEB_ACTIVITY_SHORT_CLASSNAME });
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ScreenJobDetails extends BaseINScreen {
         getSolo().clickOnScreen(ScreenResolution.getScreenWidth() / 2,
                 ScreenResolution.getScreenHeight() / 2);
         // Delay after first click for wait that screen is stable.
-        WaitActions.waitForScreenUpdate();
+        WaitActions.delay(DataProvider.WAIT_SAVE_UNSAVE_JOB_BUTTON_CHANGED);
         int colorOfFirstPoint = HardwareActions.saveCurrentScreenScreenshotInBitmap().getPixel(
                 (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_XDP * ScreenResolution.getScreenDensity()),
                 (int) (COORDINATE_OF_SAVE_UNSAVE_JOB_YDP1 * ScreenResolution.getScreenDensity()));

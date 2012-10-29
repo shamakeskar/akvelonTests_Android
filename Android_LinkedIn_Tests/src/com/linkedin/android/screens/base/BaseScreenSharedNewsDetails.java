@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.linkedin.android.popups.PopupForward;
 import com.linkedin.android.screens.common.ScreenNewMessage;
 import com.linkedin.android.screens.common.ScreenReplyMessage;
 import com.linkedin.android.screens.updates.ScreenAddComment;
@@ -145,35 +146,11 @@ public abstract class BaseScreenSharedNewsDetails extends BaseINScreen {
     }
 
     /**
-     * Taps on Send to Connection on popup.
-     */
-    @Deprecated
-    public void tapOnSendToConnectionOnPopup() {
-        Assert.assertNotNull("'SendToConnection' button is not present.",
-                getSolo().searchText("Send to Connection"));
-        Logger.i("Tapping on 'SendToConnection' button");
-        getSolo().clickOnText("Send to Connection");
-    }
-
-    /**
-     * Taps on Reply Privately on popup.
-     */
-    @Deprecated
-    public void tapOnReplyPrivatelyOnPopup() {
-        Assert.assertTrue("'Reply Privately' button is not present.",
-                getSolo().searchText("Reply Privately"));
-        Logger.i("Tapping on 'Reply Privately' button");
-        getSolo().clickOnText("Reply Privately");
-    }
-
-    /**
      * Taps on Cancel button on popup.
      */
-    @Deprecated
     public void tapOnCancelButtonOnPopup() {
-        Assert.assertTrue("'Cancel' button is not present.", getSolo().searchText("Cancel"));
-        Logger.i("Tapping on 'Cancel' button");
-        getSolo().clickOnText("Cancel");
+        PopupForward popup = new PopupForward(PopupForward.CANCEL_TEXT);
+        popup.tapOnCancelButtonOnPopup();
     }
 
     /**
@@ -181,11 +158,10 @@ public abstract class BaseScreenSharedNewsDetails extends BaseINScreen {
      * 
      * @return {@code ScreenNewMessage} with just opened 'New Message' screen.
      */
-    @Deprecated
     public ScreenNewMessage openSendToConnectionScreen() {
         tapOnForwardButton();
-        getSolo().waitForText("Send to Connection", 1, DataProvider.WAIT_DELAY_DEFAULT);
-        tapOnSendToConnectionOnPopup();
+        PopupForward popup = new PopupForward(PopupForward.SEND_TO_CONNECTION_TEXT);
+        popup.tapOnOption(PopupForward.SEND_TO_CONNECTION_TEXT);
 
         return new ScreenNewMessage();
     }
@@ -195,12 +171,10 @@ public abstract class BaseScreenSharedNewsDetails extends BaseINScreen {
      * 
      * @return {@code ScreenNewMessage} with just opened 'New Message' screen.
      */
-    @Deprecated
     public ScreenReplyMessage openReplyPrivatelyScreen() {
         tapOnForwardButton();
-        getSolo().waitForText("Reply Privately", 1, DataProvider.WAIT_DELAY_DEFAULT);
-        tapOnReplyPrivatelyOnPopup();
-
+        PopupForward popup = new PopupForward(PopupForward.REPLY_PRIVATELY_TEXT);
+        popup.tapOnOption(PopupForward.REPLY_PRIVATELY_TEXT);
         return new ScreenReplyMessage();
     }
 

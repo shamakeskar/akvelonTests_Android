@@ -50,6 +50,7 @@ public class ScreenSearch extends BaseScreen {
     static final Rect2DP SEARCH_BAR_LAYOUT = new Rect2DP(0, 0, SCREEN_WIDTH - 54.0f, 82.0f);
     static final Rect2DP SEARCH_ICON_RECT = new Rect2DP(262f, 29f, 55f, 49f);
     static final Rect2DP SEARCH_BAR_RECT = new Rect2DP(10f, 33f, 252f, 48f);
+    static final int WAIT_FOR_SCREEN_LOAD_COMPLETELY = 10;
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -62,6 +63,8 @@ public class ScreenSearch extends BaseScreen {
     @Override
     public void verify() {
         ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        // Delay for wait then 'Search bar' and 'Search button' loaded.
+        WaitActions.delay(WAIT_FOR_SCREEN_LOAD_COMPLETELY);
 
         // Verify presence of search bar.
         Assert.assertNotNull("Search bar is not present", getSearchBar());

@@ -25,6 +25,8 @@ public class PopupForward {
     // Strings with texts for possible options.
     public static final String SEND_TO_CONNECTION_TEXT = "Send to Connection";
     public static final String REPLY_PRIVATELY_TEXT = "Reply Privately";
+    public static final String SHARE_TEXT = "Share";
+    public static final String CANCEL_TEXT = "Cancel";
 
     // PROPERTIES -----------------------------------------------------------
     // Array with options for current Forward popup.

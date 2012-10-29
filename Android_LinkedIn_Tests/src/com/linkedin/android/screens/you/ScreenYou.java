@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.linkedin.android.screens.base.BaseProfileScreen;
 import com.linkedin.android.screens.common.ScreenNewMessage;
 import com.linkedin.android.screens.common.ScreenSearch;
+import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.data.ViewIdName;
@@ -22,6 +23,7 @@ import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.StringDefaultValues;
 import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -119,7 +121,18 @@ public class ScreenYou extends BaseProfileScreen {
      * @return <b>true</b> if current screen - You screen. 
      */
     public static boolean isOnYouScreen(){
-        return getSolo().getCurrentActivity().getClass().getSimpleName().equals(ACTIVITY_SHORT_CLASSNAME);
+    	if (!getSolo().getCurrentActivity().getClass().getSimpleName()
+    			.equals(ACTIVITY_SHORT_CLASSNAME))
+    		return false;
+        if (!getSolo().waitForText(CONNECTIONS_LABEL,
+                1, DataProvider.WAIT_DELAY_LONG, false, false))
+        	return false;
+        if (TextViewUtils.searchTextViewInActivity(RECENT_ACTIVITY_LABEL, true) == null)
+        	return false;
+        if (TextViewUtils.searchTextViewInActivity(EXPERIENCE_LABEL, true) == null)
+        	return false;
+
+    	return true;
     }
 
     /**

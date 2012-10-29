@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import junit.framework.Assert;
 import android.graphics.Point;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 
 /**
@@ -276,6 +278,26 @@ public final class WaitActions {
             delay(DataProvider.WAIT_DELAY_STEP * 0.001f);
         }
         Assert.fail("Timeout error for progress bar");
+    }
+    
+    /**
+     * Waits until <b>ListView</b> width is equal to <b>ScreenWidth</b> or
+     * <b>timeoutInMs</b> is over.
+     * 
+     * @param ListView
+     *            - view of ListView for check.
+     * @param timeoutInMs
+     *            - timeout in milliseconds.
+     */
+    public static void waitForListViewWidthEqualToScreenWidth(ListView listView, int timeoutInMs) {
+        int waitStepsCount = timeoutInMs / DataProvider.WAIT_DELAY_STEP;
+        for (int i = 0; i < waitStepsCount; i++) {
+            if (ListViewUtils.isListViewWidthEqualToScreenWidth(listView)) {
+                return;
+            }
+            delay(DataProvider.WAIT_DELAY_STEP * 0.001f);
+        }
+        Assert.fail("Timeout error for ListView width equal to ScreenWidth");
     }
 
     /**

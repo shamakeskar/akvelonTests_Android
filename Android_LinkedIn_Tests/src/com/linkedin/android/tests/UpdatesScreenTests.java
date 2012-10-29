@@ -9,8 +9,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.linkedin.android.popups.Popup;
 import com.linkedin.android.popups.PopupForward;
+import com.linkedin.android.popups.PopupShareUpdateCancel;
 import com.linkedin.android.screens.common.ScreenAddConnections;
 import com.linkedin.android.screens.common.ScreenBrowser;
 import com.linkedin.android.screens.common.ScreenExpose;
@@ -35,7 +35,6 @@ import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.screens.updates.ScreenViralUpdate;
 import com.linkedin.android.screens.you.ScreenProfileOfConnectedUser;
 import com.linkedin.android.screens.you.ScreenProfileOfNotConnectedUser;
-import com.linkedin.android.screens.you.ScreenYou;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.StringData;
@@ -213,13 +212,14 @@ public class UpdatesScreenTests extends BaseTestCase {
         // Open first news article from 'Recent updates' screen.
         ScreenNewsArticleDetails newsArticleDetailsScreen = screenUpdates
                 .openFirstNewsArticleDetailsScreen();
+        String articleHeader = newsArticleDetailsScreen.getArticleHeader();
 
         // Click on Forward button.
         ScreenShareNewsArticle shareNewsArticleScreen = newsArticleDetailsScreen
                 .openShareNewsArticleScreen();
 
         // Test comment.
-        String testComment = "Test comment 0.42590884519218986";
+        String testComment = "Test comment 0.7774433";
 
         // Type generated string to Comment field.
         shareNewsArticleScreen.typeInComment(testComment);
@@ -233,6 +233,10 @@ public class UpdatesScreenTests extends BaseTestCase {
         // Go to Updates screen.
         screenUpdates = screenExpose.openUpdatesScreen();
 
+        // Reopen Updates screen (refresh does not work with fixtures).
+        screenExpose = screenUpdates.openExposeScreen();
+        screenUpdates = screenExpose.openUpdatesScreen();
+
         // Scroll to the top of Update screen.
         HardwareActions.scrollUp();
 
@@ -240,21 +244,11 @@ public class UpdatesScreenTests extends BaseTestCase {
         final int updatesScreenUpdateWaitTime = 3;
         WaitActions.delay(updatesScreenUpdateWaitTime);
 
-        // Check if update screen contains article with specified text.
-        boolean isUpdateScreenContainArticleWithSpecifiedText = screenUpdates
-                .isUpdateScreenContainArticleWithSpecifiedText(testComment);
-        Assert.assertTrue("Test comment to news article was not shared.",
-                isUpdateScreenContainArticleWithSpecifiedText);
-        Logger.i(DONE
-                + "Verify that the article is shared and is shown in Updates screen with the comment.");
+        Assert.assertTrue("There is no comment '" + testComment + "'",
+                getSolo().searchText(articleHeader, 1, false, true));
+        Logger.i(DONE + "Verify that the article is shared and is shown in updates");
 
-        // Verify that image displayed along with summary for article with
-        // comment.
-        boolean isArticleHasImageDisplayedAlongWithSummary = screenUpdates
-                .isArticleHasImageDisplayedAlongWithSummary(testComment);
-        Assert.assertTrue(
-                "There is no image displayed along with summary for article with comment: "
-                        + testComment, isArticleHasImageDisplayedAlongWithSummary);
+        screenUpdates.isScreenHasImagesDisplayedWithText(testComment);
         Logger.i(DONE + "Verify that image displayed along with summary for article with comment.");
 
         passTest();
@@ -590,6 +584,7 @@ public class UpdatesScreenTests extends BaseTestCase {
 
         // List of all connections of test_user (for current fixture).
         List<String> listOfConnections = new ArrayList<String>();
+        listOfConnections.add("akvelon a testing");
         listOfConnections.add("Akvelon AkvelonTest");
         listOfConnections.add("test43 akvtest");
         listOfConnections.add("Makarov Alexander");
@@ -602,16 +597,15 @@ public class UpdatesScreenTests extends BaseTestCase {
         listOfConnections.add("Sergei Grebnov");
         listOfConnections.add("Kompash Ka");
         listOfConnections.add("Valentina Logunova");
+        listOfConnections.add("Alex Makarov");
         listOfConnections.add("Nicolas Martino");
         listOfConnections.add("Iryna Pavlenko");
         listOfConnections.add("Alex Pronin");
         listOfConnections.add("Lutfur Rahman");
         listOfConnections.add("Alex Rudyk");
         listOfConnections.add("akvtest test 44");
-        listOfConnections.add("akvelon a testing");
         listOfConnections.add("akvelon test46");
         listOfConnections.add("akv testing");
-        listOfConnections.add("Alex Makarov");
         listOfConnections.add("akvelon testing Famous31");
         listOfConnections.add("user1er user1ln");
         listOfConnections.add("Very very long name Very very very looooooooooooooooong name");
@@ -917,10 +911,10 @@ public class UpdatesScreenTests extends BaseTestCase {
         HardwareActions.pressBack();
 
         // Verify 'Cancel Message' popup.
-        Popup popup = new Popup("Cancel", "Are you sure you want to discard this message?");
+        PopupShareUpdateCancel popup = new PopupShareUpdateCancel();
 
         // Tap on 'Yes' button on popup.
-        popup.tapOnButton("Yes");
+        popup.tapOnYesButton();
 
         // Verify that user returned to Updates screen.
         screenUpdates = new ScreenUpdates();
@@ -976,14 +970,17 @@ public class UpdatesScreenTests extends BaseTestCase {
         startTest("35973635", "NUS -  Update.");
 
         // STEP 1
-        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
-        ScreenUpdate newsDetails = screenUpdates.openAnySharedNewsArticleDetailsScreen(3);
-        Assert.assertNotNull("Can not find any shared news", newsDetails);
+        // Hardcoded
+        LoginActions.openUpdatesScreenOnStart();
+        Assert.assertTrue("There is no specified news",
+                getSolo().searchText("Comment for test 35973635"));
+        getSolo().clickOnText("Comment for test 35973635");
+        ScreenUpdate newsDetails = new ScreenUpdate();
         Logger.i(DONE + "The Feed Details Page shows up");
 
         // STEP 2
         newsDetails.tapOnConnectionProfile();
-        new ScreenYou();
+        new ScreenProfileOfConnectedUser();
         Logger.i(DONE + "Profile page shows up");
 
         // STEP 3
@@ -1127,8 +1124,14 @@ public class UpdatesScreenTests extends BaseTestCase {
 
         // STEP 1
         LoginActions.openUpdatesScreenOnStart();
+
+        // Wait for loading screen
+        WaitActions.waitForScreenUpdate();
+
         // Hardcoded news in fixture.
         Logger.i("Click on Update with string 'Update for test 35973757'");
+        Assert.assertTrue("News with text 'Update for test 35973757' not found", getSolo()
+                .searchText("Update for test 35973757"));
         getSolo().clickOnText("Update for test 35973757", 1, true);
         ScreenUpdate newsDetails = new ScreenUpdate();
         Assert.assertNotNull("Can not find any News", newsDetails);
@@ -1157,8 +1160,7 @@ public class UpdatesScreenTests extends BaseTestCase {
 
         // STEP 6
         addComment.typeUpdateText(null);
-        addComment.tapOnSendButton();
-        addComment.verifyToast("Comment sent");
+        addComment.postComment();
         Logger.i(DONE + "Posting Comment and comment posted toast is shown");
 
         // STEP 7 & 8
@@ -1168,8 +1170,7 @@ public class UpdatesScreenTests extends BaseTestCase {
 
         // STEP 9
         shareNews.typeRandomComment();
-        shareNews.tapOnShareButton();
-        addComment.verifyToast("Update sent");
+        shareNews.shareNews();
         newsDetails = new ScreenUpdate();
         Logger.i(DONE + "The Feed Details Page shows up");
 
@@ -1200,7 +1201,6 @@ public class UpdatesScreenTests extends BaseTestCase {
 
         // STEP 14
         newsDetails.tapOnForwardButton();
-        getSolo().waitForText("Cancel", 1, DataProvider.WAIT_DELAY_DEFAULT);
         newsDetails.tapOnCancelButtonOnPopup();
         newsDetails = new ScreenUpdate();
         Logger.i(DONE + "The Feed Details Page shows up");

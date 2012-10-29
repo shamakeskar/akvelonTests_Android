@@ -7,6 +7,7 @@ import android.widget.ListView;
 
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.updates.ScreenUpdateProfile;
+import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
@@ -40,7 +41,13 @@ public class ScreenUpdatedProfileRollup extends BaseINScreen {
         WaitActions.waitForText(DETAILS_LABEL, "There is no '" + DETAILS_LABEL + "' label.");
 
         verifyINButton();
-        assertUpdatedProfilesList();
+
+        // Wait for updatedProfilesList width equal to screen width
+        ListView updatedProfilesList = getUpdatedProfilesList();
+        WaitActions.waitForListViewWidthEqualToScreenWidth(updatedProfilesList,
+                DataProvider.WAIT_DELAY_DEFAULT);
+
+        assertUpdatedProfilesList(updatedProfilesList);
 
         HardwareActions.takeCurrentActivityScreenshot("Update Profile rollup screen");
     }
@@ -58,12 +65,8 @@ public class ScreenUpdatedProfileRollup extends BaseINScreen {
     /**
      * Verifies 'Updated profiles' list.
      */
-    private void assertUpdatedProfilesList() {
-    	WaitActions.waitForScreenUpdate();
-        ListView updatedProfilesList = getUpdatedProfilesList();
+    private void assertUpdatedProfilesList(ListView updatedProfilesList) {
         Assert.assertNotNull("'Updated profiles' list is not present", updatedProfilesList);
-        Assert.assertTrue("'Updated profiles' list width does not equal to screen width",
-                ListViewUtils.isListViewWidthEqualToScreenWidth(updatedProfilesList));
         Assert.assertTrue("'Updated profiles' list is empty",
                 ListViewUtils.isListViewNotEmpty(updatedProfilesList));
     }
