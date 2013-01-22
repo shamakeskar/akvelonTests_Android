@@ -134,7 +134,7 @@ public class AkvelonInstrumentationTestRunner extends InstrumentationTestRunner 
     }
 
     // TODO remove on release.
-    private Class<? extends BaseTestCase> customClass = TmpRegressions.class;
+    private Class<? extends BaseTestCase> customClass = null;
     // in sample = TmpRegressions.class;
     private String customMethodName = "";
     // in sample = "test_regression_news";
