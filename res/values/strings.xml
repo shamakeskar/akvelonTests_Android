@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="app_name">Android_LinkedIn_TestsTest</string>
+    <string name="file_with_tags">tags.json</string>
+    <string name="file_with_xml">tests.xml</string>
+
+</resources>

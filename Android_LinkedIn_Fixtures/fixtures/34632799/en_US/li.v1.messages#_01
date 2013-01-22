@@ -1,1 +1,0 @@
-{"statusCode":400,"message":"{ statusCode: 403,\n  data: '{\\n  \"errorCode\": 0,\\n  \"message\": \"this member is not allowed to invite people with out knowing their email address\",\\n  \"requestId\": \"ZXJCLLL9QQ\",\\n  \"status\": 403,\\n  \"timestamp\": 1350351720204\\n}' }","public":"Unable to send invitation."}
