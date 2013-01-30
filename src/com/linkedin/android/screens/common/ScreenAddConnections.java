@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
-import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
@@ -97,12 +97,12 @@ public class ScreenAddConnections extends BaseScreen {
         }
 
         Assert.assertTrue("Connection is not present: " + connectionName,
-                        getSolo().searchText(connectionName));
+                getSolo().searchText(connectionName));
 
         // Get checkbox layout.
         View checkbox = null;
         View connectionLayout = (RelativeLayout) TextViewUtils.getTextViewByPartialText(
-                        connectionName).getParent();
+                connectionName).getParent();
         for (View view : getSolo().getViews(connectionLayout))
             if (view instanceof CheckedTextView) {
                 checkbox = view;
@@ -178,25 +178,25 @@ public class ScreenAddConnections extends BaseScreen {
         ViewAssertUtils.assertLabel(CONNECTIONS_LABEL);
     }
 
-    public static void go_to_select_recipients() {
-        LoginActions.openUpdatesScreenOnStart();
-        ScreenNewMessage.go_to_message_compose();
+    @TestAction(value = "go_to_select_recipients")
+    public static void go_to_select_recipients(String email, String password) {
+        ScreenNewMessage.go_to_message_compose(email, password);
         select_recipients("go_to_select_recipients");
     }
 
     public static void select_recipients(String screenshotName) {
-        if (screenshotName == null)
-            screenshotName = "select_recipients";
         ImageView recipients = (ImageView) Id.getViewByViewIdName(ID_NAME_ADD_USERS);
         ViewUtils.tapOnView(recipients, "Add recipients");
         new ScreenAddConnections();
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "select_recipients")
     public static void select_recipients() {
-        select_recipients(null);
+        select_recipients("select_recipients");
     }
 
+    @TestAction(value = "select_recipients_tap_scrollbar")
     public static void select_recipients_tap_scrollbar() {
         TextView firstName = (TextView) Id.getViewByViewIdName(ID_NAME_OF_FIRST_SHOW_USER);
 
@@ -210,19 +210,24 @@ public class ScreenAddConnections extends BaseScreen {
         TestUtils.delayAndCaptureScreenshot("select_recipients_tap_scrollbar");
     }
 
+    @TestAction(value = "select_recipients_tap_select")
     public static void select_recipients_tap_select() {
         CheckedTextView check = (CheckedTextView) Id.getViewByViewIdName(ID_NAME_OF_CHECKBOX);
         final boolean isChecked = check.isChecked();
         ViewUtils.tapOnView(check, "First check box");
         WaitActions.waitForTrueInFunction("CheckBox is not chcked", new Callable<Boolean>() {
             public Boolean call() {
-                boolean cheked = ((CheckedTextView) Id.getViewByViewIdName(ID_NAME_OF_CHECKBOX)).isChecked();
-                return (cheked != isChecked);
+                CheckedTextView checkedTextView = (CheckedTextView) Id
+                        .getViewByViewIdName(ID_NAME_OF_CHECKBOX);
+                Assert.assertNotNull("No checkbox on the screen", checkedTextView);
+                boolean checked = checkedTextView.isChecked();
+                return (checked != isChecked);
             }
         });
         TestUtils.delayAndCaptureScreenshot("select_recipients_tap_select");
     }
 
+    @TestAction(value = "select_recipients_tap_cancel")
     public static void select_recipients_tap_cancel() {
         Button cancel = (Button) Id.getViewByViewIdName(ID_NAME_OF_CANCEL_BUTTON);
         ViewUtils.tapOnView(cancel, "Cancel");
@@ -230,6 +235,7 @@ public class ScreenAddConnections extends BaseScreen {
         TestUtils.delayAndCaptureScreenshot("select_recipients_tap_cancel");
     }
 
+    @TestAction(value = "select_recipients_tap_done")
     public static void select_recipients_tap_done() {
         Button done = (Button) Id.getViewByViewIdName(ID_NAME_OF_DONE_BUTTON);
         ViewUtils.tapOnView(done, "Done");

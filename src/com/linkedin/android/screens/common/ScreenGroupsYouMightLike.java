@@ -1,16 +1,14 @@
 package com.linkedin.android.screens.common;
 
-import java.util.concurrent.Callable;
-
 import junit.framework.Assert;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import com.linkedin.android.screens.base.BaseINScreen;
+import com.linkedin.android.screens.base.BaseListScreen;
 import com.linkedin.android.screens.more.ScreenGroupsDiscussionList;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
@@ -23,7 +21,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  * @created Aug 31, 2012 2:05:62 PM
  */
 // Group join request sent.
-public class ScreenGroupsYouMightLike extends BaseINScreen {
+public class ScreenGroupsYouMightLike extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.groups.GroupsYouMightLikeListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "GroupsYouMightLikeListActivity";
@@ -130,32 +128,38 @@ public class ScreenGroupsYouMightLike extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "groups_gyml")
     public static void groups_gyml() {
         groups_gyml("groups_gyml");
     }
 
-    public static void go_to_groups_gyml() {
-        ScreenGroups.go_to_groups();
+    @TestAction(value = "go_to_groups_gyml")
+    public static void go_to_groups_gyml(String email, String password) {
+        ScreenGroups.go_to_groups(email, password);
         groups_gyml("go_to_groups_gyml");
     }
 
+    @TestAction(value = "groups_gyml_tap_back")
     public static void groups_gyml_tap_back() {
         HardwareActions.pressBack();
         new ScreenGroups();
         TestUtils.delayAndCaptureScreenshot("groups_gyml_tap_back");
     }
 
+    @TestAction(value = "groups_gyml_tap_expose")
     public static void groups_gyml_tap_expose() {
         new ScreenGroupsYouMightLike().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("groups_gyml_tap_expose");
     }
 
+    @TestAction(value = "groups_gyml_tap_expose_reset")
     public static void groups_gyml_tap_expose_reset() {
         tapOnINButton();
         new ScreenGroupsYouMightLike();
         TestUtils.delayAndCaptureScreenshot("groups_gyml_tap_expose_reset");
     }
 
+    @TestAction(value = "groups_gyml_tap_join")
     public static void groups_gyml_tap_join() {
         TestUtils.delayAndCaptureScreenshot("groups_gyml_tap_join");
         new ScreenGroupsYouMightLike().tapOnFirstVisibleJoinButton();
@@ -163,6 +167,7 @@ public class ScreenGroupsYouMightLike extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("groups_gyml_tap_join");
     }
 
+    @TestAction(value = "groups_gyml_tap_group")
     public static void groups_gyml_tap_group() {
 
         new ScreenGroupsYouMightLike().tapOnVisibleNotClosedGroup();
@@ -175,43 +180,22 @@ public class ScreenGroupsYouMightLike extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("groups_gyml_tap_join");
     }
 
+    @TestAction(value = "groups_gyml_tap_group_reset")
     public static void groups_gyml_tap_group_reset() {
         HardwareActions.pressBack();
         new ScreenGroupsYouMightLike();
         TestUtils.delayAndCaptureScreenshot("groups_gyml_tap_group_reset");
     }
 
+    @TestAction(value = "groups_gyml_pull_refresh")
     public static void groups_gyml_pull_refresh() {
-        HardwareActions.pressMenu();
-
-        HardwareActions.tapOnMenuOption(MENU_ITEM_REFRESH);
-
-        new ScreenGroupsYouMightLike();
+        new ScreenGroupsYouMightLike().refreshScreen();
         TestUtils.delayAndCaptureScreenshot("updates_pull_refresh");
     }
 
-    /**
-     * Scroll down, wait for load more records.
-     */
-    public void scrollDownLoadMore() {
-        getSolo().scrollToBottom();
-
-        // APP BUG: spinner doesn't present sometimes.
-        // Check that you see spinner.
-        Assert.assertTrue("Spinner is not present.",
-                getSolo().waitForView(ProgressBar.class, 1, DataProvider.WAIT_DELAY_SHORT, false));
-        // Wait when the spinner will disappear.
-        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
-                "Spinner didn't disapear.", new Callable<Boolean>() {
-                    public Boolean call() {
-                        return !(getSolo().waitForView(ProgressBar.class, 1,
-                                DataProvider.WAIT_DELAY_DEFAULT, false));
-                    }
-                });
-    }
-
+    @TestAction(value = "groups_gyml_scroll_load_more")
     public static void groups_gyml_scroll_load_more() {
-        new ScreenGroupsYouMightLike().scrollDownLoadMore();
+        new ScreenGroupsYouMightLike().scrollDownForLoadMore();
         TestUtils.delayAndCaptureScreenshot("groups_gyml_scroll_load_more");
     }
 }

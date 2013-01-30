@@ -8,11 +8,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.linkedin.android.screens.base.BaseINScreen;
+import com.linkedin.android.screens.base.BaseListScreen;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
@@ -30,7 +31,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  * @author dmitry.somov
  * @created Aug 14, 2012 10:58:17 AM
  */
-public class ScreenLinkedInToday extends BaseINScreen {
+public class ScreenLinkedInToday extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.news.NewsListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "NewsListActivity";
@@ -254,26 +255,30 @@ public class ScreenLinkedInToday extends BaseINScreen {
         return newsArticleImageView instanceof ImageView;
     }
 
-    public static void go_to_news() {
-        LoginActions.openUpdatesScreenOnStart();
+    @TestAction(value = "go_to_news")
+    public static void go_to_news(String email, String password) {
+        LoginActions.openUpdatesScreenOnStart(email, password);
 
         news("go_to_news");
     }
 
+    @TestAction(value = "news")
     public static void news() {
         news("news");
     }
 
     public static void news(String screenshotName) {
-        TextView title = (TextView) Id.getViewByViewIdName(new ViewIdName("title"));
         // Sometimes screen below than LinkedIn Today title and it's need to
         // scroll up for click on it.
-        HardwareActions.scrollUp();
+        getSolo().scrollToTop();
+
+        TextView title = (TextView) Id.getViewByViewIdName(TOP_NEWS_ARTICLE_LABEL);
         ViewUtils.tapOnView(title, "LINKEDIN TODAY");
 
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "news_tap_back")
     public static void news_tap_back() {
         HardwareActions.pressBack();
         new ScreenUpdates();
@@ -281,6 +286,7 @@ public class ScreenLinkedInToday extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("news_tap_back");
     }
 
+    @TestAction(value = "news_tap_article")
     public static void news_tap_article() {
         View topNewsTitle = (View) Id.getViewByViewIdName(TOP_NEWS_ARTICLE_LABEL);
         Assert.assertNotNull("No updates found on News screen", topNewsTitle);
@@ -292,6 +298,7 @@ public class ScreenLinkedInToday extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("news_tap_article");
     }
 
+    @TestAction(value = "news_tap_article_reset")
     public static void news_tap_article_reset() {
         HardwareActions.pressBack();
         new ScreenLinkedInToday();
@@ -299,12 +306,14 @@ public class ScreenLinkedInToday extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("news_tap_article_reset");
     }
 
+    @TestAction(value = "news_tap_expose")
     public static void news_tap_expose() {
         new ScreenLinkedInToday().openExposeScreen();
 
         TestUtils.delayAndCaptureScreenshot("news_tap_expose");
     }
 
+    @TestAction(value = "news_tap_expose_reset")
     public static void news_tap_expose_reset() {
         HardwareActions.pressBack();
         new ScreenLinkedInToday();
@@ -312,16 +321,14 @@ public class ScreenLinkedInToday extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("news_tap_expose_reset");
     }
 
+    @TestAction(value = "news_pull_refresh")
     public static void news_pull_refresh() {
-        HardwareActions.pressMenu();
-
-        HardwareActions.tapOnMenuOption(MENU_ITEM_REFRESH);
-        new ScreenLinkedInToday();
-
+        new ScreenLinkedInToday().refreshScreen();
         TestUtils.delayAndCaptureScreenshot("news_pull_refresh");
     }
 
-    public static void news_manage() {
+    @TestAction(value = "news_tap_manage")
+    public static void news_tap_manage() {
         View manageButton = (View) Id.getViewByViewIdName(MANAGE_BUTTON);
         Assert.assertNotNull("'Manage' button (top right corner) is not present");
 
@@ -332,6 +339,7 @@ public class ScreenLinkedInToday extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("news_manage");
     }
 
+    @TestAction(value = "news_manage_reset")
     public static void news_manage_reset() {
         HardwareActions.pressBack();
         new ScreenLinkedInToday();

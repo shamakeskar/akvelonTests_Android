@@ -1,0 +1,13 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_groups" id="42118159">
+    <Step key="go_to_groups" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_tap_back" />
+    <Step key="groups" />
+    <Step key="groups_tap_expose" />
+    <Step key="groups_tap_expose_reset" />
+    <Step key="groups_tap_gyml" />
+    <Step key="groups_tap_gyml_reset" />
+    <Step key="groups_tap_group" />
+    <Step key="groups_tap_group_reset" />
+  </Test>
+</TestSuite>

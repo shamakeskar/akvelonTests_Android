@@ -332,7 +332,7 @@ public final class WaitActions {
      */
     public static void waitForLoadingDisappear(int timeoutInMs) {
         timeoutInMs = timeoutInMs > 0 ? timeoutInMs : DataProvider.WAIT_DELAY_DEFAULT;
-        TextView loading = TextViewUtils.searchTextViewInActivity("Loading…", true);
+        TextView loading = TextViewUtils.searchTextViewInActivity("Loading", false);
         int waitStepsCount = timeoutInMs / DataProvider.WAIT_DELAY_STEP;
         for (int i = 0; i < waitStepsCount; i++) {
             if (loading == null) {

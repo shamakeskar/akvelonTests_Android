@@ -6,10 +6,10 @@ import android.widget.TextView;
 import com.jayway.android.robotium.solo.Solo;
 import com.linkedin.android.screens.common.ScreenLogin;
 import com.linkedin.android.tests.data.DataProvider;
-import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
+import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -88,18 +88,20 @@ public class PopupSyncContacts {
 
     // ACTIONS --------------------------------------------------------------
     @TestAction(value = "go_to_popup_abi_toast")
-    public static void go_to_popup_abi_toast() {
+    public static void go_to_popup_abi_toast(String email, String password) {
         if (!ScreenLogin.isOnLoginScreen()) {
             LoginActions.logout();
         }
         ScreenLogin loginScreen = new ScreenLogin();
-        loginScreen.typeEmail(StringData.test_email);
-        loginScreen.typePassword(StringData.test_password);
+        Logger.i("Enter '" + email + "' in user name field");
+        TestUtils.typeTextInEditText0(email);
+        Logger.i("Enter '" + password + "' in user password field");
+        TestUtils.typeTextInEditText1(password);
         loginScreen.tapOnSignInButton();
         new PopupSyncContacts();
         TestUtils.delayAndCaptureScreenshot("go_to_popup_abi_toast");
     }
-    
+
     @TestAction(value = "abi_tap_not_sync")
     public static void abi_tap_not_sync() {
         new PopupSyncContacts().tapOnDoNotSync();

@@ -181,7 +181,7 @@ public abstract class BaseScreenSharedNewsDetails extends BaseINScreen {
     /**
      * Taps on image of connection, who create discussion.
      */
-    public void tapOnConnectionProfile() {
+    public static void tapOnConnectionProfile() {
         View connectionProfileSectionChevron = Id
                 .getViewByViewIdName(CONNECTION_PROFILE_SECTION_CHEVRON);
         Assert.assertNotNull("There is no chevron in 'Discussion author' section",

@@ -1,0 +1,11 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_cal_splash" id="42117303">
+    <Step key="cal_splash" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="cal_splash_tap_learn_more" />
+    <Step key="cal_splash_tap_learn_more_reset" />
+    <Step key="cal_splash_tap_later" />
+    <Step key="cal_splash_tap_later_reset" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="cal_splash_tap_sync" />
+    <Step key="cal_splash_tap_sync_reset" payload="user1@correo.linkedinlabs.com,crazyman" />
+  </Test>
+</TestSuite>

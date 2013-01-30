@@ -3,6 +3,8 @@ package com.linkedin.android.utils.viewUtils;
 import junit.framework.Assert;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * The class contains util methods for {@code ViewGroup}.
@@ -78,9 +80,9 @@ public final class ViewGroupUtils {
             String viewName, String errorMessage) {
         int viewIdToTap = -1;
         for (int i = 0; i < layout.getChildCount(); i++) {
-            String childClassName = layout.getChildAt(i).getClass().getSimpleName();
-            if (childClassName.equals("ImageView") ||
-                    childClassName.equals("TextView")) {
+            View child = layout.getChildAt(i);
+            if ((child instanceof ImageView) ||
+                    (child instanceof TextView)) {
                 viewIdToTap = i;
                 break;
             }

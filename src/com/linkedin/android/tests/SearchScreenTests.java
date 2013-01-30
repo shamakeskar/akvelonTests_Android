@@ -74,8 +74,8 @@ public class SearchScreenTests extends BaseTestCase {
         Logger.i(DONE + "'New message' screen loads properly.");
 
         // Type random message and subject.
-        screenNewMessage.typeMessage(null);
-        screenNewMessage.typeSubject(null);
+        /*screenNewMessage.typeMessage(null);
+        screenNewMessage.typeSubject(null);*/
 
         // Tap on Send button and back to "Profile of connected user" screen.
         screenNewMessage.sendMessage();

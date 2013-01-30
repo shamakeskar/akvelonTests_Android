@@ -10,13 +10,11 @@ import com.linkedin.android.popups.PopupSyncContacts;
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.tests.data.DataProvider;
-import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
-import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -64,6 +62,16 @@ public class ScreenCalSplash extends BaseINScreen {
     }
 
     /**
+     * Checks that currently open Calendar splash screen.
+     * 
+     * @return <b>true</b> if opened Calendar splash screen.
+     */
+    public static boolean isCalSplashOpened() {
+        return getSolo().getCurrentActivity().getClass().getSimpleName()
+                .equals(ACTIVITY_SHORT_CLASSNAME);
+    }
+
+    /**
      * Taps on 'Close' button.
      */
     public void tapLaterButton() {
@@ -86,7 +94,7 @@ public class ScreenCalSplash extends BaseINScreen {
      * Taps on 'Learn More' button.
      */
     public void tapLearnMoreButton() {
-        Assert.assertNotNull("'Leran Morer' text is not present.",
+        Assert.assertNotNull("'Learn More' text is not present.",
                 getSolo().searchText("Learn More"));
         Logger.i("Tapping on 'Learn More' text");
         getSolo().clickOnText("Learn More");
@@ -107,21 +115,21 @@ public class ScreenCalSplash extends BaseINScreen {
     }
 
     /**
-     * Taps on "Welcome to LinkedIn" hint.
+     * Taps on back to close blue window.
      */
     public void handleInButtonHint() {
         if (getSolo().waitForText("Welcome to LinkedIn", 1, DataProvider.WAIT_DELAY_DEFAULT, false)) {
-            Logger.i("Tapping on hint for IN button");
-            getSolo().clickOnScreen(50 / ScreenResolution.getScreenDensity(),
-                    60 / ScreenResolution.getScreenDensity());
+            HardwareActions.pressBack();
         }
     }
 
     // ACTIONS --------------------------------------------------------------
-    public static void cal_splash() {
+
+    @TestAction(value = "cal_splash")
+    public static void cal_splash(String email, String password) {
         ScreenLogin loginScreen = new ScreenLogin();
-        loginScreen.typeEmail(StringData.test_email);
-        loginScreen.typePassword(StringData.test_password);
+        loginScreen.typeEmail(email);
+        loginScreen.typePassword(password);
         loginScreen.tapOnSignInButton();
         new PopupSyncContacts().tapOnDoNotSync();
         loginScreen.waitForCalendarSplashScreen();
@@ -137,12 +145,14 @@ public class ScreenCalSplash extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("cal_splash_tap_later");
     }
 
-    public static void cal_splash_tap_later_reset() {
+    @TestAction(value = "cal_splash_tap_later_reset")
+    public static void cal_splash_tap_later_reset(String email, String password) {
         LoginActions.logout();
-        cal_splash();
+        cal_splash(email, password);
         TestUtils.delayAndCaptureScreenshot("cal_splash_tap_later_reset");
     }
 
+    @TestAction(value = "cal_splash_tap_sync")
     public static void cal_splash_tap_sync() {
         ScreenCalSplash calSplash = new ScreenCalSplash();
         calSplash.tapAddCalendarButton();
@@ -151,12 +161,14 @@ public class ScreenCalSplash extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("cal_splash_tap_sync");
     }
 
-    public static void cal_splash_tap_sync_reset() {
+    @TestAction(value = "cal_splash_tap_sync_reset")
+    public static void cal_splash_tap_sync_reset(String email, String password) {
         LoginActions.logout();
-        cal_splash();
+        cal_splash(email, password);
         TestUtils.delayAndCaptureScreenshot("cal_splash_tap_sync_reset");
     }
 
+    @TestAction(value = "cal_splash_tap_learn_more")
     public static void cal_splash_tap_learn_more() {
         ScreenCalSplash callSplash = new ScreenCalSplash();
         callSplash.tapLearnMoreButton();
@@ -164,6 +176,7 @@ public class ScreenCalSplash extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("cal_splash_tap_learn_more");
     }
 
+    @TestAction(value = "cal_splash_tap_learn_more_reset")
     public static void cal_splash_tap_learn_more_reset() {
         HardwareActions.pressBack();
         new ScreenCalSplash();

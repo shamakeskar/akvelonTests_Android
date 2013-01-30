@@ -22,7 +22,7 @@ public abstract class BaseINScreen extends BaseScreen {
     static final Rect2DP IN_BUTTON_RECT = new Rect2DP(0.0f, 28.0f, 54.6f, 49.3f);
     static final Rect2DP RIGHT_NAV_BUTTON_RECT = new Rect2DP(265.4f, 28.0f, 54.6f, 49.3f);
     static final float SEARCHBAR_HEIGHT_DP = 48.0f;
-    
+
     // PROPERTIES -----------------------------------------------------------
 
     // CONSTRUCTORS ---------------------------------------------------------
@@ -51,8 +51,9 @@ public abstract class BaseINScreen extends BaseScreen {
     public static ImageView getINButton() {
         for (ImageView view : getSolo().getCurrentImageViews()) {
             if (view == null)
-                continue;        	
-            if (view.isShown() && LayoutUtils.isViewPlacedInLayout(view, LayoutUtils.UPPER_LEFT_BUTTON_LAYOUT)) {
+                continue;
+            if (view.isShown()
+                    && LayoutUtils.isViewPlacedInLayout(view, LayoutUtils.UPPER_LEFT_BUTTON_LAYOUT)) {
                 Rect2DP viewRect = new Rect2DP(view);
                 if (viewRect.isSizeEqual(IN_BUTTON_RECT.width, IN_BUTTON_RECT.height, 1.0f)) {
                     return view;
@@ -111,14 +112,13 @@ public abstract class BaseINScreen extends BaseScreen {
         Assert.assertNotNull("'" + buttonName + "' button is not presented",
                 getRightButtonInNavigationBar());
     }
-    
+
     /**
      * Opens 'Expose' screen by tapping on 'IN' button.
      * 
      * @return {@code ScreenExpose} object.
      */
-    public ScreenExpose openExposeScreen()
-    {
+    public ScreenExpose openExposeScreen() {
         tapOnINButton();
         return new ScreenExpose(this);
     }
@@ -154,5 +154,5 @@ public abstract class BaseINScreen extends BaseScreen {
         Logger.i("Tapping on '" + buttonName + "' button");
         getSolo().clickOnView(rightButton);
     }
-    
+
 }

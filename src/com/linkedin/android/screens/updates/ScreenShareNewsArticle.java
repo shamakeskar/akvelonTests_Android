@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.linkedin.android.screens.base.BaseScreen;
+import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
@@ -74,7 +75,7 @@ public class ScreenShareNewsArticle extends BaseScreen {
      * @return comment that was entered.
      */
     public String typeRandomComment() {
-        String comment = "Test comment " + Math.random();
+        String comment = StringData.getRandomCommentText();
         Assert.assertNotNull("Comment field is not present.", getSolo().getEditText(0));
 
         Logger.i("Typing random comment: '" + comment + "'");

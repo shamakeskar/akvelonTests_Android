@@ -1,0 +1,11 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_recent_activity" id="42121009">
+    <Step key="go_to_recent_activity" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="recent_activity_back" />
+    <Step key="recent_activity" />
+    <Step key="recent_activity_expose" />
+    <Step key="recent_activity_expose_reset" />
+    <Step key="recent_activity_tap_detail" />
+    <Step key="recent_activity_tap_detail_reset" />
+  </Test>
+</TestSuite>

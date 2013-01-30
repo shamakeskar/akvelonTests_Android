@@ -33,6 +33,7 @@ import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.RegexpPatterns;
 import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.data.ViewIdName;
+import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
@@ -90,8 +91,9 @@ public class ScreenUpdates extends BaseListScreen {
     public static final ViewIdName NUS_FOOTER_VIA1_LAYOUT = new ViewIdName("footer_via_1");
     public static final ViewIdName NUS_FOOTER_LOGO1_LAYOUT = new ViewIdName("footer_logo_1");
     public static final ViewIdName NUS_ROLLUP_HEADER_VIEW = new ViewIdName("rollup_header");
-    private static final ViewIdName COMMENTS_AND_LIKES_LAYOUT = new ViewIdName("likes_comments_container");
-    //Default count of scrolls to scroll whole screen.
+    private static final ViewIdName COMMENTS_AND_LIKES_LAYOUT = new ViewIdName(
+            "likes_comments_container");
+    // Default count of scrolls to scroll whole screen.
     private static final int DEFAULT_SCROLLS_COUNT = 50;
 
     private static final String COMMENTS_LABEL = " Comments";
@@ -127,21 +129,25 @@ public class ScreenUpdates extends BaseListScreen {
                         + HELPACTIVITY_SHORT_CLASSNAME + ")",
                 curActivityName.equals(ACTIVITY_SHORT_CLASSNAME)
                         || curActivityName.equals(HELPACTIVITY_SHORT_CLASSNAME));
+        if (curActivityName.equals(ACTIVITY_SHORT_CLASSNAME))
+            WaitActions.waitForScreenUpdate();// Wait for current activity changed.
+        if (getSolo().getCurrentActivity().getClass().getSimpleName().equals(ACTIVITY_SHORT_CLASSNAME)) {
+            // Wait for more than 20 news are loaded.
+            WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
+                    "'Updates' screen is not present (List with NUS is not loaded)",
+                    new Callable<Boolean>() {
+                        public Boolean call() {
+                            ListView listView = ListViewUtils.getFirstListView();
+                            if (listView == null)
+                                return false;
+                            return (listView.getCount() > 20);
+                        }
+                    });
 
-        // Wait for more than 20 news are loaded.
-        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
-                "'Updates' screen is not present (List with NUS is not loaded)",
-                new Callable<Boolean>() {
-                    public Boolean call() {
-                        ListView listView = ListViewUtils.getFirstListView();
-                        if (listView == null)
-                            return false;
-                        return (listView.getCount() > 20);
-                    }
-                });
-
-        // Check that list views is not empty.
-        Assert.assertTrue("List views is not present", !getSolo().getCurrentListViews().isEmpty());
+            // Check that list views is not empty.
+            Assert.assertTrue("List views is not present", !getSolo().getCurrentListViews()
+                    .isEmpty());
+        }
     }
 
     @Override
@@ -161,8 +167,9 @@ public class ScreenUpdates extends BaseListScreen {
      * @return <b>true</b> if current screen - Updates.
      */
     public static boolean isOnUpdatesScreen() {
-        return getSolo().getCurrentActivity().getClass().getSimpleName()
-                .equals(ACTIVITY_SHORT_CLASSNAME);
+        String activityName = getSolo().getCurrentActivity().getClass().getSimpleName();
+        return activityName.equals(ACTIVITY_SHORT_CLASSNAME)
+                || activityName.equals(HELPACTIVITY_SHORT_CLASSNAME);
     }
 
     /**
@@ -230,7 +237,7 @@ public class ScreenUpdates extends BaseListScreen {
             exceptions.add(link);
         } while (true);
     }
-    
+
     /**
      * Tap on any update with link.
      */
@@ -238,7 +245,8 @@ public class ScreenUpdates extends BaseListScreen {
         ArrayList<TextView> exceptions = new ArrayList<TextView>();
         int count_max_scroll = 30;
         do {
-            TextView link = TextViewUtils.searchTextViewInActivity(LABEL_DOMEN_COM, exceptions, false);
+            TextView link = TextViewUtils.searchTextViewInActivity(LABEL_DOMEN_COM, exceptions,
+                    false);
             if (link == null) {
                 if (getSolo().scrollDown())
                     continue;
@@ -254,7 +262,7 @@ public class ScreenUpdates extends BaseListScreen {
             exceptions.add(link);
         } while (count_max_scroll-- > 0);
     }
-    
+
     /**
      * Opens {@code ScreenDiscussionDetailsFromRecentUpdates} of first found
      * group post.
@@ -913,7 +921,7 @@ public class ScreenUpdates extends BaseListScreen {
      */
     public ScreenCalendar openCalendarScreen() {
         // If we don't see 'CALENDAR' banner then scroll up.
-        HardwareActions.scrollUp();
+        getSolo().scrollToTop();
 
         TextView calendarView = (TextView) Id.getViewByViewIdName(CALENDAR_VIEW);
         ViewUtils.tapOnView(calendarView, "Calendar", false);
@@ -978,39 +986,43 @@ public class ScreenUpdates extends BaseListScreen {
      * Taps on 'New Connection' roll up.
      */
     public void tapOnFirstNewConnectionsRollUp() {
-        View rollupView = ViewUtils.scrollDownToViewById(NUS_ROLLUP_HEADER_VIEW, DEFAULT_SCROLLS_COUNT, new ViewChecker() {
-            @Override
-            public boolean check(View view) {
-                try {
-                    return (((TextView)view).getText().toString().indexOf("people have new connections") != -1);
-                } catch (ClassCastException e) {
-                    return false;
-                } catch (NullPointerException e) {
-                    return false;
-                }
-            }
-        });
-        
+        View rollupView = ViewUtils.scrollDownToViewById(NUS_ROLLUP_HEADER_VIEW,
+                DEFAULT_SCROLLS_COUNT, new ViewChecker() {
+                    @Override
+                    public boolean check(View view) {
+                        try {
+                            return (((TextView) view).getText().toString()
+                                    .indexOf("people have new connections") != -1);
+                        } catch (ClassCastException e) {
+                            return false;
+                        } catch (NullPointerException e) {
+                            return false;
+                        }
+                    }
+                });
+
         ViewUtils.tapOnView(rollupView, "first connections roll up");
     }
-    
+
     /**
      * Taps on 'Changed Jobs' roll up.
      */
     public void tapOnFirstNewJobsRollUp() {
-        View rollupView = ViewUtils.scrollDownToViewById(NUS_ROLLUP_HEADER_VIEW, DEFAULT_SCROLLS_COUNT, new ViewChecker() {
-            @Override
-            public boolean check(View view) {
-                try {
-                    return (((TextView)view).getText().toString().indexOf("people changed jobs") != -1);
-                } catch (ClassCastException e) {
-                    return false;
-                } catch (NullPointerException e) {
-                    return false;
-                }
-            }
-        });
-
+        View rollupView = ViewUtils.scrollDownToViewById(NUS_ROLLUP_HEADER_VIEW,
+                DEFAULT_SCROLLS_COUNT, new ViewChecker() {
+                    @Override
+                    public boolean check(View view) {
+                        try {
+                            return (((TextView) view).getText().toString()
+                                    .indexOf("people changed jobs") != -1);
+                        } catch (ClassCastException e) {
+                            return false;
+                        } catch (NullPointerException e) {
+                            return false;
+                        }
+                    }
+                });
+        Assert.assertNotNull("No 'people changed jobs' view on update stream", rollupView);
         ViewUtils.tapOnView(rollupView, "first jobs roll up");
     }
 
@@ -1026,7 +1038,7 @@ public class ScreenUpdates extends BaseListScreen {
         WaitActions.waitForScreenUpdate();
         return new ScreenNewConnectionsRollUp();
     }
-    
+
     /**
      * Opens 'New Connections Roll Up' screen.
      * 
@@ -1035,7 +1047,6 @@ public class ScreenUpdates extends BaseListScreen {
      */
     public ScreenNewJobsRollUp openFirstNewJobsRollUp() {
         tapOnFirstNewJobsRollUp();
-        
         return new ScreenNewJobsRollUp();
     }
 
@@ -1251,13 +1262,18 @@ public class ScreenUpdates extends BaseListScreen {
      *            - minimal count of comments to news.
      * @param countOfLikes
      *            - minimal count of likes to news.
-     * @return {@code ScreenUpdate} with just opened news specified by number of comments and likes.
+     * @return {@code ScreenUpdate} with just opened news specified by number of
+     *         comments and likes.
      */
     public ScreenUpdate openNews(int countOfComments, int countOfLikes) {
+        String errorString = "news with more than " + countOfComments + " comments and "
+                + countOfLikes + " likes";
+
         RelativeLayout newsCell = getNewsCell(countOfComments, countOfLikes);
-        ViewGroupUtils.tapFirstViewInLayout(newsCell, true, "news with more than "
-                + countOfComments + " comments and " + countOfLikes + " likes", null);
-        
+        Assert.assertNotNull("Can't find " + errorString, newsCell);
+
+        ViewGroupUtils.tapFirstViewInLayout(newsCell, true, errorString, null);
+
         return new ScreenUpdate();
     }
 
@@ -1296,11 +1312,11 @@ public class ScreenUpdates extends BaseListScreen {
                     .getListOfViewByViewIdName(COMMENTS_AND_LIKES_LAYOUT);
             for (View layout : likesCommentsLayouts) {
                 if (layout.isShown()) {
-                    RelativeLayout relativeLayout = (RelativeLayout)layout;
+                    RelativeLayout relativeLayout = (RelativeLayout) layout;
                     int countOfCommentsInCurrentNews = 0;
                     int countOfLikesInCurrentNews = 0;
                     for (int j = 0; j < relativeLayout.getChildCount(); j++) {
-                        TextView childView = (TextView)relativeLayout.getChildAt(j);
+                        TextView childView = (TextView) relativeLayout.getChildAt(j);
                         String text = childView.getText().toString();
                         if (text.indexOf(COMMENTS_LABEL) != -1) {
                             countOfCommentsInCurrentNews = StringUtils.getNumberFromString(text);
@@ -1309,10 +1325,10 @@ public class ScreenUpdates extends BaseListScreen {
                             countOfLikesInCurrentNews = StringUtils.getNumberFromString(text);
                         }
                     }
-                    if ((countOfCommentsInCurrentNews >= countOfComments) && 
-                            (countOfLikesInCurrentNews >= countOfLikes)) {
+                    if ((countOfCommentsInCurrentNews >= countOfComments)
+                            && (countOfLikesInCurrentNews >= countOfLikes)) {
                         try {
-                            return (RelativeLayout)relativeLayout.getParent().getParent();
+                            return (RelativeLayout) relativeLayout.getParent().getParent();
                         } catch (ClassCastException e) {
                         }
                     }
@@ -1324,18 +1340,19 @@ public class ScreenUpdates extends BaseListScreen {
             // Wait for animation finished.
             WaitActions.waitForScreenUpdate();
         }
-        
+
         return null;
     }
 
     // ACTIONS --------------------------------------------------------------
     @TestAction(value = "go_to_updates")
-    public static void go_to_updates() {
+    public static void go_to_updates(String email, String password) {
+        LoginActions.logout();
         ScreenLogin loginScreen = new ScreenLogin();
 
         // Type credentials and tap 'Sign In'.
-        loginScreen.typeEmail(StringData.test_email);
-        loginScreen.typePassword(StringData.test_password);
+        loginScreen.typeEmail(email);
+        loginScreen.typePassword(password);
         loginScreen.tapOnSignInButton();
 
         // Tap 'Do not sync'.
@@ -1369,6 +1386,7 @@ public class ScreenUpdates extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("updates_tap_expose");
     }
 
+    @TestAction(value = "updates_tap_expose_reset")
     public static void updates_tap_expose_reset() {
         HardwareActions.pressBack();
         new ScreenUpdates();
@@ -1376,12 +1394,14 @@ public class ScreenUpdates extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("updates_tap_expose_reset");
     }
 
+    @TestAction(value = "updates_tap_search")
     public static void updates_tap_search() {
         new ScreenUpdates().openSearchScreen();
 
         TestUtils.delayAndCaptureScreenshot("updates_tap_search");
     }
 
+    @TestAction(value = "updates_tap_search_reset")
     public static void updates_tap_search_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenUpdates();
@@ -1389,12 +1409,14 @@ public class ScreenUpdates extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("updates_tap_search_reset");
     }
 
+    @TestAction(value = "updates_tap_share")
     public static void updates_tap_share() {
         new ScreenUpdates().openShareUpdateScreen();
 
-        TestUtils.delayAndCaptureScreenshot("updates_tap_search");
+        TestUtils.delayAndCaptureScreenshot("updates_tap_share");
     }
 
+    @TestAction(value = "updates_tap_share_reset")
     public static void updates_tap_share_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenUpdates();
@@ -1402,12 +1424,14 @@ public class ScreenUpdates extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("updates_tap_share_reset");
     }
 
+    @TestAction(value = "updates_tap_news")
     public static void updates_tap_news() {
         new ScreenUpdates().openLinkedInTodayScreen();
 
         TestUtils.delayAndCaptureScreenshot("updates_tap_news");
     }
 
+    @TestAction(value = "updates_tap_news_reset")
     public static void updates_tap_news_reset() {
         HardwareActions.pressBack();
         new ScreenUpdates();
@@ -1415,12 +1439,14 @@ public class ScreenUpdates extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("updates_tap_news_reset");
     }
 
+    @TestAction(value = "updates_tap_cal")
     public static void updates_tap_cal() {
         new ScreenUpdates().openCalendarScreen();
 
         TestUtils.delayAndCaptureScreenshot("updates_tap_cal");
     }
 
+    @TestAction(value = "updates_tap_cal_reset")
     public static void updates_tap_cal_reset() {
         HardwareActions.pressBack();
         new ScreenUpdates();
@@ -1428,18 +1454,34 @@ public class ScreenUpdates extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("updates_tap_cal_reset");
     }
 
+    @TestAction(value = "updates_pull_refresh")
     public static void updates_pull_refresh() {
         new ScreenUpdates().refreshScreen();
 
         TestUtils.delayAndCaptureScreenshot("updates_pull_refresh");
     }
 
+    @TestAction(value = "updates_scroll_load_more")
     public static void updates_scroll_load_more() {
-        new ScreenUpdates().scrollDownForLoadMore();
+        ListView views = ListViewUtils.getFirstListView();
+        Assert.assertNotNull("There is no ListView on screen or it's null", views);
+        final int countOfUpdates = views.getCount();
+        HardwareActions.scrollToBottomNTimes(1, 0);
+        WaitActions.waitForProgressBarDisappear();
+        WaitActions.waitForTrueInFunction("New updates are not loaded", new Callable<Boolean>() {
+            public Boolean call() {
+                ListView newViews = ListViewUtils.getFirstListView();
+                if (newViews != null)
+                    return (newViews.getCount() > countOfUpdates);
+                else
+                    return false;
+            }
+        });
 
         TestUtils.delayAndCaptureScreenshot("updates_scroll_load_more");
     }
 
+    @TestAction(value = "updates_scroll_load_more_reset")
     public static void updates_scroll_load_more_reset() {
         HardwareActions.scrollUp();
 
@@ -1447,23 +1489,11 @@ public class ScreenUpdates extends BaseListScreen {
     }
 
     public static void updates_tap_update(String screenshotName) {
-        RelativeLayout nusView = (RelativeLayout) Id.getViewByViewIdName(NUS_LAYOUT);
+        RelativeLayout nusView = (RelativeLayout) ViewUtils.scrollToViewById(NUS_LAYOUT,
+                ViewUtils.SCROLL_DOWN, DEFAULT_SCROLLS_COUNT);
         Assert.assertNotNull("No updates found on Updates screen", nusView);
 
-        int viewIdToTap = -1;
-        for (int i = 0; i < nusView.getChildCount(); i++) {
-            String childClassName = nusView.getChildAt(i).getClass().getSimpleName();
-            if (childClassName.equals("ImageView") || childClassName.equals("TextView")) {
-                viewIdToTap = i;
-                break;
-            }
-        }
-
-        if (viewIdToTap != -1) {
-            ViewUtils.tapOnView(nusView.getChildAt(viewIdToTap), "first update");
-        } else {
-            ViewUtils.tapOnView(nusView, "first update");
-        }
+        ViewGroupUtils.tapFirstViewInLayout(nusView, true, "first update", null);
 
         verifyNUSSscreen();
 
@@ -1475,6 +1505,7 @@ public class ScreenUpdates extends BaseListScreen {
         updates_tap_update("updates_tap_update");
     }
 
+    @TestAction(value = "updates_tap_update_reset")
     public static void updates_tap_update_reset() {
         HardwareActions.pressBack();
         new ScreenUpdates();

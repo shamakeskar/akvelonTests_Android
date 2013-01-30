@@ -98,9 +98,6 @@ public class ScreenInbox extends BaseListScreen {
 
         // Verify presence Compose button
         verifyComposeButton();
-
-        Assert.assertTrue("'Inbox' label is not present on 'Inbox' screen",
-                getSolo().searchText("Inbox", 1, false));
     }
 
     @Override
@@ -520,12 +517,14 @@ public class ScreenInbox extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "inbox")
     public static void inbox() {
         inbox("inbox");
     }
 
-    public static void go_to_inbox() {
-        ScreenExpose.go_to_expose();
+    @TestAction(value = "go_to_inbox")
+    public static void go_to_inbox(String email, String password) {
+        ScreenExpose.go_to_expose(email, password);
         inbox("go_to_expose");
     }
 
@@ -535,33 +534,39 @@ public class ScreenInbox extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_tap_expose");
     }
 
+    @TestAction(value = "inbox_tap_expose_reset")
     public static void inbox_tap_expose_reset() {
         tapOnINButton();
         new ScreenInbox();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_expose_reset");
     }
 
+    @TestAction(value = "inbox_tap_search")
     public static void inbox_tap_search() {
         new ScreenInbox().openSearchScreen();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_search");
     }
 
+    @TestAction(value = "inbox_tap_search_reset")
     public static void inbox_tap_search_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_search_reset");
     }
 
+    @TestAction(value = "inbox_tap_compose_actionsheet")
     public static void inbox_tap_compose_actionsheet() {
         new ScreenInbox().openPopupCompose();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_compose_actionsheet");
     }
 
+    @TestAction(value = "inbox_tap_compose_actionsheet_reset")
     public static void inbox_tap_compose_actionsheet_reset() {
         HardwareActions.pressBack();
         new ScreenInbox();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_compose_actionsheet_reset");
     }
 
+    @TestAction(value = "inbox_tap_message")
     public static void inbox_tap_message() {
         RelativeLayout messageLayout = (RelativeLayout) Id.getViewByViewIdName(MESSAGE_LAYOUT);
         Assert.assertNotNull("Message is not present on 'Inbox' screen", messageLayout);
@@ -572,39 +577,45 @@ public class ScreenInbox extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_tap_message");
     }
 
+    @TestAction(value = "inbox_tap_message_reset")
     public static void inbox_tap_message_reset() {
         HardwareActions.pressBack();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_message_reset");
     }
 
+    @TestAction(value = "inbox_compose_actionsheet_tap_new_message")
     public static void inbox_compose_actionsheet_tap_new_message() {
         new PopupCompose().tapOnNewMessageOnPopup();
         new ScreenNewMessage();
         TestUtils.delayAndCaptureScreenshot("inbox_compose_actionsheet_tap_new_message");
     }
 
+    @TestAction(value = "inbox_compose_actionsheet_tap_new_message_reset")
     public static void inbox_compose_actionsheet_tap_new_message_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("inbox_compose_actionsheet_tap_new_message_reset");
     }
 
+    @TestAction(value = "inbox_compose_actionsheet_tap_new_invitation")
     public static void inbox_compose_actionsheet_tap_new_invitation() {
         new PopupCompose().tapOnNewInvitationOnPopup();
         new ScreenNewInvitation();
         TestUtils.delayAndCaptureScreenshot("inbox_compose_actionsheet_tap_new_invitation");
     }
 
+    @TestAction(value = "inbox_compose_actionsheet_tap_new_invitation_reset")
     public static void inbox_compose_actionsheet_tap_new_invitation_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("inbox_compose_actionsheet_tap_new_invitation_reset");
     }
 
+    @TestAction(value = "inbox_pull_refresh")
     public static void inbox_pull_refresh() {
-        HardwareActions.pressMenu();
-        HardwareActions.tapOnMenuOption("Refresh");
+        new ScreenInbox().refreshScreen();
         new ScreenInbox();
     }
 
+    @TestAction(value = "inbox_tap_invitation")
     public static void inbox_tap_invitation() {
         RelativeLayout invitationLayout = (RelativeLayout) Id
                 .getViewByViewIdName(INVITATION_LAYOUT);
@@ -615,12 +626,13 @@ public class ScreenInbox extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_tap_all_invitations");
     }
 
+    @TestAction(value = "inbox_tap_invitation_reset")
     public static void inbox_tap_invitation_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_invitation_reset");
     }
 
-    public static void inbox_tap_all_mail() {
+    public static void inbox_tap_all_mail(String screenshotName) {
         ViewUtils.waitForToastDisappear();
         RelativeLayout allMailLayout = (RelativeLayout) Id.getViewByViewIdName(ALL_MAIL_LAYOUT);
         if (allMailLayout == null) {
@@ -631,16 +643,24 @@ public class ScreenInbox extends BaseListScreen {
         ViewGroupUtils.tapFirstViewInLayout(allMailLayout, true, "'All Mail' button", null);
 
         new ScreenAllMessages();
-        TestUtils.delayAndCaptureScreenshot("inbox_tap_all_mail");
+        TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "inbox_tap_all_mail")
+    public static void inbox_tap_all_mail() {
+        inbox_tap_all_mail("inbox_tap_all_mail");
+    }
+
+    @TestAction(value = "inbox_tap_all_mail_reset")
     public static void inbox_tap_all_mail_reset() {
         HardwareActions.pressBack();
-        getSolo().scrollToTop();
+        HardwareActions.scrollToTop();
+        WaitActions.waitForScreenUpdate(); // Wait until animation ended.
         new ScreenInbox();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_all_mail_reset");
     }
 
+    @TestAction(value = "inbox_tap_all_invitations")
     public static void inbox_tap_all_invitations() {
         ViewUtils.waitForToastDisappear();
         RelativeLayout allInvitationsLayout = (RelativeLayout) Id
@@ -659,13 +679,16 @@ public class ScreenInbox extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_tap_all_invitations");
     }
 
+    @TestAction(value = "inbox_tap_all_invitations_reset")
     public static void inbox_tap_all_invitations_reset() {
         HardwareActions.pressBack();
-        getSolo().scrollToTop();
+        HardwareActions.scrollToTop();
+        WaitActions.waitForScreenUpdate(); // Wait until animation ended.
         new ScreenInbox();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_all_invitations_reset");
     }
 
+    @TestAction(value = "inbox_tap_notification")
     public static void inbox_tap_notification() {
         ScreenInbox inboxScreen = new ScreenInbox();
         int firstNotificationIndex = 0;
@@ -685,12 +708,15 @@ public class ScreenInbox extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_tap_notification");
     }
 
+    @TestAction(value = "inbox_tap_notification_reset")
     public static void inbox_tap_notification_reset() {
         HardwareActions.goBackOnPreviousActivity();
-        getSolo().scrollToTop();
+        HardwareActions.scrollToTop();
+        WaitActions.waitForScreenUpdate(); // Wait until animation ended.
         TestUtils.delayAndCaptureScreenshot("inbox_tap_notification_reset");
     }
 
+    @TestAction(value = "inbox_tap_invitation_accept")
     public static void inbox_tap_invitation_accept() {
         RelativeLayout invitationLayout = (RelativeLayout) Id
                 .getViewByViewIdName(INVITATION_LAYOUT);
@@ -708,6 +734,7 @@ public class ScreenInbox extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_tap_invitation_accept");
     }
 
+    @TestAction(value = "inbox_tap_invitation_decline")
     public static void inbox_tap_invitation_decline() {
         RelativeLayout invitationLayout = (RelativeLayout) Id
                 .getViewByViewIdName(INVITATION_LAYOUT);

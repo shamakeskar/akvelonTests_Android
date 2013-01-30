@@ -95,8 +95,7 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
                 isLogElementsDisabledAtEndOfCurrentTest = false;
             }
             StringBuilder builder = new StringBuilder("'");
-            builder.append(DataProvider.getInstance().getCurrentTestTag()).append("'")
-                    .append(" fail");
+            builder.append(DataProvider.getInstance().getCurrentTestTag()).append("' fail");
             HardwareActions.takeCurrentActivityScreenshot(builder.toString());
             builder = new StringBuilder(FAIL);
             builder.append("'").append(DataProvider.getInstance().getCurrentTestTag())

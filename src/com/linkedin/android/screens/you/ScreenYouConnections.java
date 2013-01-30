@@ -6,12 +6,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jayway.android.robotium.solo.Solo;
-import com.linkedin.android.screens.base.BaseINScreen;
+import com.linkedin.android.screens.base.BaseListScreen;
 import com.linkedin.android.screens.common.ScreenPYMK;
 import com.linkedin.android.screens.common.ScreenSearch;
 import com.linkedin.android.screens.settings.ScreenSettingsAddConnections;
 import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
@@ -20,7 +21,7 @@ import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
-public class ScreenYouConnections extends BaseINScreen {
+public class ScreenYouConnections extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.connections.ConnectionListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "ConnectionListActivity";
@@ -154,79 +155,92 @@ public class ScreenYouConnections extends BaseINScreen {
         new ScreenYouConnections();
         TestUtils.delayAndCaptureScreenshot(screenName);
     }
-
-    public static void go_to_connections() {
-        LoginActions.openUpdatesScreenOnStart();
+    
+    @TestAction(value = "go_to_connections")
+    public static void go_to_connections(String email, String password) {
+        LoginActions.openUpdatesScreenOnStart(email, password);
         ScreenYou screenYou = new ScreenUpdates().openExposeScreen().openYouScreen();
         screenYou.openConnections();
         TestUtils.delayAndCaptureScreenshot("go_to_connections");
     }
 
+    @TestAction(value = "connections_tap_expose")
     public static void connections_tap_expose() {
         new ScreenYouConnections().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("connections_tap_expose");
     }
 
+    @TestAction(value = "connections_tap_expose_reset")
     public static void connections_tap_expose_reset() {
         tapOnINButton();
         new ScreenYouConnections();
         TestUtils.delayAndCaptureScreenshot("connections_tap_expose_reset");
     }
-
+    
+    @TestAction(value = "connections_tap_back")
     public static void connections_tap_back() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("connections_tap_back");
     }
-
+    
+    @TestAction(value = "connections_tap_back_reset")
     public static void connections_tap_back_reset() {
         new ScreenYou().openConnections();
         TestUtils.delayAndCaptureScreenshot("connections_tap_back_reset");
     }
-
+    
+    @TestAction(value = "connections_tap_add_con")
     public static void connections_tap_add_con() {
         new ScreenYouConnections().tapOnRightButtonInNavigationBar("Add connections");
         new ScreenSettingsAddConnections();
         TestUtils.delayAndCaptureScreenshot("connections_tap_add_con");
     }
 
+    @TestAction(value = "connections_tap_add_con_reset")
     public static void connections_tap_add_con_reset() {
         backInYouConnections("connections_tap_add_con_reset");
     }
-
+    
+    @TestAction(value = "connections_tap_search")
     public static void connections_tap_search() {
         HardwareActions.pressSearch();
         new ScreenSearch();
         TestUtils.delayAndCaptureScreenshot("connections_tap_search");
     }
 
+    @TestAction(value = "connections_tap_search_reset")
     public static void connections_tap_search_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenYouConnections();
         TestUtils.delayAndCaptureScreenshot("connections_tap_search_reset");
     }
-
+    
+    @TestAction(value = "connections_tap_pymk")
     public static void connections_tap_pymk() {
         new ScreenYouConnections().openPYMKScreen();
         TestUtils.delayAndCaptureScreenshot("connections_tap_pymk");
     }
-
+    
+    @TestAction(value = "connections_tap_pymk_reset")
     public static void connections_tap_pymk_reset() {
         backInYouConnections("connections_tap_pymk_reset");
     }
 
+    @TestAction(value = "connections_tap_profile")
     public static void connections_tap_profile() {
         new ScreenYouConnections().tapOnFirstVisibleConnectionProfileScreen();
         TestUtils.delayAndCaptureScreenshot("connections_tap_profile");
     }
-
+    
+    @TestAction(value = "connections_tap_profile_reset")
     public static void connections_tap_profile_reset() {
         backInYouConnections("connections_tap_profile_reset");
     }
 
+    @TestAction(value = "connections_pull_refresh")
     public static void connections_pull_refresh() {
-        HardwareActions.pressMenu();
-        HardwareActions.tapOnMenuOption(MENU_ITEM_REFRESH);
+        new ScreenYouConnections().refreshScreen();
         TestUtils.delayAndCaptureScreenshot("connections_pull_refresh");
     }
 
@@ -235,7 +249,7 @@ public class ScreenYouConnections extends BaseINScreen {
         Assert.assertTrue("Scroll down not performed", getSolo().scrollDown());
         TestUtils.delayAndCaptureScreenshot("connections_tap_scrollbar");
     }
-
+    
     public static void connections_tap_scrollbar_reset() {
         Logger.i("Screen scroll up");
         Assert.assertTrue("Scroll Up not performed", getSolo().scrollUp());

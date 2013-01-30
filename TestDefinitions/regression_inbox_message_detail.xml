@@ -1,0 +1,43 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_inbox_message_detail" id="42119477">
+     <!-- App crashed for android 2.2 in inbox_message_detail_tap_url.
+    <Step key="inbox_message_detail_tap_url_precondition" payload="akvtesting5@gmail.com,Remarkably!,Sachin Pandey,www.google.com" />-->
+    
+    <Step key="go_to_inbox_message_detail" payload="user1@correo.linkedinlabs.com,crazyman" />
+    
+    <!-- App crashed for android 2.2.
+    <Step key="inbox_message_detail_tap_url" />
+    <Step key="inbox_message_detail_tap_url_reset" />-->
+    
+    <Step key="inbox_message_detail_tap_back" />
+    <Step key="inbox_message_detail_tap_back_reset" />
+    <Step key="inbox_message_detail_tap_message_down" />
+    <Step key="inbox_message_detail_tap_message_up" />
+    <Step key="inbox_message_detail_tap_profile" />
+    <Step key="inbox_message_detail_tap_profile_reset" />
+    <Step key="inbox_message_detail_toggle_read_state" />
+    <Step key="inbox_message_detail_tap_archive" />
+    <Step key="inbox_message_detail_tap_archive_reset" />
+    <Step key="inbox_message_detail_tap_delete" />
+    <Step key="inbox_message_detail_tap_delete_reset" />
+    <Step key="inbox_message_detail_tap_respond_actionsheet" />
+    <Step key="inbox_message_detail_respond_actionsheet_tap_reply" />
+    <Step key="inbox_message_detail_respond_actionsheet_tap_reply_reset" />
+    <Step key="inbox_message_detail_tap_respond_actionsheet" />
+    <Step key="inbox_message_detail_tap_respond_actionsheet" />
+    <Step key="inbox_message_detail_respond_actionsheet_tap_forward" />
+    <Step key="inbox_message_detail_respond_actionsheet_tap_forward_reset" />
+    <Step key="inbox_message_detail_tap_respond_actionsheet" />
+    <Step key="inbox_message_detail_respond_actionsheet_tap_cancel" />
+    <Step key="inbox_message_detail_tap_compose_actionsheet" />
+    <Step key="inbox_message_detail_compose_actionsheet_tap_new_message" />
+    <Step key="inbox_message_detail_compose_actionsheet_tap_new_message_reset" />
+    <Step key="inbox_message_detail_tap_compose_actionsheet" />
+    <Step key="inbox_message_detail_compose_actionsheet_tap_new_invitation" />
+    <Step key="inbox_message_detail_compose_actionsheet_tap_new_invitation_reset" />
+    <Step key="inbox_message_detail_tap_compose_actionsheet" />
+    <Step key="inbox_message_detail_compose_actionsheet_tap_cancel" />
+    <Step key="inbox_message_detail_tap_expose" />
+    <Step key="inbox_message_detail_tap_expose_reset" />
+  </Test>
+</TestSuite>

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.linkedin.android.screens.base.BaseProfileScreen;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
@@ -58,11 +59,13 @@ public class ScreenYourProfilePhoto extends BaseProfileScreen {
         return ACTIVITY_SHORT_CLASSNAME;
     }
 
-    public static void go_to_profile_photo() {
-        ScreenYou.go_to_you();
+    @TestAction(value = "go_toprofile_photo")
+    public static void go_to_profile_photo(String email, String password) {
+         ScreenYou.go_to_you(email, password);
         profile_photo();
     }
 
+    @TestAction(value = "profile_photo")
     public static void profile_photo() {
         ImageView picture = (ImageView) Id.getViewByViewIdName(new ViewIdName("picture"));
         ViewUtils.tapOnView(picture, "Your profile photo");
@@ -70,12 +73,14 @@ public class ScreenYourProfilePhoto extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("go_to_profile_photo");
     }
 
+    @TestAction(value = "profile_photo_tap_back")
     public static void profile_photo_tap_back() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("profile_photo_tap_back");
     }
 
+    @TestAction(value = "profile_photo_tap_edit")
     public static void profile_photo_tap_edit() {
         Button btn = getSolo().getButton(0);
         ViewUtils.tapOnView(btn, "Update photo");
@@ -91,6 +96,7 @@ public class ScreenYourProfilePhoto extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("profile_photo_tap_edit");
     }
 
+    @TestAction(value = "profile_photo_actionsheet_tap_cancel")
     public static void profile_photo_actionsheet_tap_cancel() {
         Button cancel = getSolo().getButton(0);
         ViewUtils.tapOnView(cancel, "'Cancel' button");

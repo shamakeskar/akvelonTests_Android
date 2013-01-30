@@ -1,5 +1,6 @@
 package com.linkedin.android.screens.more;
 
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 import junit.framework.Assert;
@@ -14,6 +15,8 @@ import com.linkedin.android.screens.common.ScreenPYMK;
 import com.linkedin.android.screens.common.ScreenSearch;
 import com.linkedin.android.screens.updates.ScreenShareUpdate;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
@@ -33,6 +36,7 @@ public class ScreenGroupsAndMore extends BaseINScreen {
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.networkpage.NetworkPageActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "NetworkPageActivity";
     private static final String LABEL_COMPANIES = "Companies";
+    private static final ViewIdName ITEM_LAYOUT_ID = new ViewIdName("title");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -48,6 +52,21 @@ public class ScreenGroupsAndMore extends BaseINScreen {
                 "Wrong activity (expected " + ACTIVITY_CLASSNAME + ", get "
                         + getSolo().getCurrentActivity().getClass().getName() + ")",
                 ACTIVITY_SHORT_CLASSNAME);
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
+                "'Groups and More' screen is not loaded", new Callable<Boolean>() {
+                    public Boolean call() {
+                        //return (getSolo().searchText(displayName, 1, false, true) != true);
+                        ArrayList<View> views = Id.getListOfViewByViewIdName(ITEM_LAYOUT_ID);
+                        if(views.size() >= 4){
+                            for(int i = 0; i < views.size(); i++){
+                                if(!views.get(i).isShown())
+                                    return false;
+                            }
+                            return true;
+                        }
+                        return false;
+                    }
+                });
     }
 
     @Override
@@ -128,15 +147,16 @@ public class ScreenGroupsAndMore extends BaseINScreen {
      * Taps on 'Companies' label.
      */
     public void tapOnCompanies() {
-        
+
         // Scroll and wait for loading label 'Companies'.
-        WaitActions.waitForTrueInFunction("'Companies' label is not present", new Callable<Boolean>() {
-            
-            @Override
-            public Boolean call() {
-                return getSolo().searchText(LABEL_COMPANIES);
-            }
-        });
+        WaitActions.waitForTrueInFunction("'Companies' label is not present",
+                new Callable<Boolean>() {
+
+                    @Override
+                    public Boolean call() {
+                        return getSolo().searchText(LABEL_COMPANIES);
+                    }
+                });
 
         ViewUtils.tapOnView(TextViewUtils.getTextViewByText(LABEL_COMPANIES), "'Companies' label");
     }
@@ -180,13 +200,15 @@ public class ScreenGroupsAndMore extends BaseINScreen {
         new ScreenExpose(null).openGroupsAndMoreScreen();
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
-    
+
+    @TestAction(value = "groups_and_more")
     public static void groups_and_more() {
         groups_and_more("groups_and_more");
     }
-    
-    public static void go_to_groups_and_more(){
-        ScreenExpose.go_to_expose();
+
+    @TestAction(value = "go_to_groups_and_more")
+    public static void go_to_groups_and_more(String email, String password) {
+        ScreenExpose.go_to_expose(email, password);
         groups_and_more("go_to_groups_and_more");
     }
 
@@ -197,6 +219,7 @@ public class ScreenGroupsAndMore extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("groups_and_more_tap_pymk");
     }
 
+    @TestAction(value = "groups_and_more_tap_pymk_reset")
     public static void groups_and_more_tap_pymk_reset() {
         HardwareActions.pressBack();
         new ScreenGroupsAndMore();
@@ -210,6 +233,7 @@ public class ScreenGroupsAndMore extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("groups_and_more_tap_groups");
     }
 
+    @TestAction(value = "groups_and_more_tap_groups_reset")
     public static void groups_and_more_tap_groups_reset() {
         HardwareActions.pressBack();
         new ScreenGroupsAndMore();
@@ -227,6 +251,7 @@ public class ScreenGroupsAndMore extends BaseINScreen {
         groups_and_more_tap_jobs("groups_and_more_tap_jobs");
     }
 
+    @TestAction(value = "groups_and_more_tap_jobs_reset")
     public static void groups_and_more_tap_jobs_reset() {
         HardwareActions.pressBack();
         new ScreenGroupsAndMore();
@@ -240,6 +265,7 @@ public class ScreenGroupsAndMore extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("groups_and_more_tap_companies");
     }
 
+    @TestAction(value = "groups_and_more_tap_companies_reset")
     public static void groups_and_more_tap_companies_reset() {
         HardwareActions.pressBack();
         getSolo().scrollToTop();
@@ -253,31 +279,36 @@ public class ScreenGroupsAndMore extends BaseINScreen {
         GroupsAndMore.openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("groups_and_more_tap_expose");
     }
-    
-    public static void groups_and_more_tap_expose_reset(){
+
+    @TestAction(value = "groups_and_more_tap_expose_reset")
+    public static void groups_and_more_tap_expose_reset() {
         groups_and_more();
         TestUtils.delayAndCaptureScreenshot("groups_and_more_tap_expose_reset");
     }
 
+    @TestAction(value = "groups_and_more_tap_search")
     public static void groups_and_more_tap_search() {
         ScreenGroupsAndMore GroupsAndMore = new ScreenGroupsAndMore();
         GroupsAndMore.openSearchScreen();
         TestUtils.delayAndCaptureScreenshot("groups_and_more_tap_search");
     }
-    
-    public static void groups_and_more_tap_search_reset(){
+
+    @TestAction(value = "groups_and_more_tap_search_reset")
+    public static void groups_and_more_tap_search_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenGroupsAndMore();
         TestUtils.delayAndCaptureScreenshot("groups_and_more_tap_search_reset");
     }
 
+    @TestAction(value = "groups_and_more_tap_share")
     public static void groups_and_more_tap_share() {
         ScreenGroupsAndMore GroupsAndMore = new ScreenGroupsAndMore();
         GroupsAndMore.openShareUpdateScreen();
         TestUtils.delayAndCaptureScreenshot("groups_and_more_tap_share");
     }
-    
-    public static void groups_and_more_tap_share_reset(){
+
+    @TestAction(value = "groups_and_more_tap_share_reset")
+    public static void groups_and_more_tap_share_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("groups_and_more_tap_share_reset");
     }

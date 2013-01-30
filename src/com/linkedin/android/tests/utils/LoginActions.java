@@ -6,6 +6,7 @@ import com.jayway.android.robotium.solo.Solo;
 import com.linkedin.android.popups.PopupMessageCancel;
 import com.linkedin.android.popups.PopupMessageExit;
 import com.linkedin.android.screens.base.BaseINScreen;
+import com.linkedin.android.screens.common.ScreenCalSplash;
 import com.linkedin.android.screens.common.ScreenExpose;
 import com.linkedin.android.screens.common.ScreenLogin;
 import com.linkedin.android.screens.settings.ScreenSettings;
@@ -26,6 +27,7 @@ public final class LoginActions {
     // CONSTANTS ------------------------------------------------------------
     private static final String START_VIDEO_ACTIVITY_SHORT_CLASSNAME = "LiMediaPlayerVideo";
     private static final int COUNT_TRIES_TAP_BACK = 50;
+    private static final String START_SIGN_IN_ACTIVITY_SHORT_CLASSNAME = "LaunchActivity";
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -42,7 +44,8 @@ public final class LoginActions {
     }
 
     /**
-     * Opens Updates screen on start of test. Login with specified credentials, if need.
+     * Opens Updates screen on start of test. Login with specified credentials,
+     * if need.
      * 
      * @param email
      *            - email to login
@@ -50,6 +53,7 @@ public final class LoginActions {
      *            - password to login
      * @return {@code ScreenUpdates} object.
      */
+    @TestAction(value = "open_updates_screen_on_start")
     public static ScreenUpdates openUpdatesScreenOnStart(String email, String password) {
         Logger.i("Try open Updates screen");
         ScreenUpdates screenUpdates = null;
@@ -66,11 +70,13 @@ public final class LoginActions {
                 // If on Login screen then login as test user.
                 ScreenLogin loginScreen = new ScreenLogin();
                 screenUpdates = loginScreen.login(email, password);
+            } else if (ScreenCalSplash.isCalSplashOpened()) {
+                new ScreenCalSplash().tapLaterButton();
             } else {
-                Assert.fail("Not implemented case: It is not IN and not Login screen." +
-                        " Current screen is "
-                        + DataProvider.getInstance().getSolo().getCurrentActivity()
-                        .getClass().getSimpleName());
+                Assert.fail("Not implemented case: It is not IN, Login or CalSplash screen."
+                        + " Current screen is "
+                        + DataProvider.getInstance().getSolo().getCurrentActivity().getClass()
+                                .getSimpleName());
             }
         } else {
             BaseINScreen.tapOnINButton();
@@ -118,6 +124,10 @@ public final class LoginActions {
     @TestAction(value = "logout")
     public static void logout() {
         Logger.i("Start log out");
+        if (DataProvider.getInstance().getSolo().getCurrentActivity().getClass().getSimpleName()
+                .equalsIgnoreCase(START_SIGN_IN_ACTIVITY_SHORT_CLASSNAME)) {
+            WaitActions.waitSingleActivity(ScreenLogin.ACTIVITY_SHORT_CLASSNAME, "Login screen");
+        }
         // If on Login screen, then return.
         if (ScreenLogin.isOnLoginScreen())
             return;

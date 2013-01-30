@@ -1,0 +1,14 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_share" id="42116659">
+    <Step key="go_to_share" payload="sinoptik37@gmail.com,NewBrainAkv"/>
+    <Step key="share" />
+    <Step key="share_tap_visibility" />
+    <Step key="share_tap_visibility_reset" />
+    
+    <!-- Send message in real updates.
+    Step key="share_tap_share_precondition" />
+    <Step key="share_tap_share" />
+    <Step key="share_tap_share_reset" />-->
+    <Step key="share_tap_cancel" />
+  </Test>
+</TestSuite>

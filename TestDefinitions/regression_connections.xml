@@ -1,0 +1,21 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_connections" id="42120183">
+    <Step key="go_to_connections" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="connections_tap_expose" />
+    <Step key="connections_tap_expose_reset" />
+    <Step key="connections_tap_back" />
+    <Step key="connections_tap_back_reset" />
+    <Step key="connections_tap_add_con" />
+    <Step key="connections_tap_add_con_reset" />
+    <Step key="connections_tap_search" />
+    <Step key="connections_tap_search_reset" />
+    <Step key="connections_tap_pymk" />
+    <Step key="connections_tap_pymk_reset" />
+    <Step key="connections_tap_profile" />
+    <Step key="connections_tap_profile_reset" />
+    <Step key="connections_pull_refresh" />
+    
+    <!-- Is not implemented, it is impossible for the tap scrollbars.
+    <Step key="connections_tap_scrollbar" />-->
+  </Test>
+</TestSuite>

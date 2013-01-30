@@ -1,0 +1,17 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_updates" id="42117131">
+    <Step key="go_to_updates" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="updates_tap_news" />
+    <Step key="updates_tap_news_reset" />
+    <Step key="updates_tap_update" />
+    <Step key="updates_tap_update_reset" />
+    <Step key="updates_tap_search" />
+    <Step key="updates_tap_search_reset" />
+    <Step key="updates_tap_share" />
+    <Step key="updates_tap_share_reset" />
+    <Step key="updates_tap_cal" />
+    <Step key="updates_tap_cal_reset" />
+    <Step key="updates_scroll_load_more" />
+    <Step key="updates_pull_refresh" />
+  </Test>
+</TestSuite>

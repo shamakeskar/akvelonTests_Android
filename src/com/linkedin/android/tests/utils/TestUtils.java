@@ -3,6 +3,7 @@ package com.linkedin.android.tests.utils;
 import java.lang.reflect.Method;
 
 import junit.framework.Assert;
+import android.widget.EditText;
 
 import com.linkedin.android.tests.data.AccordingActionNameAndScreenClassName;
 import com.linkedin.android.tests.data.DataProvider;
@@ -38,6 +39,58 @@ public class TestUtils {
     public static void delayAndCaptureScreenshot(String screenshotName) {
         DataProvider.getInstance().getSolo().sleep(DataProvider.WAIT_DELAY_FOR_SCREENSHOTS);
         HardwareActions.takeCurrentActivityScreenshot(screenshotName);
+    }
+    
+    /**
+     * Wrapper for easy find all places for post/send/comment test.
+     * 
+     * @param text test for return
+     * @return text
+     */
+    public static String verifyText(String text){
+        return text;
+    }
+    
+    /**
+     * Sets text in 'getSolo().getEditText(0)'.
+     * 
+     * @param text text to set
+     * @return text that has been sets.
+     */
+    public static String typeTextInEditText0(String text) {
+        Assert.assertNotNull("Wrong argument for typeTextInEditText0", text);
+        EditText editText = DataProvider.getInstance().getSolo().getEditText(0);
+        Assert.assertNotNull("Edit field is not present.", editText);
+        DataProvider.getInstance().getSolo().typeText(editText, verifyText(text));
+        return text;
+    }
+    
+    /**
+     * Sets text in 'getSolo().getEditText(1)'.
+     * 
+     * @param text text to set
+     * @return text that has been sets.
+     */
+    public static String typeTextInEditText1(String text) {
+        Assert.assertNotNull("Wrong argument for typeTextInEditText1", text);
+        EditText editText = DataProvider.getInstance().getSolo().getEditText(1);
+        Assert.assertNotNull("Edit field is not present.", editText);
+        DataProvider.getInstance().getSolo().typeText(editText, verifyText(text));
+        return text;
+    }
+
+    /**
+     * Sets text in 'getSolo().getEditText(2)'.
+     * 
+     * @param text text to set
+     * @return text that has been sets.
+     */
+    public static String typeTextInEditText2(String text) {
+        Assert.assertNotNull("Wrong argument for typeTextInEditText2", text);
+        EditText editText = DataProvider.getInstance().getSolo().getEditText(2);
+        Assert.assertNotNull("Edit field is not present.", editText);
+        DataProvider.getInstance().getSolo().typeText(editText, verifyText(text));
+        return text;
     }
 
     public static void executeTag(Tag tag) {

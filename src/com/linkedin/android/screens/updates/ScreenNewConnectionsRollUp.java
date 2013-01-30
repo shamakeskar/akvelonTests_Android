@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
@@ -101,12 +102,14 @@ public class ScreenNewConnectionsRollUp extends BaseINScreen {
         return new ScreenNewConnectionDetails();
     }
 
-    public static void go_to_updates_connection_rollup_list() {
-        LoginActions.openUpdatesScreenOnStart();
+    @TestAction(value = "go_to_updates_connection_rollup_list")
+    public static void go_to_updates_connection_rollup_list(String email, String password) {
+        LoginActions.openUpdatesScreenOnStart(email, password);
 
         updates_connection_rollup_list("go_to_updates_connection_rollup_list");
     }
 
+    @TestAction(value = "updates_connection_rollup_list")
     public static void updates_connection_rollup_list() {
         updates_connection_rollup_list("updates_connection_rollup_list");
     }
@@ -118,6 +121,7 @@ public class ScreenNewConnectionsRollUp extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "updates_connection_rollup_list_tap_back")
     public static void updates_connection_rollup_list_tap_back() {
         HardwareActions.pressBack();
         new ScreenUpdates();
@@ -125,6 +129,7 @@ public class ScreenNewConnectionsRollUp extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("updates_connection_rollup_list_tap_back");
     }
 
+    @TestAction(value = "updates_connection_rollup_list_tap_update")
     public static void updates_connection_rollup_list_tap_update() {
         new ScreenNewConnectionsRollUp().tapOnFirstRollUp();
         new ScreenNewConnectionDetails();
@@ -132,6 +137,7 @@ public class ScreenNewConnectionsRollUp extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("updates_connection_rollup_list_tap_back");
     }
 
+    @TestAction(value = "updates_connection_rollup_list_tap_update_reset")
     public static void updates_connection_rollup_list_tap_update_reset() {
         HardwareActions.pressBack();
         new ScreenNewConnectionsRollUp();
@@ -139,12 +145,14 @@ public class ScreenNewConnectionsRollUp extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("updates_connection_rollup_list_tap_update_reset");
     }
 
+    @TestAction(value = "updates_connection_rollup_list_tap_expose")
     public static void updates_connection_rollup_list_tap_expose() {
         new ScreenNewConnectionsRollUp().openExposeScreen();
 
         TestUtils.delayAndCaptureScreenshot("updates_connection_rollup_list_tap_expose");
     }
 
+    @TestAction(value = "updates_connection_rollup_list_tap_expose_reset")
     public static void updates_connection_rollup_list_tap_expose_reset() {
         HardwareActions.pressBack();
         new ScreenNewConnectionsRollUp();

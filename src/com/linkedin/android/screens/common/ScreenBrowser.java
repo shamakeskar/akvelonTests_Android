@@ -9,11 +9,11 @@ import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.updates.ScreenShareNewsArticle;
 import com.linkedin.android.screens.updates.ScreenShareUpdate;
 import com.linkedin.android.screens.updates.ScreenUpdate;
-import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
@@ -204,19 +204,19 @@ public class ScreenBrowser extends BaseINScreen {
         return new ScreenNewMessage();
     }
 
-    public static void go_to_browser() {
-        ScreenUpdates.updates_pull_refresh();
-        Assert.assertTrue("There are no news " + SHARE_MESSAGE_WITH_LINK,
-                getSolo().waitForText(SHARE_MESSAGE_WITH_LINK, 1, DataProvider.WAIT_DELAY_DEFAULT));
-        TextView shared = TextViewUtils.getTextViewByText(SHARE_MESSAGE_WITH_LINK);
-        ViewUtils.tapOnView(shared, "News with link");
+    @TestAction(value = "go_to_browser")
+    public static void go_to_browser(String email, String password) {
+        LoginActions.openUpdatesScreenOnStart(email, password);
+        TextView news = (TextView) Id.getViewByViewIdName(FOOTER_TEXT_ID_NAME);
+        ViewUtils.tapOnView(news, "News with link");
         new ScreenUpdate();
         browser("go_to_browser");
     }
 
+    @TestAction(value = "go_to_browser_precondition")
     public static void go_to_browser_precondition() {
         LoginActions.openUpdatesScreenOnStart();
-        ScreenShareUpdate.go_to_share();
+        // ScreenShareUpdate.go_to_share();
         getSolo().enterText(0, SHARE_MESSAGE_WITH_LINK);
         ScreenShareUpdate.share_tap_share();
         TestUtils.delayAndCaptureScreenshot("go_to_browser_precondition");
@@ -229,16 +229,19 @@ public class ScreenBrowser extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "browser")
     public static void browser() {
         browser("browser");
     }
 
+    @TestAction(value = "browser_tap_back")
     public static void browser_tap_back() {
         HardwareActions.pressBack();
         new ScreenUpdate();
         TestUtils.delayAndCaptureScreenshot("browser_tap_back");
     }
 
+    @TestAction(value = "browser_tap_refresh")
     public static void browser_tap_refresh() {
         ImageButton reload = (ImageButton) Id.getViewByViewIdName(RELOAD_BUTTON_ID_NAME);
         ViewUtils.tapOnView(reload, "Reload button");
@@ -246,18 +249,21 @@ public class ScreenBrowser extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("browser_tap_refresh");
     }
 
+    @TestAction(value = "browser_tap_expose")
     public static void browser_tap_expose() {
         tapOnINButton();
         new ScreenExpose(null);
         TestUtils.delayAndCaptureScreenshot("browser_tap_expose");
     }
 
+    @TestAction(value = "browser_tap_expose_reset")
     public static void browser_tap_expose_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenBrowser();
         TestUtils.delayAndCaptureScreenshot("browser_tap_expose_reset");
     }
 
+    @TestAction(value = "browser_tap_actionsheet")
     public static void browser_tap_actionsheet() {
         ImageButton share = (ImageButton) Id.getViewByViewIdName(SHARE_BUTTON_ID_NAME);
         ViewUtils.tapOnView(share, "Forward button");
@@ -269,6 +275,7 @@ public class ScreenBrowser extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("browser_tap_refresh");
     }
 
+    @TestAction(value = "browser_actionsheet_tap_share")
     public static void browser_actionsheet_tap_share() {
         TextView share = TextViewUtils.getTextViewByText("Share");
         ViewUtils.tapOnView(share, "Share button");
@@ -276,12 +283,14 @@ public class ScreenBrowser extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("browser_actionsheet_tap_share");
     }
 
+    @TestAction(value = "browser_actionsheet_tap_share_reset")
     public static void browser_actionsheet_tap_share_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenBrowser();
         TestUtils.delayAndCaptureScreenshot("browser_actionsheet_tap_share_reset");
     }
 
+    @TestAction(value = "browser_actionsheet_tap_send_to_connection")
     public static void browser_actionsheet_tap_send_to_connection() {
         TextView send = TextViewUtils.getTextViewByText("Send to Connection");
         ViewUtils.tapOnView(send, "Send to Connection button");

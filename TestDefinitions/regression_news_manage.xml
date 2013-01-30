@@ -1,0 +1,9 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_news_manage" id="42118071">
+    <Step key="go_to_news_manage" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="news_manage_tap_back" />
+    <Step key="news_manage" />
+    <Step key="news_manage_tap_expose" />
+    <Step key="news_manage_tap_expose_reset" />
+  </Test>
+</TestSuite>

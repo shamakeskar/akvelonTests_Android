@@ -11,6 +11,7 @@ import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.common.ScreenExpose;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
@@ -85,34 +86,40 @@ public class ScreenRecentActivity extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "recent_activity")
     public static void recent_activity() {
         recent_activity("recent_activity");
     }
 
-    public static void go_to_recent_activity() {
-        ScreenExpose.go_to_expose();
+    @TestAction(value = "go_to_recent_activity")
+    public static void go_to_recent_activity(String email, String password) {
+        ScreenExpose.go_to_expose(email, password);
         ScreenExpose.expose_tap_you();
         ScreenYou.handleEditYourProfileHint();
         recent_activity("go_to_recent_activity");
     }
 
+    @TestAction(value = "recent_activity_expose")
     public static void recent_activity_expose() {
         new ScreenRecentActivity().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("recent_activity_expose");
     }
 
+    @TestAction(value = "recent_activity_expose_reset")
     public static void recent_activity_expose_reset() {
         tapOnINButton();
         new ScreenRecentActivity();
         TestUtils.delayAndCaptureScreenshot("recent_activity_expose_reset");
     }
 
+    @TestAction(value = "recent_activity_back")
     public static void recent_activity_back() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("recent_activity_back");
     }
 
+    @TestAction(value = "recent_activity_tap_detail")
     public static void recent_activity_tap_detail() {
         RelativeLayout nusLayout = (RelativeLayout) Id.getViewByViewIdName(NUS_LAYOUT);
         Assert.assertNotNull("No updates found on Updates screen", nusLayout);
@@ -123,6 +130,7 @@ public class ScreenRecentActivity extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("recent_activity_tap_detail");
     }
 
+    @TestAction(value = "recent_activity_tap_detail_reset")
     public static void recent_activity_tap_detail_reset() {
         HardwareActions.pressBack();
         new ScreenRecentActivity();

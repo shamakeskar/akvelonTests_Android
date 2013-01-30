@@ -1,17 +1,7 @@
 package com.linkedin.android.tests;
 
-import java.util.ArrayList;
-
 import junit.framework.Assert;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.android.AndroidWebDriver;
-
 import android.test.suitebuilder.annotation.Suppress;
-import android.view.View;
-import android.webkit.WebView;
 
 import com.linkedin.android.fixtures.ServerRequestResponseUtils;
 import com.linkedin.android.screens.common.ScreenExpose;
@@ -66,47 +56,6 @@ public class SampleTests extends BaseTestCase {
         //LoginActions.openUpdatesScreenOnStart();
         WaitActions.delay(25);
         Logger.d("End delay");
-        
-        WebView web = null;
-        ArrayList<View> views = getSolo().getCurrentViews();
-        for (View view : views) {
-            if (view instanceof WebView) {
-                web = (WebView) view;
-                break;
-            }
-        }
-        Logger.d("web=" + web.toString());
-        Logger.d("web.getOriginalUrl()=" + web.getOriginalUrl());
-        
-        WebDriver driver = null;
-        try {
-            driver = new AndroidWebDriver(getActivity());
-            driver.get(web.getOriginalUrl());
-            
-            Logger.d("check 0");
-            
-            Logger.d(driver.getPageSource());
-            Logger.d("title=" + driver.getTitle());
-
-            Logger.d("check 1");
-            
-            WebElement link = driver.findElement(By.partialLinkText("English"));
-            
-            Logger.d("link=" + link.toString());
-            
-            link.click();
-            
-            Logger.d("check 2");
-            
-            Logger.d(driver.getPageSource());
-            Logger.d("title=" + driver.getTitle());
-            
-        } catch (Exception e) {
-            Logger.e("Fail", e);
-        } finally {
-            driver.quit();
-        }
-
         passTest();
     }
 

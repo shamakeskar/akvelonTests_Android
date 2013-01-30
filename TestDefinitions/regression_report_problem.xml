@@ -1,0 +1,10 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_report_problem" id="42121071">
+    <Step key="go_to_report_problem" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="report_problem_tap_back" />
+    <Step key="report_problem" />
+    
+    <!-- This action send message to real server.
+    <Step key="report_problem_tap_send" />-->
+  </Test>
+</TestSuite>

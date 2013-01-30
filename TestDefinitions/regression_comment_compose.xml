@@ -1,0 +1,11 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_comment_compose" id="42116873">
+    <Step key="go_to_comment_compose" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="comment_compose_tap_cancel" />
+    <Step key="comment_compose_tap_cancel_reset" />
+    
+    <!-- Send comments to the real news. Can not create precondition news did not come across to contacts.
+    <Step key="comment_compose_tap_send_precondition" />
+    <Step key="comment_compose_tap_send" />-->
+  </Test>
+</TestSuite>

@@ -3,22 +3,28 @@ package com.linkedin.android.screens.common;
 import java.util.concurrent.Callable;
 
 import junit.framework.Assert;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.linkedin.android.screens.base.BaseINScreen;
+import com.linkedin.android.screens.base.BaseListScreen;
+import com.linkedin.android.screens.inbox.ScreenInbox;
 import com.linkedin.android.screens.more.ScreenGroupsAndMore;
+import com.linkedin.android.screens.you.ScreenProfile;
 import com.linkedin.android.screens.you.ScreenProfileOfNotConnectedUser;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
+import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
  * Class for People you May Know screen.
@@ -26,7 +32,7 @@ import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
  * @author Irina Gracheva
  * @created Aug 14, 2012
  */
-public class ScreenPYMK extends BaseINScreen {
+public class ScreenPYMK extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.reconnect.ReconnectListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "ReconnectListActivity";
@@ -37,8 +43,15 @@ public class ScreenPYMK extends BaseINScreen {
     private static final int ADD_CONNECTION_BUTTON_INDEX = 5;
     private static final int REMOVE_CONNECTION_BUTTON_INDEX = 6;
 
+    private static final int SENDER_NAME_INDEX = 1;
+    private static final int INVITATION_LIST_VIEW_INDEX = 1;
+    private static final int ACCEPT_INVITATION_BUTTON_INDEX = 4;
+    private static final int DECLINE_INVITATION_BUTTON_INDEX = 5;
+
     private static final String ADD_CONNECTION_BUTTON_LABEL = "Add connection";
     private static final String REMOVE_CONNECTION_BUTTON_LABEL = "Remove connection";
+    private static final ViewIdName INVITATION_LAYOUT = new ViewIdName(
+            "invite_reconnect_person_row");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -225,18 +238,41 @@ public class ScreenPYMK extends BaseINScreen {
                 ListViewUtils.isListViewNotEmpty(peopleYouMayKnowList));
     }
 
+    private static void tapOnSenderProfile() {
+        RelativeLayout invitationLayout = (RelativeLayout) Id
+                .getViewByViewIdName(INVITATION_LAYOUT);
+        final String senderName = ((TextView) invitationLayout.getChildAt(1)).getText().toString();
+        TextView acceptInvitationButton = ViewGroupUtils.getChildViewByIndexSafely(
+                invitationLayout, SENDER_NAME_INDEX, TextView.class);
+        ViewUtils.tapOnView(acceptInvitationButton, "senderName");
+        ViewUtils.tapOnLink(senderName);
+    }
+
+    private static void tapOnNonFirstInvitation() {
+        RelativeLayout layout = (RelativeLayout) Id.getListOfViewByViewIdName(INVITATION_LAYOUT)
+                .get(INVITATION_LIST_VIEW_INDEX);
+        TextView viewProfile = ViewGroupUtils.getChildViewByIndexSafely(layout, 1, TextView.class);
+        ViewUtils.tapOnView(viewProfile, "receiverProfile");
+
+        Button acceptButton = getSolo().getButton("Invite to Connect");
+        Assert.assertNotNull("NO ACCEPT BUTTON", acceptButton);
+        ViewUtils.tapOnView(acceptButton, "Accept Invitation");
+    }
+
     // ACTIONS --------------------------------------------------------------
     public static void pymk(String screenshotName) {
         ScreenGroupsAndMore.groups_and_more_tap_pymk();
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "pymk")
     public static void pymk() {
         pymk("pymk");
     }
 
-    public static void go_to_pymk() {
-        ScreenGroupsAndMore.go_to_groups_and_more();
+    @TestAction(value = "go_to_pymk")
+    public static void go_to_pymk(String email, String password) {
+        ScreenGroupsAndMore.go_to_groups_and_more(email, password);
         pymk("go_to_pymk");
     }
 
@@ -246,59 +282,163 @@ public class ScreenPYMK extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("pymk_back");
     }
 
+    @TestAction(value = "pymk_tap_expose")
     public static void pymk_tap_expose() {
         new ScreenPYMK().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("pymk_tap_expose");
     }
 
+    @TestAction(value = "pymk_tap_expose_reset")
     public static void pymk_tap_expose_reset() {
         tapOnINButton();
         new ScreenPYMK();
         TestUtils.delayAndCaptureScreenshot("pymk_tap_expose_reset");
     }
 
+    @TestAction(value = "pymk_tap_profile")
     public static void pymk_tap_profile() {
         new ScreenPYMK().openFirstVisibleConnectionProfileScreen();
         TestUtils.delayAndCaptureScreenshot("pymk_tap_profile");
     }
 
+    @TestAction(value = "pymk_tap_profile_reset")
     public static void pymk_tap_profile_reset() {
         HardwareActions.pressBack();
         new ScreenPYMK();
         TestUtils.delayAndCaptureScreenshot("pymk_tap_profile_reset");
     }
 
+    @TestAction(value = "pymk_pull_refresh")
     public static void pymk_pull_refresh() {
-        HardwareActions.pressMenu();
-
-        HardwareActions.tapOnMenuOption(MENU_ITEM_REFRESH);
-
-        new ScreenPYMK();
+        new ScreenPYMK().refreshScreen();
         TestUtils.delayAndCaptureScreenshot("pymk_pull_refresh");
     }
 
-    /**
-     * Scroll down, wait for load more records.
-     */
-    public void scrollDownLoadMore() {
-        getSolo().scrollToBottom();
-
-        // APP BUG: spinner doesn't present sometimes.
-        // Check that you see spinner.
-        Assert.assertTrue("Spinner is not present.",
-                getSolo().waitForView(ProgressBar.class, 1, DataProvider.WAIT_DELAY_SHORT, false));
-        // Wait when the spinner will disappear.
-        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
-                "Spinner didn't disapear.", new Callable<Boolean>() {
-                    public Boolean call() {
-                        return !(getSolo().waitForView(ProgressBar.class, 1,
-                                DataProvider.WAIT_DELAY_DEFAULT, false));
-                    }
-                });
+    @TestAction(value = "pymk_scroll_load_more")
+    public static void pymk_scroll_load_more() {
+        new ScreenPYMK().scrollDownForLoadMore();
+        TestUtils.delayAndCaptureScreenshot("pymk_scroll_load_more");
     }
 
-    public static void pymk_scroll_load_more() {
-        new ScreenPYMK().scrollDownLoadMore();
-        TestUtils.delayAndCaptureScreenshot("pymk_scroll_load_more");
+    @TestAction(value = "go_to_invite_accept_pymk")
+    public static void go_to_invite_accept_pymk(String email, String password) {
+        ScreenExpose.go_to_expose(email, password);
+        new ScreenExpose(null).openGroupsAndMoreScreen();
+        ScreenGroupsAndMore GroupsAndMore = new ScreenGroupsAndMore();
+        GroupsAndMore.openPYMKScreen();
+    }
+
+    @TestAction(value = "invite_accept_pymk")
+    public static void invite_accept_pymk() {
+        tapOnINButton();
+        ViewUtils.waitForToastDisappear();
+        ScreenInbox inbox = new ScreenExpose(null).openInboxScreen();
+        if (inbox.isInvitationOnScreen()) {
+            tapOnSenderProfile();
+            Button acceptButton = getSolo().getButton("Accept Invitation");
+            Assert.assertNotNull("NO ACCEPT BUTTON", acceptButton);
+            ViewUtils.tapOnView(acceptButton, "Accept Invitation");
+        }
+
+        tapOnINButton();
+        ViewUtils.waitForToastDisappear();
+        new ScreenExpose(null).openGroupsAndMoreScreen();
+        ScreenGroupsAndMore.groups_and_more_tap_pymk();
+        tapOnNonFirstInvitation();
+        TestUtils.delayAndCaptureScreenshot("invite_accept_pymk");
+    }
+
+    @TestAction(value = "invite_accept_pymk_tap_expose")
+    public static void invite_accept_pymk_tap_expose() {
+        new ScreenPYMK().openExposeScreen();
+        TestUtils.delayAndCaptureScreenshot("invite_accept_pymk_tap_expose");
+    }
+
+    @TestAction(value = "invite_accept_pymk_tap_expose_reset")
+    public static void invite_accept_pymk_tap_expose_reset() {
+        new ScreenExpose(null).openGroupsAndMoreScreen();
+        ScreenGroupsAndMore GroupsAndMore = new ScreenGroupsAndMore();
+        GroupsAndMore.openPYMKScreen();
+        TestUtils.delayAndCaptureScreenshot("invite_accept_pymk_tap_expose_reset");
+    }
+
+    @TestAction(value = "invite_accept_pymk_tap_search")
+    public static void invite_accept_pymk_tap_search() {
+        HardwareActions.pressSearch();
+        new ScreenSearch();
+        TestUtils.delayAndCaptureScreenshot("invite_accept_pymk_tap_search");
+    }
+
+    @TestAction(value = "invite_accept_pymk_tap_search_reset")
+    public static void invite_accept_pymk_tap_search_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        tapOnINButton();
+        new ScreenExpose(null).openGroupsAndMoreScreen();
+        ScreenGroupsAndMore GroupsAndMore = new ScreenGroupsAndMore();
+        GroupsAndMore.openPYMKScreen();
+    }
+
+    @TestAction(value = "invite_accept_pymk_tap_profile")
+    public static void invite_accept_pymk_tap_profile() {
+        new ScreenPYMK().openFirstVisibleConnectionProfileScreen();
+        new ScreenProfile();
+        TestUtils.delayAndCaptureScreenshot("invite_accept_pymk_tap_profile");
+    }
+
+    @TestAction(value = "invite_accept_pymk_tap_profile_reset")
+    public static void invite_accept_pymk_tap_profile_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        TestUtils.delayAndCaptureScreenshot("invite_accept_pymk_tap_profile_reset");
+    }
+
+    @TestAction(value = "invite_accept_pymk_tap_invite")
+    public static void invite_accept_pymk_tap_invite() {
+        tapOnINButton();
+        ViewUtils.waitForToastDisappear();
+        new ScreenExpose(null).openGroupsAndMoreScreen();
+        ScreenGroupsAndMore.groups_and_more_tap_pymk();
+
+        RelativeLayout layout = (RelativeLayout) Id.getListOfViewByViewIdName(INVITATION_LAYOUT)
+                .get(INVITATION_LIST_VIEW_INDEX);
+        ImageView acceptInvitationButton = ViewGroupUtils.getChildViewByIndexSafely(layout,
+                ACCEPT_INVITATION_BUTTON_INDEX, ImageView.class);
+
+        final String displayName = ((TextView) layout.getChildAt(SENDER_NAME_INDEX)).getText()
+                .toString();
+        ViewUtils.tapOnView(acceptInvitationButton, "accept invitation");
+
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
+                "'Invitation' row is not dissapear", new Callable<Boolean>() {
+                    public Boolean call() {
+                        return (getSolo().searchText(displayName, 1, false, true) != true);
+                    }
+                });
+        TestUtils.delayAndCaptureScreenshot("invite_accept_pymk_tap_invite");
+    }
+
+    @TestAction(value = "invite_accept_pymk_tap_ignore")
+    public static void invite_accept_pymk_tap_ignore() {
+        RelativeLayout layout = (RelativeLayout) Id.getListOfViewByViewIdName(INVITATION_LAYOUT)
+                .get(INVITATION_LIST_VIEW_INDEX);
+        ImageView acceptInvitationButton = ViewGroupUtils.getChildViewByIndexSafely(layout,
+                DECLINE_INVITATION_BUTTON_INDEX, ImageView.class);
+
+        final String displayName = ((TextView) layout.getChildAt(SENDER_NAME_INDEX)).getText()
+                .toString();
+        ViewUtils.tapOnView(acceptInvitationButton, "ignore invitation");
+
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
+                "'Invitation' row is not dissapear", new Callable<Boolean>() {
+                    public Boolean call() {
+                        return (getSolo().searchText(displayName, 1, false, true) != true);
+                    }
+                });
+        TestUtils.delayAndCaptureScreenshot("invite_accept_pymk_tap_ignore");
+    }
+
+    @TestAction(value = "invite_accept_pymk_tap_back")
+    public static void invite_accept_pymk_tap_back() {
+        HardwareActions.goBackOnPreviousActivity();
+        TestUtils.delayAndCaptureScreenshot("invite_accept_pymk_tap_back");
     }
 }

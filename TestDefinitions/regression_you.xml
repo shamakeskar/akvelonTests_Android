@@ -1,0 +1,34 @@
+<TestSuite groups="Regressions" >
+  <Test id="42120083" name="regression_you" >
+    <Step key="go_to_you" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="you_tap_expose" />
+    <Step key="you" />
+    <Step key="you_tap_search" />
+    <Step key="you_tap_search_reset" />
+    <Step key="you_tap_share" />
+    <Step key="you_tap_share_reset" />
+    <Step key="you_tap_photo" />
+    <Step key="you_tap_photo_reset" />
+    <Step key="you_tap_change_photo" />
+    <Step key="you_photo_actionsheet_tap_cancel" />
+    <Step key="you_tap_profile_edit" />
+    <Step key="you_tap_profile_edit_reset" />
+    <Step key="you_tap_fwd" />
+    <Step key="you_fwd_actionsheet_tap_cancel" />
+    <Step key="you_tap_fwd" />
+    <Step key="you_fwd_actionsheet_tap_send" />
+    <Step key="you_fwd_actionsheet_tap_send_reset" />
+    <Step key="you_tap_wvmp" />
+    <Step key="you_tap_wvmp_reset" />
+    <Step key="you_tap_activity" />
+    <Step key="you_tap_activity_reset" />
+    <Step key="you_tap_connections" />
+    <Step key="you_tap_connections_reset" />
+    <Step key="you_tap_groups" />
+    <Step key="you_tap_groups_reset" />
+    <Step key="you_tap_website" />
+    <Step key="you_tap_website_reset" />
+    <Step key="you_tap_twitter" />
+    <Step key="you_tap_twitter_reset" />
+  </Test>
+</TestSuite>

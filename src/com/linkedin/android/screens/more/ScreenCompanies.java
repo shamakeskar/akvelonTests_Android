@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.common.ScreenExpose;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
@@ -49,12 +50,14 @@ public class ScreenCompanies extends BaseINScreen {
         return ACTIVITY_SHORT_CLASSNAME;
     }
 
-    public static void go_to_companies() {
-        ScreenExpose.go_to_expose();
+    @TestAction(value = "go_to_companies")
+    public static void go_to_companies(String email, String password) {
+        ScreenExpose.go_to_expose(email, password);
         new ScreenExpose(null).openGroupsAndMoreScreen();
         companies("go_to_companies");
     }
-
+    
+    @TestAction(value = "companies_tap_back")
     public static void companies_tap_back() {
         HardwareActions.pressBack();
         new ScreenGroupsAndMore();
@@ -66,17 +69,20 @@ public class ScreenCompanies extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot(screenName);
     }
 
+    @TestAction(value = "companies_tap_expose")
     public static void companies_tap_expose() {
         new ScreenCompanies().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("companies_tap_expose");
     }
 
+    @TestAction(value = "companies_tap_expose_reset")
     public static void companies_tap_expose_reset() {
         ScreenExpose.tapOnINButton();
         new ScreenCompanies();
         TestUtils.delayAndCaptureScreenshot("companies_tap_expose_reset");
     }
 
+    @TestAction(value = "companies_tap_back_reset")
     public static void companies_tap_back_reset() {
         companies("companies_tap_back_reset");
     }

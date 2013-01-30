@@ -44,6 +44,10 @@ public class DataProvider {
     public static final int WAIT_DELAY_FOR_SCREENSHOTS = 5000;
     // Delay for waiting progress bar
     public static final int WAIT_DELAY_FOR_PROGRESS_BAR_STEP = 1000;
+    // Default time between events onChange() during screen refreshing in ms.
+    public static final int TIME_BETWEEN_REFRESH_LOADS = 10000;
+    // Default count of scrolls to scroll whole screen.
+    public static final int DEFAULT_SCROLLS_COUNT = 50;
 
     // PROPERTIES -----------------------------------------------------------
     // Activity of apk to test.
@@ -106,9 +110,9 @@ public class DataProvider {
      * @return log tag.
      */
     public String getLogTag() {
-        if (currentTestTag != null)
+        /*if (currentTestTag != null)
             return LOGCAT_TAG + "#" +currentTestTag;
-        else
+        else*/
             return LOGCAT_TAG;
     }
 

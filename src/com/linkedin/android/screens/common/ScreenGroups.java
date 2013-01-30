@@ -121,12 +121,14 @@ public class ScreenGroups extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "groups")
     public static void groups() {
         groups("groups");
     }
 
-    public static void go_to_groups() {
-        ScreenGroupsAndMore.go_to_groups_and_more();
+    @TestAction(value = "go_to_groups")
+    public static void go_to_groups(String email, String password) {
+        ScreenGroupsAndMore.go_to_groups_and_more(email, password);
         groups("go_to_groups");
     }
 
@@ -137,33 +139,39 @@ public class ScreenGroups extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("groups_tap_back");
     }
 
+    @TestAction(value = "groups_tap_expose")
     public static void groups_tap_expose() {
         new ScreenGroups().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("groups_tap_expose");
     }
 
+    @TestAction(value = "groups_tap_expose_reset")
     public static void groups_tap_expose_reset() {
         tapOnINButton();
         new ScreenGroups();
         TestUtils.delayAndCaptureScreenshot("groups_tap_expose_reset");
     }
 
+    @TestAction(value = "groups_tap_gyml")
     public static void groups_tap_gyml() {
         new ScreenGroups().openGroupsYouMightLikeScreen();
         TestUtils.delayAndCaptureScreenshot("groups_tap_gyml");
     }
 
+    @TestAction(value = "groups_tap_gyml_reset")
     public static void groups_tap_gyml_reset() {
         HardwareActions.pressBack();
         new ScreenGroups();
         TestUtils.delayAndCaptureScreenshot("groups_tap_gyml_reset");
     }
 
+    @TestAction(value = "groups_tap_group")
     public static void groups_tap_group() {
         new ScreenGroups().openFirstVisibleGroupYouConsist();
         TestUtils.delayAndCaptureScreenshot("groups_tap_group");
     }
 
+    @TestAction(value = "groups_tap_group_reset")
     public static void groups_tap_group_reset() {
         HardwareActions.pressBack();
         new ScreenGroups();

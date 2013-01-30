@@ -159,7 +159,6 @@ public final class ViewUtils {
      *            piece of string in <b>view</b> with link for tap
      */
     public static void tapOnLink(String link) {
-        ViewUtils.waitForToastDisappear();
         Logger.i("Tapping on link '" + link + "'");
         Solo solo = DataProvider.getInstance().getSolo();
         View view = null;
@@ -172,7 +171,8 @@ public final class ViewUtils {
         solo.clickOnView(view);
         try {
             solo.getText(link);
-            solo.clickOnText(link);
+            WaitActions.waitForScreenUpdate(); // wait before tapping to avoid tapping on toast
+            ViewUtils.tapOnView(view, "'" + link + "' link", true);
         } catch (Throwable e) {
             Assert.fail("Cannot find link '" + link + "' to tap.");
         }

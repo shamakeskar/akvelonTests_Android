@@ -1,0 +1,12 @@
+<TestSuite groups="Regressions" >
+  <Test id="42119453" name="regression_inbox_mail_all" >
+    <Step key="go_to_inbox_mail_all" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="inbox_mail_all_tap_back" />
+    <Step key="inbox_mail_all" />
+    <Step key="inbox_mail_all_pull_refresh" />
+    <Step key="inbox_mail_all_scroll_load_more" />
+    <Step key="inbox_mail_all_tap_compose_new_message" />
+    <Step key="inbox_mail_all_tap_compose_new_message_reset" />
+    <Step key="inbox_mail_all_tap_message" />
+  </Test>
+</TestSuite>

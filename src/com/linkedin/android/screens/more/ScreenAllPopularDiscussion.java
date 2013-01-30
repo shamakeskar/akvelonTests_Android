@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.common.ScreenGroups;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
@@ -126,39 +127,46 @@ public class ScreenAllPopularDiscussion extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "groups_discussion_list_view_popular")
     public static void groups_discussion_list_view_popular() {
         groups_discussion_list_view_popular("groups_discussion_list_view_popular");
     }
 
-    public static void go_to_groups_discussion_list_view_popular() {
-        ScreenGroups.go_to_groups();
+    @TestAction(value = "go_to_groups_discussion_list_view_popular")
+    public static void go_to_groups_discussion_list_view_popular(String email, String password) {
+        ScreenGroups.go_to_groups(email, password);
         ScreenGroups.groups_tap_group();
         groups_discussion_list_view_popular("go_to_groups_discussion_list_view_popular");
     }
 
+    @TestAction(value = "groups_discussion_list_view_popular_tap_back")
     public static void groups_discussion_list_view_popular_tap_back() {
         HardwareActions.pressBack();
         new ScreenGroupsDiscussionList();
         TestUtils.delayAndCaptureScreenshot("groups_tap_group");
     }
 
+    @TestAction(value = "groups_discussion_list_view_popular_tap_expose")
     public static void groups_discussion_list_view_popular_tap_expose() {
         new ScreenAllPopularDiscussion().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_view_popular_tap_expose");
     }
 
+    @TestAction(value = "groups_discussion_list_view_popular_tap_expose_reset")
     public static void groups_discussion_list_view_popular_tap_expose_reset() {
         tapOnINButton();
         new ScreenAllPopularDiscussion();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_view_popular_tap_expose_reset");
     }
 
+    @TestAction(value = "groups_discussion_list_view_popular_tap_post_new_discussion")
     public static void groups_discussion_list_view_popular_tap_post_new_discussion() {
         new ScreenAllPopularDiscussion().openNewDiscussionScreen();
         TestUtils
                 .delayAndCaptureScreenshot("groups_discussion_list_view_popular_tap_post_new_discussion");
     }
 
+    @TestAction(value = "groups_discussion_list_view_popular_tap_post_new_discussion_reset")
     public static void groups_discussion_list_view_popular_tap_post_new_discussion_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenAllPopularDiscussion();
@@ -166,11 +174,13 @@ public class ScreenAllPopularDiscussion extends BaseINScreen {
                 .delayAndCaptureScreenshot("groups_discussion_list_view_popular_tap_post_new_discussion_reset");
     }
 
+    @TestAction(value = "groups_discussion_list_view_popular_tap_discussion")
     public static void groups_discussion_list_view_popular_tap_discussion() {
         new ScreenAllPopularDiscussion().openFirstVisibleMostPopularDiscussion();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_view_popular_tap_discussion");
     }
 
+    @TestAction(value = "groups_discussion_list_view_popular_tap_discussion_reset")
     public static void groups_discussion_list_view_popular_tap_discussion_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils
@@ -197,6 +207,7 @@ public class ScreenAllPopularDiscussion extends BaseINScreen {
                 });
     }
     
+    @TestAction(value = "groups_discussion_list_view_popular_scroll_load_more")
     public static void groups_discussion_list_view_popular_scroll_load_more(){
         new ScreenAllPopularDiscussion().scrollDownLoadMore();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_view_popular_scroll_load_more");

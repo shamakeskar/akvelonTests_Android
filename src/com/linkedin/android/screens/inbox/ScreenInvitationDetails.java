@@ -16,6 +16,7 @@ import com.linkedin.android.screens.you.ScreenProfileOfNotConnectedUser;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
@@ -199,21 +200,25 @@ public class ScreenInvitationDetails extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "inbox_invitation_detail")
     public static void inbox_invitation_detail() {
         inbox_invitation_detail("inbox_invitation_detail");
     }
 
-    public static void go_to_inbox_invitation_detail() {
-        ScreenInbox.go_to_inbox();
+    @TestAction(value = "go_to_inbox_invitation_detail")
+    public static void go_to_inbox_invitation_detail(String email, String password) {
+        ScreenInbox.go_to_inbox(email, password);
         ScreenInbox.inbox_tap_all_invitations();
         inbox_invitation_detail("go_to_inbox_invitation_detail");
     }
 
+    @TestAction(value = "inbox_invitation_detail_tap_back")
     public static void inbox_invitation_detail_tap_back() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("inbox_invitation_detail_tap_back");
     }
 
+    @TestAction(value = "inbox_invitation_detail_tap_invitation_up")
     public static void inbox_invitation_detail_tap_invitation_up() {
         ImageView upButton = (ImageView) Id.getViewByViewIdName(UP_LAYOUT);
         Assert.assertTrue("'Up' button is not enabled", upButton.isEnabled());
@@ -223,6 +228,7 @@ public class ScreenInvitationDetails extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_invitation_detail_tap_invitation_up");
     }
 
+    @TestAction(value = "inbox_invitation_detail_tap_invitation_down")
     public static void inbox_invitation_detail_tap_invitation_down() {
         ImageView downButton = (ImageView) Id.getViewByViewIdName(DOWN_LAYOUT);
         Assert.assertTrue("'Down' button is not enabled", downButton.isEnabled());
@@ -232,39 +238,46 @@ public class ScreenInvitationDetails extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_invitation_detail_tap_invitation_down");
     }
 
+    @TestAction(value = "inbox_invitation_detail_tap_profile")
     public static void inbox_invitation_detail_tap_profile() {
         new ScreenInvitationDetails().tapOnConnectionProfile();
         new ScreenProfileOfNotConnectedUser();
         TestUtils.delayAndCaptureScreenshot("inbox_invitation_detail_tap_profile");
     }
 
+    @TestAction(value = "inbox_invitation_detail_tap_profile_reset")
     public static void inbox_invitation_detail_tap_profile_reset() {
         HardwareActions.pressBack();
         new ScreenInvitationDetails();
         TestUtils.delayAndCaptureScreenshot("inbox_invitation_detail_tap_profile_reset");
     }
 
+    @TestAction(value = "inbox_invitation_detail_tap_reply")
     public static void inbox_invitation_detail_tap_reply() {
         new ScreenInvitationDetails().tapOnReplayButton();
         new ScreenReplyMessage();
         TestUtils.delayAndCaptureScreenshot("inbox_invitation_detail_tap_reply");
     }
 
+    @TestAction(value = "inbox_invitation_detail_tap_reply_reset")
     public static void inbox_invitation_detail_tap_reply_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("inbox_invitation_detail_tap_reply_reset");
     }
 
+    @TestAction(value = "inbox_invitation_detail_tap_expose")
     public static void inbox_invitation_detail_tap_expose() {
         new ScreenInvitationDetails().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("inbox_invitation_detail_tap_expose");
     }
 
+    @TestAction(value = "inbox_invitation_detail_tap_expose_reset")
     public static void inbox_invitation_detail_tap_expose_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("inbox_invitation_detail_tap_expose_reset");
     }
 
+    @TestAction(value = "inbox_invitation_detail_tap_accept")
     public static void inbox_invitation_detail_tap_accept() {
         ImageButton acceptButton = getSolo().getImageButton(0);
         ViewUtils.tapOnView(acceptButton, "'Accept' button");
@@ -272,6 +285,7 @@ public class ScreenInvitationDetails extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_invitation_detail_tap_accept");
     }
 
+    @TestAction(value = "inbox_invitation_detail_tap_decline")
     public static void inbox_invitation_detail_tap_decline() {
         ImageButton declineButton = getSolo().getImageButton(1);
         ViewUtils.tapOnView(declineButton, "'Decline' button");

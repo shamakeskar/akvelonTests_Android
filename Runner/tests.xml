@@ -1,0 +1,724 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_abi_learn_more" id="42120887">
+    <Step key="go_to_abi_learn_more" payload="user1@correo.linkedinlabs.com,crazyman" />
+  </Test>
+  <Test name="regression_abi_toast" id="42120825">
+    <Step key="go_to_popup_abi_toast" payload="user1@correo.linkedinlabs.com,crazyman" />
+  </Test>
+  <Test name="regression_address_book_import" id="42120855">
+    <Step key="go_to_address_book_import" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="address_book_import_tap_add_connections" />
+    <Step key="address_book_import_tap_learn_more" />
+    <Step key="address_book_import_learn_more_reset" />
+    <Step key="address_book_import_tap_continue" />
+    <Step key="address_book_import_wait_progress_bar" />
+    <Step key="address_book_import_add_connections_reset" />
+  </Test>
+  <Test name="regression_browser" id="42117081">
+    <Step key="go_to_browser" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="browser_tap_back" />
+    <Step key="browser" />
+    <Step key="browser_tap_expose" />
+    <Step key="browser_tap_expose_reset" />
+    <Step key="browser_tap_refresh" />
+    <Step key="browser_tap_actionsheet" />
+    <Step key="browser_actionsheet_tap_share" />
+    <Step key="browser_actionsheet_tap_share_reset" />
+    <Step key="browser_tap_actionsheet" />
+    <Step key="browser_actionsheet_tap_send_to_connection" />
+  </Test>
+  <Test name="regression_cal_splash" id="42117303">
+    <Step key="cal_splash" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="cal_splash_tap_learn_more" />
+    <Step key="cal_splash_tap_learn_more_reset" />
+    <Step key="cal_splash_tap_later" />
+    <Step key="cal_splash_tap_later_reset" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="cal_splash_tap_sync" />
+    <Step key="cal_splash_tap_sync_reset" payload="user1@correo.linkedinlabs.com,crazyman" />
+  </Test>
+  <Test name="regression_cal_sync" id="42121087">
+    <Step key="go_to_cal_sync" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="cal_sync_tap_back" />
+    <Step key="cal_sync_tap_back_reset" />
+    <Step key="cal_sync_toggle_add_cal" />
+  </Test>
+  <Test name="regression_cal" id="42117519">
+    <Step key="go_to_cal" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="cal_tap_back" />
+    <Step key="cal" />
+    <Step key="cal_tap_expose" />
+    <Step key="cal_tap_expose_reset" />
+    <Step key="cal_scroll_load_next" />
+    <Step key="cal_tap_today" />
+    <Step key="cal_scroll_load_previous" />
+  </Test>
+  <Test name="regression_comment_compose" id="42116873">
+    <Step key="go_to_comment_compose" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="comment_compose_tap_cancel" />
+    <Step key="comment_compose_tap_cancel_reset" />
+    <!-- Send comments to the real news. Can not create precondition news did not come across to contacts.
+    <Step key="comment_compose_tap_send_precondition" />
+    <Step key="comment_compose_tap_send" />/-->
+  </Test>
+  <Test name="regression_connections" id="42120183">
+    <Step key="go_to_connections" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="connections_tap_expose" />
+    <Step key="connections_tap_expose_reset" />
+    <Step key="connections_tap_back" />
+    <Step key="connections_tap_back_reset" />
+    <Step key="connections_tap_add_con" />
+    <Step key="connections_tap_add_con_reset" />
+    <Step key="connections_tap_search" />
+    <Step key="connections_tap_search_reset" />
+    <Step key="connections_tap_pymk" />
+    <Step key="connections_tap_pymk_reset" />
+    <Step key="connections_tap_profile" />
+    <Step key="connections_tap_profile_reset" />
+    <Step key="connections_pull_refresh" />
+    <!-- Is not implemented, it is impossible for the tap scrollbars.
+    Step key="connections_tap_scrollbar" />-->
+  </Test>
+  <Test name="regression_expose" id="42117105">
+    <Step key="go_to_expose" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="expose_tap_expose" />
+    <Step key="expose_tap_expose_reset" />
+    <Step key="expose_tap_settings" />
+    <Step key="expose_tap_settings_reset" />
+    <Step key="expose_tap_you" />
+    <Step key="expose_tap_you_reset" />
+    <Step key="expose_tap_updates" />
+    <Step key="expose_tap_updates_reset" />
+    <Step key="expose_tap_inbox" />
+    <Step key="expose_tap_inbox_reset" />
+    <Step key="expose_tap_groups_and_more" />
+    <Step key="expose_tap_groups_and_more_reset" />
+    <Step key="expose_tap_search" />
+    <Step key="expose_tap_search_reset" />
+  </Test>
+  <Test name="regression_feed_detail_comments_list" id="42117767">
+    <Step key="go_to_feed_detail_comments_list" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="feed_detail_comments_list_tap_back" />
+    <Step key="feed_detail_comments_list" />
+    <Step key="feed_detail_comments_list_tap_expose" />
+    <Step key="feed_detail_comments_list_tap_expose_reset" />
+    <Step key="feed_detail_comments_list_tap_profile_author" />
+    <Step key="feed_detail_comments_list_tap_profile_author_reset" />
+    <Step key="feed_detail_comments_list_scroll_load_more" />
+  </Test>
+  <Test name="regression_feed_detail_likes_list" id="42117757">
+    <Step key="go_to_feed_detail_likes_list" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="feed_detail_likes_list_tap_back" />
+    <Step key="feed_detail_likes_list" />
+    <Step key="feed_detail_likes_list_tap_expose" />
+    <Step key="feed_detail_likes_list_tap_expose_reset" />
+    <Step key="feed_detail_likes_list_tap_profile" />
+    <Step key="feed_detail_likes_list_tap_profile_reset" />
+    <Step key="feed_detail_likes_list_scroll_load_more" />
+  </Test>
+  <Test name="regression_feed_detail" id="42117719">
+    <Step key="go_to_feed_detail" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="feed_detail_tap_back" />
+    <Step key="feed_detail_tap_back_reset" />
+    <Step key="feed_detail_tap_expose" />
+    <Step key="feed_detail_tap_expose_reset" />
+    <Step key="feed_detail_tap_url" />
+    <Step key="feed_detail_tap_url_reset" />
+    <Step key="feed_detail_tap_like_toggle" />
+    
+    <!-- TODO need precondition : open feed detail, autor is people.
+    <Step key="feed_detail_tap_profile_author" />
+    <Step key="feed_detail_tap_profile_author_reset" />-->
+     
+    <!-- TODO need precondition : open feed detail, autor is company.
+    <Step key="feed_detail_tap_company" />
+    <Step key="feed_detail_tap_company_reset" />-->
+     
+    <!-- TODO need precondition : open feed detail with likes list.
+    <Step key="feed_detail_tap_likes_list" />
+    <Step key="feed_detail_tap_likes_list_reset" />-->
+    
+    <!-- TODO need precondition : open feed detail with comment list.
+    <Step key="feed_detail_tap_comment" />
+    <Step key="feed_detail_tap_comment_reset" />
+    <Step key="feed_detail_tap_profile_commenter" />
+    <Step key="feed_detail_tap_profile_commenter_reset" />-->
+    
+    <!-- TODO need precondition : feed detail with actionsheet containing share, send to connections, Reply Privately.
+    <Step key="feed_detail_tap_actionsheet" />
+    <Step key="feed_detail_actionsheet_tap_send_to_connection" />
+    <Step key="feed_detail_actionsheet_tap_send_to_connection_reset" />
+    <Step key="feed_detail_tap_actionsheet" />
+    <Step key="feed_detail_actionsheet_tap_reply_privately" />
+    <Step key="feed_detail_actionsheet_tap_reply_privately_reset" />
+    <Step key="feed_detail_tap_actionsheet" />
+    <Step key="feed_detail_actionsheet_tap_share" />
+    <Step key="feed_detail_actionsheet_tap_share_reset" />
+    <Step key="feed_detail_tap_actionsheet" />
+    <Step key="feed_detail_actionsheet_tap_cancel" />-->
+    
+    <!-- TODO need precondition : feed detail with hashtag and twiiter. 
+    <Step key="feed_detail_tap_hashtag" />
+    <Step key="feed_detail_tap_hashtag_reset" />
+    <Step key="feed_detail_tap_twiiter_handle" />
+    <Step key="feed_detail_tap_twiiter_handle_reset" />-->
+    
+    <!-- TODO need precondition : feed detail - rollup.
+    <Step key="feed_detail_tap_profile_new_connection" />
+    <Step key="feed_detail_tap_profile_new_connection_reset" />
+    <Step key="updates_connection_rollup_list_tap_update" />
+    <Step key="updates_connection_rollup_list_tap_update_reset" />-->
+    
+    <!-- TODO need precondition : feed detail with open group.
+    <Step key="feed_detail_tap_group" />
+    <Step key="feed_detail_tap_group_reset" />-->
+    
+    <!-- TODO need precondition : feed detail with closed group
+    <Step key="feed_detail_join_closed_group_dialog_tap_cancel_precondition" />
+    <Step key="feed_detail_join_closed_group_dialog_tap_cancel" />
+    <Step key="feed_detail_join_closed_group_dialog_tap_cancel_precondition" />
+    <Step key="feed_detail_join_closed_group_dialog_tap_join" />-->
+  </Test>
+  <Test name="regression_groups_and_more" id="42118115">
+    <Step key="go_to_groups_and_more" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_and_more_tap_pymk" />
+    <Step key="groups_and_more_tap_pymk_reset" />
+    <Step key="groups_and_more_tap_groups" />
+    <Step key="groups_and_more_tap_groups_reset" />
+    <Step key="groups_and_more_tap_jobs" />
+    <Step key="groups_and_more_tap_jobs_reset" />
+    <Step key="groups_and_more_tap_companies" />
+    <Step key="groups_and_more_tap_companies_reset" />
+    <Step key="groups_and_more_tap_expose" />
+    <Step key="groups_and_more_tap_expose_reset" />
+    <Step key="groups_and_more_tap_search" />
+    <Step key="groups_and_more_tap_search_reset" />
+    <Step key="groups_and_more_tap_share" />
+    <Step key="groups_and_more_tap_share_reset" />
+  </Test>
+  <Test name="regression_groups_discussion_detail" id="42118807">
+    <Step key="go_to_groups_discussion_detail" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_discussion_detail_tap_back" />
+    <Step key="groups_discussion_detail" />
+    <Step key="groups_discussion_detail_tap_expose" />
+    <Step key="groups_discussion_detail_tap_expose_reset" />
+    <Step key="groups_discussion_detail_tap_discussion_down" />
+    <Step key="groups_discussion_detail_tap_discussion_up" />
+    <Step key="groups_discussion_detail_tap_profile_author" />
+    <Step key="groups_discussion_detail_tap_profile_author_reset" />
+    
+    <!-- Need precondition : open feed detail with comment.
+    <Step key="groups_discussion_detail_tap_comment" />
+    <Step key="groups_discussion_detail_tap_comment_reset" />
+    <Step key="groups_discussion_detail_tap_profile_commenter" />
+    <Step key="groups_discussion_detail_tap_profile_commenter_reset" />
+    
+    Need precondition : open discussion with likes list.
+    <Step key="groups_discussion_detail_tap_likes_list" />
+    <Step key="groups_discussion_detail_tap_likes_list_reset" />
+    
+    Application bug: count of likes doesn't changed.
+    <Step key="groups_discussion_detail_tap_like_toggle" />
+    
+    Need precondition : open discussion with comments list.
+    <Step key="groups_discussion_detail_tap_comments_list" />
+    <Step key="groups_discussion_detail_tap_comments_list_reset" />-->
+  </Test>
+  <Test name="regression_groups_discussion_list_compose" id="42118843">
+    <Step key="go_to_groups_discussion_list_compose" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_discussion_list_compose_tap_cancel" />
+    <Step key="groups_discussion_list_compose" />
+    
+    <!-- This action send message to real server.
+    <Step key="groups_discussion_list_compose_tap_post" />-->
+  </Test>
+  <Test name="regression_groups_discussion_list_view_popular" id="42118697">
+    <Step key="go_to_groups_discussion_list_view_popular" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_discussion_list_view_popular_tap_back" />
+    <Step key="groups_discussion_list_view_popular" />
+    <Step key="groups_discussion_list_view_popular_tap_expose" />
+    <Step key="groups_discussion_list_view_popular_tap_expose_reset" />
+    <Step key="groups_discussion_list_view_popular_tap_post_new_discussion" />
+    <Step key="groups_discussion_list_view_popular_tap_post_new_discussion_reset" />
+    <Step key="groups_discussion_list_view_popular_tap_discussion" />
+    <Step key="groups_discussion_list_view_popular_tap_discussion_reset" />
+    <Step key="groups_discussion_list_view_popular_scroll_load_more" />
+  </Test>
+  <Test name="regression_groups_discussion_list" id="42118675">
+    <Step key="go_to_groups_discussion_list" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_discussion_list_tap_back" />
+    <Step key="groups_discussion_list" />
+    <Step key="groups_discussion_list_tap_expose" />
+    <Step key="groups_discussion_list_tap_expose_reset" />
+    <Step key="groups_discussion_list_tap_post_new_discussion" />
+    <Step key="groups_discussion_list_tap_post_new_discussion_reset" />
+    <Step key="groups_discussion_list_tap_discussion" />
+    <Step key="groups_discussion_list_tap_discussion_reset" />
+    <Step key="groups_discussion_list_tap_view_all_popular" />
+    <Step key="groups_discussion_list_tap_view_all_popular_reset" />
+    <Step key="groups_discussion_list_scroll_load_more" />
+  </Test>
+  <Test name="regression_groups_gyml" id="42118173">
+    <Step key="go_to_groups_gyml" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_gyml_tap_back" />
+    <Step key="groups_gyml" />
+    <Step key="groups_gyml_tap_expose" />
+    <Step key="groups_gyml_tap_expose_reset" />
+    <Step key="groups_gyml_pull_refresh" />
+    <Step key="groups_gyml_scroll_load_more" />
+    
+    <!-- Limit on count of groups.
+    <Step key="groups_gyml_tap_join" />
+    <Step key="groups_gyml_tap_group" />
+    <Step key="groups_gyml_tap_group_reset" />-->
+  </Test>
+  <Test name="regression_groups" id="42118159">
+    <Step key="go_to_groups" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_tap_back" />
+    <Step key="groups" />
+    <Step key="groups_tap_expose" />
+    <Step key="groups_tap_expose_reset" />
+    <Step key="groups_tap_gyml" />
+    <Step key="groups_tap_gyml_reset" />
+    <Step key="groups_tap_group" />
+    <Step key="groups_tap_group_reset" />
+  </Test>
+  <Test name="regression_inbox_invitation_detail" id="42119429">
+    <Step key="go_to_inbox_invitation_detail" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="inbox_invitation_detail_tap_back" />
+    <Step key="inbox_invitation_detail" />
+    <Step key="inbox_invitation_detail_tap_invitation_down" />
+    <Step key="inbox_invitation_detail_tap_invitation_up" />
+    <Step key="inbox_invitation_detail_tap_profile" />
+    <Step key="inbox_invitation_detail_tap_profile_reset" />
+    <Step key="inbox_invitation_detail_tap_reply" />
+    <Step key="inbox_invitation_detail_tap_reply_reset" />
+    <Step key="inbox_invitation_detail_tap_expose" />
+    <Step key="inbox_invitation_detail_tap_expose_reset" />
+    <Step key="inbox_invitation_detail_tap_accept" />
+    <Step key="inbox_invitation_detail" />
+    <Step key="inbox_invitation_detail_tap_decline" />
+  </Test>
+  <Test name="regression_inbox_invitations_all" id="42119381">
+    <Step key="go_to_inbox_invitations_all" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="inbox_invitations_all_tap_back" />
+    <Step key="inbox_invitations_all" />
+    <Step key="inbox_invitations_all_tap_expose" />
+    <Step key="inbox_invitations_all_tap_expose_reset" />
+    <Step key="inbox_invitations_all_tap_compose_new_invitation" />
+    <Step key="inbox_invitations_all_tap_compose_new_invitation_reset" />
+    <Step key="inbox_invitations_all_pull_refresh" />
+    
+    <!-- Need  pending invitation.
+    <Step key="inbox_invitations_all_tap_invitation" />
+    <Step key="inbox_invitations_all_tap_invitation_reset" />
+    <Step key="inbox_invitations_all_tap_invitation_accept" />
+    <Step key="inbox_invitations_all_tap_invitation_decline" />
+    
+    Inbox_invitations_all_scroll_load_more need precondition.
+    <Step key="inbox_invitations_all_scroll_load_more" />-->
+  </Test>
+  <Test id="42119453" name="regression_inbox_mail_all" >
+    <Step key="go_to_inbox_mail_all" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="inbox_mail_all_tap_back" />
+    <Step key="inbox_mail_all" />
+    <Step key="inbox_mail_all_pull_refresh" />
+    <Step key="inbox_mail_all_scroll_load_more" />
+    <Step key="inbox_mail_all_tap_compose_new_message" />
+    <Step key="inbox_mail_all_tap_compose_new_message_reset" />
+    <Step key="inbox_mail_all_tap_message" />
+  </Test>
+  <Test name="regression_inbox_message_detail" id="42119477">
+     <!-- App crashed for android 2.2 in inbox_message_detail_tap_url.
+    <Step key="inbox_message_detail_tap_url_precondition" payload="akvtesting5@gmail.com,Remarkably!,Sachin Pandey,www.google.com" />-->
+    
+    <Step key="go_to_inbox_message_detail" payload="user1@correo.linkedinlabs.com,crazyman" />
+    
+    <!-- App crashed for android 2.2.
+    <Step key="inbox_message_detail_tap_url" />
+    <Step key="inbox_message_detail_tap_url_reset" />-->
+    
+    <Step key="inbox_message_detail_tap_back" />
+    <Step key="inbox_message_detail_tap_back_reset" />
+    <Step key="inbox_message_detail_tap_message_down" />
+    <Step key="inbox_message_detail_tap_message_up" />
+    <Step key="inbox_message_detail_tap_profile" />
+    <Step key="inbox_message_detail_tap_profile_reset" />
+    <Step key="inbox_message_detail_toggle_read_state" />
+    <Step key="inbox_message_detail_tap_archive" />
+    <Step key="inbox_message_detail_tap_archive_reset" />
+    <Step key="inbox_message_detail_tap_delete" />
+    <Step key="inbox_message_detail_tap_delete_reset" />
+    <Step key="inbox_message_detail_tap_respond_actionsheet" />
+    <Step key="inbox_message_detail_respond_actionsheet_tap_reply" />
+    <Step key="inbox_message_detail_respond_actionsheet_tap_reply_reset" />
+    <Step key="inbox_message_detail_tap_respond_actionsheet" />
+    <Step key="inbox_message_detail_tap_respond_actionsheet" />
+    <Step key="inbox_message_detail_respond_actionsheet_tap_forward" />
+    <Step key="inbox_message_detail_respond_actionsheet_tap_forward_reset" />
+    <Step key="inbox_message_detail_tap_respond_actionsheet" />
+    <Step key="inbox_message_detail_respond_actionsheet_tap_cancel" />
+    <Step key="inbox_message_detail_tap_compose_actionsheet" />
+    <Step key="inbox_message_detail_compose_actionsheet_tap_new_message" />
+    <Step key="inbox_message_detail_compose_actionsheet_tap_new_message_reset" />
+    <Step key="inbox_message_detail_tap_compose_actionsheet" />
+    <Step key="inbox_message_detail_compose_actionsheet_tap_new_invitation" />
+    <Step key="inbox_message_detail_compose_actionsheet_tap_new_invitation_reset" />
+    <Step key="inbox_message_detail_tap_compose_actionsheet" />
+    <Step key="inbox_message_detail_compose_actionsheet_tap_cancel" />
+    <Step key="inbox_message_detail_tap_expose" />
+    <Step key="inbox_message_detail_tap_expose_reset" />
+  </Test>
+  <Test name="regression_inbox" id="42119331">
+    <Step key="go_to_inbox" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="inbox_tap_expose" />
+    <Step key="inbox_tap_expose_reset" />
+    <Step key="inbox_tap_search" />
+    <Step key="inbox_tap_search_reset" />
+    <Step key="inbox_tap_compose_actionsheet" />
+    <Step key="inbox_tap_compose_actionsheet_reset" />
+    <Step key="inbox_tap_compose_actionsheet" />
+    <Step key="inbox_compose_actionsheet_tap_new_message" />
+    <Step key="inbox_compose_actionsheet_tap_new_message_reset" />
+    <Step key="inbox_tap_compose_actionsheet" />
+    <Step key="inbox_compose_actionsheet_tap_new_invitation" />
+    <Step key="inbox_compose_actionsheet_tap_new_invitation_reset" />
+    <Step key="inbox_tap_message" />
+    <Step key="inbox_tap_message_reset" />
+    <Step key="inbox_tap_all_mail" />
+    <Step key="inbox_tap_all_mail_reset" />
+    <Step key="inbox_tap_all_invitations" />
+    <Step key="inbox_tap_all_invitations_reset" />
+    <Step key="inbox_pull_refresh" />
+    <Step key="inbox_tap_notification" />
+    <Step key="inbox_tap_notification_reset" />
+    
+    <!-- For these actions we need to have pending invitations.
+    <Step key="inbox_tap_invitation" />
+    <Step key="inbox_tap_invitation_reset" />
+    <Step key="inbox_tap_invitation_accept" />
+    <Step key="inbox_tap_invitation_decline" />-->
+  </Test>
+  <Test name="regression_incommon" id="42120987">
+    <Step key="go_to_incommon" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="incommon_tap_back" />
+    <Step key="incommon" />
+    <Step key="incommon_tap_expose" />
+    <Step key="incommon_tap_expose_reset" />
+    <Step key="incommon_tap_profile" />
+    <Step key="incommon_tap_profile_reset" />
+  </Test>
+  <Test name="regression_invitation_compose" id="42119347">
+    <Step key="go_to_invitation_compose" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="invitation_compose_tap_cancel" />
+    <Step key="invitation_compose_tap_cancel_reset" />
+    <Step key="invitation_compose_tap_send_precondition" />
+    <Step key="invitation_compose_tap_send" />
+  </Test>
+  <Test name="regression_invite_accept_pymk" id="42119889">
+    <Step key="go_to_invite_accept_pymk" payload="user1@correo.linkedinlabs.com,crazyman" />
+    
+    <!-- Accept invitation, send invitation. Needs on test accounts
+    <Step key="invite_accept_pymk"/>-->
+    
+    <Step key="invite_accept_pymk_tap_expose" />
+    <Step key="invite_accept_pymk_tap_expose_reset" />
+    <Step key="invite_accept_pymk_tap_search" />
+    <Step key="invite_accept_pymk_tap_search_reset" />
+    <Step key="invite_accept_pymk_tap_profile" />
+    <Step key="invite_accept_pymk_tap_profile_reset" />
+    
+    <!-- Invite user from PYMK. Needs on test account in PYMK
+    <Step key="invite_accept_pymk_tap_invite" />
+    
+    Ignore user from PYMK. Needs on test account in PYMK
+    <Step key="invite_accept_pymk_tap_ignore" />-->
+    
+    <Step key="invite_accept_pymk_tap_back" />
+  </Test>
+  <Test name="regression_login" id="42121281">
+    <Step key="go_to_login" />
+    <Step key="login" />
+    <Step key="login_error_dialog_tap_ok" />
+    <Step key="login_tap_signin_precondition" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="login_tap_signin" />
+    <Step key="login_tap_signin_reset" />
+  </Test>
+  <Test id="42119497" name="regression_message_compose" >
+    <Step key="go_to_message_compose" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="message_compose_tap_cancel" />
+    <Step key="message_compose" />
+    <Step key="message_compose_tap_add_recipients" />
+    <Step key="message_compose_tap_add_recipients_reset" />
+    <Step key="message_compose_tap_send_precondition" payload="146 146,Test message,Test subject"/>
+    <Step key="message_compose_tap_send" />
+  </Test>
+  <Test name="regression_news_detail" id="42118085">
+    <Step key="go_to_news_detail" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="news_detail_tap_back" />
+    <Step key="news_detail" />
+    <Step key="news_detail_tap_article_up" />
+    <Step key="news_detail_tap_article_down" />
+    <Step key="news_detail_tap_view_article_header" />
+    <Step key="news_detail_tap_view_article_header_reset" />
+    <Step key="news_detail_tap_view_article_image" />
+    <Step key="news_detail_tap_view_article_image_reset" />
+    <Step key="news_detail_tap_message" />
+    <Step key="news_detail_tap_message_reset" />
+    <Step key="news_detail_tap_share" />
+    <Step key="news_detail_tap_share_reset" />
+    <Step key="news_detail_tap_expose" />
+  </Test>
+  <Test name="regression_news_manage" id="42118071">
+    <Step key="go_to_news_manage" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="news_manage_tap_back" />
+    <Step key="news_manage" />
+    <Step key="news_manage_tap_expose" />
+    <Step key="news_manage_tap_expose_reset" />
+  </Test>
+  <Test name="regression_news_manage" id="42118071">
+    <Step key="go_to_news_manage" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="news_manage_tap_back" />
+    <Step key="news_manage" />
+    <Step key="news_manage_tap_expose" />
+    <Step key="news_manage_tap_expose_reset" />
+  </Test>
+  <Test name="regression_news" id="42118021">
+    <Step key="go_to_news" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="news_tap_back" />
+    <Step key="news" />
+    <Step key="news_tap_article" />
+    <Step key="news_tap_article_reset" />
+    <Step key="news_tap_expose" />
+    <Step key="news_tap_expose_reset" />
+    <Step key="news_manage" />
+    <Step key="news_manage_reset" />
+    <Step key="news_pull_refresh" />
+  </Test>
+  <Test id="42120963" name="regression_profile_photo_from_profile" >
+    <Step key="go_to_profile_photo_from_profile" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="profile_photo_from_profile_tap_back" />
+  </Test>
+  <Test id="42120147" name="regression_profile_photo" >
+    <Step key="go_toprofile_photo" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="profile_photo_tap_back" />
+    <Step key="profile_photo" />
+    <Step key="profile_photo_tap_edit" />
+    <Step key="profile_photo_actionsheet_tap_cancel" />
+  </Test>
+  <Test name="regression_profile" id="42120927">
+    <Step key="go_to_profile" payload="user1@correo.linkedinlabs.com,crazyman,evgeny agapov" />
+    <Step key="profile_tap_back" />
+    <Step key="profile" />
+    <Step key="profile_tap_expose" />
+    <Step key="profile_tap_expose_reset" />
+    <Step key="profile_tap_fwd" />
+    <Step key="profile_fwd_actionsheet_tap_cancel" />
+    <Step key="profile_tap_fwd" />
+    <Step key="profile_fwd_actionsheet_tap_send" />
+    <Step key="profile_fwd_actionsheet_tap_send_reset" />
+    <Step key="profile_tap_search" />
+    <Step key="profile_tap_search_reset" />
+    <Step key="profile_tap_message" />
+    <Step key="profile_tap_message_reset" />
+    <Step key="profile_tap_photo" />
+    <Step key="profile_tap_photo_reset" />
+    <Step key="profile_tap_activity" />
+    <Step key="profile_tap_activity_reset" />
+    <Step key="profile_tap_common" />
+    <Step key="profile_tap_common_reset" />
+    <Step key="profile_tap_connections" />
+    <Step key="profile_tap_connections_reset" />
+    <Step key="profile_tap_groups" />
+    <Step key="profile_tap_groups_reset" />
+    <Step key="profile_tap_website" />
+    <Step key="profile_tap_website_reset" />
+    <Step key="profile_tap_profile" />
+    <Step key="profile_tap_profile_reset" />
+    <Step key="profile_tap_twitter" />
+    <Step key="profile_tap_twitter_reset" />
+    <Step key="profile_tap_exp_company" />
+    <Step key="profile_tap_exp_company_reset" />
+    
+    <!-- Address section is not tappable in current build.
+    <Step key="profile_tap_address" />
+    <Step key="profile_tap_address_reset" />
+    
+    We need pending invitation for this action.
+    <Step key="profile_tap_accept_invite_precondition" />
+    <Step key="profile_tap_accept_invite" />
+    
+    This action send invite to real user.
+    <Step key="profile_tap_invite_precondition" />
+    <Step key="profile_tap_invite" />-->
+  </Test>
+  <Test name="regression_pymk" id="42118141">
+    <Step key="go_to_pymk" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="pymk_back" />
+    <Step key="pymk" />
+    <Step key="pymk_tap_expose" />
+    <Step key="pymk_tap_expose_reset" />
+    <Step key="pymk_tap_profile" />
+    <Step key="pymk_tap_profile_reset" />
+    <Step key="pymk_pull_refresh" />
+    <Step key="pymk_scroll_load_more" />
+  </Test>
+  <Test name="regression_recent_activity" id="42121009">
+    <Step key="go_to_recent_activity" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="recent_activity_back" />
+    <Step key="recent_activity" />
+    <Step key="recent_activity_expose" />
+    <Step key="recent_activity_expose_reset" />
+    <Step key="recent_activity_tap_detail" />
+    <Step key="recent_activity_tap_detail_reset" />
+  </Test>
+  <Test name="regression_report_problem" id="42121071">
+    <Step key="go_to_report_problem" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="report_problem_tap_back" />
+    <Step key="report_problem" />
+    
+    <!-- This action send message to real server.
+    <Step key="report_problem_tap_send" />-->
+  </Test>
+  <Test name="regression_search" id="42121305">
+    <Step key="go_to_search" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="search_tap_profile" />
+    <Step key="search_tap_profile_reset" />
+    <Step key="search_tap_cancel" />
+  </Test>
+  <Test name="regression_select_recipients" id="42119617">
+    <Step key="go_to_select_recipients" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="select_recipients_tap_scrollbar" />
+    <Step key="select_recipients_tap_cancel" />
+    <Step key="select_recipients" />
+    <Step key="select_recipients_tap_select" />
+    <Step key="select_recipients_tap_done" />
+  </Test>
+  <Test id="42121041" name="regression_settings" >
+    <Step key="go_to_settings" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="settings_precondition" />
+    <Step key="settings" />
+    <Step key="settings_tap_sync_calendar" />
+    <Step key="settings_tap_sync_calendar_reset" />
+    <Step key="settings_tap_add_con" />
+    <Step key="settings_tap_add_con_reset" />
+    <Step key="settings_toggle_push_notifications" />
+    <Step key="settings_toggle_push_notifications_reset" />
+    <Step key="settings_dialog_tap_sync_all_contacts" />
+    <Step key="settings_dialog_tap_sync_existing_contacts" />
+    <Step key="settings_dialog_tap_sync_cancel" />
+    <Step key="settings_tap_signout" />
+  </Test>
+  <Test name="regression_share_visibility" id="42116837">
+    <Step key="go_to_share_visibility" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="share_visibility_tap_back" />
+    <Step key="share_visibility_tap_back_reset" />
+    <Step key="share_visibility_tap_connections_only" />
+    <Step key="share_visibility_tap_connections_only_reset" />
+    <Step key="share_visibility_tap_anyone" />
+  </Test>
+  <Test name="regression_share" id="42116659">
+    <Step key="go_to_share" payload="sinoptik37@gmail.com,NewBrainAkv"/>
+    <Step key="share" />
+    <Step key="share_tap_visibility" />
+    <Step key="share_tap_visibility_reset" />
+    
+    <!-- Send message in real updates.
+    Step key="share_tap_share_precondition" />
+    <Step key="share_tap_share" />
+    <Step key="share_tap_share_reset" />-->
+    <Step key="share_tap_cancel" />
+  </Test>
+  <Test name="regression_updates_connection_rollup_list" id="42117879">
+    <Step key="go_to_updates_connection_rollup_list" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="updates_connection_rollup_list_tap_back" />
+    <Step key="updates_connection_rollup_list" />
+    <Step key="updates_connection_rollup_list_tap_update" />
+    <Step key="updates_connection_rollup_list_tap_update_reset" />
+    <Step key="updates_connection_rollup_list_tap_expose" />
+    <Step key="updates_connection_rollup_list_tap_expose_reset" />
+  </Test>
+  <Test name="regression_updates_new_jobs_rollup_list" id="42117899">
+    <Step key="go_to_updates_new_jobs_rollup_list" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="updates_new_jobs_rollup_list_tap_back" />
+    <Step key="updates_new_jobs_rollup_list" />
+    <Step key="updates_new_jobs_rollup_list_tap_expose" />
+    <Step key="updates_new_jobs_rollup_list_tap_expose_reset" />
+    <Step key="updates_new_jobs_rollup_list_tap_profile" />
+    <Step key="updates_new_jobs_rollup_list_tap_profile_reset" />
+    <Step key="updates_new_jobs_rollup_list_tap_message" />
+    <Step key="updates_new_jobs_rollup_list_tap_message_reset" />
+  </Test>
+  <Test name="regression_updates_profile_rollup_list" id="42117865">
+    <Step key="go_to_updates_profile_rollup_list" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="updates_profile_rollup_list_tap_back" />
+    <Step key="updates_profile_rollup_list" />
+    <Step key="updates_profile_rollup_list_tap_expose" />
+    <Step key="updates_profile_rollup_list_tap_expose_reset" />
+    <Step key="updates_profile_rollup_list_tap_update" />
+    <Step key="updates_profile_rollup_list_tap_update_reset" />
+  </Test>
+  <Test name="regression_updates" id="42117131">
+    <Step key="go_to_updates" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="updates_tap_news" />
+    <Step key="updates_tap_news_reset" />
+    <Step key="updates_tap_update" />
+    <Step key="updates_tap_update_reset" />
+    <Step key="updates_tap_search" />
+    <Step key="updates_tap_search_reset" />
+    <Step key="updates_tap_share" />
+    <Step key="updates_tap_share_reset" />
+    <Step key="updates_tap_cal" />
+    <Step key="updates_tap_cal_reset" />
+    <Step key="updates_scroll_load_more" />
+    <Step key="updates_pull_refresh" />
+  </Test>
+  <Test id="42120313" name="regression_wvmp_profiles_rollup">
+    <Step key="go_to_wvmp_profiles_rollup" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="wvmp_profiles_rollup_tap_back" />
+    <Step key="wvmp_profiles_rollup" />
+    <Step key="wvmp_profiles_rollup_tap_expose" />
+    <Step key="wvmp_profiles_rollup_tap_expose_reset" />
+    <Step key="wvmp_profiles_rollup_tap_profile" />
+  </Test>
+  <Test name="regression_wvmp" id="42120209">
+    <Step key="go_to_wvmp" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="wvmp_expose" />
+    <Step key="wvmp_expose_reset" />
+    <Step key="wvmp_back" />
+    <Step key="wvmp" />
+    <Step key="wvmp_tap_profile" />
+    <Step key="wvmp_tap_profile_reset" />
+  </Test>
+  <Test id="42120083" name="regression_you" >
+    <Step key="go_to_you" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="you_tap_expose" />
+    <Step key="you" />
+    <Step key="you_tap_search" />
+    <Step key="you_tap_search_reset" />
+    <Step key="you_tap_share" />
+    <Step key="you_tap_share_reset" />
+    <Step key="you_tap_photo" />
+    <Step key="you_tap_photo_reset" />
+    <Step key="you_tap_change_photo" />
+    <Step key="you_photo_actionsheet_tap_cancel" />
+    <Step key="you_tap_profile_edit" />
+    <Step key="you_tap_profile_edit_reset" />
+    <Step key="you_tap_fwd" />
+    <Step key="you_fwd_actionsheet_tap_cancel" />
+    <Step key="you_tap_fwd" />
+    <Step key="you_fwd_actionsheet_tap_send" />
+    <Step key="you_fwd_actionsheet_tap_send_reset" />
+    <Step key="you_tap_wvmp" />
+    <Step key="you_tap_wvmp_reset" />
+    <Step key="you_tap_activity" />
+    <Step key="you_tap_activity_reset" />
+    <Step key="you_tap_connections" />
+    <Step key="you_tap_connections_reset" />
+    <Step key="you_tap_groups" />
+    <Step key="you_tap_groups_reset" />
+    <Step key="you_tap_website" />
+    <Step key="you_tap_website_reset" />
+    <Step key="you_tap_twitter" />
+    <Step key="you_tap_twitter_reset" />
+  </Test>
+</TestSuite>

@@ -379,6 +379,7 @@ public class TextViewUtils {
         Assert.assertTrue("Text link is not found", beginIndex >= 0);
         SpannedString stringClickableElements = new SpannedString(textView.getText());
         final ClickableSpan[] links = stringClickableElements.getSpans(beginIndex, endIndex, ClickableSpan.class);
+        Assert.assertTrue("Clickable link is not found", links.length > 0);
         Assert.assertNotNull("Clickable link is not found", links[0]);
         Logger.i("Tapping on link: '" + textLink + "'");
         DataProvider.getInstance().getSolo().getCurrentActivity().runOnUiThread(new Runnable() {

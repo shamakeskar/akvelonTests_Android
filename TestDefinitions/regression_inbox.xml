@@ -1,0 +1,32 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_inbox" id="42119331">
+    <Step key="go_to_inbox" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="inbox_tap_expose" />
+    <Step key="inbox_tap_expose_reset" />
+    <Step key="inbox_tap_search" />
+    <Step key="inbox_tap_search_reset" />
+    <Step key="inbox_tap_compose_actionsheet" />
+    <Step key="inbox_tap_compose_actionsheet_reset" />
+    <Step key="inbox_tap_compose_actionsheet" />
+    <Step key="inbox_compose_actionsheet_tap_new_message" />
+    <Step key="inbox_compose_actionsheet_tap_new_message_reset" />
+    <Step key="inbox_tap_compose_actionsheet" />
+    <Step key="inbox_compose_actionsheet_tap_new_invitation" />
+    <Step key="inbox_compose_actionsheet_tap_new_invitation_reset" />
+    <Step key="inbox_tap_message" />
+    <Step key="inbox_tap_message_reset" />
+    <Step key="inbox_tap_all_mail" />
+    <Step key="inbox_tap_all_mail_reset" />
+    <Step key="inbox_tap_all_invitations" />
+    <Step key="inbox_tap_all_invitations_reset" />
+    <Step key="inbox_pull_refresh" />
+    <Step key="inbox_tap_notification" />
+    <Step key="inbox_tap_notification_reset" />
+    
+    <!-- For these actions we need to have pending invitations.
+    <Step key="inbox_tap_invitation" />
+    <Step key="inbox_tap_invitation_reset" />
+    <Step key="inbox_tap_invitation_accept" />
+    <Step key="inbox_tap_invitation_decline" />-->
+  </Test>
+</TestSuite>

@@ -1,0 +1,13 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_pymk" id="42118141">
+    <Step key="go_to_pymk" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="pymk_back" />
+    <Step key="pymk" />
+    <Step key="pymk_tap_expose" />
+    <Step key="pymk_tap_expose_reset" />
+    <Step key="pymk_tap_profile" />
+    <Step key="pymk_tap_profile_reset" />
+    <Step key="pymk_pull_refresh" />
+    <Step key="pymk_scroll_load_more" />
+  </Test>
+</TestSuite>

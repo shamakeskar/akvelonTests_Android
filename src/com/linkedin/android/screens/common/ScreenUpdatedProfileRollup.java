@@ -10,6 +10,7 @@ import com.linkedin.android.screens.updates.ScreenUpdateProfile;
 import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
@@ -119,12 +120,14 @@ public class ScreenUpdatedProfileRollup extends BaseINScreen {
     }
 
     // ACTIONS --------------------------------------------------------------
-    public static void go_to_updates_profile_rollup_list() {
-        LoginActions.openUpdatesScreenOnStart();
+    @TestAction(value = "go_to_updates_profile_rollup_list")
+    public static void go_to_updates_profile_rollup_list(String email, String password) {
+        LoginActions.openUpdatesScreenOnStart(email, password);
         
         updates_profile_rollup_list("go_to_updates_profile_rollup_list");
     }
-    
+
+    @TestAction(value = "updates_profile_rollup_list")
     public static void updates_profile_rollup_list() {
         updates_profile_rollup_list("updates_profile_rollup_list");
     }
@@ -134,33 +137,38 @@ public class ScreenUpdatedProfileRollup extends BaseINScreen {
 
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
-    
+
+    @TestAction(value = "updates_profile_rollup_list_tap_back")
     public static void updates_profile_rollup_list_tap_back() {
         HardwareActions.pressBack();
         new ScreenUpdates();
 
         TestUtils.delayAndCaptureScreenshot("updates_profile_rollup_list_tap_back");
     }
-    
+
+    @TestAction(value = "updates_profile_rollup_list_tap_update")
     public static void updates_profile_rollup_list_tap_update() {
         new ScreenUpdatedProfileRollup().openFirstUpdateProfile();
 
         TestUtils.delayAndCaptureScreenshot("updates_profile_rollup_list_tap_update");
     }
-    
+
+    @TestAction(value = "updates_profile_rollup_list_tap_update_reset")
     public static void updates_profile_rollup_list_tap_update_reset() {
         HardwareActions.pressBack();
         new ScreenUpdatedProfileRollup();
 
         TestUtils.delayAndCaptureScreenshot("updates_profile_rollup_list_tap_update_reset");
     }
-    
+
+    @TestAction(value = "updates_profile_rollup_list_tap_expose")
     public static void updates_profile_rollup_list_tap_expose() {
         new ScreenUpdatedProfileRollup().openExposeScreen();
 
         TestUtils.delayAndCaptureScreenshot("updates_profile_rollup_list_tap_expose");
     }
-    
+
+    @TestAction(value = "updates_profile_rollup_list_tap_expose_reset")
     public static void updates_profile_rollup_list_tap_expose_reset() {
         HardwareActions.pressBack();
         new ScreenUpdatedProfileRollup();

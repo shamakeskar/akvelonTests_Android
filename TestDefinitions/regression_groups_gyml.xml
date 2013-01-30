@@ -1,0 +1,16 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_groups_gyml" id="42118173">
+    <Step key="go_to_groups_gyml" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_gyml_tap_back" />
+    <Step key="groups_gyml" />
+    <Step key="groups_gyml_tap_expose" />
+    <Step key="groups_gyml_tap_expose_reset" />
+    <Step key="groups_gyml_pull_refresh" />
+    <Step key="groups_gyml_scroll_load_more" />
+    
+    <!-- Limit on count of groups.
+    <Step key="groups_gyml_tap_join" />
+    <Step key="groups_gyml_tap_group" />
+    <Step key="groups_gyml_tap_group_reset" />-->
+  </Test>
+</TestSuite>

@@ -106,11 +106,15 @@ public class Registry {
      */
     public void register(final Class<? extends Object> classObject) {
         String actionNames = "";
-        for (final Method method : classObject.getMethods()) {
-            if (method.isAnnotationPresent(TestAction.class)) {
-                register(method);
-                actionNames += method.getName() + ", ";
+        try {
+            for (final Method method : classObject.getMethods()) {
+                if (method.isAnnotationPresent(TestAction.class)) {
+                    register(method);
+                    actionNames += method.getName() + ", ";
+                }
             }
+        } catch (Exception e) {
+            Logger.e("Cannot to register class '" + classObject.getSimpleName() + "'", e);
         }
         Logger.v("Registered class '" + classObject.getSimpleName() + "' with actions: "
                 + actionNames);

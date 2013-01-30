@@ -50,11 +50,14 @@ public class ScreenExpose extends BaseINScreen {
     private static final String MESSAGES_LABEL = "Messages";
     private static final String GROUPS_AND_MORE_LABEL = "Groups & More";
 
-    /*private static final Rect2DP UPDATES_LAYOUT_RECT = new Rect2DP(0.0f, 84.0f, 160.0f, 228.0f);
-    private static final Rect2DP YOU_LAYOUT_RECT = new Rect2DP(160.0f, 84.0f, 160.0f, 228.0f);
-    private static final Rect2DP MESSAGES_LAYOUT_RECT = new Rect2DP(0.0f, 308.0f, 160.0f, 228.0f);
-    private static final Rect2DP GROUPS_AND_MORE_LAYOUT_RECT = new Rect2DP(160.0f, 308.0f, 160.0f,
-            228.0f);*/
+    /*
+     * private static final Rect2DP UPDATES_LAYOUT_RECT = new Rect2DP(0.0f,
+     * 84.0f, 160.0f, 228.0f); private static final Rect2DP YOU_LAYOUT_RECT =
+     * new Rect2DP(160.0f, 84.0f, 160.0f, 228.0f); private static final Rect2DP
+     * MESSAGES_LAYOUT_RECT = new Rect2DP(0.0f, 308.0f, 160.0f, 228.0f); private
+     * static final Rect2DP GROUPS_AND_MORE_LAYOUT_RECT = new Rect2DP(160.0f,
+     * 308.0f, 160.0f, 228.0f);
+     */
 
     // PROPERTIES -----------------------------------------------------------
     private BaseINScreen screenFromWhichExposeOpened;
@@ -75,8 +78,10 @@ public class ScreenExpose extends BaseINScreen {
      * Verifies 'Expose' screen
      */
     public void verify() {
-        WaitActions.waitForText(UPDATES_LABEL, "Cannot wait to open 'Expose' ('Updates' label is not present)");
-        WaitActions.waitForText(GROUPS_AND_MORE_LABEL, "Cannot wait to open 'Expose' ('Updates' label is not present)");
+        WaitActions.waitForText(UPDATES_LABEL,
+                "Cannot wait to open 'Expose' ('Updates' label is not present)");
+        WaitActions.waitForText(GROUPS_AND_MORE_LABEL,
+                "Cannot wait to open 'Expose' ('Updates' label is not present)");
 
         verifyINButton();
     }
@@ -97,8 +102,8 @@ public class ScreenExpose extends BaseINScreen {
      * @return <b>true</b> if we are on Expose screen
      */
     public static boolean isOnExposeScreen() {
-        return (DataProvider.getInstance().getSolo().getCurrentActivity().getClass().getSimpleName()
-                .equals(ACTIVITY_SHORT_CLASSNAME));
+        return (DataProvider.getInstance().getSolo().getCurrentActivity().getClass()
+                .getSimpleName().equals(ACTIVITY_SHORT_CLASSNAME));
     }
 
     /**
@@ -150,6 +155,7 @@ public class ScreenExpose extends BaseINScreen {
      *         screen.
      */
     public ScreenGroupsAndMore openGroupsAndMoreScreen() {
+        ViewUtils.waitForToastDisappear();
         tapOnGroupsAndMoreButton();
         return new ScreenGroupsAndMore();
     }
@@ -207,11 +213,13 @@ public class ScreenExpose extends BaseINScreen {
         Solo solo = DataProvider.getInstance().getSolo();
         TextView textView = solo.getText(textViewText);
         Assert.assertNotNull("'" + textViewText + "' TextView not present", textView);
-        Assert.assertTrue("'" + textViewText + "' TextView not shown", textView.getVisibility() == View.VISIBLE);
+        Assert.assertTrue("'" + textViewText + "' TextView not shown",
+                textView.getVisibility() == View.VISIBLE);
     }
 
     /**
-     * Opens ScreenSettings by tapping on button in right corner of navigation bar.
+     * Opens ScreenSettings by tapping on button in right corner of navigation
+     * bar.
      * 
      * @return ScreenSettings object.
      */
@@ -265,7 +273,7 @@ public class ScreenExpose extends BaseINScreen {
         View updatesLayout = Id.getViewByViewIdName(GROUPS_AND_MORE_PANEL_RESOURCE_NAME);
         return updatesLayout;
     }
-    
+
     /**
      * Opens SEARCH screen.
      * 
@@ -277,7 +285,7 @@ public class ScreenExpose extends BaseINScreen {
         ViewUtils.tapOnView(searchBar, "search bar");
         return new ScreenSearch();
     }
-    
+
     /**
      * Verify that 'Expose' screen dismissed.
      */
@@ -287,114 +295,114 @@ public class ScreenExpose extends BaseINScreen {
         int stepCounter = timeout / DataProvider.WAIT_DELAY_STEP;
         for (int i = 0; i <= stepCounter; i++) {
             if (!DataProvider.getInstance().getSolo().getCurrentActivity().getClass()
-                    .getSimpleName().equals(ACTIVITY_SHORT_CLASSNAME)){
+                    .getSimpleName().equals(ACTIVITY_SHORT_CLASSNAME)) {
                 return;
             }
             DataProvider.getInstance().getSolo().sleep(DataProvider.WAIT_DELAY_STEP);
         }
         Assert.fail("'Expose' screen is not disappear");
     }
-    
+
     // ACTIONS --------------------------------------------------------------
-    public static void expose(String screenshotName){
+    public static void expose(String screenshotName) {
         new ScreenUpdates().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
     @TestAction(value = "expose")
-    public static void expose(){
+    public static void expose() {
         expose("expose");
     }
 
     @TestAction(value = "go_to_expose")
-    public static void go_to_expose(){
-        LoginActions.openUpdatesScreenOnStart();
+    public static void go_to_expose(String email, String password) {
+        LoginActions.openUpdatesScreenOnStart(email, password);
         expose("go_to_expose");
     }
 
     @TestAction(value = "expose_tap_expose")
-    public static void expose_tap_expose(){
+    public static void expose_tap_expose() {
         tapOnINButton();
         verifyThatExposeScreenDismissed(DataProvider.WAIT_DELAY_DEFAULT);
         TestUtils.delayAndCaptureScreenshot("expose_tap_expose");
     }
 
     @TestAction(value = "expose_tap_expose_reset")
-    public static void expose_tap_expose_reset(){
+    public static void expose_tap_expose_reset() {
         tapOnINButton();
         new ScreenExpose(null);
         TestUtils.delayAndCaptureScreenshot("expose_tap_expose_reset");
     }
 
     @TestAction(value = "expose_tap_settings")
-    public static void expose_tap_settings(){
+    public static void expose_tap_settings() {
         new ScreenExpose(null).openSettingsScreen();
         TestUtils.delayAndCaptureScreenshot("expose_tap_settings");
     }
 
     @TestAction(value = "expose_tap_settings_reset")
-    public static void expose_tap_settings_reset(){
+    public static void expose_tap_settings_reset() {
         HardwareActions.pressBack();
         new ScreenExpose(null);
         TestUtils.delayAndCaptureScreenshot("expose_tap_settings_reset");
     }
 
     @TestAction(value = "expose_tap_you")
-    public static void expose_tap_you(){
+    public static void expose_tap_you() {
         new ScreenExpose(null).openYouScreen();
         TestUtils.delayAndCaptureScreenshot("expose_tap_you");
     }
 
     @TestAction(value = "expose_tap_you_reset")
-    public static void expose_tap_you_reset(){
+    public static void expose_tap_you_reset() {
         new ScreenYou().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("expose_tap_you_reset");
     }
-    
+
     @TestAction(value = "expose_tap_updates")
-    public static void expose_tap_updates(){
+    public static void expose_tap_updates() {
         new ScreenExpose(null).openUpdatesScreen();
         TestUtils.delayAndCaptureScreenshot("expose_tap_updates");
     }
 
     @TestAction(value = "expose_tap_updates_reset")
-    public static void expose_tap_updates_reset(){
+    public static void expose_tap_updates_reset() {
         new ScreenUpdates().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("expose_tap_updates_reset");
     }
 
     @TestAction(value = "expose_tap_inbox")
-    public static void expose_tap_inbox(){
+    public static void expose_tap_inbox() {
         new ScreenExpose(null).openInboxScreen();
         TestUtils.delayAndCaptureScreenshot("expose_tap_inbox");
     }
 
     @TestAction(value = "expose_tap_inbox_reset")
-    public static void expose_tap_inbox_reset(){
+    public static void expose_tap_inbox_reset() {
         new ScreenInbox().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("expose_tap_inbox_reset");
     }
 
     @TestAction(value = "expose_tap_groups_and_more")
-    public static void expose_tap_groups_and_more(){
+    public static void expose_tap_groups_and_more() {
         new ScreenExpose(null).openGroupsAndMoreScreen();
         TestUtils.delayAndCaptureScreenshot("expose_tap_groups_and_more");
     }
 
     @TestAction(value = "expose_tap_groups_and_more_reset")
-    public static void expose_tap_groups_and_more_reset(){
+    public static void expose_tap_groups_and_more_reset() {
         new ScreenGroupsAndMore().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("expose_tap_groups_and_more_reset");
     }
 
     @TestAction(value = "expose_tap_search")
-    public static void expose_tap_search(){
+    public static void expose_tap_search() {
         new ScreenExpose(null).openSearchScreen();
         TestUtils.delayAndCaptureScreenshot("expose_tap_search");
     }
 
     @TestAction(value = "expose_tap_search_reset")
-    public static void expose_tap_search_reset(){
+    public static void expose_tap_search_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenExpose(null);
         TestUtils.delayAndCaptureScreenshot("expose_tap_search_reset");

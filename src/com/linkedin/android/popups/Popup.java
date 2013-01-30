@@ -21,7 +21,8 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 public class Popup {
     // CONSTANTS ------------------------------------------------------------
     public static final String YES_BUTTON = "Yes";
-
+    public static final String OK_BUTTON = "Ok";
+    public static final String CANCEL_BUTTON = "Cancel";
     // PROPERTIES -----------------------------------------------------------
     String title;
     String text;

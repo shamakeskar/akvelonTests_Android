@@ -9,7 +9,6 @@ import com.linkedin.android.screens.common.ScreenAddConnections;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.utils.HardwareActions;
-import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -98,46 +97,6 @@ public abstract class BaseScreenMessage extends BaseScreen {
     public ScreenAddConnections openAddConnectionsScreen() {
         tapOnAddConnectionsButton();
         return new ScreenAddConnections();
-    }
-
-    /**
-     * Types subject of your message.
-     * 
-     * @param subject
-     *          String contains subject, 
-     *          If null or EMPTY_LINE, random text will be use
-     * @return subject which was sent
-     */
-    public String typeSubject(String subject) {
-        if (subject == null || subject == "") {
-            subject = "Subject " + Math.random();
-        }
-        Assert.assertNotNull("Subject field is not present.", getSolo().getEditText(1));
-
-        Logger.i("Typing random subject: '" + subject + "'");
-        getSolo().enterText(1, subject);
-
-        return subject;
-    }
-
-    /**
-     * Types message.
-     * 
-       * @param message
-     *          String contains message you want to sent.
-     *          If null or EMPTY_LINE, random text will be use
-   * @return message which was sent
-     */
-    public String typeMessage(String message) {
-        if (message == null || message == "") {
-            message = "Test message " + Math.random();
-        }
-        Assert.assertNotNull("Message field is not present.", getSolo().getEditText(2));
-
-        Logger.i("Typing random message: '" + message + "'");
-        getSolo().enterText(2, message);
-
-        return message;
     }
 
 }

@@ -1,0 +1,19 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_groups_and_more" id="42118115">
+    <Step key="go_to_groups_and_more" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_and_more_tap_pymk" />
+    <Step key="groups_and_more_tap_pymk_reset" />
+    <Step key="groups_and_more_tap_groups" />
+    <Step key="groups_and_more_tap_groups_reset" />
+    <Step key="groups_and_more_tap_jobs" />
+    <Step key="groups_and_more_tap_jobs_reset" />
+    <Step key="groups_and_more_tap_companies" />
+    <Step key="groups_and_more_tap_companies_reset" />
+    <Step key="groups_and_more_tap_expose" />
+    <Step key="groups_and_more_tap_expose_reset" />
+    <Step key="groups_and_more_tap_search" />
+    <Step key="groups_and_more_tap_search_reset" />
+    <Step key="groups_and_more_tap_share" />
+    <Step key="groups_and_more_tap_share_reset" />
+  </Test>
+</TestSuite>

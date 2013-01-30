@@ -1,0 +1,18 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_news_detail" id="42118085">
+    <Step key="go_to_news_detail" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="news_detail_tap_back" />
+    <Step key="news_detail" />
+    <Step key="news_detail_tap_article_up" />
+    <Step key="news_detail_tap_article_down" />
+    <Step key="news_detail_tap_view_article_header" />
+    <Step key="news_detail_tap_view_article_header_reset" />
+    <Step key="news_detail_tap_view_article_image" />
+    <Step key="news_detail_tap_view_article_image_reset" />
+    <Step key="news_detail_tap_message" />
+    <Step key="news_detail_tap_message_reset" />
+    <Step key="news_detail_tap_share" />
+    <Step key="news_detail_tap_share_reset" />
+    <Step key="news_detail_tap_expose" />
+  </Test>
+</TestSuite>

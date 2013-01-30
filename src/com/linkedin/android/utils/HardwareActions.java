@@ -99,7 +99,6 @@ public class HardwareActions {
      *            - name option for tap.
      */
     public static void tapOnMenuOption(String optionName) {
-        pressMenu();
         Logger.i("Tapping on menu item with name '" + optionName + "'");
         DataProvider.getInstance().getSolo().clickOnMenuItem(optionName);
     }
@@ -349,6 +348,29 @@ public class HardwareActions {
             solo.scrollToBottom();
             solo.sleep(delayMs);
         }
+    }
+    
+    /**
+     * Scrolls up to top of screen.
+     * 
+     * @param numberOfScrolls
+     *            number of scrolls to the top
+     */
+    public static void scrollToTop(int numberOfScrolls){
+        for(int i = 0; i < numberOfScrolls; i++){
+            if(DataProvider.getInstance().getSolo().scrollUp()){
+                DataProvider.getInstance().getSolo().scrollUp();
+            } else {
+                return;
+            }
+        }
+    }
+    
+    /**
+     * Scrolls up to top of screen.
+     */
+    public static void scrollToTop(){
+        scrollToTop(DataProvider.DEFAULT_SCROLLS_COUNT);
     }
 
     // TODO implement this code from LinkedIn

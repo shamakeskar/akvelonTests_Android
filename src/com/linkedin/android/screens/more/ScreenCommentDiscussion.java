@@ -5,6 +5,7 @@ import android.widget.Button;
 
 import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
@@ -71,7 +72,7 @@ public class ScreenCommentDiscussion extends BaseScreen {
      */
     public String typeComment(String comment) {
         if (comment == null)
-            comment = "Comment " + Math.random();
+            comment = StringData.getRandomCommentText();
         Assert.assertNotNull("Comment field is not present.", getSolo().getEditText(0));
 
         Logger.i("Typing comment: '" + comment + "'");

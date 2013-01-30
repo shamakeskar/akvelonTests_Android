@@ -15,6 +15,7 @@ import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.DetailsScreensUtils;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
@@ -153,32 +154,38 @@ public class ScreenDiscussionDetails extends BaseDiscussionDetailsScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "groups_discussion_detail")
     public static void groups_discussion_detail() {
         groups_discussion_detail("groups_discussion_detail");
     }
 
-    public static void go_to_groups_discussion_detail() {
+    @TestAction(value = "go_to_groups_discussion_detail")
+    public static void go_to_groups_discussion_detail(String email, String password) {
 
-        ScreenGroupsDiscussionList.go_to_groups_discussion_list();
+        ScreenGroupsDiscussionList.go_to_groups_discussion_list(email, password);
         groups_discussion_detail("go_to_groups_discussion_detail");
 
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_back")
     public static void groups_discussion_detail_tap_back() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_back");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_expose")
     public static void groups_discussion_detail_tap_expose() {
         new ScreenDiscussionDetails().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_expose");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_expose_reset")
     public static void groups_discussion_detail_tap_expose_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_expose_reset");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_discussion_down")
     public static void groups_discussion_detail_tap_discussion_down() {
         String userName = getDiscussionAuthor();
         ImageView downButton = (ImageView) Id.getViewByViewIdName(DOWN_LAYOUT);
@@ -189,6 +196,7 @@ public class ScreenDiscussionDetails extends BaseDiscussionDetailsScreen {
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_discussion_down");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_discussion_up")
     public static void groups_discussion_detail_tap_discussion_up() {
         String userName = getDiscussionAuthor();
         ImageView upButton = (ImageView) Id.getViewByViewIdName(UP_LAYOUT);
@@ -199,6 +207,7 @@ public class ScreenDiscussionDetails extends BaseDiscussionDetailsScreen {
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_discussion_up");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_profile_author")
     public static void groups_discussion_detail_tap_profile_author() {
         RelativeLayout profileLayout = (RelativeLayout) Id.getViewByViewIdName(PROFILE_LAYOUT);
         Assert.assertNotNull("'Profile layout' is not present", profileLayout);
@@ -208,11 +217,13 @@ public class ScreenDiscussionDetails extends BaseDiscussionDetailsScreen {
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_profile_author");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_profile_author_reset")
     public static void groups_discussion_detail_tap_profile_author_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_profile_author_reset");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_like_toggle")
     public static void groups_discussion_detail_tap_like_toggle() {
         final ScreenDiscussionDetails discussionDetail = new ScreenDiscussionDetails();
         int countOfLikes = DetailsScreensUtils.getLikesCount();
@@ -224,6 +235,7 @@ public class ScreenDiscussionDetails extends BaseDiscussionDetailsScreen {
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_like_toggle");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_comment")
     public static void groups_discussion_detail_tap_comment() {
         ImageButton commentButton = getSolo().getImageButton(COMMENT_BUTTON_INDEX);
         ViewUtils.tapOnView(commentButton, "'Comment' button");
@@ -231,31 +243,37 @@ public class ScreenDiscussionDetails extends BaseDiscussionDetailsScreen {
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_comment");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_comment_reset")
     public static void groups_discussion_detail_tap_comment_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_comment_reset");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_comments_list")
     public static void groups_discussion_detail_tap_comments_list() {
         new ScreenDiscussionDetails().openCommentsList();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_comments_list");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_comments_list_reset")
     public static void groups_discussion_detail_tap_comments_list_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_comments_list_reset");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_likes_list")
     public static void groups_discussion_detail_tap_likes_list() {
         new ScreenDiscussionDetails().openLikesList();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_likes_list");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_likes_list_reset")
     public static void groups_discussion_detail_tap_likes_list_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_likes_list_reset");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_profile_commenter")
     public static void groups_discussion_detail_tap_profile_commenter() {
         RelativeLayout profileLayout = (RelativeLayout) ViewUtils.scrollToViewById(
                 PROFILE_COMMENTER_LAYOUT, ViewUtils.SCROLL_DOWN, 5);
@@ -265,6 +283,7 @@ public class ScreenDiscussionDetails extends BaseDiscussionDetailsScreen {
         TestUtils.delayAndCaptureScreenshot("groups_discussion_detail_tap_profile_commenter");
     }
 
+    @TestAction(value = "groups_discussion_detail_tap_profile_commenter_reset")
     public static void groups_discussion_detail_tap_profile_commenter_reset() {
         HardwareActions.pressBack();
         getSolo().scrollToTop();

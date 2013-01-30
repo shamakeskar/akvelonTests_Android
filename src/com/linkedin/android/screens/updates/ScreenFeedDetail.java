@@ -1,21 +1,31 @@
 package com.linkedin.android.screens.updates;
 
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 import junit.framework.Assert;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jayway.android.robotium.solo.Solo;
+import com.linkedin.android.popups.Popup;
+import com.linkedin.android.popups.PopupForward;
 import com.linkedin.android.screens.common.ScreenBrowser;
+import com.linkedin.android.screens.common.ScreenExpose;
+import com.linkedin.android.screens.common.ScreenNewMessage;
+import com.linkedin.android.screens.common.ScreenReplyMessage;
+import com.linkedin.android.screens.more.ScreenCompanyDetails;
+import com.linkedin.android.screens.more.ScreenGroupsDiscussionList;
+import com.linkedin.android.screens.you.ScreenProfile;
+import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.DetailsScreensUtils;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
-import com.linkedin.android.utils.Logger;
-import com.linkedin.android.utils.RegexpUtils;
 import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
@@ -30,7 +40,25 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenFeedDetail {
     // CONSTANTS ------------------------------------------------------------
-
+ // CONSTANTS ------------------------------------------------------------
+    private static final String LIKE_LIST_LABEL = "people like this";
+    private static final ViewIdName NAVIGATION_BAR_TITLE_ID_NAME = new ViewIdName("navigation_bar_title");
+    private static final ViewIdName COMMEN_ROW_ID_NAME = new ViewIdName("comments_row");
+    private static final ViewIdName TWITER_AND_HASH_TAG_ID_NAME = new ViewIdName("text1");
+    private static final ViewIdName ROLLUP_HEADER_ID_NAME = new ViewIdName("rollup_header");
+    private static final ViewIdName HEADER_ID_NAME = new ViewIdName("header");
+    private static final ViewIdName GROUP_ID_NAME = new ViewIdName("dnut1_text_1");
+    private static final ViewIdName ALERT_MESSAGE_ID_NAME = new ViewIdName("message");
+    private static final ViewIdName FOOTER_ID_NAME = new ViewIdName("footer_text_2");
+    
+    private static final String LIKES_LABEL = "Likes";
+    private static final String HASHTAG_LABEL = "#hash";
+    protected static final Object TWITER_LABEL = "Twitter";
+    private static final String TWIT_LABEL = "@twit";
+    private static final String TITLE_ALERT = "Members Only Group";
+    private static final String TEXT_ALERT = "join this group?";
+    private static final int LINK_COLOR = -14914655;
+    
     // PROPERTIES -----------------------------------------------------------
 
     // CONSTRUCTORS ---------------------------------------------------------
@@ -69,9 +97,18 @@ public class ScreenFeedDetail {
     }
 
     @TestAction(value = "go_to_feed_detail")
-    public static void go_to_feed_detail() {
-        LoginActions.openUpdatesScreenOnStart();
-        openUpdateWithFooter();
+    public static void go_to_feed_detail(String email, String password) {
+        LoginActions.openUpdatesScreenOnStart(email, password);
+        View footer = Id.getViewByViewIdName(FOOTER_ID_NAME);
+        int maxCountScroll = 50;
+        while(footer == null && maxCountScroll-- > 0){
+            getSolo().scrollDown();
+            
+            // Wait for end scroll animation.
+            WaitActions.waitForScreenUpdate();
+            footer = Id.getViewByViewIdName(FOOTER_ID_NAME);
+        }
+        ViewUtils.tapOnView(footer, "Footer");
         TestUtils.delayAndCaptureScreenshot("go_to_feed_detail");
     }
 
@@ -103,7 +140,7 @@ public class ScreenFeedDetail {
 
     @TestAction(value = "feed_detail_tap_profile_author")
     public static void feed_detail_tap_profile_author() {
-        new ScreenUpdate().openConnectionProfile();
+        DetailsScreensUtils.openProfileAuthor();
         TestUtils.delayAndCaptureScreenshot("feed_detail_tap_profile_author");
     }
 
@@ -116,34 +153,61 @@ public class ScreenFeedDetail {
 
     @TestAction(value = "feed_detail_tap_company")
     public static void feed_detail_tap_company() {
-        // From a Company NUS type, tap on the top row to reach the Company
-        // profile page
+        ScreenUpdate.tapOnConnectionProfile();
+        new ScreenCompanyDetails();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_company");
     }
 
     @TestAction(value = "feed_detail_tap_profile_new_connection")
     public static void feed_detail_tap_profile_new_connection() {
-        // From New Connections roll up detail view, tap on any profile
+        TextView titleView = (TextView) Id.getViewByViewIdName(ROLLUP_HEADER_ID_NAME);
+        Assert.assertNotNull("Rollup Header is not present", titleView);
+        String oldText = titleView.getText().toString();
+        ViewUtils.tapOnView(titleView, "RollUp");
+        new ScreenNewConnectionDetails();
+        titleView = (TextView) Id.getViewByViewIdName(HEADER_ID_NAME);
+        Assert.assertNotNull("Rollup Header is not present", titleView);
+        Assert.assertTrue("Screen opens the wrong people",
+                        oldText.indexOf(titleView.getText().toString()) != -1);
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_profile_new_connection");
     }
 
-    @TestAction(value = "updates_connection_rollup_list_tap_update")
-    public static void updates_connection_rollup_list_tap_update() {
-        // From Connections Roll up detail view, tap on a roll up
+    @TestAction(value = "feed_detail_tap_update")
+    public static void feed_detail_tap_update() {
+        TextView titleView;
+        int maxCountScroll = 5;
+        do {
+            titleView = (TextView) Id.getViewByViewIdName(HEADER_ID_NAME);
+            if (titleView != null)
+                break;
+            getSolo().scrollDown();
+
+            // Wait for end animations scroll.
+            WaitActions.waitForScreenUpdate();
+        } while (maxCountScroll-- > 0);
+        Assert.assertNotNull("Update is not present", titleView);
+        String oldText = titleView.getText().toString();
+        ViewUtils.tapOnView(titleView, "RollUp");
+        new ScreenNewConnectionDetails();
+        titleView = (TextView) Id.getViewByViewIdName(HEADER_ID_NAME);
+        Assert.assertNotNull("Header is not present", titleView);
+        Assert.assertTrue("Not reach the relevant profile page", titleView.getText().toString()
+                        .equals(oldText));
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_update");
     }
 
     @TestAction(value = "feed_detail_tap_url")
     public static void feed_detail_tap_url() {
-        ArrayList<TextView> list = TextViewUtils.getLinkTextViews();
+        ArrayList<TextView> list = getSolo().getCurrentTextViews(null);
+        TextView view = null;
         Assert.assertTrue("Cannot find links (LinkTextViews) on this screen", list.size() > 0);
-        String link = null;
-        for (int i = 0; i < list.size(); i++) {
-            TextView view = list.get(i);
-            link = RegexpUtils.getFirstFoundGroup(view.getText().toString(),
-                    RegexpUtils.HYPERLINK_PATTERN);
-            if (link != null)
-                break;
+        for(TextView textView : list){
+            if(textView.getTextColors().getDefaultColor() == LINK_COLOR && textView.getText().length() > 0){
+                view = textView;
+            }
         }
-        Assert.assertNotNull("Cannot find links on this screen", link);
-        ViewUtils.tapOnLink(link);
+        Assert.assertNotNull("Cannot find links on this screen", view);
+        ViewUtils.tapOnView(view, view.getText().toString());
         new ScreenBrowser();
         TestUtils.delayAndCaptureScreenshot("feed_detail_tap_url");
     }
@@ -158,9 +222,10 @@ public class ScreenFeedDetail {
     @TestAction(value = "feed_detail_tap_like_toggle")
     public static void feed_detail_tap_like_toggle() {
         final ScreenUpdate screenUpdate = new ScreenUpdate();
-        final int countOfLikes = DetailsScreensUtils.getLikesCount();
+        int countOfLikes = DetailsScreensUtils.getLikesCount();
         screenUpdate.tapOnLikeButton();
         DetailsScreensUtils.verifyCountOfLikesChanged(countOfLikes);
+        countOfLikes = DetailsScreensUtils.getLikesCount();
         screenUpdate.tapOnLikeButton();
         DetailsScreensUtils.verifyCountOfLikesChanged(countOfLikes);
         TestUtils.delayAndCaptureScreenshot("feed_detail_tap_like_toggle");
@@ -169,10 +234,245 @@ public class ScreenFeedDetail {
     @TestAction(value = "feed_detail_tap_actionsheet")
     public static void feed_detail_tap_actionsheet() {
         new ScreenUpdate().tapOnForwardButton();
-
-        // TODO
-        WaitActions.delay(2);
-        Logger.logElements();
+        new PopupForward(PopupForward.SEND_TO_CONNECTION_TEXT, PopupForward.SHARE_TEXT, PopupForward.REPLY_PRIVATELY_TEXT);
         TestUtils.delayAndCaptureScreenshot("feed_detail_tap_actionsheet");
+    }
+    
+    @TestAction(value = "feed_detail_tap_company_reset")
+    public static void feed_detail_tap_company_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        new ScreenUpdate();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_company_reset");
+    }
+
+    @TestAction(value = "feed_detail_tap_comment")
+    public static void feed_detail_tap_comment() {
+        new ScreenUpdate().tapOnCommentButton();
+        new ScreenAddComment();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_comment");
+    }
+    
+    @TestAction(value = "feed_detail_tap_likes_list")
+    public static void feed_detail_tap_likes_list() {
+        getSolo().searchText(LIKE_LIST_LABEL);
+        ViewUtils.tapOnView(TextViewUtils.getTextViewByPartialText(LIKE_LIST_LABEL), "Like list");
+        WaitActions.waitForTrueInFunction("Screen 'Like list' is not present",
+                        new Callable<Boolean>() {
+
+                            @Override
+                            public Boolean call() {
+                                TextView titleView = (TextView) Id
+                                                .getViewByViewIdName(NAVIGATION_BAR_TITLE_ID_NAME);
+                                if (titleView == null) return false;
+                                return titleView.getText().toString().equals(LIKES_LABEL);
+                            }
+                        });
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_likes_list");
+    }
+    
+    /**
+     * Returns {@code Solo} object
+     * 
+     * @return {@code Solo} object
+     */
+    protected static Solo getSolo() {
+        return DataProvider.getInstance().getSolo();
+    }
+    
+    @TestAction(value = "feed_detail_tap_likes_list_reset")
+    public static void feed_detail_tap_likes_list_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        new ScreenUpdate();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_likes_list_reset");
+    }
+    
+    @TestAction(value = "feed_detail_tap_comment_reset")
+    public static void feed_detail_tap_comment_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        new ScreenUpdate();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_comment_reset");
+    }
+
+    @TestAction(value = "feed_detail_tap_profile_commenter_reset")
+    public static void feed_detail_tap_profile_commenter_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        new ScreenUpdate();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_profile_commenter_reset");
+    }
+    
+    @TestAction(value = "feed_detail_tap_profile_commenter")
+    public static void feed_detail_tap_profile_commenter() {
+        int maxScroll = 5;
+        while(getSolo().scrollDown() && maxScroll-- > 0);
+        View view = Id.getViewByViewIdName(COMMEN_ROW_ID_NAME);
+        ViewUtils.tapOnView(view, "First commenter");
+        new ScreenProfile();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_profile_commenter");
+    }
+
+    @TestAction(value = "feed_detail_actionsheet_tap_send_to_connection")
+    public static void feed_detail_actionsheet_tap_send_to_connection() {
+        new PopupForward(PopupForward.SEND_TO_CONNECTION_TEXT).tapOnOption(PopupForward.SEND_TO_CONNECTION_TEXT);
+        new ScreenNewMessage();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_actionsheet_tap_send_to_connection");
+    }
+    
+    @TestAction(value = "feed_detail_actionsheet_tap_send_to_connection_reset")
+    public static void feed_detail_actionsheet_tap_send_to_connection_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        new ScreenUpdate();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_actionsheet_tap_send_to_connection_reset");
+    }
+    
+    @TestAction(value = "feed_detail_actionsheet_tap_reply_privately")
+    public static void feed_detail_actionsheet_tap_reply_privately() {
+        new PopupForward(PopupForward.REPLY_PRIVATELY_TEXT).tapOnOption(PopupForward.REPLY_PRIVATELY_TEXT);
+        new ScreenReplyMessage();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_actionsheet_tap_reply_privately");
+    }
+
+    @TestAction(value = "feed_detail_actionsheet_tap_reply_privately_reset")
+    public static void feed_detail_actionsheet_tap_reply_privately_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        new ScreenUpdate();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_actionsheet_tap_reply_privately_reset");
+    }
+
+    @TestAction(value = "feed_detail_actionsheet_tap_share")
+    public static void feed_detail_actionsheet_tap_share() {
+        new PopupForward(PopupForward.SHARE_TEXT).tapOnOption(PopupForward.SHARE_TEXT);
+        new ScreenShareUpdate();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_actionsheet_tap_share");
+    }
+    
+    @TestAction(value = "feed_detail_actionsheet_tap_share_reset")
+    public static void feed_detail_actionsheet_tap_share_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        new ScreenUpdate();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_actionsheet_tap_share_reset");
+    }
+
+    @TestAction(value = "feed_detail_actionsheet_tap_cancel")
+    public static void feed_detail_actionsheet_tap_cancel() {
+        HardwareActions.pressBack();
+        Assert.assertFalse("Actionsheet is not dissapear", getSolo().searchText(PopupForward.SHARE_TEXT, true));
+        TestUtils.delayAndCaptureScreenshot("feed_detail_actionsheet_tap_cancel");
+    }
+    
+    @TestAction(value = "feed_detail_tap_hashtag")
+    public static void feed_detail_tap_hashtag() {
+        TextView textView = (TextView) Id.getViewByViewIdName(TWITER_AND_HASH_TAG_ID_NAME);
+        Assert.assertNotNull("Section 'Twiter and HashTag is not present'", textView);
+        TextViewUtils.tapOnLinkInTextView(textView, HASHTAG_LABEL);
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG, "Title '" + TWITER_LABEL + "' is not present",
+                        new Callable<Boolean>() {
+
+                            @Override
+                            public Boolean call() {
+                                TextView titleView = (TextView) Id
+                                                .getViewByViewIdName(NAVIGATION_BAR_TITLE_ID_NAME);
+                                if (titleView == null) return false;
+                                return titleView.getText().toString().equals(TWITER_LABEL);
+                            }
+                        });
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_hashtag");
+    }
+    
+    @TestAction(value = "feed_detail_tap_twiiter_handle")
+    public static void feed_detail_tap_twiiter_handle() {
+        TextView textView = (TextView) Id.getViewByViewIdName(TWITER_AND_HASH_TAG_ID_NAME);
+        Assert.assertNotNull("Section 'Twiter and HashTag is not present'", textView);
+        TextViewUtils.tapOnLinkInTextView(textView, TWIT_LABEL);
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG, "Title '" + TWIT_LABEL + "' is not present",
+                        new Callable<Boolean>() {
+
+                            @Override
+                            public Boolean call() {
+                                TextView titleView = (TextView) Id
+                                                .getViewByViewIdName(NAVIGATION_BAR_TITLE_ID_NAME);
+                                if (titleView == null) return false;
+                                if(titleView.getText().toString().indexOf(TWIT_LABEL)!= -1) return true;
+                                return false;
+                            }
+                        });
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_twiiter_handle");
+    }
+    
+    @TestAction(value = "feed_detail_tap_hashtag_reset")
+    public static void feed_detail_tap_hashtag_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        new ScreenUpdate();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_hashtag_reset");
+    }
+    
+    @TestAction(value = "feed_detail_tap_twiiter_handle_reset")
+    public static void feed_detail_tap_twiiter_handle_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        new ScreenUpdate();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_twiiter_handle_reset");
+    }
+    
+    @TestAction(value = "feed_detail_rollup_list_tap_update_reset")
+    public static void feed_detail_rollup_list_tap_update_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        new ScreenNewConnectionsRollUp();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_rollup_list_tap_update_reset");
+    }
+    
+    @TestAction(value = "feed_detail_tap_profile_new_connection_reset")
+    public static void feed_detail_tap_profile_new_connection_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        new ScreenNewConnectionsRollUp();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_profile_new_connection_reset");
+    }
+    
+    @TestAction(value = "feed_detail_tap_group")
+    public static void feed_detail_tap_group() {
+        TextView textView = (TextView) Id.getViewByViewIdName(GROUP_ID_NAME);
+        ViewUtils.tapOnView(textView, "Group");
+        new ScreenGroupsDiscussionList();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_group");
+    }
+    
+    @TestAction(value = "feed_detail_tap_group_reset")
+    public static void feed_detail_tap_group_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        TestUtils.delayAndCaptureScreenshot("feed_detail_tap_group_reset");
+    }
+    
+    @TestAction(value = "feed_detail_join_closed_group_dialog_tap_cancel_precondition")
+    public static void feed_detail_join_closed_group_dialog_tap_cancel_precondition() {
+        TextView textView = (TextView) Id.getViewByViewIdName(GROUP_ID_NAME);
+        ViewUtils.tapOnView(textView, "Group");
+        new Popup(TITLE_ALERT, TEXT_ALERT);
+        TestUtils.delayAndCaptureScreenshot("feed_detail_join_closed_group_dialog_tap_cancel_precondition");
+    }
+    
+    @TestAction(value = "feed_detail_join_closed_group_dialog_tap_cancel")
+    public static void feed_detail_join_closed_group_dialog_tap_cancel() {
+        new Popup(TITLE_ALERT, TEXT_ALERT).tapOnButton(Popup.CANCEL_BUTTON);
+        WaitActions.waitForTrueInFunction("Alert is not disappears", new Callable<Boolean>() {
+
+            @Override
+            public Boolean call() {
+                return !getSolo().searchText(TITLE_ALERT, true);
+            }
+        });
+        TestUtils.delayAndCaptureScreenshot("feed_detail_join_closed_group_dialog_tap_cancel");
+    }
+    
+    @TestAction(value = "feed_detail_join_closed_group_dialog_tap_join")
+    public static void feed_detail_join_closed_group_dialog_tap_join() {
+        TextView textView = (TextView) Id.getViewByViewIdName(ALERT_MESSAGE_ID_NAME);
+        Assert.assertNotNull("Alert message is not present", textView);
+        String groupName = textView.getText().toString();
+        
+        int endName = groupName.indexOf('"', 1);
+        groupName = groupName.substring(1, endName);
+        new Popup(TITLE_ALERT, TEXT_ALERT).tapOnButton(Popup.OK_BUTTON);
+        ScreenUpdate.tapOnINButton();
+        new ScreenExpose(null).openGroupsAndMoreScreen().openGroupsScreen();
+        WaitActions.waitForText(groupName, "Group is not present");
+        TestUtils.delayAndCaptureScreenshot("feed_detail_join_closed_group_dialog_tap_join");
     }
 }

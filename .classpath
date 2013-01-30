@@ -6,8 +6,5 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="libs/robotium-solo-3.6-javadoc.jar"/>
 	<classpathentry kind="lib" path="libs/robotium-solo-3.6.jar"/>
-	<classpathentry kind="lib" path="libs/android_webdriver_library.jar"/>
-	<classpathentry kind="lib" path="libs/guava-r09.jar"/>
-	<classpathentry kind="lib" path="libs/android_webdriver_library-srcs.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

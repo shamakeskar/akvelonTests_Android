@@ -11,6 +11,7 @@ import com.linkedin.android.screens.you.ScreenProfile;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
@@ -50,7 +51,7 @@ public class ScreenNewJobsRollUp extends BaseListScreen {
     @Override
     public void verify() {
         ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-        
+
         WaitActions.waitForTrueInFunction("'LinkedIn' title is not present",
                 new Callable<Boolean>() {
                     public Boolean call() {
@@ -106,11 +107,13 @@ public class ScreenNewJobsRollUp extends BaseListScreen {
         return new ScreenNewMessage();
     }
 
-    public static void go_to_updates_new_jobs_rollup_list() {
-        LoginActions.openUpdatesScreenOnStart();
+    @TestAction(value = "go_to_updates_new_jobs_rollup_list")
+    public static void go_to_updates_new_jobs_rollup_list(String email, String password) {
+        LoginActions.openUpdatesScreenOnStart(email, password);
         updates_new_jobs_rollup_list("go_to_updates_new_jobs_rollup_list");
     }
 
+    @TestAction(value = "updates_new_jobs_rollup_list")
     public static void updates_new_jobs_rollup_list() {
         updates_new_jobs_rollup_list("updates_new_jobs_rollup_list");
     }
@@ -121,6 +124,7 @@ public class ScreenNewJobsRollUp extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "updates_new_jobs_rollup_list_tap_back")
     public static void updates_new_jobs_rollup_list_tap_back() {
         HardwareActions.pressBack();
         new ScreenUpdates();
@@ -128,12 +132,14 @@ public class ScreenNewJobsRollUp extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("updates_new_jobs_rollup_list_tap_back");
     }
 
+    @TestAction(value = "updates_new_jobs_rollup_list_tap_expose")
     public static void updates_new_jobs_rollup_list_tap_expose() {
         new ScreenNewJobsRollUp().openExposeScreen();
 
         TestUtils.delayAndCaptureScreenshot("updates_new_jobs_rollup_list_tap_expose");
     }
 
+    @TestAction(value = "updates_new_jobs_rollup_list_tap_expose_reset")
     public static void updates_new_jobs_rollup_list_tap_expose_reset() {
         HardwareActions.pressBack();
         new ScreenNewJobsRollUp();
@@ -141,12 +147,14 @@ public class ScreenNewJobsRollUp extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("updates_connection_rollup_list_tap_expose_reset");
     }
 
+    @TestAction(value = "updates_new_jobs_rollup_list_tap_profile")
     public static void updates_new_jobs_rollup_list_tap_profile() {
         new ScreenNewJobsRollUp().openFirstUpdate();
 
         TestUtils.delayAndCaptureScreenshot("updates_new_jobs_rollup_list_tap_profile");
     }
 
+    @TestAction(value = "updates_new_jobs_rollup_list_tap_profile_reset")
     public static void updates_new_jobs_rollup_list_tap_profile_reset() {
         HardwareActions.pressBack();
         new ScreenNewJobsRollUp();
@@ -154,12 +162,14 @@ public class ScreenNewJobsRollUp extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("updates_new_jobs_rollup_list_tap_profile_reset");
     }
 
+    @TestAction(value = "updates_new_jobs_rollup_list_tap_message")
     public static void updates_new_jobs_rollup_list_tap_message() {
         new ScreenNewJobsRollUp().openNewMessageScreen();
 
         TestUtils.delayAndCaptureScreenshot("updates_new_jobs_rollup_list_tap_message");
     }
 
+    @TestAction(value = "updates_new_jobs_rollup_list_tap_message_reset")
     public static void updates_new_jobs_rollup_list_tap_message_reset() {
         HardwareActions.goBackOnPreviousActivity();
 

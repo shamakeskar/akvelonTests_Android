@@ -1,0 +1,15 @@
+<TestSuite groups="Regressions" >
+  <Test id="42117081" name="regression_browser" >
+    <Step key="go_to_browser" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="browser_tap_back" />
+    <Step key="browser" />
+    <Step key="browser_tap_expose" />
+    <Step key="browser_tap_expose_reset" />
+    <Step key="browser_tap_refresh" />
+    <Step key="browser_tap_actionsheet" />
+    <Step key="browser_actionsheet_tap_share" />
+    <Step key="browser_actionsheet_tap_share_reset" />
+    <Step key="browser_tap_actionsheet" />
+    <Step key="browser_actionsheet_tap_send_to_connection" />
+  </Test>
+</TestSuite>

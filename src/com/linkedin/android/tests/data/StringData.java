@@ -10,8 +10,8 @@ public final class StringData {
     //TODO correct formatting and to think about name of variables
     // CONSTANTS ------------------------------------------------------------
     // Main test account.
-    public static final String test_email = "user107@correo.linkedinlabs.com";
-    public static final String test_password = "testing1";
+    public static final String test_email = "";//"user107@correo.linkedinlabs.com";
+    public static final String test_password = "";//"testing1";
     public static final String test_name = "Some <script> Some very very very long name";
     public static final String test_headline = "set at eCharcha";
     public static final String test_city_for_weather = "Mountain View";
@@ -26,11 +26,13 @@ public final class StringData {
 
     //Search string for custom search.
     public static final String test_custom_user_search = "William Pineros";
-
+    
+  //Search string for custom search.
+    public static final String user_for_searching = "evgeny agapov";
 
     // Account with additional info (further AI account).
-    public static final String test_email_additional_info = "akvtesting5@gmail.com";
-    public static final String test_password_additional_info = "Remarkably!";
+    public static final String test_email_additional_info = "";//"akvtesting5@gmail.com";
+    public static final String test_password_additional_info = "";//"Remarkably!";
     public static final String test_user_additional_info_name = "akv testing";
     public static final String test_user_additional_info_headline = "SDET at Akvelon";
     // AI account previous position.
@@ -108,33 +110,34 @@ public final class StringData {
     public static final String test_language_2 = "Ukrainian";
     // Course title
     public static final String test_course_title = "US Robotics";
-
+    // Link for message detail, tap in link
+    public static final String test_link = "http://www.google.com";
 
     // Account with large connections.
-    public static final String test_email_large_connections = "user1@correo.linkedinlabs.com";
-    public static final String test_password_large_connections = "crazyman";
+    public static final String test_email_large_connections = "";//"user1@correo.linkedinlabs.com";
+    public static final String test_password_large_connections = "";//"crazyman";
     public static final String test_email_large_connections_name = "user1er user1ln";
 
 
     // Account for send messages.
-    public static final String test_spammer_email = "andreas.mauricio@gmail.com";
-    public static final String test_spammer_password = "@w3e4r5t";
+    public static final String test_spammer_email = "";//"andreas.mauricio@gmail.com";
+    public static final String test_spammer_password = "";//"@w3e4r5t";
     public static final String test_spammer_name = "Mauricio Andreas";
     
     // Account for share news.
-    public static final String test_publisher_email = "userakvelon@yandex.ru";
-    public static final String test_publisher_password = "BrainBench";
+    public static final String test_publisher_email = "";//"userakvelon@yandex.ru";
+    public static final String test_publisher_password = "";//"BrainBench";
 
     // Account with 200+ connections.
-    public static final String test_200_email = "qa.homer@gmail.com";
-    public static final String test_200_password = "cctest123";
+    public static final String test_200_email = "";//"qa.homer@gmail.com";
+    public static final String test_200_password = "";//"cctest123";
     public static final String test_200_ticker = "SU";
     public static final String test_200_name = "QA 2 Homer";
     public static final String search_string_for_finding_test_200_user = "QA2 Homer Sr. SET at Schneider Electric";
 
     // econd account with additional info.
-    public static final String atest_additional_info_email = "akv17test@mail.ru";
-    public static final String atest_additional_info_password = "BrainBench";
+    public static final String atest_additional_info_email = "";//"akv17test@mail.ru";
+    public static final String atest_additional_info_password = "";//"BrainBench";
 
 
     // Users for text fixtures.
@@ -142,18 +145,18 @@ public final class StringData {
 //           b) with 2 invitations from 'Mauricio Andreas' and 'Some <script> Some very...' for fixture from 'akv31_IviteDetails';
 //           c) that can ignore invite from 'Some <script> Some very very very long name' for fixture from 'akv31_IviteIgnore';
 //           d) that can accept invite from 'Mauricio Andreas' for fixture from 'akv31_IviteAccept';
-    public static final String test_fixture3_email = "akvtest31@mail.ru";
-    public static final String test_fixture3_password = "BrainBench";
+    public static final String test_fixture3_email = "";//"akvtest31@mail.ru";
+    public static final String test_fixture3_password = "";//"BrainBench";
 
     //Account with one invitation from user "user107"
-    public static final String test_invitation_email = "sinoptik37@gmail.com";
-    public static final String test_invitation_password = "NewBrainAkv";
+    public static final String test_invitation_email = "";//"sinoptik37@gmail.com";
+    public static final String test_invitation_password = "";//"NewBrainAkv";
     public static final String test_invitation_name = "Dmitry Somof";
     public static final String test_invitation_short_name = "Dmitry S.";
 
     // Account with invitation from user "user107"
-    public static final String test_invitation2_email = "akvtest32@mail.ru";
-    public static final String test_invitation2_password = "BrainBench";
+    public static final String test_invitation2_email = "";//"akvtest32@mail.ru";
+    public static final String test_invitation2_password = "";//"BrainBench";
     public static final String test_invitation2_name = "Firstname Lastname";
     public static final String test_invitation2_short_name = "Firstname L.";
 
@@ -163,40 +166,84 @@ public final class StringData {
 //        |     |  3  <     |
     // 1  -  2  <     |  6  |
 //        |     |  4  |     |
-    public static final String atest1_email = "akvtest21@mail.ru";
-    public static final String atest2_email = "akvtest22@mail.ru";
-    public static final String atest3_email = "akvtest23@mail.ru";
-    public static final String atest4_email = "akvtest24@mail.ru";
-    public static final String atest5_email = "akvtest25@mail.ru";
-    public static final String atest6_email = "akvtest26@mail.ru";
-    public static final String atest7_email = "akvtest27@mail.ru";
-    public static final String atest_password = "BrainBench";
+    public static final String atest1_email = "";//"akvtest21@mail.ru";
+    public static final String atest2_email = "";//"akvtest22@mail.ru";
+    public static final String atest3_email = "";//"akvtest23@mail.ru";
+    public static final String atest4_email = "";//"akvtest24@mail.ru";
+    public static final String atest5_email = "";//"akvtest25@mail.ru";
+    public static final String atest6_email = "";//"akvtest26@mail.ru";
+    public static final String atest7_email = "";//"akvtest27@mail.ru";
+    public static final String atest_password = "";//"BrainBench";
     
  // Acount of the employee of the Company kompashka with connection to test
-    public static final String test_email_kompashka_employee = "kompashka.employee@gmail.com";
-    public static final String test_password_kompashka_employee = "therd@123";
+    public static final String test_email_kompashka_employee = "";//"kompashka.employee@gmail.com";
+    public static final String test_password_kompashka_employee = "";//"therd@123";
     public static final String test_email_kompashka_employee_name = "Kompash Ka";
     public static final String test_email_kompashka_employee_short_name = " Kompash K. ";
 
     // Accounts of the followers of the Company kompashka with connections to test
-    public static final String test_email_kompashka_follower1 = "akvtest33@mail.ru";
-    public static final String test_password_kompashka_follower1 = "BrainBench";
+    public static final String test_email_kompashka_follower1 = "";//"akvtest33@mail.ru";
+    public static final String test_password_kompashka_follower1 = "";//"BrainBench";
     public static final String test_email_kompashka_follower1_name = "Akvelon AkvelonTest";
 
-    public static final String test_email_kompashka_follower2 = "akvtest43@mail.ru";
-    public static final String test_password_kompashka_follower2 = "BrainBench";
+    public static final String test_email_kompashka_follower2 = "";//"akvtest43@mail.ru";
+    public static final String test_password_kompashka_follower2 = "";//"BrainBench";
     public static final String test_email_kompashka_follower2_name = "test43 akvtest";
 
-    public static final String test_email_kompashka_follower3 = "akvtest44@mail.ru";
-    public static final String test_password_kompashka_follower3 = "BrainBench";
+    public static final String test_email_kompashka_follower3 = "";//"akvtest44@mail.ru";
+    public static final String test_password_kompashka_follower3 = "";//"BrainBench";
     public static final String test_email_kompashka_follower3_name = "akvtest test 44";
 
-    public static final String test_email_kompashka_follower4 = "akvtest46@mail.ru";
-    public static final String test_password_kompashka_follower4 = "BrainBench";
+    public static final String test_email_kompashka_follower4 = "";//"akvtest46@mail.ru";
+    public static final String test_password_kompashka_follower4 = "";//"BrainBench";
     public static final String test_email_kompashka_follower4_name = "akvelon test46";
+
+    private static final String comments[] = {
+        "I totally agree",
+        "Thimbs up!",
+        "Awesome",
+        "Love it!",
+        "Very True.",
+        "Absolutely",
+        "One picture says it all.",
+        "Linked in such a great place to network.",
+        "This link is only redirecting me to another news page...",
+        "yes good idea",
+        "nice article",
+        "good one",
+        "Nice and Clever",
+        "Really illuminating.",
+        "Inspiring",
+        "Excellent as always and MOST appropriate for this time of year!. Thanks for sharing.",
+        "It has taken me a long time to learn this but it is so true.",
+        "Love this article and think it is very true!",
+        "Great article and especially timely for some projects I am working - thanks!",
+        "Very informative. Thanks for sharing!",
+        "Thanks very much for this article.",
+        "Thank you for the insight.",
+        "Great article and I couldn't agree more. Thanks for sharing.",
+        "I am really impress about the story..",
+        "I agree--when you recognize your colleagues, they shine.",
+        "As a rabid fan, I really enjoyed this article!",
+        "maybe",
+        "Wonderful..",
+        "Nice.",
+        "Great story!",
+        "Appreciate your writing skills. Keep it up.",
+        "Great article - Thank you",
+        "Good article even it is odd.",
+        "It's a queen bee complex.",
+        "What a waste of my time to read.",
+        "Most worst and so what article I ever read...",
+        "Ridiculous.",
+        "Thank you for sharing",
+        "Thank you"};
     // PROPERTIES -----------------------------------------------------------
 
     // CONSTRUCTORS ---------------------------------------------------------
 
     // METHODS --------------------------------------------------------------
+    public static String getRandomCommentText() {
+        return comments[(int) (Math.random() * comments.length)];
+    }
 }

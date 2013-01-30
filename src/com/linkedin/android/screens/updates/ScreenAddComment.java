@@ -5,7 +5,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.linkedin.android.screens.base.BaseScreen;
+import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
@@ -98,7 +100,7 @@ public class ScreenAddComment extends BaseScreen {
      */
     public String typeUpdateText(String updateText) {
         if (updateText == null) 
-            updateText = "Test update " + Math.random();
+            updateText = StringData.getRandomCommentText();
         Assert.assertNotNull("'Share an update' field is not present.", getSolo().getEditText(0));
 
         Logger.i("Typing random update text: '" + updateText + "'");
@@ -118,12 +120,14 @@ public class ScreenAddComment extends BaseScreen {
         
     }
     
-    public static void go_to_comment_compose() {
-        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
+    @TestAction(value = "go_to_comment_compose")
+    public static void go_to_comment_compose(String email, String password) {
+        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart(email, password);
         screenUpdates.openNews(1, 0);
         comment_compose("go_to_comment_compose");
     }
-
+    
+    @TestAction(value = "comment_compose_tap_cancel")
     public static void comment_compose_tap_cancel() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("comment_compose_tap_cancel");
@@ -145,6 +149,7 @@ public class ScreenAddComment extends BaseScreen {
         TestUtils.delayAndCaptureScreenshot("comment_compose_tap_send");
     }
 
+    @TestAction(value = "comment_compose_tap_cancel_reset")
     public static void comment_compose_tap_cancel_reset() {
         comment_compose("comment_compose_tap_cancel_reset");
     }

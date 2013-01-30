@@ -3,12 +3,16 @@ package com.linkedin.android.screens.base;
 import java.util.concurrent.Callable;
 
 import junit.framework.Assert;
+import android.database.DataSetObserver;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -23,23 +27,96 @@ public abstract class BaseListScreen extends BaseINScreen {
     public BaseListScreen(String activityClassname) {
         super(activityClassname);
     }
+    
+    /**
+     * Class for check list content changed state.
+     */
+    class listContentChangedObserver extends DataSetObserver {
+        private boolean isContentChanged = false;
+        
+        /**
+         * Sets {@code isContentChanged} to <b>false</b>.
+         */
+        public void resetState() {
+            isContentChanged = false;
+        }
+        
+        /**
+         * Returns {@code isContentChanged} value.
+         */
+        public boolean getState() {
+            return isContentChanged;
+        }
+
+        @Override
+        public void onChanged() {
+            isContentChanged = true;
+        }
+    }
+    
+    /**
+     * Waits for any {@code ListView} appears.
+     * @return first {@code ListView}.
+     */
+    protected ListView waitForListView() {
+        WaitActions.waitForTrueInFunction("Current screen does not contain ListView", new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return (ListViewUtils.getFirstListView() != null);
+            }
+        });
+        
+        return ListViewUtils.getFirstListView();
+    }
 
     /**
      * Refreshes screen.
      */
     public void refreshScreen() {
         Logger.i("Refresh screen");
-        
-        HardwareActions.pressMenu();
-
         HardwareActions.tapOnMenuOption(MENU_ITEM_REFRESH);
-        // Verify screen.
+
+        // Get adapter for listView and bind observer to it.
+        ListAdapter adapter = waitForListView().getAdapter();
+        final listContentChangedObserver observer = new listContentChangedObserver();
+        adapter.registerDataSetObserver(observer);
+        
         try {
-            this.getClass().newInstance();
-        } catch (IllegalAccessException e) {
-            Assert.fail("Couldn't create new instance of class " + this.getClass());
-        } catch (InstantiationException e) {
-            Assert.fail("Couldn't create new instance of class " + this.getClass());
+            // Wait for first event from observer to determine start of refreshing.
+            WaitActions.waitForTrueInFunction("Refreshing not started", new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    return observer.getState();
+                }
+            });
+            
+            // Wait with some delay for observer stopped raise events.
+            boolean isScreenRefreshed = false;
+            long startTime = System.currentTimeMillis();
+            while (System.currentTimeMillis() - startTime < DataProvider.WAIT_DELAY_LONG) {
+                observer.resetState();
+                
+                // Wait with TIME_BETWEEN_REFRESH_LOADS delay for raising event. 
+                int waitStepsCount = DataProvider.TIME_BETWEEN_REFRESH_LOADS / DataProvider.WAIT_DELAY_STEP;
+                for (int i = 0; i < waitStepsCount; i++) {
+                    DataProvider.getInstance().getSolo().sleep(DataProvider.WAIT_DELAY_STEP);
+                    if (observer.getState()) {
+                        break;
+                    }
+                }
+                
+                // If event not raised during TIME_BETWEEN_REFRESH_LOADS delay, then refreshing finished.  
+                if (!observer.getState()) {
+                    isScreenRefreshed = true;
+                    break;
+                }
+            }
+            
+            Assert.assertTrue("Refreshing not finished",isScreenRefreshed);
+        } catch (Exception e) {
+            adapter.unregisterDataSetObserver(observer);
+            
+            Assert.fail(e.getMessage());
         }
     }
 

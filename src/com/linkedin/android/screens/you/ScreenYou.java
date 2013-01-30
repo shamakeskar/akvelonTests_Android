@@ -65,6 +65,9 @@ public class ScreenYou extends BaseProfileScreen {
     static final String SETTINGS_TEXT = "Settings";
     static final String EDIT_PROFILE_TOAST = "Now you can edit your profile. Tap the button above to get started.";
 
+    public static final ViewIdName ID_NAME_OF_ALL_TITLE = new ViewIdName("title");
+    public static final ViewIdName ID_NAME_OF_FWD_BUTTON = new ViewIdName("button_3");
+
     // TextView: current user name
     private static final ViewIdName NAME = new ViewIdName("name");
 
@@ -284,7 +287,8 @@ public class ScreenYou extends BaseProfileScreen {
      * Taps on 'Connections' text button.
      */
     public void tapToConnections() {
-        Assert.assertTrue("'Connections' is not present", getSolo().searchText(CONNECTIONS_BUTTON_TEXT));
+        Assert.assertTrue("'Connections' is not present",
+                getSolo().searchText(CONNECTIONS_BUTTON_TEXT));
         Logger.i("Tapping on 'Connections' button");
         getSolo().clickOnText(CONNECTIONS_BUTTON_TEXT);
     }
@@ -380,17 +384,23 @@ public class ScreenYou extends BaseProfileScreen {
     }
 
     // ACTIONS --------------------------------------------------------------
-
-    public static void you() {
+    public static void you(String screenshotname) {
         new ScreenExpose(null).openYouScreen();
-        TestUtils.delayAndCaptureScreenshot("go_to_you");
+        TestUtils.delayAndCaptureScreenshot(screenshotname);
     }
 
-    public static void go_to_you() {
-        ScreenExpose.go_to_expose();
-        you();
+    @TestAction(value = "go_to_you")
+    public static void go_to_you(String email, String password) {
+        ScreenExpose.go_to_expose(email, password);
+        you("go_to_you");
     }
 
+    @TestAction(value = "you")
+    public static void you() {
+        you("you");
+    }
+
+    @TestAction(value = "you_tap_photo")
     public static void you_tap_photo() {
         new ScreenYou().tapAvatarImage();
         WaitActions.waitForTrueInFunction("'Update photo' button is not displayed",
@@ -406,12 +416,14 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_tap_photo");
     }
 
+    @TestAction(value = "you_tap_photo_reset")
     public static void you_tap_photo_reset() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("you_tap_photo_reset");
     }
 
+    @TestAction(value = "you_tap_change_photo")
     public static void you_tap_change_photo() {
         new ScreenYou().tapAvatarPhotoCamera();
         WaitActions.waitForTrueInFunction("'Update photo' popup is not displayed",
@@ -425,13 +437,15 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_tap_change_photo");
     }
 
-    public static void you_photo_actonsheet_tap_cancel() {
+    @TestAction(value = "you_photo_actionsheet_tap_cancel")
+    public static void you_photo_actionsheet_tap_cancel() {
         Button cancel = getSolo().getButton(0);
         ViewUtils.tapOnView(cancel, "'Cancel' button");
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("you_photo_actonsheet_tap_cancel");
     }
 
+    @TestAction(value = "you_tap_groups")
     public static void you_tap_groups() {
         TextView groups = TextViewUtils.searchTextViewInActivity("Groups", false);
         ViewUtils.tapOnView(groups, "'Groups'");
@@ -439,12 +453,14 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_tap_groups");
     }
 
+    @TestAction(value = "you_tap_groups_reset")
     public static void you_tap_groups_reset() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("you_tap_groups_reset");
     }
 
+    @TestAction(value = "you_tap_activity")
     public static void you_tap_activity() {
         TextView activity = TextViewUtils.searchTextViewInActivity("Recent Activity", false);
         ViewUtils.tapOnView(activity, "'Recent Activity'");
@@ -452,12 +468,14 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_tap_activity");
     }
 
+    @TestAction(value = "you_tap_activity_reset")
     public static void you_tap_activity_reset() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("you_tap_activity_reset");
     }
 
+    @TestAction(value = "you_tap_connections")
     public static void you_tap_connections() {
         TextView connections = TextViewUtils.searchTextViewInActivity("Connections", false);
         ViewUtils.tapOnView(connections, "'Connections'");
@@ -465,12 +483,14 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_tap_connections");
     }
 
+    @TestAction(value = "you_tap_connections_reset")
     public static void you_tap_connections_reset() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("you_tap_connections_reset");
     }
 
+    @TestAction(value = "you_tap_share")
     public static void you_tap_share() {
         for (ImageView view : getSolo().getCurrentImageViews()) {
             if (LayoutUtils.isViewPlacedInLayout(view, LayoutUtils.UPPER_RIGHT_BUTTON_LAYOUT)) {
@@ -486,14 +506,16 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_tap_share");
     }
 
+    @TestAction(value = "you_tap_share_reset")
     public static void you_tap_share_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("you_tap_share_reset");
     }
 
+    @TestAction(value = "you_tap_fwd")
     public static void you_tap_fwd() {
-        ImageButton forward = getSolo().getImageButton(0);
+        View forward = Id.getViewByViewIdName(ID_NAME_OF_FWD_BUTTON);
         ViewUtils.tapOnView(forward, "Forward button");
         WaitActions.waitForTrueInFunction("'Forward' button's popup is not displayed",
                 new Callable<Boolean>() {
@@ -520,17 +542,20 @@ public class ScreenYou extends BaseProfileScreen {
         you_tap_profile_edit("you_tap_profile_edit");
     }
 
+    @TestAction(value = "you_tap_profile_edit_reset")
     public static void you_tap_profile_edit_reset() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("you_tap_profile_edit_reset");
     }
 
+    @TestAction(value = "you_tap_search")
     public static void you_tap_search() {
         new ScreenYou().openSearchScreen();
         TestUtils.delayAndCaptureScreenshot("you_tap_search");
     }
 
+    @TestAction(value = "you_tap_search_reset")
     public static void you_tap_search_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenYou();
@@ -543,6 +568,7 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_tap_expose");
     }
 
+    @TestAction(value = "you_tap_wvmp")
     public static void you_tap_wvmp() {
         TextView wvmp = TextViewUtils.searchTextViewInActivity("Who's viewed your profile", false);
         ViewUtils.tapOnView(wvmp, "'WVMP' label");
@@ -550,12 +576,14 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_tap_wvmp");
     }
 
+    @TestAction(value = "you_tap_wvmp_reset")
     public static void you_tap_wvmp_reset() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("you_tap_wvmp_reset");
     }
 
+    @TestAction(value = "you_tap_twitter")
     public static void you_tap_twitter() {
         TextView twit = TextViewUtils.searchTextViewInActivity("Twitter", false);
         ViewUtils.tapOnView(twit, "'Twitter'");
@@ -563,32 +591,34 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_tap_twitter");
     }
 
+    @TestAction(value = "you_tap_twitter_reset")
     public static void you_tap_twitter_reset() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("you_tap_twitter_reset");
     }
 
+    @TestAction(value = "you_tap_website")
     public static void you_tap_website() {
-        int websiteIndex = 0;
-        for (TextView view : getSolo().getCurrentTextViews(null)) {
-            websiteIndex++;
-            String textOfView = view.getText().toString();
-            if (textOfView.equalsIgnoreCase("Websites"))
+        ArrayList<View> views = Id.getListOfViewByViewIdName(ID_NAME_OF_ALL_TITLE);
+        for (View view : views) {
+            if (((TextView) view).getText().toString().equalsIgnoreCase("Personal Website")) {
+                ViewUtils.tapOnView(view, "Website");
                 break;
+            }
         }
-        TextView groupView = getSolo().getText(websiteIndex + 1);
-        ViewUtils.tapOnView(groupView, "first Website");
         new ScreenBrowser();
         TestUtils.delayAndCaptureScreenshot("you_tap_website");
     }
 
+    @TestAction(value = "you_tap_website_reset")
     public static void you_tap_website_reset() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("you_tap_website_reset");
     }
 
+    @TestAction(value = "you_fwd_actionsheet_tap_cancel")
     public static void you_fwd_actionsheet_tap_cancel() {
         Button cancel = getSolo().getButton(0);
         ViewUtils.tapOnView(cancel, "'Cancel' button");
@@ -596,6 +626,7 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_photo_actonsheet_tap_cancel");
     }
 
+    @TestAction(value = "you_fwd_actionsheet_tap_email")
     public static void you_fwd_actionsheet_tap_email() {
         TextView email = TextViewUtils.searchTextViewInActivity("Email", true);
         ViewUtils.tapOnView(email, "'Email'");
@@ -608,12 +639,14 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_fwd_actionsheet_tap_email");
     }
 
+    @TestAction(value = "you_fwd_actionsheet_tap_email_reset")
     public static void you_fwd_actionsheet_tap_email_reset() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("you_tap_email_reset");
     }
 
+    @TestAction(value = "you_fwd_actionsheet_tap_send")
     public static void you_fwd_actionsheet_tap_send() {
         TextView send = TextViewUtils.searchTextViewInActivity("Send to Connection", true);
         ViewUtils.tapOnView(send, "'Send to Connection'");
@@ -621,6 +654,7 @@ public class ScreenYou extends BaseProfileScreen {
         TestUtils.delayAndCaptureScreenshot("you_fwd_actionsheet_tap_send");
     }
 
+    @TestAction(value = "you_fwd_actionsheet_tap_send_reset")
     public static void you_fwd_actionsheet_tap_send_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenYou();

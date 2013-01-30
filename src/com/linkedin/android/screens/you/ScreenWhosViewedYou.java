@@ -14,6 +14,7 @@ import com.linkedin.android.screens.common.ScreenExpose;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
@@ -95,12 +96,14 @@ public class ScreenWhosViewedYou extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "wvmp")
     public static void wvmp() {
         wvmp("wvmp");
     }
 
-    public static void go_to_wvmp() {
-        ScreenExpose.go_to_expose();
+    @TestAction(value = "go_to_wvmp")
+    public static void go_to_wvmp(String email, String password) {
+        ScreenExpose.go_to_expose(email, password);
         ScreenExpose.expose_tap_you();
         if (getSolo().waitForText("Edit your profile", 1, DataProvider.WAIT_DELAY_DEFAULT, false)) {
             Logger.i("Tapping on hint for 'Edit your profile'");
@@ -109,23 +112,27 @@ public class ScreenWhosViewedYou extends BaseINScreen {
         wvmp("go_to_wvmp");
     }
 
+    @TestAction(value = "wvmp_expose")
     public static void wvmp_expose() {
         new ScreenWhosViewedYou().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("wvmp_expose");
     }
 
+    @TestAction(value = "wvmp_expose_reset")
     public static void wvmp_expose_reset() {
         tapOnINButton();
         new ScreenWhosViewedYou();
         TestUtils.delayAndCaptureScreenshot("wvmp_expose_reset");
     }
 
+    @TestAction(value = "wvmp_back")
     public static void wvmp_back() {
         HardwareActions.pressBack();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("wvmp_back");
     }
 
+    @TestAction(value = "wvmp_tap_profile")
     public static void wvmp_tap_profile() {
         RelativeLayout connectionLayout = (RelativeLayout) Id
                 .getViewByViewIdName(CONNECTION_LAYOUT);
@@ -135,13 +142,15 @@ public class ScreenWhosViewedYou extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("wvmp_tap_profile");
     }
 
+    @TestAction(value = "wvmp_tap_profile_reset")
     public static void wvmp_tap_profile_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("wvmp_tap_profile_reset");
     }
 
-    public static void go_to_wvmp_profiles_rollup() {
-        ScreenWhosViewedYou.go_to_wvmp();
+    @TestAction(value = "go_to_wvmp_profiles_rollup")
+    public static void go_to_wvmp_profiles_rollup(String email, String password) {
+        ScreenWhosViewedYou.go_to_wvmp(email, password);
         wvmp_profiles_rollup("go_to_wvmp_profiles_rollup");
     }
 
@@ -163,28 +172,33 @@ public class ScreenWhosViewedYou extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "wvmp_profiles_rollup")
     public static void wvmp_profiles_rollup() {
         wvmp_profiles_rollup("wvmp_profiles_rollup");
     }
 
+    @TestAction(value = "wvmp_profiles_rollup_tap_expose")
     public static void wvmp_profiles_rollup_tap_expose() {
         tapOnINButton();
         new ScreenExpose(null);
         TestUtils.delayAndCaptureScreenshot("wvmp_profiles_rollup");
     }
 
+    @TestAction(value = "wvmp_profiles_rollup_tap_expose_reset")
     public static void wvmp_profiles_rollup_tap_expose_reset() {
         HardwareActions.pressBack();
         new ScreenWhosViewedYou();
         TestUtils.delayAndCaptureScreenshot("wvmp_profiles_rollup_tap_expose_reset");
     }
 
+    @TestAction(value = "wvmp_profiles_rollup_tap_back")
     public static void wvmp_profiles_rollup_tap_back() {
         HardwareActions.pressBack();
         new ScreenWhosViewedYou();
         TestUtils.delayAndCaptureScreenshot("wvmp_profiles_rollup_tap_back");
     }
 
+    @TestAction(value = "wvmp_profiles_rollup_tap_profile")
     public static void wvmp_profiles_rollup_tap_profile() {
         TextView profile = (TextView) Id.getViewByViewIdName(PROFILE_ID_NAME);
         ViewUtils.tapOnView(profile, "First profile");

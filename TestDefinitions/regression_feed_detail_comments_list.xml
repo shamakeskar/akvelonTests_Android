@@ -1,0 +1,12 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_feed_detail_comments_list" id="42117767">
+    <Step key="go_to_feed_detail_comments_list" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="feed_detail_comments_list_tap_back" />
+    <Step key="feed_detail_comments_list" />
+    <Step key="feed_detail_comments_list_tap_expose" />
+    <Step key="feed_detail_comments_list_tap_expose_reset" />
+    <Step key="feed_detail_comments_list_tap_profile_author" />
+    <Step key="feed_detail_comments_list_tap_profile_author_reset" />
+    <Step key="feed_detail_comments_list_scroll_load_more" />
+  </Test>
+</TestSuite>

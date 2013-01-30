@@ -6,8 +6,10 @@ import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.screens.common.ScreenExpose;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
+import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -57,24 +59,29 @@ public class ScreenAddressBookImport extends BaseScreen {
     }
 
     // ACTIONS --------------------------------------------------------------
-    public static void go_to_address_book_import() {
-        ScreenExpose.go_to_expose();
+    @TestAction(value = "go_to_address_book_import")
+    public static void go_to_address_book_import(String email, String password) {
+        ScreenExpose.go_to_expose(email, password);
         TestUtils.delayAndCaptureScreenshot("go_to_expose");
 
         new ScreenExpose(null).openSettingsScreen();
         TestUtils.delayAndCaptureScreenshot("go_to_address_book_import");
     }
 
+    @TestAction(value = "address_book_import_tap_add_connections")
     public static void address_book_import_tap_add_connections() {
-        HardwareActions.scrollDownOnce();
+        Logger.i("Scrooling down");
+        getSolo().scrollDown();
         TextView addConnection = TextViewUtils.getTextViewByText("Add Connections");
         ViewUtils.tapOnView(addConnection, "Add Connections" + " button");
         TestUtils.delayAndCaptureScreenshot("address_book_import_tap_add_connections");
     }
 
+    @TestAction(value = "address_book_import_tap_learn_more")
     public static void address_book_import_tap_learn_more() {
-        HardwareActions.scrollDown();
-
+        ViewUtils.waitForToastDisappear();
+        Logger.i("Scrooling to the bottom");
+        getSolo().scrollToBottom();
         ViewUtils.tapOnLink("Learn More");
         TestUtils.delayAndCaptureScreenshot("tap_on_learn_more");
 
@@ -83,20 +90,24 @@ public class ScreenAddressBookImport extends BaseScreen {
         TestUtils.delayAndCaptureScreenshot("address_book_import_tap_learn_more");
     }
 
+    @TestAction(value = "address_book_import_learn_more_reset")
     public static void address_book_import_learn_more_reset() {
         pressBack("address_book_import_learn_more_reset");
     }
 
+    @TestAction(value = "address_book_import_tap_continue")
     public static void address_book_import_tap_continue() {
         Button continueBtn = getSolo().getButton("Continue");
         ViewUtils.tapOnView(continueBtn, "Continue button");
     }
 
+    @TestAction(value = "address_book_import_wait_progress_bar")
     public static void address_book_import_wait_progress_bar() {
         Assert.assertTrue("Progress bar is not on the page", HardwareActions.waitProgressBar());
         TestUtils.delayAndCaptureScreenshot("address_book_import_wait_progress_bar");
     }
 
+    @TestAction(value = "address_book_import_add_connections_reset")
     public static void address_book_import_add_connections_reset() {
         TextView ok = TextViewUtils.getTextViewByText("OK");
         if (ok != null) {

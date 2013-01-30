@@ -18,6 +18,7 @@ import com.linkedin.android.screens.you.ScreenYou;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
@@ -36,6 +37,7 @@ public class ScreenSettings extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.settings.SettingsActivity2";
     public static final String ACTIVITY_SHORT_CLASSNAME = "SettingsActivity2";
+    public static final ViewIdName ID_NAME_OF_ADD_CONNECTIONS = new ViewIdName("add_connections_text");
 
     static final String PRIVATE_POLICY_TEXT = "Privacy Policy";
     static final String GEGERALl_SETTINGS_TEXT = "General Settings";
@@ -55,8 +57,9 @@ public class ScreenSettings extends BaseScreen {
     static final String TURN_OF_NOTIFICATION = "Turn on notifications";
     static final String CONTACTS_SYNC = "Contacts Sync";
 
-    public static void go_to_settings() {
-        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
+    @TestAction(value = "go_to_settings")
+    public static void go_to_settings(String email, String password) {
+        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart(email, password);
         ScreenExpose screenExpose = screenUpdates.openExposeScreen();
         screenExpose.openSettingsScreen();
         TestUtils.delayAndCaptureScreenshot("go_to_settings");
@@ -388,30 +391,34 @@ public class ScreenSettings extends BaseScreen {
             getSolo().clickOnCheckBox(0);
         }
     }
-
+    
+    @TestAction(value = "settings")
     public static void settings() {
+        new ScreenExpose(null).openSettingsScreen();
         TestUtils.delayAndCaptureScreenshot("settings");
     }
-
+    
+    @TestAction(value = "settings_tap_sync_calendar")
     public static void settings_tap_sync_calendar() {
         new ScreenSettings().tapOnAddYourCalendar();
         TestUtils.delayAndCaptureScreenshot("settings_tap_sync_calendar");
     }
-
+    
+    @TestAction(value = "settings_tap_add_con")
     public static void settings_tap_add_con() {
-        boolean isText = TextViewUtils.searchAndScrollToVisibleText(ADD_YOUR_CONNECTIONS);
-        Assert.assertTrue("'" + ADD_YOUR_CONNECTIONS + "' item is not present on Settings screen.", isText);
-        Logger.i("Tapping on '" + ADD_YOUR_CONNECTIONS + "'");
-        getSolo().clickOnText(ADD_YOUR_CONNECTIONS);
+        TextView addCon = (TextView) Id.getViewByViewIdName(ID_NAME_OF_ADD_CONNECTIONS);
+        ViewUtils.tapOnView(addCon, "Add Connections", true);
         new ScreenSettingsAddConnections();
         TestUtils.delayAndCaptureScreenshot("settings_tap_add_con");
     }
 
+    @TestAction(value = "settings_toggle_push_notifications")
     public static void settings_toggle_push_notifications() {
         new ScreenSettings().tickInPushNotifications();
         TestUtils.delayAndCaptureScreenshot("settings_toggle_push_notifications");
     }
-
+    
+    @TestAction(value = "settings_toggle_push_notifications_reset")
     public static void settings_toggle_push_notifications_reset() {
         new ScreenSettings().tickInPushNotifications();
         TestUtils.delayAndCaptureScreenshot("settings_toggle_push_notifications_reset");
@@ -445,16 +452,19 @@ public class ScreenSettings extends BaseScreen {
             return;
         Assert.fail("Checkmark is not present");
     }
-
+    
+    @TestAction(value = "settings_tap_signout")
     public static void settings_tap_signout() {
         new ScreenSettings().tapOnSignOutButton();
         new ScreenLogin();
     }
-
+    
+    @TestAction(value = "settings_tap_sync_calendar_reset")
     public static void settings_tap_sync_calendar_reset() {
         ScreenSettings.backInScreenSetting("settings_tap_sync_calendar_reset");
     }
 
+    @TestAction(value = "settings_tap_add_con_reset")
     public static void settings_tap_add_con_reset() {
         ScreenSettings.backInScreenSetting("settings_tap_add_con_reset");
     }
@@ -470,7 +480,8 @@ public class ScreenSettings extends BaseScreen {
         new ScreenSettings();
         TestUtils.delayAndCaptureScreenshot(screenName);
     }
-
+    
+    @TestAction(value = "settings_dialog_tap_sync_all_contacts")
     public static void settings_dialog_tap_sync_all_contacts() {
         PopupSyncContacts popup = new ScreenSettings().popupSyncContacts();
         popup.tapOnSyncAll();
@@ -498,15 +509,23 @@ public class ScreenSettings extends BaseScreen {
         getSolo().clickOnText(SYNC_All_TEXT.substring(1, 4), 2);
         return new PopupSyncContacts();
     }
-
+    
+    @TestAction(value = "settings_dialog_tap_sync_existing_contacts")
     public static void settings_dialog_tap_sync_existing_contacts() {
         PopupSyncContacts popup = new ScreenSettings().popupSyncContacts();
         popup.tapOnDoNotSync();
         TestUtils.delayAndCaptureScreenshot("settings_dialog_tap_sync_existing_contacts");
     }
-
+    
+    @TestAction(value = "settings_dialog_tap_sync_cancel")
     public static void settings_dialog_tap_sync_cancel() {
         new ScreenSettings().popupSyncContacts();
         backInScreenSetting("settings_dialog_tap_sync_cancel");
+    }
+
+    @TestAction(value = "settings_precondition")
+    public static void settings_precondition() {
+        HardwareActions.goBackOnPreviousActivity();
+        TestUtils.delayAndCaptureScreenshot("settings_precondition");
     }
 }

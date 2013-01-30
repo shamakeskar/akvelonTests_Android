@@ -15,6 +15,7 @@ import com.linkedin.android.screens.base.BaseListScreen;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
@@ -94,31 +95,37 @@ public class ScreenInvitationsAll extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "inbox_invitations_all")
     public static void inbox_invitations_all() {
         inbox_invitations_all("inbox_invitations_all");
     }
 
-    public static void go_to_inbox_invitations_all() {
-        ScreenInbox.go_to_inbox();
+    @TestAction(value = "go_to_inbox_invitations_all")
+    public static void go_to_inbox_invitations_all(String email, String password) {
+        ScreenInbox.go_to_inbox(email, password);
         inbox_invitations_all("go_to_inbox_invitations_all");
     }
 
+    @TestAction(value = "inbox_invitations_all_tap_back")
     public static void inbox_invitations_all_tap_back() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("inbox_invitations_all_tap_back");
     }
 
+    @TestAction(value = "inbox_invitations_all_tap_expose")
     public static void inbox_invitations_all_tap_expose() {
         new ScreenInvitationsAll().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("inbox_invitations_all_tap_expose");
     }
 
+    @TestAction(value = "inbox_invitations_all_tap_expose_reset")
     public static void inbox_invitations_all_tap_expose_reset() {
         tapOnINButton();
         new ScreenInvitationsAll();
         TestUtils.delayAndCaptureScreenshot("inbox_invitations_all_tap_expose_reset");
     }
 
+    @TestAction(value = "inbox_invitations_all_tap_compose_new_invitation")
     public static void inbox_invitations_all_tap_compose_new_invitation() {
         View button = new ScreenInvitationsAll().getRightButtonInNavigationBar();
         Assert.assertNotNull("'Compose button' is not present.", button);
@@ -129,12 +136,14 @@ public class ScreenInvitationsAll extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_invitations_all_tap_compose_new_invitation");
     }
 
+    @TestAction(value = "inbox_invitations_all_tap_compose_new_invitation_reset")
     public static void inbox_invitations_all_tap_compose_new_invitation_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils
                 .delayAndCaptureScreenshot("inbox_invitations_all_tap_compose_new_invitation_reset");
     }
 
+    @TestAction(value = "inbox_invitations_all_tap_invitation")
     public static void inbox_invitations_all_tap_invitation() {
         RelativeLayout invitationLayout = (RelativeLayout) Id
                 .getViewByViewIdName(INVITATION_LAYOUT);
@@ -145,21 +154,25 @@ public class ScreenInvitationsAll extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_tap_all_invitations");
     }
 
+    @TestAction(value = "inbox_invitations_all_tap_invitation_reset")
     public static void inbox_invitations_all_tap_invitation_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("inbox_invitations_all_tap_invitation_reset");
     }
 
+    @TestAction(value = "inbox_invitations_all_pull_refresh")
     public static void inbox_invitations_all_pull_refresh() {
         new ScreenInvitationsAll().refreshScreen();
         TestUtils.delayAndCaptureScreenshot("inbox_invitations_all_pull_refresh");
     }
 
+    @TestAction(value = "inbox_invitations_all_scroll_load_more")
     public static void inbox_invitations_all_scroll_load_more() {
         new ScreenInvitationsAll().scrollDownForLoadMore();
         TestUtils.delayAndCaptureScreenshot("inbox_invitations_all_scroll_load_more");
     }
 
+    @TestAction(value = "inbox_invitations_all_tap_invitation_accept")
     public static void inbox_invitations_all_tap_invitation_accept() {
         RelativeLayout invitationLayout = (RelativeLayout) Id
                 .getViewByViewIdName(INVITATION_LAYOUT);
@@ -181,6 +194,7 @@ public class ScreenInvitationsAll extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("inbox_invitations_all_tap_invitation_accept");
     }
 
+    @TestAction(value = "inbox_invitations_all_tap_invitation_decline")
     public static void inbox_invitations_all_tap_invitation_decline() {
         RelativeLayout invitationLayout = (RelativeLayout) Id
                 .getViewByViewIdName(INVITATION_LAYOUT);

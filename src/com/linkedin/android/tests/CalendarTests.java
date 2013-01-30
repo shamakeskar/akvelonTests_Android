@@ -239,11 +239,11 @@ public class CalendarTests extends BaseTestCase {
         ScreenNewMessage newMessageScreen = connectedProfile.openNewMessageScreen();
 
         // Type subject.
-        String testSubject = "testSubject";
+        /*String testSubject = "testSubject";
         newMessageScreen.typeSubject(testSubject);
         // Type message.
         String testMessage = "testMessage";
-        newMessageScreen.typeMessage(testMessage);
+        newMessageScreen.typeMessage(testMessage);*/
 
         // Tap on send button.
         newMessageScreen.sendMessage();

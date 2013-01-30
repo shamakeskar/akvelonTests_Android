@@ -72,12 +72,12 @@ public class ScreenJobs extends BaseINScreen {
     }
 
     public static void go_to_jobs_home(String screenshotName){
-        ScreenGroupsAndMore.go_to_groups_and_more();
+        //ScreenGroupsAndMore.go_to_groups_and_more();
         jobs_home(screenshotName);
     }
 
     @TestAction(value = "go_to_jobs_home")
-    public static void go_to_jobs_home(){
+    public static void go_to_jobs_home(String email, String password){
         go_to_jobs_home("go_to_jobs_home");
     }
 

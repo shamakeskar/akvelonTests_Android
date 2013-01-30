@@ -1,0 +1,65 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_feed_detail" id="42117719">
+    <Step key="go_to_feed_detail" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="feed_detail_tap_back" />
+    <Step key="feed_detail_tap_back_reset" />
+    <Step key="feed_detail_tap_expose" />
+    <Step key="feed_detail_tap_expose_reset" />
+    <Step key="feed_detail_tap_url" />
+    <Step key="feed_detail_tap_url_reset" />
+    <Step key="feed_detail_tap_like_toggle" />
+    
+    <!-- TODO need precondition : open feed detail, autor is people.
+    <Step key="feed_detail_tap_profile_author" />
+    <Step key="feed_detail_tap_profile_author_reset" />-->
+     
+    <!-- TODO need precondition : open feed detail, autor is company.
+    <Step key="feed_detail_tap_company" />
+    <Step key="feed_detail_tap_company_reset" />-->
+     
+    <!-- TODO need precondition : open feed detail with likes list.
+    <Step key="feed_detail_tap_likes_list" />
+    <Step key="feed_detail_tap_likes_list_reset" />-->
+    
+    <!-- TODO need precondition : open feed detail with comment list.
+    <Step key="feed_detail_tap_comment" />
+    <Step key="feed_detail_tap_comment_reset" />
+    <Step key="feed_detail_tap_profile_commenter" />
+    <Step key="feed_detail_tap_profile_commenter_reset" />-->
+    
+    <!-- TODO need precondition : feed detail with actionsheet containing share, send to connections, Reply Privately.
+    <Step key="feed_detail_tap_actionsheet" />
+    <Step key="feed_detail_actionsheet_tap_send_to_connection" />
+    <Step key="feed_detail_actionsheet_tap_send_to_connection_reset" />
+    <Step key="feed_detail_tap_actionsheet" />
+    <Step key="feed_detail_actionsheet_tap_reply_privately" />
+    <Step key="feed_detail_actionsheet_tap_reply_privately_reset" />
+    <Step key="feed_detail_tap_actionsheet" />
+    <Step key="feed_detail_actionsheet_tap_share" />
+    <Step key="feed_detail_actionsheet_tap_share_reset" />
+    <Step key="feed_detail_tap_actionsheet" />
+    <Step key="feed_detail_actionsheet_tap_cancel" />-->
+    
+    <!-- TODO need precondition : feed detail with hashtag and twiiter. 
+    <Step key="feed_detail_tap_hashtag" />
+    <Step key="feed_detail_tap_hashtag_reset" />
+    <Step key="feed_detail_tap_twiiter_handle" />
+    <Step key="feed_detail_tap_twiiter_handle_reset" />-->
+    
+    <!-- TODO need precondition : feed detail - rollup.
+    <Step key="feed_detail_tap_profile_new_connection" />
+    <Step key="feed_detail_tap_profile_new_connection_reset" />
+    <Step key="updates_connection_rollup_list_tap_update" />
+    <Step key="updates_connection_rollup_list_tap_update_reset" />-->
+    
+    <!-- TODO need precondition : feed detail with open group.
+    <Step key="feed_detail_tap_group" />
+    <Step key="feed_detail_tap_group_reset" />-->
+    
+    <!-- TODO need precondition : feed detail with closed group
+    <Step key="feed_detail_join_closed_group_dialog_tap_cancel_precondition" />
+    <Step key="feed_detail_join_closed_group_dialog_tap_cancel" />
+    <Step key="feed_detail_join_closed_group_dialog_tap_cancel_precondition" />
+    <Step key="feed_detail_join_closed_group_dialog_tap_join" />-->
+  </Test>
+</TestSuite>

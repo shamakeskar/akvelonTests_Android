@@ -7,6 +7,7 @@ import android.widget.EditText;
 import com.linkedin.android.popups.Popup;
 import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
@@ -83,23 +84,9 @@ public class ScreenShareUpdate extends BaseScreen {
         return shareButton;
     }
 
-    /**
-     * Types random update text to 'Share an update' field.
-     * 
-     * @return update text that was entered.
-     */
-    public String typeRandomUpdateText() {
-        String updateText = "Test update " + Math.random();
-        Assert.assertNotNull("'Share an update' field is not present.", getSolo().getEditText(0));
-
-        Logger.i("Typing random update text: '" + updateText + "'");
-        getSolo().enterText(0, updateText);
-
-        return updateText;
-    }
-
-    public static void go_to_share() {
-        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
+    @TestAction(value = "go_to_share")
+    public static void go_to_share(String email, String password) {
+        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart(email, password);
         screenUpdates.tapOnShareButton();
         new ScreenShareUpdate();
         TestUtils.delayAndCaptureScreenshot("go_to_share");
@@ -112,11 +99,13 @@ public class ScreenShareUpdate extends BaseScreen {
     }
 
     public static void share_tap_share_precondition() {
-        ScreenShareUpdate screenShareUpdate = new ScreenShareUpdate();
-        screenShareUpdate.typeRandomUpdateText();
+        // ScreenShareUpdate screenShareUpdate = new ScreenShareUpdate();
+        // Method typeRandomUpdateText is no longer used.
+        // screenShareUpdate.typeRandomUpdateText();
         TestUtils.delayAndCaptureScreenshot("share_tap_share_precondition");
     }
 
+    @TestAction(value = "share_tap_visibility")
     public static void share_tap_visibility() {
         Assert.assertNotNull(getSolo().getText("Visibility"));
         Logger.i("Tapping on button 'Visibility'");
@@ -125,6 +114,7 @@ public class ScreenShareUpdate extends BaseScreen {
         TestUtils.delayAndCaptureScreenshot("share_tap_visibility");
     }
 
+    @TestAction(value = "share_tap_visibility_reset")
     public static void share_tap_visibility_reset() {
         HardwareActions.pressBack();
         new ScreenShareUpdate();
@@ -137,12 +127,14 @@ public class ScreenShareUpdate extends BaseScreen {
         TestUtils.delayAndCaptureScreenshot("share_tap_share_reset");
     }
 
+    @TestAction(value = "share_tap_cancel")
     public static void share_tap_cancel() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenUpdates();
         TestUtils.delayAndCaptureScreenshot("share_tap_cancel");
     }
 
+    @TestAction(value = "share")
     public static void share() {
         new ScreenShareUpdate();
     }

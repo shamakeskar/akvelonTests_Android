@@ -8,9 +8,9 @@ import android.widget.Button;
 import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.screens.common.ScreenGroups;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
-import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -68,36 +68,6 @@ public class ScreenNewDiscussion extends BaseScreen {
     }
 
     /**
-     * Types random text of your discussion.
-     * 
-     * @return text
-     */
-    public String typeRandomTextOfDiscussion() {
-        String text = "Text " + Math.random();
-        Assert.assertNotNull("Text field is not present.", getSolo().getEditText(0));
-
-        Logger.i("Typing random text: '" + text + "'");
-        getSolo().enterText(0, text);
-
-        return text;
-    }
-
-    /**
-     * Types random detail text of your discussion.
-     * 
-     * @return text
-     */
-    public String typeRandomDetailTextOfDiscussion() {
-        String text = "Detail " + Math.random();
-        Assert.assertNotNull("Detail field is not present.", getSolo().getEditText(1));
-
-        Logger.i("Typing random detail text: '" + text + "'");
-        getSolo().enterText(1, text);
-
-        return text;
-    }
-
-    /**
      * Verify that 'New Discussion' screen dismissed.
      */
     public void verifyThatNewDiscussionScreenDismissed() {
@@ -115,31 +85,38 @@ public class ScreenNewDiscussion extends BaseScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "groups_discussion_list_compose")
     public static void groups_discussion_list_compose() {
         groups_discussion_list_compose("groups_discussion_list_compose");
     }
 
-    public static void go_to_groups_discussion_list_compose() {
-        ScreenGroups.go_to_groups();
+    @TestAction(value = "go_to_groups_discussion_list_compose")
+    public static void go_to_groups_discussion_list_compose(String email, String password) {
+        ScreenGroups.go_to_groups(email, password);
         ScreenGroups.groups_tap_group();
         groups_discussion_list_compose("go_to_groups_discussion_list_compose");
     }
 
+    @TestAction(value = "groups_discussion_list_compose_tap_cancel")
     public static void groups_discussion_list_compose_tap_cancel() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_compose_tap_cancel");
     }
 
-    public static void groups_discussion_list_compose_tap_post() {
-        Assert.assertNotNull("Text field is not present.", getSolo().getEditText(0));
-
-        Logger.i("Typing text in discussion");
-        getSolo().enterText(0, "Cool Group");
-
-        ScreenNewDiscussion screenNewDiscussion = new ScreenNewDiscussion();
-        screenNewDiscussion.tapOnSendButton();
-
-        screenNewDiscussion.verifyThatNewDiscussionScreenDismissed();
-        TestUtils.delayAndCaptureScreenshot("groups_discussion_list_compose_tap_post");
-    }
+    /*
+     * @TestAction(value = "groups_discussion_list_compose_tap_post") public
+     * static void groups_discussion_list_compose_tap_post() {
+     * Assert.assertNotNull("Text field is not present.",
+     * getSolo().getEditText(0));
+     * 
+     * Logger.i("Typing text in discussion"); getSolo().enterText(0,
+     * TestUtils.verifyText("Cool Group"));
+     * 
+     * ScreenNewDiscussion screenNewDiscussion = new ScreenNewDiscussion();
+     * screenNewDiscussion.tapOnSendButton();
+     * 
+     * screenNewDiscussion.verifyThatNewDiscussionScreenDismissed();
+     * TestUtils.delayAndCaptureScreenshot
+     * ("groups_discussion_list_compose_tap_post"); }
+     */
 }

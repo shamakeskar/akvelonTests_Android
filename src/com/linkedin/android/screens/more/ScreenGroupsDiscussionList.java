@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.common.ScreenGroups;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
@@ -146,63 +147,75 @@ public class ScreenGroupsDiscussionList extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "groups_discussion_list")
     public static void groups_discussion_list() {
         groups_discussion_list("groups_discussion_list");
     }
 
-    public static void go_to_groups_discussion_list() {
-        ScreenGroups.go_to_groups();
+    @TestAction(value = "go_to_groups_discussion_list")
+    public static void go_to_groups_discussion_list(String email, String password) {
+        ScreenGroups.go_to_groups(email, password);
         groups_discussion_list("go_to_groups_discussion_list");
     }
 
+    @TestAction(value = "groups_discussion_list_tap_back")
     public static void groups_discussion_list_tap_back() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_tap_back");
     }
 
+    @TestAction(value = "groups_discussion_list_tap_expose")
     public static void groups_discussion_list_tap_expose() {
         new ScreenGroupsDiscussionList().openExposeScreen();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_tap_expose");
     }
 
+    @TestAction(value = "groups_discussion_list_tap_expose_reset")
     public static void groups_discussion_list_tap_expose_reset() {
         tapOnINButton();
         new ScreenGroupsDiscussionList();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_tap_expose_reset");
     }
 
+    @TestAction(value = "groups_discussion_list_tap_post_new_discussion")
     public static void groups_discussion_list_tap_post_new_discussion() {
         new ScreenGroupsDiscussionList().openNewDiscussionScreen();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_tap_post_new_discussion");
     }
 
+    @TestAction(value = "groups_discussion_list_tap_post_new_discussion_reset")
     public static void groups_discussion_list_tap_post_new_discussion_reset() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_tap_post_new_discussion_reset");
     }
 
+    @TestAction(value = "groups_discussion_list_tap_discussion")
     public static void groups_discussion_list_tap_discussion() {
         new ScreenGroupsDiscussionList().openFirstVisibleMostPopularDiscussion();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_tap_discussion");
     }
 
+    @TestAction(value = "groups_discussion_list_tap_discussion_reset")
     public static void groups_discussion_list_tap_discussion_reset() {
         HardwareActions.pressBack();
         new ScreenAllPopularDiscussion();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_tap_discussion_reset");
     }
 
+    @TestAction(value = "groups_discussion_list_tap_view_all_popular")
     public static void groups_discussion_list_tap_view_all_popular() {
         new ScreenGroupsDiscussionList().openAllPopularDiscussionScreen();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_tap_view_all_popular");
     }
 
+    @TestAction(value = "groups_discussion_list_tap_view_all_popular_reset")
     public static void groups_discussion_list_tap_view_all_popular_reset() {
         HardwareActions.pressBack();
         new ScreenAllPopularDiscussion();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_tap_view_all_popular_reset");
     }
 
+    @TestAction(value = "groups_discussion_list_scroll_load_more")
     public static void groups_discussion_list_scroll_load_more() {
         new ScreenGroupsDiscussionList().scrollDownLoadMore();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_scroll_load_more");

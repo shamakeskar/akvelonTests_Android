@@ -1,4 +1,4 @@
-akvelonTests_Android
-====================
+LinkedIn_Android_Tests
+======================
 
-This is the repo where akvelon will check in their android test code
+Repository for Linkedin Robotium tests.

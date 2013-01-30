@@ -1,0 +1,19 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_expose" id="42117105">
+    <Step key="go_to_expose" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="expose_tap_expose" />
+    <Step key="expose_tap_expose_reset" />
+    <Step key="expose_tap_settings" />
+    <Step key="expose_tap_settings_reset" />
+    <Step key="expose_tap_you" />
+    <Step key="expose_tap_you_reset" />
+    <Step key="expose_tap_updates" />
+    <Step key="expose_tap_updates_reset" />
+    <Step key="expose_tap_inbox" />
+    <Step key="expose_tap_inbox_reset" />
+    <Step key="expose_tap_groups_and_more" />
+    <Step key="expose_tap_groups_and_more_reset" />
+    <Step key="expose_tap_search" />
+    <Step key="expose_tap_search_reset" />
+  </Test>
+</TestSuite>

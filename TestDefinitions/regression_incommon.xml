@@ -1,0 +1,11 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_incommon" id="42120987">
+    <Step key="go_to_incommon" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="incommon_tap_back" />
+    <Step key="incommon" />
+    <Step key="incommon_tap_expose" />
+    <Step key="incommon_tap_expose_reset" />
+    <Step key="incommon_tap_profile" />
+    <Step key="incommon_tap_profile_reset" />
+  </Test>
+</TestSuite>

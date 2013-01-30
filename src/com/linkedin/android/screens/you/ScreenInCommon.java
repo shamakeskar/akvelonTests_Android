@@ -65,8 +65,8 @@ public class ScreenInCommon extends BaseListScreen {
     }
 
     @TestAction(value = "go_to_incommon")
-    public static void go_to_incommon() {
-        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
+    public static void go_to_incommon(String email, String password) {
+        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart(email, password);
         ScreenSearch screenSearch = screenUpdates.openSearchScreen();
 
         screenSearch.tapOnFirstVisibleConnectionProfileScreen();

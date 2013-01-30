@@ -1,0 +1,30 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_groups_discussion_detail" id="42118807">
+    <Step key="go_to_groups_discussion_detail" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_discussion_detail_tap_back" />
+    <Step key="groups_discussion_detail" />
+    <Step key="groups_discussion_detail_tap_expose" />
+    <Step key="groups_discussion_detail_tap_expose_reset" />
+    <Step key="groups_discussion_detail_tap_discussion_down" />
+    <Step key="groups_discussion_detail_tap_discussion_up" />
+    <Step key="groups_discussion_detail_tap_profile_author" />
+    <Step key="groups_discussion_detail_tap_profile_author_reset" />
+    
+    <!-- Need precondition : open feed detail with comment.
+    <Step key="groups_discussion_detail_tap_comment" />
+    <Step key="groups_discussion_detail_tap_comment_reset" />
+    <Step key="groups_discussion_detail_tap_profile_commenter" />
+    <Step key="groups_discussion_detail_tap_profile_commenter_reset" />
+    
+    Need precondition : open discussion with likes list.
+    <Step key="groups_discussion_detail_tap_likes_list" />
+    <Step key="groups_discussion_detail_tap_likes_list_reset" />
+    
+    Application bug: count of likes doesn't changed.
+    <Step key="groups_discussion_detail_tap_like_toggle" />
+    
+    Need precondition : open discussion with comments list.
+    <Step key="groups_discussion_detail_tap_comments_list" />
+    <Step key="groups_discussion_detail_tap_comments_list_reset" />-->
+  </Test>
+</TestSuite>

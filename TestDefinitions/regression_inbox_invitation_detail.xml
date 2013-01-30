@@ -1,0 +1,18 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_inbox_invitation_detail" id="42119429">
+    <Step key="go_to_inbox_invitation_detail" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="inbox_invitation_detail_tap_back" />
+    <Step key="inbox_invitation_detail" />
+    <Step key="inbox_invitation_detail_tap_invitation_down" />
+    <Step key="inbox_invitation_detail_tap_invitation_up" />
+    <Step key="inbox_invitation_detail_tap_profile" />
+    <Step key="inbox_invitation_detail_tap_profile_reset" />
+    <Step key="inbox_invitation_detail_tap_reply" />
+    <Step key="inbox_invitation_detail_tap_reply_reset" />
+    <Step key="inbox_invitation_detail_tap_expose" />
+    <Step key="inbox_invitation_detail_tap_expose_reset" />
+    <Step key="inbox_invitation_detail_tap_accept" />
+    <Step key="inbox_invitation_detail" />
+    <Step key="inbox_invitation_detail_tap_decline" />
+  </Test>
+</TestSuite>

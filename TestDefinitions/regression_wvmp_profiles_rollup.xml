@@ -1,0 +1,10 @@
+<TestSuite groups="Regressions" >
+  <Test id="42120313" name="regression_wvmp_profiles_rollup">
+    <Step key="go_to_wvmp_profiles_rollup" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="wvmp_profiles_rollup_tap_back" />
+    <Step key="wvmp_profiles_rollup" />
+    <Step key="wvmp_profiles_rollup_tap_expose" />
+    <Step key="wvmp_profiles_rollup_tap_expose_reset" />
+    <Step key="wvmp_profiles_rollup_tap_profile" />
+  </Test>
+</TestSuite>

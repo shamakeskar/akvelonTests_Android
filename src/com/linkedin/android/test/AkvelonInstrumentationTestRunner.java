@@ -29,6 +29,7 @@ import com.linkedin.android.screens.inbox.ScreenMessageDetail;
 import com.linkedin.android.screens.inbox.ScreenNewInvitation;
 import com.linkedin.android.screens.more.ScreenAllPopularDiscussion;
 import com.linkedin.android.screens.more.ScreenCompanies;
+import com.linkedin.android.screens.more.ScreenDiscussionDetails;
 import com.linkedin.android.screens.more.ScreenGroupsAndMore;
 import com.linkedin.android.screens.more.ScreenGroupsDiscussionList;
 import com.linkedin.android.screens.more.ScreenJobs;
@@ -52,6 +53,7 @@ import com.linkedin.android.screens.updates.ScreenShareUpdate;
 import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.screens.you.ScreenEditProfile;
 import com.linkedin.android.screens.you.ScreenInCommon;
+import com.linkedin.android.screens.you.ScreenProfile;
 import com.linkedin.android.screens.you.ScreenProfilePhoto;
 import com.linkedin.android.screens.you.ScreenRecentActivity;
 import com.linkedin.android.screens.you.ScreenWhosViewedYou;
@@ -66,7 +68,6 @@ import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.Registry;
 import com.linkedin.android.tests.utils.Tag;
 import com.linkedin.android.tests.utils.TestDiscover;
-import com.linkedin.android.utils.Logger;
 
 /**
  * Custom InstrumentationTestRunner for create list of tags to run.
@@ -74,6 +75,7 @@ import com.linkedin.android.utils.Logger;
  * @author alexander.makarov
  * @created Jan 8, 2013 2:51:59 PM
  */
+@SuppressWarnings("unused")
 public class AkvelonInstrumentationTestRunner extends InstrumentationTestRunner {
     // CONSTANTS ------------------------------------------------------------
 
@@ -131,9 +133,11 @@ public class AkvelonInstrumentationTestRunner extends InstrumentationTestRunner 
         registry.register(ScreenBrowser.class);
         registry.register(ScreenMessageDetail.class);
         registry.register(ScreenNewInvitation.class);
+        registry.register(ScreenProfile.class);
+        registry.register(ScreenDiscussionDetails.class);
     }
 
-    // TODO remove on release.
+    // Variables for run custom classes or methods.
     private Class<? extends BaseTestCase> customClass = null;
     // in sample = TmpRegressions.class;
     private String customMethodName = "";
@@ -151,8 +155,8 @@ public class AkvelonInstrumentationTestRunner extends InstrumentationTestRunner 
         DataProvider.getInstance().setContext(getContext());
         DataProvider.getInstance().setRegistry(registry);
 
-        // TODO remove on release.
-        if (customMethodName != null && customMethodName.length() > 0) {
+        // Run custom class or method if specified.
+        if (customMethodName != null && customMethodName.length() > 0 && customClass != null) {
             InstrumentationTestSuite suiteTmp = new InstrumentationTestSuite(this);
             Method method = null;
             try {
@@ -171,25 +175,12 @@ public class AkvelonInstrumentationTestRunner extends InstrumentationTestRunner 
 
         // Create and save list of tags to run.
         String pathToXml = null;
-        ArrayList<Tag> tags = null;
         try {
-            tags = TestDiscover.getTagsFromXml(pathToXml);
-        } catch (Exception e) {
-            Throwable exc = e;
-            while (exc.getCause() != null) {
-                exc = e.getCause();
-            }
-            Logger.e("Cannot get tags from XML:", e);
-            Assert.fail("Cannot get tags from XML '" + pathToXml + "'");
+            ArrayList<Tag> tags = TestDiscover.getTagsFromXml(pathToXml);
+            DataProvider.getInstance().setTags(tags);
+        } catch (Throwable e) {
+            Assert.fail("Cannot get tags from XML: " + e.getMessage());
         }
-        /*ArrayList<Tag> tags = new ArrayList<Tag>();
-        String[] actions = new String[] { "go_to_updates", "expose" };
-        String[] payloads = new String[2];
-        payloads[0] = null;
-        payloads[1] = null;
-        tags.add(new Tag("boba", actions, payloads));
-        tags.add(new Tag("vava", actions, payloads));*/
-        DataProvider.getInstance().setTags(tags);
 
         // Create new test suite.
         // TODO implement logic for create few test suites.

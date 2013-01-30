@@ -1,5 +1,7 @@
 package com.linkedin.android.screens.common;
 
+import java.util.concurrent.Callable;
+
 import junit.framework.Assert;
 import android.view.View;
 import android.view.ViewParent;
@@ -16,6 +18,7 @@ import com.linkedin.android.screens.you.ScreenProfile;
 import com.linkedin.android.screens.you.ScreenProfileOfConnectedUser;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
@@ -54,7 +57,7 @@ public class ScreenSearch extends BaseScreen {
     static final Rect2DP SEARCH_BAR_LAYOUT = new Rect2DP(0, 0, SCREEN_WIDTH - 54.0f, 82.0f);
     static final Rect2DP SEARCH_ICON_RECT = new Rect2DP(262f, 29f, 55f, 49f);
     static final Rect2DP SEARCH_BAR_RECT = new Rect2DP(10f, 33f, 252f, 48f);
-    static final int WAIT_FOR_SCREEN_LOAD_COMPLETELY = 10;
+    static final int WAIT_FOR_SCREEN_LOAD_COMPLETELY = 15;
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -75,11 +78,14 @@ public class ScreenSearch extends BaseScreen {
 
         // Check that list views is not empty.
         Assert.assertTrue("List views is not present", ListViewUtils.isCurrentListViewsNotEmpty());
-
-        // Check that list views has same width as screen
-        ListView firstListView = ListViewUtils.getFirstListView();
-        Assert.assertTrue("Width of list views is not equal width of device screen.",
-                ListViewUtils.isListViewWidthEqualToScreenWidth(firstListView));
+        
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG, "Connection list is empty", new Callable<Boolean>() {
+            
+            @Override
+            public Boolean call() {
+                return (getFirstVisibleConnectionFromList()!= null);
+            }
+        });
     }
 
     @Override
@@ -252,25 +258,29 @@ public class ScreenSearch extends BaseScreen {
                 SEARCH_ICON_RECT.width, SEARCH_ICON_RECT.height,
                 Rect2DP.DEFAULT_ACCURACY_OF_COMPARING);
     }
-
-    public static void go_to_search() {
-        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
+    
+    @TestAction(value = "go_to_search")
+    public static void go_to_search(String email, String password) {
+        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart(email, password);
         screenUpdates.openSearchScreen();
         TestUtils.delayAndCaptureScreenshot("go_to_search");
     }
-
+    
+    @TestAction(value = "search_tap_cancel")
     public static void search_tap_cancel() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenUpdates();
         TestUtils.delayAndCaptureScreenshot("search_tap_cancel");
     }
-
+    
+    @TestAction(value = "search_tap_profile")
     public static void search_tap_profile() {
         new ScreenSearch().tapOnFirstVisibleConnectionProfileScreen();
         new ScreenProfile();
         TestUtils.delayAndCaptureScreenshot("search_tap_profile");        
     }
-
+    
+    @TestAction(value = "search_tap_profile_reset")
     public static void search_tap_profile_reset() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenSearch();

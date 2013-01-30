@@ -1,0 +1,11 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_updates_connection_rollup_list" id="42117879">
+    <Step key="go_to_updates_connection_rollup_list" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="updates_connection_rollup_list_tap_back" />
+    <Step key="updates_connection_rollup_list" />
+    <Step key="updates_connection_rollup_list_tap_update" />
+    <Step key="updates_connection_rollup_list_tap_update_reset" />
+    <Step key="updates_connection_rollup_list_tap_expose" />
+    <Step key="updates_connection_rollup_list_tap_expose_reset" />
+  </Test>
+</TestSuite>

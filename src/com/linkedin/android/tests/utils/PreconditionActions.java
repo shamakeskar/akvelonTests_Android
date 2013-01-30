@@ -66,8 +66,8 @@ public class PreconditionActions {
             screenAddConnections.tapOnDoneButton();
             screenNewMessage = new ScreenNewMessage();
 
-            message = screenNewMessage.typeMessage(messageBody);
-            screenNewMessage.typeSubject(messageTitle);
+            /*message = screenNewMessage.typeMessage(messageBody);
+            screenNewMessage.typeSubject(messageTitle);*/
 
             screenNewMessage.sendMessage();
         }
@@ -149,18 +149,18 @@ public class PreconditionActions {
         }
         screenAddConnections.tapOnDoneButton();
         screenNewMessage = new ScreenNewMessage();
-        if (messageTitle == null) {
+        /*if (messageTitle == null) {
             screenNewMessage.typeSubject(null);
         } else {
             screenNewMessage.typeSubject(messageTitle);
-        }
-        String message;
-        if (messageBody == null) {
+        }*/
+        String message = null;
+        /*if (messageBody == null) {
             message = screenNewMessage.typeMessage(null);
         } else {
             message = messageBody;
             screenNewMessage.typeMessage(messageBody);
-        }
+        }*/
         screenNewMessage.sendMessage();
 
         LoginActions.logout();

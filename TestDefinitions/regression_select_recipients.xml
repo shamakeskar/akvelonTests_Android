@@ -1,0 +1,10 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_select_recipients" id="42119617">
+    <Step key="go_to_select_recipients" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="select_recipients_tap_scrollbar" />
+    <Step key="select_recipients_tap_cancel" />
+    <Step key="select_recipients" />
+    <Step key="select_recipients_tap_select" />
+    <Step key="select_recipients_tap_done" />
+  </Test>
+</TestSuite>

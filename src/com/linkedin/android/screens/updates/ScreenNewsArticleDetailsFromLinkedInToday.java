@@ -13,6 +13,7 @@ import com.linkedin.android.screens.common.ScreenNewMessage;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
@@ -178,17 +179,20 @@ public class ScreenNewsArticleDetailsFromLinkedInToday extends ScreenNewsArticle
         return getSolo().getText(ARTICLE_NUMBER_TITLE_INDEX);
     }
     
-    public static void go_to_news_detail() {
-        LoginActions.openUpdatesScreenOnStart().openLinkedInTodayScreen().openFirstNewsArticleDetailsScreen();
+    @TestAction(value = "go_to_news_detail")
+    public static void go_to_news_detail(String email, String password) {
+        LoginActions.openUpdatesScreenOnStart(email, password).openLinkedInTodayScreen().openFirstNewsArticleDetailsScreen();
         TestUtils.delayAndCaptureScreenshot("go_to_news_detail");
     }
     
+    @TestAction(value = "news_detail_tap_back")
     public static void news_detail_tap_back() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenLinkedInToday();
         TestUtils.delayAndCaptureScreenshot("news_detail_tap_back");
     }
     
+    @TestAction(value = "news_detail")
     public static void news_detail() {
         new ScreenLinkedInToday().openFirstNewsArticleDetailsScreen();
         TestUtils.delayAndCaptureScreenshot("news_detail");
@@ -202,6 +206,7 @@ public class ScreenNewsArticleDetailsFromLinkedInToday extends ScreenNewsArticle
         new ScreenNewsArticleDetailsFromLinkedInToday();
     }
     
+    @TestAction(value = "news_detail_tap_article_up")
     public static void news_detail_tap_article_up() {
         TextView titleCurrentView = (TextView) Id.getViewByViewIdName(NAVIGATION_BAR_TITLE_ID_NAME);
         Assert.assertNotNull("Title in navigation bar is not present", titleCurrentView);
@@ -220,6 +225,7 @@ public class ScreenNewsArticleDetailsFromLinkedInToday extends ScreenNewsArticle
         TestUtils.delayAndCaptureScreenshot("news_detail_tap_article_up");
     }
 
+    @TestAction(value = "news_detail_tap_article_down")
     public static void news_detail_tap_article_down() {
         TextView titleCurrentView = (TextView) Id.getViewByViewIdName(NAVIGATION_BAR_TITLE_ID_NAME);
         Assert.assertNotNull("Title in navigation bar is not present", titleCurrentView);
@@ -238,55 +244,65 @@ public class ScreenNewsArticleDetailsFromLinkedInToday extends ScreenNewsArticle
         TestUtils.delayAndCaptureScreenshot("news_detail_tap_article_down");
     }
 
+    @TestAction(value = "news_detail_tap_view_article_header")
     public static void news_detail_tap_view_article_header() {
         new ScreenNewsArticleDetailsFromLinkedInToday().tapOnAtricleTitle();
         new ScreenBrowser();
         TestUtils.delayAndCaptureScreenshot("news_detail_tap_view_article_header");
     }
 
+    @TestAction(value = "news_detail_tap_view_article_header_reset")
     public static void news_detail_tap_view_article_header_reset() {
         tapBackInNewsScreen();
         TestUtils.delayAndCaptureScreenshot("news_detail_tap_view_article_header_reset");
     }
 
+    @TestAction(value = "news_detail_tap_view_article_image")
     public static void news_detail_tap_view_article_image() {
         new ScreenNewsArticleDetailsFromLinkedInToday().tapOnArticleImage();
         new ScreenBrowser();
         TestUtils.delayAndCaptureScreenshot("news_detail_tap_view_article_image");
     }
-
+    
+    @TestAction(value = "news_detail_tap_view_article_image_reset")
     public static void news_detail_tap_view_article_image_reset() {
         tapBackInNewsScreen();
         TestUtils.delayAndCaptureScreenshot("news_detail_tap_view_article_image_reset");
     }
-
+    
+    @TestAction(value = "news_detail_tap_message")
     public static void news_detail_tap_message() {
         new ScreenNewsArticleDetailsFromLinkedInToday().tapOnMessageButton();
         new ScreenNewMessage();
         TestUtils.delayAndCaptureScreenshot("news_detail_tap_message");
     }
-
+    
+    @TestAction(value = "news_detail_tap_message_reset")
     public static void news_detail_tap_message_reset() {
         tapBackInNewsScreen();
         TestUtils.delayAndCaptureScreenshot("news_detail_tap_message_reset");
     }
 
+    @TestAction(value = "news_detail_tap_share")
     public static void news_detail_tap_share() {
         new ScreenNewsArticleDetailsFromLinkedInToday().openShareNewsArticleScreen();
         TestUtils.delayAndCaptureScreenshot("news_detail_tap_share(");
     }
-
+    
+    @TestAction(value = "news_detail_tap_share_reset")
     public static void news_detail_tap_share_reset() {
         tapBackInNewsScreen();
         TestUtils.delayAndCaptureScreenshot("detail_tap_share_reset");
     }
-
+    
+    @TestAction(value = "news_detail_tap_expose")
     public static void news_detail_tap_expose() {
         ScreenNewsArticleDetailsFromLinkedInToday.tapOnINButton();
         new ScreenExpose(null);
         TestUtils.delayAndCaptureScreenshot("news_detail_tap_expose");
     }
 
+    @TestAction(value = "news_detail_tap_expose_reset")
     public static void news_detail_tap_expose_reset() {
         ScreenExpose.tapOnINButton();
         new ScreenNewsArticleDetailsFromLinkedInToday();

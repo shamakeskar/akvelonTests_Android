@@ -1,0 +1,10 @@
+<TestSuite groups="Regressions">
+  <Test name="regression_groups_discussion_list_compose" id="42118843">
+    <Step key="go_to_groups_discussion_list_compose" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="groups_discussion_list_compose_tap_cancel" />
+    <Step key="groups_discussion_list_compose" />
+    
+    <!-- This action send message to real server.
+    <Step key="groups_discussion_list_compose_tap_post" />-->
+  </Test>
+</TestSuite>

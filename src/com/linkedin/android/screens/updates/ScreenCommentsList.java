@@ -10,6 +10,7 @@ import com.linkedin.android.screens.you.ScreenProfile;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
+import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
@@ -55,13 +56,15 @@ public class ScreenCommentsList extends BaseListScreen {
         return ACTIVITY_SHORT_CLASSNAME;
     }
 
-    public static void go_to_feed_detail_comments_list() {
-        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
+    @TestAction(value = "go_to_feed_detail_comments_list")
+    public static void go_to_feed_detail_comments_list(String email, String password) {
+        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart(email, password);
         screenUpdates.openNews(ScreenUpdates.COMMENTS_COUNT_FOR_SPINNER_APPEARING, 0);
 
         feed_detail_comments_list("go_to_feed_detail_comments_list");
     }
 
+    @TestAction(value = "feed_detail_comments_list")
     public static void feed_detail_comments_list() {
         feed_detail_comments_list("feed_detail_comments_list");
     }
@@ -72,6 +75,7 @@ public class ScreenCommentsList extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
+    @TestAction(value = "feed_detail_comments_list_tap_back")
     public static void feed_detail_comments_list_tap_back() {
         HardwareActions.pressBack();
         new ScreenUpdate();
@@ -79,12 +83,14 @@ public class ScreenCommentsList extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("feed_detail_comments_list_tap_back");
     }
 
+    @TestAction(value = "feed_detail_comments_list_tap_expose")
     public static void feed_detail_comments_list_tap_expose() {
         new ScreenCommentsList().openExposeScreen();
 
         TestUtils.delayAndCaptureScreenshot("feed_detail_comments_list_tap_expose");
     }
 
+    @TestAction(value = "feed_detail_comments_list_tap_expose_reset")
     public static void feed_detail_comments_list_tap_expose_reset() {
         HardwareActions.pressBack();
         new ScreenCommentsList();
@@ -92,6 +98,7 @@ public class ScreenCommentsList extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("feed_detail_comments_list_tap_expose_reset");
     }
 
+    @TestAction(value = "feed_detail_comments_list_tap_profile_author")
     public static void feed_detail_comments_list_tap_profile_author() {
         ViewGroup commentLayout = (ViewGroup) Id.getViewByViewIdName(COMMENT_LAYOUT);
         ViewGroupUtils.tapFirstViewInLayout(commentLayout, true, "first comment author", null);
@@ -100,6 +107,7 @@ public class ScreenCommentsList extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("feed_detail_comments_list_tap_profile_author");
     }
 
+    @TestAction(value = "feed_detail_comments_list_tap_profile_author_reset")
     public static void feed_detail_comments_list_tap_profile_author_reset() {
         HardwareActions.pressBack();
         new ScreenCommentsList();
@@ -107,6 +115,7 @@ public class ScreenCommentsList extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("feed_detail_comments_list_tap_profile_author_reset");
     }
 
+    @TestAction(value = "feed_detail_comments_list_scroll_load_more")
     public static void feed_detail_comments_list_scroll_load_more() {
         new ScreenCommentsList().scrollDownForLoadMore();
 

@@ -18,7 +18,6 @@ import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
-import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
@@ -40,6 +39,8 @@ public class ScreenLogin extends BaseScreen {
 
     // TextView's for status_message popup.
     public static final ViewIdName STATUS_MESSAGE = new ViewIdName("status_message");
+    // TextView's for Sign up link.
+    public static final ViewIdName SIGN_UP_LINK = new ViewIdName("login_signup_link");
 
     // Sizes of 'Sign In' button.
     public static final int SIGNIN_BUTTON_WIDTH = 418;
@@ -287,9 +288,12 @@ public class ScreenLogin extends BaseScreen {
     public void tapSignUpLink() {
         Assert.assertNotNull("'SignUp' link is not found",
                 getSolo().getText(" Sign up to join LinkedIn "));
-        Logger.i("Tapping on 'SignUp' link.");
-        Rect2DP rect = new Rect2DP(getSolo().getText(" Sign up to join LinkedIn "));
-        getSolo().clickOnScreen(rect.x + rect.width / 7, rect.y + rect.height / 2);
+        TextView signup = Id.getViewByName(SIGN_UP_LINK, TextView.class);
+        if (signup != null) {
+            // ViewUtils.tapOnView on signup doesn't work.
+            // Only tapping on URL tagged part of text does work!
+            TextViewUtils.tapOnLinkInTextView(signup, "Sign up");
+        }
     }
 
     // ACTIONS --------------------------------------------------------------
@@ -339,24 +343,25 @@ public class ScreenLogin extends BaseScreen {
         TestUtils.delayAndCaptureScreenshot("login_tap_signin");
     }
 
+    @TestAction(value = "login_tap_signin_reset")
     public static void login_tap_signin_reset() {
-        Assert.assertTrue("'Sync all' text is not present", getSolo().waitForText("Sync all"));
-        Logger.i("Tapping on 'Sync all' text");
-        getSolo().clickOnText("Sync all");
-        new ScreenLogin().waitForCalendarSplashScreen();
+        if (getSolo().waitForText("Sync all")) {
+            Logger.i("Tapping on 'Sync all' text");
+            getSolo().clickOnText("Sync all");
+            new ScreenCalSplash();
+            LoginActions.logout();
+            new ScreenLogin();
+        }
         TestUtils.delayAndCaptureScreenshot("login_tap_signin_reset");
     }
 
     @TestAction(value = "login_tap_signup")
     public static void login_tap_signup() {
-
-        // TODO tapSignUpLink not worked correctly!
-
         new ScreenLogin().tapSignUpLink();
         // Wait for open system browser.
         WaitActions.waitForScreenUpdate();
-        Assert.assertTrue("Browser is not open",
-                getSolo().getText(" Sign up to join LinkedIn ") == null);
+        Assert.assertFalse("Browser is not open", getSolo()
+                .searchText(" Sign up to join LinkedIn "));
         TestUtils.delayAndCaptureScreenshot("login_tap_signup");
     }
 
