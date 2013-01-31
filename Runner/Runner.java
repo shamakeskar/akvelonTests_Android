@@ -364,6 +364,7 @@ public class Runner {
             runWindowsScript();
             break;
         case "Mac":
+        case "Mac OS":
             runMacScript();
             break;
         case "Unix":
