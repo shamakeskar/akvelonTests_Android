@@ -28,11 +28,12 @@ import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
  */
 public class ScreenInvitationsAll extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.notifications.NewMessageListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.notifications.NewMessageListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "NewMessageListActivity";
 
     private static final ViewIdName INVITATION_LAYOUT = new ViewIdName(
             "invite_reconnect_person_row");
+    public static final ViewIdName NAV_LABEL = new ViewIdName("abs__action_bar_title");
 
     // Button indexes relatively "Invitation info" layout
     private static final int ACCEPT_INVITATION_BUTTON_INDEX = 4;
@@ -53,14 +54,18 @@ public class ScreenInvitationsAll extends BaseListScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
+        verifyCurrentActivity();
         // Wait for screen load completely
         WaitActions.delay(WAIT_FOR_SCREEN_LOAD_COMPLETELY);
 
-        // Verify presence Compose button
-        verifyComposeButton();
-
-        Assert.assertTrue("'All Invitations' screen is not present",
-                getSolo().searchText("Invitations", 1, false, true));
+        WaitActions.waitForTrueInFunction("'All Invitations' screen is not present",
+                new Callable<Boolean>() {
+                    public Boolean call() {
+                        TextView navLabel = (TextView) Id.getViewByViewIdName(NAV_LABEL);
+                        Assert.assertNotNull("Navigation title is not present", navLabel);
+                        return navLabel.getText() != "Invitations";
+                    }
+                });
     }
 
     @Override

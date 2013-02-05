@@ -35,7 +35,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 @SuppressWarnings("rawtypes")
 public class ScreenSettings extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.settings.SettingsActivity2";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.settings.SettingsActivity2";
     public static final String ACTIVITY_SHORT_CLASSNAME = "SettingsActivity2";
     public static final ViewIdName ID_NAME_OF_ADD_CONNECTIONS = new ViewIdName("add_connections_text");
 

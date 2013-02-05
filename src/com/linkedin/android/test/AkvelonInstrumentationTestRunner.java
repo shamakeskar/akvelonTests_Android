@@ -75,7 +75,6 @@ import com.linkedin.android.tests.utils.TestDiscover;
  * @author alexander.makarov
  * @created Jan 8, 2013 2:51:59 PM
  */
-@SuppressWarnings("unused")
 public class AkvelonInstrumentationTestRunner extends InstrumentationTestRunner {
     // CONSTANTS ------------------------------------------------------------
 
@@ -140,7 +139,7 @@ public class AkvelonInstrumentationTestRunner extends InstrumentationTestRunner 
     // Variables for run custom classes or methods.
     private Class<? extends BaseTestCase> customClass = null;
     // in sample = TmpRegressions.class;
-    private String customMethodName = "";
+    private String customMethodName = "sanity_part2";
     // in sample = "test_regression_news";
 
     // CONSTRUCTORS ---------------------------------------------------------

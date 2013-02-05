@@ -54,9 +54,8 @@ public class Id {
      *         found.
      */
     public static View getViewByViewIdName(ViewIdName idName) {
-        Solo solo = DataProvider.getInstance().getSolo();
         int viewId = getIdByViewIdName(idName);
-        return solo.getView(viewId);
+        return DataProvider.getInstance().getSolo().getView(viewId);
     }
 
     /**

@@ -20,8 +20,8 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenNewConnectionsRollUp extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.home.NUSListActivity";
-    public static final String ACTIVITY_SHORT_CLASSNAME = "NUSListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.home.v2.StreamDetailListActivity";
+    public static final String ACTIVITY_SHORT_CLASSNAME = "StreamDetailListActivity";
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -35,14 +35,10 @@ public class ScreenNewConnectionsRollUp extends BaseINScreen {
     public void verify() {
         Assert.assertTrue("Wrong activity (expected " + ACTIVITY_SHORT_CLASSNAME, getSolo()
                 .getCurrentActivity().getClass().getSimpleName().equals(ACTIVITY_SHORT_CLASSNAME));
-
-        Assert.assertTrue("'Details' label not shown", getSolo().waitForText("Details"));
-
         Assert.assertNotNull("Connections list is empty", getConnectionRollUp());
-
+        Assert.assertTrue("Updates connection rollup list is not present",
+                TextViewUtils.searchTextViewInActivity(" has one new connection", false) != null);
         verifyINButton();
-
-        HardwareActions.takeCurrentActivityScreenshot("New Connection Roll Up screen");
     }
 
     @Override
@@ -124,6 +120,8 @@ public class ScreenNewConnectionsRollUp extends BaseINScreen {
     @TestAction(value = "updates_connection_rollup_list_tap_back")
     public static void updates_connection_rollup_list_tap_back() {
         HardwareActions.pressBack();
+        WaitActions.waitForScreenUpdate(); // Wait until screen is loaded.
+        HardwareActions.scrollToTop();
         new ScreenUpdates();
 
         TestUtils.delayAndCaptureScreenshot("updates_connection_rollup_list_tap_back");

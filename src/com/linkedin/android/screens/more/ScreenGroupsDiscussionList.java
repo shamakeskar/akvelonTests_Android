@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.common.ScreenGroups;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
@@ -26,6 +27,7 @@ public class ScreenGroupsDiscussionList extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.groups.GroupsDiscussionListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "GroupsDiscussionListActivity";
+    public static final ViewIdName DISCUSSION_ID = new ViewIdName("tt1_text");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -70,36 +72,6 @@ public class ScreenGroupsDiscussionList extends BaseINScreen {
     public ScreenNewDiscussion openNewDiscussionScreen() {
         tapOnNewDiscussionButton();
         return new ScreenNewDiscussion();
-    }
-
-    /**
-     * Taps on first visible 'Most popular' discussion.
-     */
-    public void tapOnFirstVisibleMostPopularDiscussion() {
-        int firstPopularDiscussion = 0;
-        Assert.assertTrue("'Most Popular' label is not presented",
-                getSolo().searchText("Most Popular"));
-        for (TextView view : getSolo().getCurrentTextViews(null)) {
-            if (view.isShown()) {
-                firstPopularDiscussion++;
-                String textOfView = view.getText().toString();
-                if (textOfView.equalsIgnoreCase("Most Popular"))
-                    break;
-            }
-        }
-        TextView discussionView = getSolo().getText(firstPopularDiscussion);
-        ViewUtils.tapOnView(discussionView, "'Popular discussion' view");
-    }
-
-    /**
-     * Opens 'Discussion Details' screen.
-     * 
-     * @return{@code ScreenDiscussionDetails} with just opened 'Discussion
-     *               Details' screen.
-     */
-    public ScreenDiscussionDetails openFirstVisibleMostPopularDiscussion() {
-        tapOnFirstVisibleMostPopularDiscussion();
-        return new ScreenDiscussionDetails();
     }
 
     /**
@@ -191,7 +163,10 @@ public class ScreenGroupsDiscussionList extends BaseINScreen {
 
     @TestAction(value = "groups_discussion_list_tap_discussion")
     public static void groups_discussion_list_tap_discussion() {
-        new ScreenGroupsDiscussionList().openFirstVisibleMostPopularDiscussion();
+        TextView firstDiscussion = (TextView) ViewUtils.scrollToViewById(
+                DISCUSSION_ID, ViewUtils.SCROLL_DOWN, 5);
+        ViewUtils.tapOnView(firstDiscussion, "first group discussion");
+        new ScreenDiscussionDetails();
         TestUtils.delayAndCaptureScreenshot("groups_discussion_list_tap_discussion");
     }
 

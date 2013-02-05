@@ -62,16 +62,6 @@ public class ScreenCalSplash extends BaseINScreen {
     }
 
     /**
-     * Checks that currently open Calendar splash screen.
-     * 
-     * @return <b>true</b> if opened Calendar splash screen.
-     */
-    public static boolean isCalSplashOpened() {
-        return getSolo().getCurrentActivity().getClass().getSimpleName()
-                .equals(ACTIVITY_SHORT_CLASSNAME);
-    }
-
-    /**
      * Taps on 'Close' button.
      */
     public void tapLaterButton() {
@@ -94,7 +84,7 @@ public class ScreenCalSplash extends BaseINScreen {
      * Taps on 'Learn More' button.
      */
     public void tapLearnMoreButton() {
-        Assert.assertNotNull("'Learn More' text is not present.",
+        Assert.assertNotNull("'Leran Morer' text is not present.",
                 getSolo().searchText("Learn More"));
         Logger.i("Tapping on 'Learn More' text");
         getSolo().clickOnText("Learn More");

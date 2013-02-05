@@ -23,7 +23,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 public class ScreenYouConnections extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.connections.ConnectionListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.connections.ConnectionListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "ConnectionListActivity";
 
     private static final String PEOPLE_YOU_MAY_KNOW_LABEL = "PEOPLE YOU MAY KNOW";

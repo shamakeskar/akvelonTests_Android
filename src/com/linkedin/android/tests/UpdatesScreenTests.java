@@ -36,7 +36,6 @@ import com.linkedin.android.screens.you.ScreenProfileOfNotConnectedUser;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.StringData;
-import com.linkedin.android.tests.utils.ContactInfoUtils;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
@@ -653,7 +652,7 @@ public class UpdatesScreenTests extends BaseTestCase {
         Logger.i(DONE + "Verify the Search page loads properly.");
 
         // Search for a name to find a 2nd degree contact
-        TextView connectionNameTextView = searchScreen
+        /*TextView connectionNameTextView = searchScreen
                 .searchForContact(nameOfSecondDegreeConnection);
         int connectionDegree = ContactInfoUtils.getContactDegree(searchScreen
                 .getContactDegree(connectionNameTextView));
@@ -665,7 +664,7 @@ public class UpdatesScreenTests extends BaseTestCase {
 
         // Tap on first connection.
         ViewUtils.tapOnView(connectionNameTextView, "'" + connectionNameTextView.getText()
-                + "' connection");
+                + "' connection");*/
         ScreenProfileOfNotConnectedUser secondDegreeConnectionProfileScreen = new ScreenProfileOfNotConnectedUser();
         Assert.assertTrue("Connection name is not '" + nameOfSecondDegreeConnection
                 + "' on Profile screen", getSolo().searchText(nameOfSecondDegreeConnection));

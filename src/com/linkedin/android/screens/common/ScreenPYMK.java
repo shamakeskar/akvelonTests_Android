@@ -21,8 +21,11 @@ import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
+import com.linkedin.android.utils.StringUtils;
 import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -34,7 +37,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenPYMK extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.reconnect.ReconnectListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.reconnect.ReconnectListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "ReconnectListActivity";
 
     // Indexes of views relatively 'People you may know' list item
@@ -45,8 +48,8 @@ public class ScreenPYMK extends BaseListScreen {
 
     private static final int SENDER_NAME_INDEX = 1;
     private static final int INVITATION_LIST_VIEW_INDEX = 1;
-    private static final int ACCEPT_INVITATION_BUTTON_INDEX = 4;
-    private static final int DECLINE_INVITATION_BUTTON_INDEX = 5;
+    private static final int ACCEPT_INVITATION_BUTTON_INDEX = 5;
+    private static final int DECLINE_INVITATION_BUTTON_INDEX = 4;
 
     private static final String ADD_CONNECTION_BUTTON_LABEL = "Add connection";
     private static final String REMOVE_CONNECTION_BUTTON_LABEL = "Remove connection";
@@ -63,20 +66,13 @@ public class ScreenPYMK extends BaseListScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        getSolo().assertCurrentActivity(
-                "Wrong activity (expected " + ACTIVITY_CLASSNAME + ", get "
-                        + getSolo().getCurrentActivity().getClass().getName() + ")",
-                ACTIVITY_SHORT_CLASSNAME);
-
-        Assert.assertTrue("'You may know' header is not present on PYMK screen", getSolo()
-                .searchText("You may know", 1, false));
-
-        Assert.assertTrue("'People You May Know' label is not present on PYMK screen", getSolo()
-                .searchText("People You May Know", 1, false));
-
+        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        Assert.assertTrue(
+                "PYMK screen is not present ('People You May Know' label is not present)",
+                getSolo().searchText("People You May Know", 1, false));
         verifyINButton();
-
-        verifyPeopleYouMayKnowList();
+        Assert.assertNotNull("PYMK screen is not present (cannot find ListView)",
+                getPeopleYouMayKnowList());
     }
 
     @Override
@@ -120,7 +116,7 @@ public class ScreenPYMK extends BaseListScreen {
         LinearLayout firstVisibleConnectionFromList = getFirstVisibleConnectionFromList();
         Assert.assertNotNull("There is no connections in 'People you may know' list",
                 firstVisibleConnectionFromList);
-        getSolo().clickOnView(firstVisibleConnectionFromList);
+        ViewUtils.tapOnView(firstVisibleConnectionFromList, "first connection");
     }
 
     /**
@@ -225,19 +221,6 @@ public class ScreenPYMK extends BaseListScreen {
         return connectionInfoLayout;
     }
 
-    /**
-     * Verifies 'People you may know' list
-     */
-    private void verifyPeopleYouMayKnowList() {
-        ListView peopleYouMayKnowList = getPeopleYouMayKnowList();
-        Assert.assertNotNull("'People you may know' list is not presented", peopleYouMayKnowList);
-        Assert.assertTrue(
-                "Width of 'People you may know' list is not equal width of device screen.",
-                ListViewUtils.isListViewWidthEqualToScreenWidth(peopleYouMayKnowList));
-        Assert.assertTrue("'People you may know' list is empty.",
-                ListViewUtils.isListViewNotEmpty(peopleYouMayKnowList));
-    }
-
     private static void tapOnSenderProfile() {
         RelativeLayout invitationLayout = (RelativeLayout) Id
                 .getViewByViewIdName(INVITATION_LAYOUT);
@@ -276,8 +259,8 @@ public class ScreenPYMK extends BaseListScreen {
         pymk("go_to_pymk");
     }
 
-    @TestAction(value = "pymk_back")
-    public static void pymk_back() {
+    @TestAction(value = "pymk_tap_back")
+    public static void pymk_tap_back() {
         HardwareActions.goBackOnPreviousActivity();
         TestUtils.delayAndCaptureScreenshot("pymk_back");
     }
@@ -391,46 +374,39 @@ public class ScreenPYMK extends BaseListScreen {
         TestUtils.delayAndCaptureScreenshot("invite_accept_pymk_tap_profile_reset");
     }
 
-    @TestAction(value = "invite_accept_pymk_tap_invite")
-    public static void invite_accept_pymk_tap_invite() {
-        tapOnINButton();
-        ViewUtils.waitForToastDisappear();
-        new ScreenExpose(null).openGroupsAndMoreScreen();
-        ScreenGroupsAndMore.groups_and_more_tap_pymk();
+    @TestAction(value = "pymk_tap_invite")
+    public static void pymk_tap_invite(String profileName) {
+        RelativeLayout layout;
+        if (StringUtils.isNullOrEmpty(profileName)) {
+            layout = (RelativeLayout) Id.getListOfViewByViewIdName(INVITATION_LAYOUT).get(0);
+        } else {
+            TextView text = TextViewUtils.getTextViewByText(profileName);
+            Assert.assertNotNull("Cannot find profile '" + profileName + "' on PYMK screen", text);
+            layout = (RelativeLayout) text.getParent();
+        }
 
-        RelativeLayout layout = (RelativeLayout) Id.getListOfViewByViewIdName(INVITATION_LAYOUT)
-                .get(INVITATION_LIST_VIEW_INDEX);
         ImageView acceptInvitationButton = ViewGroupUtils.getChildViewByIndexSafely(layout,
                 ACCEPT_INVITATION_BUTTON_INDEX, ImageView.class);
+        String displayName = ((TextView) layout.getChildAt(SENDER_NAME_INDEX)).getText().toString();
 
-        final String displayName = ((TextView) layout.getChildAt(SENDER_NAME_INDEX)).getText()
-                .toString();
-        ViewUtils.tapOnView(acceptInvitationButton, "accept invitation");
-
-        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
-                "'Invitation' row is not dissapear", new Callable<Boolean>() {
-                    public Boolean call() {
-                        return (getSolo().searchText(displayName, 1, false, true) != true);
-                    }
-                });
+        ViewUtils.tapOnView(acceptInvitationButton, "accept invitation button for " + displayName);
         TestUtils.delayAndCaptureScreenshot("invite_accept_pymk_tap_invite");
     }
 
-    @TestAction(value = "invite_accept_pymk_tap_ignore")
-    public static void invite_accept_pymk_tap_ignore() {
+    @TestAction(value = "pymk_tap_ignore")
+    public static void pymk_tap_ignore() {
         RelativeLayout layout = (RelativeLayout) Id.getListOfViewByViewIdName(INVITATION_LAYOUT)
-                .get(INVITATION_LIST_VIEW_INDEX);
-        ImageView acceptInvitationButton = ViewGroupUtils.getChildViewByIndexSafely(layout,
+                .get(1);
+        ImageView ignoreInvitationButton = ViewGroupUtils.getChildViewByIndexSafely(layout,
                 DECLINE_INVITATION_BUTTON_INDEX, ImageView.class);
-
         final String displayName = ((TextView) layout.getChildAt(SENDER_NAME_INDEX)).getText()
                 .toString();
-        ViewUtils.tapOnView(acceptInvitationButton, "ignore invitation");
+        ViewUtils.tapOnView(ignoreInvitationButton, "ignore invitation for " + displayName);
 
         WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
                 "'Invitation' row is not dissapear", new Callable<Boolean>() {
                     public Boolean call() {
-                        return (getSolo().searchText(displayName, 1, false, true) != true);
+                        return !getSolo().searchText(displayName, 1, false, true);
                     }
                 });
         TestUtils.delayAndCaptureScreenshot("invite_accept_pymk_tap_ignore");

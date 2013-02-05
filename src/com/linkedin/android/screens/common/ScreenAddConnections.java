@@ -16,7 +16,6 @@ import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
-import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
@@ -37,7 +36,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 @SuppressWarnings("rawtypes")
 public class ScreenAddConnections extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.connections.ConnectionListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.connections.ConnectionListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "ConnectionListActivity";
 
     public static final String CONNECTIONS_LABEL = "Connections";
@@ -70,8 +69,6 @@ public class ScreenAddConnections extends BaseScreen {
     @Override
     public void verify() {
         ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-
-        HardwareActions.takeCurrentActivityScreenshot("'Add Connections' screen");
     }
 
     @Override
@@ -211,19 +208,24 @@ public class ScreenAddConnections extends BaseScreen {
     }
 
     @TestAction(value = "select_recipients_tap_select")
-    public static void select_recipients_tap_select() {
-        CheckedTextView check = (CheckedTextView) Id.getViewByViewIdName(ID_NAME_OF_CHECKBOX);
+    public static void select_recipients_tap_select(final String recipient) {
+        TextView connection = TextViewUtils.getTextViewByText(recipient);
+        RelativeLayout layout = (RelativeLayout) connection.getParent();
+        CheckedTextView check = (CheckedTextView) layout.getChildAt(3);
+        Assert.assertNotNull("Checkbox is not present", check);
         final boolean isChecked = check.isChecked();
-        ViewUtils.tapOnView(check, "First check box");
-        WaitActions.waitForTrueInFunction("CheckBox is not chcked", new Callable<Boolean>() {
+        ViewUtils.tapOnView(check, "check box");
+        WaitActions.waitForTrueInFunction("CheckBox is not checked", new Callable<Boolean>() {
             public Boolean call() {
-                CheckedTextView checkedTextView = (CheckedTextView) Id
-                        .getViewByViewIdName(ID_NAME_OF_CHECKBOX);
-                Assert.assertNotNull("No checkbox on the screen", checkedTextView);
-                boolean checked = checkedTextView.isChecked();
+                TextView connection = TextViewUtils.getTextViewByText(recipient);
+                RelativeLayout layout = (RelativeLayout) connection.getParent();
+                CheckedTextView check = (CheckedTextView) layout.getChildAt(3);
+                Assert.assertNotNull("Checkbox is not present", check);
+                boolean checked = check.isChecked();
                 return (checked != isChecked);
             }
         });
+
         TestUtils.delayAndCaptureScreenshot("select_recipients_tap_select");
     }
 

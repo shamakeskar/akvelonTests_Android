@@ -1,28 +1,22 @@
 <TestSuite groups="Sanity">
-  <Test name="sanity" id="00000000">
+  <Test name="Prepush" id="43480459">
     <Step key="login" />
     <Step key="login_tap_signin_precondition" payload="user1@correo.linkedinlabs.com,crazyman" />
     <Step key="login_tap_signin" />
     <Step key="abi_tap_not_sync" />
-    <Step key="cal_splash_tap_later" />
     <Step key="updates_tap_expose" />
     <Step key="expose_tap_updates" />
     <Step key="updates_tap_expose" />
     <Step key="expose_tap_you" />
     <Step key="you_tap_expose" />
-    <Step key="expose_tap_inbox" />
-    <Step key="inbox_tap_expose" />
     <Step key="expose_tap_groups_and_more" />
     <Step key="groups_and_more_tap_pymk" />
-    <Step key="pymk_back" />
+    <Step key="pymk_tap_back" />
     <Step key="groups_and_more_tap_groups" />
     <Step key="groups_tap_back" />
     <Step key="groups_and_more_tap_jobs" />
     <Step key="jobs_home_tap_back" />
     <Step key="groups_and_more_tap_companies" />
     <Step key="logout" />
-    <Step key="login" />
-    <Step key="login_tap_signin_precondition" payload="user1@correo.linkedinlabs.com,crazyman" />
-    <Step key="login_tap_signin" />
   </Test>
 </TestSuite>

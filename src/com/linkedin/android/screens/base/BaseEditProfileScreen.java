@@ -10,7 +10,7 @@ import com.linkedin.android.utils.WaitActions;
 @SuppressWarnings("rawtypes")
 public abstract class BaseEditProfileScreen extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.jsbridge.ProfileEditActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.jsbridge.ProfileEditActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "ProfileEditActivity";
 
     // PROPERTIES -----------------------------------------------------------

@@ -1,11 +1,16 @@
 package com.linkedin.android.screens.inbox;
 
+import java.util.concurrent.Callable;
+
 import junit.framework.Assert;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.screens.common.ScreenExpose;
+import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
@@ -22,10 +27,11 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 @SuppressWarnings("rawtypes")
 public class ScreenNewInvitation extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.invitations.InviteByEmailActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.invitations.InviteByEmailActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "InviteByEmailActivity";
     private static final String SEND_BUTTON = "Send";
     private static final String EMAIL_FOR_INVITATION = "test@asdasd.ru";
+    private static final ViewIdName SEND_BUTTON_LAYOUT = new ViewIdName("share_button");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -37,13 +43,14 @@ public class ScreenNewInvitation extends BaseScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        Assert.assertTrue("'Invite' label is not presented", getSolo().waitForText("Invite"));
-
-        Button sendButton = getSolo().getButton(0);
-        ImageView addConnectionButton = getSolo().getImage(0);
-
-        Assert.assertNotNull("'Send' button is not presented", sendButton);
-        Assert.assertNotNull("'Add' button is not presented", addConnectionButton);
+        verifyCurrentActivity();
+        WaitActions.waitForTrueInFunction("New Message label is not present",
+                new Callable<Boolean>() {
+                    public Boolean call() {
+                        TextView sendButton = (TextView) Id.getViewByViewIdName(SEND_BUTTON_LAYOUT);
+                        return sendButton != null;
+                    }
+                });
     }
 
     @Override

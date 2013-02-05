@@ -1,5 +1,6 @@
 package com.linkedin.android.screens.common;
 
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 import junit.framework.Assert;
@@ -7,8 +8,8 @@ import android.view.View;
 import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,14 +18,16 @@ import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.screens.you.ScreenProfile;
 import com.linkedin.android.screens.you.ScreenProfileOfConnectedUser;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
-import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.ScreenResolution;
+import com.linkedin.android.utils.StringUtils;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ImageViewUtils;
@@ -45,7 +48,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 public class ScreenSearch extends BaseScreen {
 
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.search.SearchActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.search.SearchActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "SearchActivity";
 
     static final String SEARCH_BAR_FIELD_LABEL = "Search bar";
@@ -57,7 +60,8 @@ public class ScreenSearch extends BaseScreen {
     static final Rect2DP SEARCH_BAR_LAYOUT = new Rect2DP(0, 0, SCREEN_WIDTH - 54.0f, 82.0f);
     static final Rect2DP SEARCH_ICON_RECT = new Rect2DP(262f, 29f, 55f, 49f);
     static final Rect2DP SEARCH_BAR_RECT = new Rect2DP(10f, 33f, 252f, 48f);
-    static final int WAIT_FOR_SCREEN_LOAD_COMPLETELY = 15;
+    public static final ViewIdName SEARCH_BUTTON = new ViewIdName("searchButton");
+    public static final ViewIdName SEARCH_EDIT_TEXT = new ViewIdName("searchEditText");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -70,22 +74,21 @@ public class ScreenSearch extends BaseScreen {
     @Override
     public void verify() {
         ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-        // Delay for wait then 'Search bar' and 'Search button' loaded.
-        WaitActions.delay(WAIT_FOR_SCREEN_LOAD_COMPLETELY);
 
-        // Verify presence of search button.
-        Assert.assertNotNull("Search button is not present", getSearchIcon());
-
-        // Check that list views is not empty.
-        Assert.assertTrue("List views is not present", ListViewUtils.isCurrentListViewsNotEmpty());
-        
-        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG, "Connection list is empty", new Callable<Boolean>() {
-            
-            @Override
-            public Boolean call() {
-                return (getFirstVisibleConnectionFromList()!= null);
-            }
-        });
+        WaitActions.waitForTrueInFunction(
+                "Search screen is not present (list with search results is not present)",
+                new Callable<Boolean>() {
+                    public Boolean call() throws Exception {
+                        return ListViewUtils.isCurrentListViewsNotEmpty();
+                    }
+                });
+        WaitActions.waitForTrueInFunction(
+                "Search screen is not present (search icon in right corneris not present)",
+                new Callable<Boolean>() {
+                    public Boolean call() throws Exception {
+                        return getSearchIcon() != null;
+                    }
+                });
     }
 
     @Override
@@ -104,9 +107,12 @@ public class ScreenSearch extends BaseScreen {
      * @return if exist search bar {@code EditText}, else <b>null</b>
      */
     public EditText getSearchBar() {
-
-        return LayoutUtils.getEditTextByItsLayoutAndSize(SEARCH_BAR_LAYOUT, SEARCH_BAR_RECT.width,
-                SEARCH_BAR_RECT.height, Rect2DP.DEFAULT_ACCURACY_OF_COMPARING);
+        EditText searchBar = (EditText) Id.getViewByViewIdName(SEARCH_EDIT_TEXT);
+        if (searchBar != null && searchBar.isShown()) {
+            return searchBar;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -162,32 +168,24 @@ public class ScreenSearch extends BaseScreen {
     }
 
     /**
-     * Search for contact with specified {@code contactName}
+     * Search for contact with specified {@code contactName}.
      * 
      * @param contactName
      *            name of searched contact
-     * @return {@code TextView} first found contact name or <b>null</b> if there
-     *         is no such contact
      */
-    public TextView searchForContact(String contactName) {
-        final int progressBarAppearanceWaitTimeSec = 3;
-
-        typeTextIntoSearchBar(contactName);
-
-        // wait while progress bar appears
-        WaitActions.delay(progressBarAppearanceWaitTimeSec);
-        // wait while search results appear
-        WaitActions.waitForProgressBarDisappear(0, DataProvider.WAIT_DELAY_DEFAULT);
-        HardwareActions.takeCurrentActivityScreenshot("Search contact '" + contactName + "'");
-
-        View firstVisibleConnectionFromList = getFirstVisibleConnectionFromList();
-        if (!(firstVisibleConnectionFromList instanceof LinearLayout)) {
-            return null;
+    public void searchForContact(String contactName) {
+        if (StringUtils.isNullOrEmpty(contactName)) {
+            Assert.fail("Contact name is empty");
         }
-        LinearLayout firstVisibleConnectionLayout = (LinearLayout) firstVisibleConnectionFromList;
-        TextView foundContactNameTextView = TextViewUtils.searchTextViewInLayout(contactName,
-                firstVisibleConnectionLayout, true);
-        return foundContactNameTextView;
+        Logger.i("Typing '" + contactName + "' in searh field");
+        typeTextIntoSearchBar(contactName);
+        WaitActions.waitForTrueInFunction("Search progress bar is not appear.", new Callable<Boolean>() {
+            public Boolean call() throws Exception {
+                ArrayList<ProgressBar> progressBars = getSolo().getCurrentProgressBars();
+                return progressBars.size() > 0;
+            }
+        });
+        WaitActions.waitForProgressBarDisappear(0, DataProvider.WAIT_DELAY_DEFAULT);
     }
 
     /**
@@ -254,32 +252,49 @@ public class ScreenSearch extends BaseScreen {
      * @return if exist right button {@code ImageView}, else <b>null</b>
      */
     private ImageView getSearchIcon() {
-        return LayoutUtils.getImageViewByItsLayoutAndSize(LayoutUtils.UPPER_RIGHT_BUTTON_LAYOUT,
-                SEARCH_ICON_RECT.width, SEARCH_ICON_RECT.height,
-                Rect2DP.DEFAULT_ACCURACY_OF_COMPARING);
+        ImageView searchButton = (ImageView) Id.getViewByViewIdName(SEARCH_BUTTON);
+        if (searchButton != null && searchButton.isShown()) {
+            return searchButton;
+        } else {
+            return null;
+        }
     }
-    
+
+    // ACTIONS --------------------------------------------------------------
     @TestAction(value = "go_to_search")
     public static void go_to_search(String email, String password) {
         ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart(email, password);
         screenUpdates.openSearchScreen();
         TestUtils.delayAndCaptureScreenshot("go_to_search");
     }
-    
+
+    @TestAction(value = "search_search")
+    public static void search_search(String query) {
+        new ScreenSearch().searchForContact(query);
+        TestUtils.delayAndCaptureScreenshot("search_search");
+    }
+
     @TestAction(value = "search_tap_cancel")
     public static void search_tap_cancel() {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenUpdates();
         TestUtils.delayAndCaptureScreenshot("search_tap_cancel");
     }
-    
+
     @TestAction(value = "search_tap_profile")
-    public static void search_tap_profile() {
-        new ScreenSearch().tapOnFirstVisibleConnectionProfileScreen();
+    public static void search_tap_profile(String profileName) {
+        ListView connectionsList = ListViewUtils.getFirstListView();
+        if (null == connectionsList || connectionsList.getCount() < 1) {
+            Assert.fail("There is not search results.");
+        }
+        ArrayList<TextView> views = TextViewUtils.getTextViewsInLayout(profileName,
+                connectionsList, false);
+        Assert.assertTrue("Cannot find '" + profileName + "' in search results.", views.size() > 0);
+        ViewUtils.tapOnView(views.get(0), profileName + " profile");
         new ScreenProfile();
-        TestUtils.delayAndCaptureScreenshot("search_tap_profile");        
+        TestUtils.delayAndCaptureScreenshot("search_tap_profile");
     }
-    
+
     @TestAction(value = "search_tap_profile_reset")
     public static void search_tap_profile_reset() {
         HardwareActions.goBackOnPreviousActivity();

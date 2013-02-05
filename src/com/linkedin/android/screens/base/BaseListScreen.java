@@ -27,20 +27,20 @@ public abstract class BaseListScreen extends BaseINScreen {
     public BaseListScreen(String activityClassname) {
         super(activityClassname);
     }
-    
+
     /**
      * Class for check list content changed state.
      */
     class listContentChangedObserver extends DataSetObserver {
         private boolean isContentChanged = false;
-        
+
         /**
          * Sets {@code isContentChanged} to <b>false</b>.
          */
         public void resetState() {
             isContentChanged = false;
         }
-        
+
         /**
          * Returns {@code isContentChanged} value.
          */
@@ -53,19 +53,21 @@ public abstract class BaseListScreen extends BaseINScreen {
             isContentChanged = true;
         }
     }
-    
+
     /**
      * Waits for any {@code ListView} appears.
+     * 
      * @return first {@code ListView}.
      */
     protected ListView waitForListView() {
-        WaitActions.waitForTrueInFunction("Current screen does not contain ListView", new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                return (ListViewUtils.getFirstListView() != null);
-            }
-        });
-        
+        WaitActions.waitForTrueInFunction("Current screen does not contain ListView",
+                new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        return (ListViewUtils.getFirstListView() != null);
+                    }
+                });
+
         return ListViewUtils.getFirstListView();
     }
 
@@ -73,49 +75,52 @@ public abstract class BaseListScreen extends BaseINScreen {
      * Refreshes screen.
      */
     public void refreshScreen() {
-        Logger.i("Refresh screen");
         HardwareActions.tapOnMenuOption(MENU_ITEM_REFRESH);
 
         // Get adapter for listView and bind observer to it.
         ListAdapter adapter = waitForListView().getAdapter();
         final listContentChangedObserver observer = new listContentChangedObserver();
         adapter.registerDataSetObserver(observer);
-        
+
         try {
-            // Wait for first event from observer to determine start of refreshing.
-            WaitActions.waitForTrueInFunction("Refreshing not started", new Callable<Boolean>() {
-                @Override
-                public Boolean call() throws Exception {
-                    return observer.getState();
-                }
-            });
-            
+            // Wait for first event from observer to determine start of
+            // refreshing.
+            WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
+                    "Refreshing not started", new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() throws Exception {
+                            return observer.getState();
+                        }
+                    });
+
             // Wait with some delay for observer stopped raise events.
             boolean isScreenRefreshed = false;
             long startTime = System.currentTimeMillis();
             while (System.currentTimeMillis() - startTime < DataProvider.WAIT_DELAY_LONG) {
                 observer.resetState();
-                
-                // Wait with TIME_BETWEEN_REFRESH_LOADS delay for raising event. 
-                int waitStepsCount = DataProvider.TIME_BETWEEN_REFRESH_LOADS / DataProvider.WAIT_DELAY_STEP;
+
+                // Wait with TIME_BETWEEN_REFRESH_LOADS delay for raising event.
+                int waitStepsCount = DataProvider.TIME_BETWEEN_REFRESH_LOADS
+                        / DataProvider.WAIT_DELAY_STEP;
                 for (int i = 0; i < waitStepsCount; i++) {
                     DataProvider.getInstance().getSolo().sleep(DataProvider.WAIT_DELAY_STEP);
                     if (observer.getState()) {
                         break;
                     }
                 }
-                
-                // If event not raised during TIME_BETWEEN_REFRESH_LOADS delay, then refreshing finished.  
+
+                // If event not raised during TIME_BETWEEN_REFRESH_LOADS delay,
+                // then refreshing finished.
                 if (!observer.getState()) {
                     isScreenRefreshed = true;
                     break;
                 }
             }
-            
-            Assert.assertTrue("Refreshing not finished",isScreenRefreshed);
+
+            Assert.assertTrue("Refreshing not finished", isScreenRefreshed);
         } catch (Exception e) {
             adapter.unregisterDataSetObserver(observer);
-            
+
             Assert.fail(e.getMessage());
         }
     }
@@ -129,10 +134,11 @@ public abstract class BaseListScreen extends BaseINScreen {
         Assert.assertTrue("Spinner is not present.",
                 getSolo().waitForView(ProgressBar.class, 1, DataProvider.WAIT_DELAY_SHORT, false));
         // Wait when the spinner will disappear.
-        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
-                "Spinner didn't disapear.", new Callable<Boolean>() {
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG, "Spinner didn't disapear.",
+                new Callable<Boolean>() {
                     public Boolean call() {
-                        return !ViewUtils.isListContainVisibleViews(getSolo().getCurrentProgressBars().toArray());
+                        return !ViewUtils.isListContainVisibleViews(getSolo()
+                                .getCurrentProgressBars().toArray());
                     }
                 });
     }

@@ -332,7 +332,7 @@ public final class WaitActions {
      */
     public static void waitForLoadingDisappear(int timeoutInMs) {
         timeoutInMs = timeoutInMs > 0 ? timeoutInMs : DataProvider.WAIT_DELAY_DEFAULT;
-        TextView loading = TextViewUtils.searchTextViewInActivity("Loading", false);
+        TextView loading = TextViewUtils.searchTextViewInActivity("Loading…", true);
         int waitStepsCount = timeoutInMs / DataProvider.WAIT_DELAY_STEP;
         for (int i = 0; i < waitStepsCount; i++) {
             if (loading == null) {
@@ -368,7 +368,7 @@ public final class WaitActions {
             }
         } catch (Exception e) {
             Logger.e("Cannot run the function", e);
-            Assert.fail("Cannot run the function");
+            Assert.fail(e.getMessage());
         }
         Assert.fail(message);
     }
@@ -386,5 +386,87 @@ public final class WaitActions {
      */
     public static void waitForTrueInFunction(String message, Callable<Boolean> function) {
         waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT, message, function);
+    }
+
+    /**
+     * Waits for the function 'function' return true if it didn't than fail with
+     * 'message'. Used System.currentTimeMillis for check timeout.
+     * 
+     * @param function
+     *            - function to check which must return true or anything
+     *            another.
+     * @param timeout
+     *            - timeout to wait in ms.
+     * @param message
+     *            - custom message to be shown if function not return true by
+     *            timeout.
+     */
+    public static void waitForTrueInFunction2(int timeout, String message,
+            Callable<Boolean> function) {
+        if (message == null)
+            message = "Cannot wait some condition";
+        long startTime = System.currentTimeMillis();
+        try {
+            while (startTime + timeout > System.currentTimeMillis()) {
+                if (function.call())
+                    return;
+            }
+        } catch (Exception e) {
+            Logger.e(message, e);
+            Assert.fail(e.getMessage());
+        }
+        Assert.fail(message);
+    }
+
+    /**
+     * Waits for the function 'function' return true if it didn't than fail with
+     * 'message'. Used System.currentTimeMillis for check timeout =
+     * WAIT_DELAY_DEFAULT.
+     * 
+     * @param message
+     *            - custom message to be shown if function not return true by
+     *            timeout.
+     * @param function
+     *            - function to check which must return true or anything
+     *            another.
+     */
+    public static void waitForTrueInFunction2(String message, Callable<Boolean> function) {
+        waitForTrueInFunction2(DataProvider.WAIT_DELAY_DEFAULT, message, function);
+    }
+
+    /**
+     * Checks that function return true in specified timeout.
+     * 
+     * @param timeout
+     *            - timeout to check in ms.
+     * @param function
+     *            - function that returns boolean value
+     * @return <b>true</b> if function returns true in timeout, else
+     *         <b>false</b>
+     */
+    public static boolean isTrueInFunction(int timeout, Callable<Boolean> function) {
+        int waitStepsCount = timeout / DataProvider.WAIT_DELAY_STEP;
+        try {
+            for (int i = 0; i < waitStepsCount; i++) {
+                if (function.call())
+                    return true;
+                DataProvider.getInstance().getSolo().sleep(DataProvider.WAIT_DELAY_STEP);
+            }
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        }
+        return false;
+    }
+
+    /**
+     * Checks that function return true in WAIT_DELAY_DEFAULT.
+     * 
+     * @param function
+     *            - function that returns boolean value
+     * @return <b>true</b> if function returns true in timeout, else
+     *         <b>false</b>
+     */
+    public static boolean isTrueInFunction(Callable<Boolean> function) {
+        return isTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT, function);
     }
 }

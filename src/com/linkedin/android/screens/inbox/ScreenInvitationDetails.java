@@ -35,13 +35,12 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenInvitationDetails extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.invitations.ViewInvitationActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.invitations.ViewInvitationActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "ViewInvitationActivity";
 
     static final Rect2DP UP_ARROW_BUTTON = new Rect2DP(225, 25, 43, 55);
     static final Rect2DP DOWN_ARROW_BUTTON = new Rect2DP(267, 25, 43, 55);
 
-    private static final ViewIdName HEADER_LAYOUT = new ViewIdName("navigation_bar_title");
     private static final ViewIdName UP_LAYOUT = new ViewIdName("nav_inbox_previous");
     private static final ViewIdName DOWN_LAYOUT = new ViewIdName("nav_inbox_next");
     private static final ViewIdName INVITATION_LAYOUT = new ViewIdName("profile_template_2");
@@ -64,16 +63,6 @@ public class ScreenInvitationDetails extends BaseINScreen {
                 "Wrong activity (expected " + ACTIVITY_CLASSNAME + ", get "
                         + getSolo().getCurrentActivity().getClass().getName() + ")",
                 ACTIVITY_SHORT_CLASSNAME);
-
-        WaitActions.waitForTrueInFunction("Title '.. of ..' is not present",
-                new Callable<Boolean>() {
-                    public Boolean call() {
-                        Assert.assertTrue("Header of 'Invitation' is not present",
-                                (TextView) Id.getViewByViewIdName(HEADER_LAYOUT) != null);
-                        return ((String) ((TextView) Id.getViewByViewIdName(HEADER_LAYOUT))
-                                .getText()).indexOf(" of") > -1;
-                    }
-                });
     }
 
     @Override
@@ -188,6 +177,15 @@ public class ScreenInvitationDetails extends BaseINScreen {
                     }
                 });
     }
+    
+    public void verifyThatInvitationScreenDismissed() {
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
+                "'New Discussion' screen is not dissapear", new Callable<Boolean>() {
+                    public Boolean call() {
+                        return !(isCurrentActivityOpened());
+                    }
+                });
+    }
 
     // ACTIONS --------------------------------------------------------------
     public static void inbox_invitation_detail(String screenshotName) {
@@ -280,8 +278,10 @@ public class ScreenInvitationDetails extends BaseINScreen {
     @TestAction(value = "inbox_invitation_detail_tap_accept")
     public static void inbox_invitation_detail_tap_accept() {
         ImageButton acceptButton = getSolo().getImageButton(0);
+        ScreenInvitationDetails invitationDetailScreen = new ScreenInvitationDetails();
         ViewUtils.tapOnView(acceptButton, "'Accept' button");
-        new ScreenInvitationsAll();
+        invitationDetailScreen.verifyToast("Accepted");
+        invitationDetailScreen.verifyThatInvitationScreenDismissed();
         TestUtils.delayAndCaptureScreenshot("inbox_invitation_detail_tap_accept");
     }
 

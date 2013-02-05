@@ -21,7 +21,6 @@ import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
-import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -33,10 +32,10 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 public class ScreenWhosViewedYou extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.groups.WVMPListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.groupsandnews.groups.WVMPListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "WVMPListActivity";
 
-    private static final ViewIdName CONNECTION_LAYOUT = new ViewIdName("connections_row");
+    private static final ViewIdName CONNECTION_LAYOUT = new ViewIdName("connections_row_fake");
     public static final ViewIdName ROLLUP_WVMP_ID_NAME = new ViewIdName("rollup_chevron");
     public static final ViewIdName PROFILE_ID_NAME = new ViewIdName("display_name");
     public static final ViewIdName NAVIGATION_BAR_TITLE_ID_NAME = new ViewIdName(
@@ -132,19 +131,45 @@ public class ScreenWhosViewedYou extends BaseINScreen {
         TestUtils.delayAndCaptureScreenshot("wvmp_back");
     }
 
+    @TestAction(value = "wvmp_tap_back")
+    public static void wvmp_tap_back() {
+        HardwareActions.pressBack();
+        new ScreenYou();
+        TestUtils.delayAndCaptureScreenshot("wvmp_tap_back");
+    }
+
     @TestAction(value = "wvmp_tap_profile")
     public static void wvmp_tap_profile() {
-        RelativeLayout connectionLayout = (RelativeLayout) Id
-                .getViewByViewIdName(CONNECTION_LAYOUT);
-        Assert.assertNotNull("There are no Connection in 'WVMP' screen", connectionLayout);
-
-        ViewGroupUtils.tapFirstViewInLayout(connectionLayout, true, "first connection", null);
+        ArrayList<View> connectionLayouts = Id.getListOfViewByViewIdName(CONNECTION_LAYOUT);
+        Assert.assertTrue("There are no Connections in 'WVMP' screen", connectionLayouts.size() > 0);
+        View viewToTap = null;
+        for (int j = 0; j < connectionLayouts.size(); j++) {
+            View connectionLayout = connectionLayouts.get(j);
+            if (connectionLayout instanceof RelativeLayout) {
+                RelativeLayout layout = (RelativeLayout) connectionLayout;
+                boolean isNotTappable = false;
+                for (int i = 0; i < layout.getChildCount(); i++) {
+                    View view = layout.getChildAt(i);
+                    if (view instanceof TextView
+                            && ((TextView) view).getText().equals("LinkedIn member")) {
+                        isNotTappable = true;
+                    }
+                }
+                if (!isNotTappable) {
+                    viewToTap = layout;
+                    break;
+                }
+            }
+        }
+        Assert.assertNotNull("Cannot find tappable profiles in list", viewToTap);
+        ViewUtils.tapOnView(viewToTap, "first profile");
+        new ScreenProfile();
         TestUtils.delayAndCaptureScreenshot("wvmp_tap_profile");
     }
 
     @TestAction(value = "wvmp_tap_profile_reset")
     public static void wvmp_tap_profile_reset() {
-        HardwareActions.goBackOnPreviousActivity();
+        HardwareActions.pressBack();
         TestUtils.delayAndCaptureScreenshot("wvmp_tap_profile_reset");
     }
 

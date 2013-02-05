@@ -14,7 +14,6 @@ import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.Tag;
 import com.linkedin.android.tests.utils.TestDiscover;
 import com.linkedin.android.tests.utils.TestUtils;
-import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
 
 /**
@@ -37,7 +36,7 @@ public class SampleTests extends BaseTestCase {
     // METHODS --------------------------------------------------------------
     public void testSample() {
         startTest("12345678", "dsfasdfsg sdffs dfs");
-        
+
         LoginActions.openUpdatesScreenOnStart();
         LoginActions.logout();
 
@@ -52,10 +51,6 @@ public class SampleTests extends BaseTestCase {
     public void testSecond() {
         startTest("01234567", "second");
 
-        Logger.d("Start delay");
-        //LoginActions.openUpdatesScreenOnStart();
-        WaitActions.delay(25);
-        Logger.d("End delay");
         passTest();
     }
 

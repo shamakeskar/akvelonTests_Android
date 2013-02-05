@@ -29,8 +29,8 @@ public final class ViewUtils {
     // CONSTANTS ------------------------------------------------------------
     private static final ViewIdName NAVBAR_LAYOUT = new ViewIdName("nav_bar");
     private static final ViewIdName TOOLBAR_LAYOUT = new ViewIdName("bottom_bar");
-    private static final ViewIdName TOAST_IN_BOTTOM_OF_SCREEN_ID_NAME = new ViewIdName(
-            "status_message");
+    // private static final ViewIdName TOAST_IN_BOTTOM_OF_SCREEN_ID_NAME = new
+    // ViewIdName("status_message");
 
     public static final int SCROLL_UP = 0;
     public static final int SCROLL_DOWN = 1;
@@ -115,8 +115,11 @@ public final class ViewUtils {
                 new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
-                        View toast = Id.getViewByViewIdName(TOAST_IN_BOTTOM_OF_SCREEN_ID_NAME);
-                        return ((toast == null) || (!toast.isShown()));
+                        return TextViewUtils
+                                .getTextViewByPartialText("See who you know on LinkedIn") == null;
+                        // View toast =
+                        // Id.getViewByViewIdName(TOAST_IN_BOTTOM_OF_SCREEN_ID_NAME);
+                        // return ((toast == null) || (!toast.isShown()));
                     }
                 });
     }
@@ -146,10 +149,10 @@ public final class ViewUtils {
     public static void tapOnView(View view, String viewName, boolean waitForToastDisappear) {
         if (waitForToastDisappear)
             waitForToastDisappear();
-        Assert.assertNotNull(viewName + " not present", view);
+        Assert.assertNotNull(viewName + " is not present", view);
 
         Logger.i("Tapping on " + viewName);
-        DataProvider.getInstance().getSolo().clickOnView(view);
+        DataProvider.getInstance().getSolo().clickOnView(view, true);
     }
 
     /**
@@ -171,7 +174,8 @@ public final class ViewUtils {
         solo.clickOnView(view);
         try {
             solo.getText(link);
-            WaitActions.waitForScreenUpdate(); // wait before tapping to avoid tapping on toast
+            WaitActions.waitForScreenUpdate(); // wait before tapping to avoid
+                                               // tapping on toast
             ViewUtils.tapOnView(view, "'" + link + "' link", true);
         } catch (Throwable e) {
             Assert.fail("Cannot find link '" + link + "' to tap.");
@@ -232,7 +236,19 @@ public final class ViewUtils {
      *         found.
      */
     public static View getViewByClassName(String className) {
-        Solo solo = DataProvider.getInstance().getSolo();
+        final Solo solo = DataProvider.getInstance().getSolo();
+        // Wait until getSolo().getViews() starts return views, not exception.
+        WaitActions.waitForTrueInFunction("Cannot wait until application launched", new Callable<Boolean>() {
+            public Boolean call() throws Exception {
+                ArrayList<View> views;
+                try {
+                    views = solo.getViews();
+                } catch (Exception ignored) {
+                    return false;
+                }
+                return views != null;
+            }
+        });
         for (View view : solo.getViews()) {
             if (view.getClass().getSimpleName().equals(className))
                 return view;
@@ -279,17 +295,17 @@ public final class ViewUtils {
      */
     public static boolean isViewVisible(View view) {
         View navbar = Id.getViewByViewIdName(NAVBAR_LAYOUT);
-        float navbarHeight = ((navbar != null) && (navbar.isShown())) ? 
-                navbar.getHeight() / ScreenResolution.getScreenDensity() : 0;
+        float navbarHeight = ((navbar != null) && (navbar.isShown())) ? navbar.getHeight()
+                / ScreenResolution.getScreenDensity() : 0;
         View toolbar = Id.getViewByViewIdName(TOOLBAR_LAYOUT);
-        float toolbarHeight = ((toolbar != null) && (toolbar.isShown())) ? 
-                toolbar.getHeight() / ScreenResolution.getScreenDensity() : 0;
+        float toolbarHeight = ((toolbar != null) && (toolbar.isShown())) ? toolbar.getHeight()
+                / ScreenResolution.getScreenDensity() : 0;
         Rect2DP screenRect = new Rect2DP(0, navbarHeight, ScreenResolution.getScreenWidthDP(),
                 ScreenResolution.getScreenHeightDP() - toolbarHeight);
 
         return screenRect.isViewFitInThisRect(view);
     }
-    
+
     /**
      * Scrolls up to view specified by its id.
      * 
@@ -364,12 +380,13 @@ public final class ViewUtils {
             ViewChecker additionalCheck) {
 
         for (int i = 0; i < maxCountOfScrolls; i++) {
-            View targetView = Id.getViewByViewIdName(viewId);
+            ArrayList<View> viewList = Id.getListOfViewByViewIdName(viewId);
 
-            if ((targetView != null) && (targetView.isShown())
-                    && (isViewVisible(targetView))
-                    && (additionalCheck.check(targetView))) {
-                return targetView;
+            for (View targetView : viewList) {
+                if ((targetView != null) && (targetView.isShown()) && (isViewVisible(targetView))
+                        && (additionalCheck.check(targetView))) {
+                    return targetView;
+                }
             }
 
             switch (scrollTo) {
@@ -406,7 +423,8 @@ public final class ViewUtils {
                         } else {
                             HardwareActions.pressBack();
                         }
-                        WaitActions.waitForScreenUpdate();// To load next activity.
+                        WaitActions.waitForScreenUpdate();// To load next
+                                                          // activity.
                         return ScreenExpose.isOnExposeScreen();
                     }
                 });

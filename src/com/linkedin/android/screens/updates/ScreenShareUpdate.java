@@ -1,11 +1,12 @@
 package com.linkedin.android.screens.updates;
 
 import junit.framework.Assert;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.View;
 
 import com.linkedin.android.popups.Popup;
 import com.linkedin.android.screens.base.BaseScreen;
+import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
@@ -22,11 +23,12 @@ import com.linkedin.android.utils.WaitActions;
 @SuppressWarnings("rawtypes")
 public class ScreenShareUpdate extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.home.UpdateStatusActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.home.UpdateStatusActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "UpdateStatusActivity";
 
     public static final int SHARE_BUTTON_INDEX = 0;
     public static final int COMMENT_FIELD_INDEX = 0;
+    private static final ViewIdName SHARE_BUTTON_ID = new ViewIdName("share_button");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -42,15 +44,9 @@ public class ScreenShareUpdate extends BaseScreen {
         Assert.assertTrue("Wrong activity " + ACTIVITY_SHORT_CLASSNAME, getSolo()
                 .getCurrentActivity().getClass().getSimpleName().equals(ACTIVITY_SHORT_CLASSNAME));
 
-        Assert.assertTrue("'LinkedIn' label is not present", getSolo().waitForText("LinkedIn"));
-
-        Button shareButton = getSolo().getButton(SHARE_BUTTON_INDEX);
-        EditText commentTextEditor = getSolo().getEditText(COMMENT_FIELD_INDEX);
-
-        Assert.assertNotNull("'Share' button is not presented", shareButton);
-        Assert.assertNotNull("'Comment Field' text editor is not presented", commentTextEditor);
-
-        HardwareActions.takeCurrentActivityScreenshot("'Share Update' screen");
+        Assert.assertNotNull("'Share' button is not presented", getShareButton());
+        Assert.assertNotNull("'Comment Field' text editor is not presented",
+                getSolo().getEditText(COMMENT_FIELD_INDEX));
     }
 
     @Override
@@ -67,7 +63,7 @@ public class ScreenShareUpdate extends BaseScreen {
      * Taps on 'Share' button.
      */
     public void tapOnShareButton() {
-        Button shareButton = getShareButton();
+        View shareButton = getShareButton();
 
         Logger.i("Tapping on 'Share' button");
         getSolo().clickOnView(shareButton);
@@ -78,8 +74,8 @@ public class ScreenShareUpdate extends BaseScreen {
      * 
      * @return Share button
      */
-    private static Button getShareButton() {
-        Button shareButton = getSolo().getButton(SHARE_BUTTON_INDEX);
+    private static View getShareButton() {
+        View shareButton = Id.getViewByViewIdName(SHARE_BUTTON_ID);
         Assert.assertNotNull("'Share' button is  not present.", shareButton);
         return shareButton;
     }

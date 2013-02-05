@@ -24,6 +24,7 @@ import com.linkedin.android.screens.more.ScreenCompanyDetails;
 import com.linkedin.android.screens.more.ScreenGroupsAndMore;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
@@ -52,23 +53,23 @@ public class ScreenProfile extends BaseProfileScreen {
     protected static final String FORWARD_SEND_TO_CONNECTIONS_BUTTON = "Send to Conection";
     protected static final String FORWARD_EMAIL_BUTTON = "Email";
 
-    private static final ViewIdName HEADER_LAYOUT = new ViewIdName("navigation_bar_title");
+    private static final ViewIdName HEADER_LAYOUT = new ViewIdName("abs__action_bar_title");
     private static final ViewIdName PROFILE_INFO_LAYOUT = new ViewIdName("name_and_degree_layout");
     private static final ViewIdName PROFILE_LAYOUT = new ViewIdName("profile_layout");
-    private static final ViewIdName PROFILE_PHOTO_LAYOUT = new ViewIdName("header");
-    private static final ViewIdName IMAGE_ON_PROFILE_PHOTO_LAYOUT = new ViewIdName("image");
-    private static final int PROFILE_PHOTO_INDEX = 1;
     private static final ViewIdName RECENT_ACTIVITY_LAYOUT = new ViewIdName("recents_layout");
     private static final ViewIdName CONNECTIONS_LAYOUT = new ViewIdName("connections_layout");
     private static final ViewIdName GROUPS_LAYOUT = new ViewIdName("profile_groups_layout");
     private static final ViewIdName INCOMMON_LAYOUT = new ViewIdName("incommon_layout");
+    private static final ViewIdName CONNECT_LAYOUT = new ViewIdName("connect_big");
+    private static final ViewIdName PROFILE_PHOTO = new ViewIdName("picture");
+    private static final ViewIdName IMAGE_PHOTO = new ViewIdName("image");
 
     private static final String RECOMMENDATIONS_LABEL = "Recommendations";
     private static final String WEBSITES_LABEL = "Websites";
     private static final String TWITTER_LABEL = "Twitter";
     private static final String ADDRESS_LABEL = "Address";
     private static final String ACCEPT_INVITE_BUTTON_LABEL = "Accept Invitation";
-    private static final String INVITE_BUTTON_LABEL = "Invite to Connect";
+    private static final String INVITE_BUTTON_LABEL = "Connect";
 
     static final int CALL_BUTTON_INDEX = 0;
     static final int SEND_MESSAGE_BUTTON_INDEX = 1;
@@ -186,7 +187,7 @@ public class ScreenProfile extends BaseProfileScreen {
     // ACTIONS --------------------------------------------------------------
 
     public static void profile(String screenshotName) {
-        ScreenSearch.search_tap_profile();
+        //ScreenSearch.search_tap_profile();
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
@@ -196,9 +197,9 @@ public class ScreenProfile extends BaseProfileScreen {
     }
 
     @TestAction(value = "go_to_profile")
-    public static void go_to_profile(String email, String password, String name) {
+    public static void go_to_profile(String email, String password) {
         ScreenSearch.go_to_search(email, password);
-        new ScreenSearch().searchForContact(TestUtils.verifyText(name));
+        new ScreenSearch().searchForContact(StringData.test_invitation_name);
         profile("go_to_profile");
     }
 
@@ -306,15 +307,12 @@ public class ScreenProfile extends BaseProfileScreen {
 
     @TestAction(value = "profile_tap_photo")
     public static void profile_tap_photo() {
-        RelativeLayout profilePhotoLayout = (RelativeLayout) Id
-                .getViewByViewIdName(PROFILE_PHOTO_LAYOUT);
-        Assert.assertNotNull("Profile photo is not present", profilePhotoLayout);
-        ImageView photo = (ImageView) profilePhotoLayout.getChildAt(PROFILE_PHOTO_INDEX);
-        Assert.assertTrue("Profile photo is not clickable.", photo.isClickable());
-        ViewUtils.tapOnView(photo, "Profile photo");
-        WaitActions.waitForTrueInFunction("Photo is not loaded", new Callable<Boolean>() {
+        ImageView photo = (ImageView) Id.getViewByViewIdName(PROFILE_PHOTO);
+        ViewUtils.tapOnView(photo, "'Photo'");
+        WaitActions.waitForTrueInFunction("Profile photo is not present", new Callable<Boolean>() {
             public Boolean call() {
-                return (Id.getViewByViewIdName(IMAGE_ON_PROFILE_PHOTO_LAYOUT) != null);
+                ImageView image = (ImageView) Id.getViewByViewIdName(IMAGE_PHOTO);
+                return image != null;
             }
         });
         TestUtils.delayAndCaptureScreenshot("profile_tap_photo");
@@ -340,7 +338,7 @@ public class ScreenProfile extends BaseProfileScreen {
     @TestAction(value = "profile_tap_activity_reset")
     public static void profile_tap_activity_reset() {
         HardwareActions.goBackOnPreviousActivity();
-        HardwareActions.scrollToTop();
+        getSolo().scrollToTop();
         TestUtils.delayAndCaptureScreenshot("profile_tap_activity_reset");
     }
 
@@ -349,7 +347,7 @@ public class ScreenProfile extends BaseProfileScreen {
         RelativeLayout incommonLayout = (RelativeLayout) ViewUtils.scrollToViewById(
                 INCOMMON_LAYOUT, ViewUtils.SCROLL_DOWN, 5);
         Assert.assertNotNull("'Incommon' section is not present", incommonLayout);
-        ViewGroupUtils.tapFirstViewInLayout(incommonLayout, true, "'Incommon' section", null);
+        ViewUtils.tapOnView(incommonLayout, "'In Common' section");
         new ScreenInCommon();
         TestUtils.delayAndCaptureScreenshot("profile_tap_common");
     }
@@ -357,7 +355,7 @@ public class ScreenProfile extends BaseProfileScreen {
     @TestAction(value = "profile_tap_common_reset")
     public static void profile_tap_common_reset() {
         HardwareActions.goBackOnPreviousActivity();
-        HardwareActions.scrollToTop();
+        getSolo().scrollToTop();
         TestUtils.delayAndCaptureScreenshot("profile_tap_common_reset");
     }
 
@@ -374,7 +372,7 @@ public class ScreenProfile extends BaseProfileScreen {
     @TestAction(value = "profile_tap_connections_reset")
     public static void profile_tap_connections_reset() {
         HardwareActions.goBackOnPreviousActivity();
-        HardwareActions.scrollToTop();
+        getSolo().scrollToTop();
         TestUtils.delayAndCaptureScreenshot("profile_tap_connections_reset");
     }
 
@@ -397,7 +395,7 @@ public class ScreenProfile extends BaseProfileScreen {
     @TestAction(value = "profile_tap_groups_reset")
     public static void profile_tap_groups_reset() {
         HardwareActions.goBackOnPreviousActivity();
-        HardwareActions.scrollToTop();
+        getSolo().scrollToTop();
         TestUtils.delayAndCaptureScreenshot("profile_tap_groups_reset");
     }
 
@@ -422,7 +420,7 @@ public class ScreenProfile extends BaseProfileScreen {
     @TestAction(value = "profile_tap_website_reset")
     public static void profile_tap_website_reset() {
         HardwareActions.goBackOnPreviousActivity();
-        HardwareActions.scrollToTop();
+        getSolo().scrollToTop();
         TestUtils.delayAndCaptureScreenshot("profile_tap_website_reset");
     }
 
@@ -454,8 +452,7 @@ public class ScreenProfile extends BaseProfileScreen {
     @TestAction(value = "profile_tap_profile_reset")
     public static void profile_tap_profile_reset() {
         HardwareActions.pressBack();
-        HardwareActions.scrollToTop();
-        WaitActions.waitForScreenUpdate(); // Wait until animation ended.
+        getSolo().scrollToTop();
         new ScreenProfile();
         TestUtils.delayAndCaptureScreenshot("profile_tap_profile_reset");
     }
@@ -473,7 +470,7 @@ public class ScreenProfile extends BaseProfileScreen {
     @TestAction(value = "profile_tap_twitter_reset")
     public static void profile_tap_twitter_reset() {
         HardwareActions.goBackOnPreviousActivity();
-        HardwareActions.scrollToTop();
+        getSolo().scrollToTop();
         TestUtils.delayAndCaptureScreenshot("profile_tap_twitter_reset");
     }
 
@@ -499,7 +496,7 @@ public class ScreenProfile extends BaseProfileScreen {
     @TestAction(value = "profile_tap_address_reset")
     public static void profile_tap_address_reset() {
         HardwareActions.goBackOnPreviousActivity();
-        HardwareActions.scrollToTop();
+        getSolo().scrollToTop();
         TestUtils.delayAndCaptureScreenshot("profile_tap_address_reset");
     }
 
@@ -540,7 +537,7 @@ public class ScreenProfile extends BaseProfileScreen {
 
     @TestAction(value = "profile_tap_invite")
     public static void profile_tap_invite() {
-        Button button = getSolo().getButton(INVITE_BUTTON_LABEL);
+        View button = Id.getViewByViewIdName(CONNECT_LAYOUT);
         Assert.assertNotNull("'" + INVITE_BUTTON_LABEL + "'" + " button is not present.", button);
         ViewUtils.tapOnView(button, "'" + INVITE_BUTTON_LABEL + "' button");
         WaitActions.waitForTrueInFunction("'Groups'screen is not present", new Callable<Boolean>() {
@@ -584,8 +581,7 @@ public class ScreenProfile extends BaseProfileScreen {
     @TestAction(value = "profile_tap_exp_company_reset")
     public static void profile_tap_exp_company_reset() {
         HardwareActions.pressBack();
-        HardwareActions.scrollToTop();
-        WaitActions.waitForScreenUpdate(); // Wait until animation ended.
+        getSolo().scrollToTop();
         new ScreenProfile();
         TestUtils.delayAndCaptureScreenshot("profile_tap_exp_company_reset");
     }

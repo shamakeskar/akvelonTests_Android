@@ -1,10 +1,11 @@
 package com.linkedin.android.screens.more;
 
+import java.util.concurrent.Callable;
+
 import junit.framework.Assert;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseINScreen;
-import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
@@ -18,8 +19,8 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenYourGroup extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.groups.GroupsDiscussionListActivity";
-    public static final String ACTIVITY_SHORT_CLASSNAME = "GroupsDiscussionListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.groups.v2.GroupsPostsListActivity";
+    public static final String ACTIVITY_SHORT_CLASSNAME = "GroupsPostsListActivity";
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -32,10 +33,12 @@ public class ScreenYourGroup extends BaseINScreen {
     @Override
     public void verify() {
         ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-        Assert.assertTrue("'Most Popular' label is not present",
-                getSolo()
-                        .waitForText("Most Popular", 1, DataProvider.WAIT_DELAY_LONG, false, false));
-        verifyRightButtonInNavigationBar("New discussion");
+        WaitActions.waitForTrueInFunction("'Popular Posts' label is not present",
+                new Callable<Boolean>() {
+                    public Boolean call() {
+                        return TextViewUtils.getTextViewByText("Popular Posts") != null;
+                    }
+                });
     }
 
     @Override

@@ -1,13 +1,17 @@
 package com.linkedin.android.tests.utils;
 
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+
 import junit.framework.Assert;
+import android.view.View;
 
 import com.jayway.android.robotium.solo.Solo;
 import com.linkedin.android.popups.PopupMessageCancel;
 import com.linkedin.android.popups.PopupMessageExit;
 import com.linkedin.android.screens.base.BaseINScreen;
-import com.linkedin.android.screens.common.ScreenCalSplash;
 import com.linkedin.android.screens.common.ScreenExpose;
+import com.linkedin.android.screens.common.ScreenIntermediateLogin;
 import com.linkedin.android.screens.common.ScreenLogin;
 import com.linkedin.android.screens.settings.ScreenSettings;
 import com.linkedin.android.screens.updates.ScreenUpdates;
@@ -26,7 +30,7 @@ import com.linkedin.android.utils.WaitActions;
 public final class LoginActions {
     // CONSTANTS ------------------------------------------------------------
     private static final String START_VIDEO_ACTIVITY_SHORT_CLASSNAME = "LiMediaPlayerVideo";
-    private static final int COUNT_TRIES_TAP_BACK = 50;
+    private static final int COUNT_TRIES_TAP_BACK = 10;
     private static final String START_SIGN_IN_ACTIVITY_SHORT_CLASSNAME = "LaunchActivity";
 
     // PROPERTIES -----------------------------------------------------------
@@ -62,21 +66,25 @@ public final class LoginActions {
         if (ScreenUpdates.isOnUpdatesScreen()) {
             screenUpdates = new ScreenUpdates();
         } else if (!isWeAreOnINScreen()) {
-            // Wait until start video disappear if present.
-            handleStartVideo();
-
             // Login.
             if (ScreenLogin.isOnLoginScreen()) {
                 // If on Login screen then login as test user.
+                ScreenIntermediateLogin intermediateLoginScreen = new ScreenIntermediateLogin();
+                intermediateLoginScreen.tapOnSignInButton();
                 ScreenLogin loginScreen = new ScreenLogin();
                 screenUpdates = loginScreen.login(email, password);
-            } else if (ScreenCalSplash.isCalSplashOpened()) {
-                new ScreenCalSplash().tapLaterButton();
             } else {
-                Assert.fail("Not implemented case: It is not IN, Login or CalSplash screen."
+                WaitActions.waitForTrueInFunction("Not implemented case: It is not IN and not Login screen."
                         + " Current screen is "
                         + DataProvider.getInstance().getSolo().getCurrentActivity().getClass()
-                                .getSimpleName());
+                                .getSimpleName(), new Callable<Boolean>() {
+                    
+                    @Override
+                    public Boolean call() throws Exception {
+                        return ScreenUpdates.isOnUpdatesScreen();
+                    }
+                });
+                screenUpdates = new ScreenUpdates();
             }
         } else {
             BaseINScreen.tapOnINButton();
@@ -93,6 +101,20 @@ public final class LoginActions {
      * @return <b>true</b> if we are on screen with IN button.
      */
     public static boolean isWeAreOnINScreen() {
+        // Wait until getSolo().getViews() starts return views, not exception.
+        WaitActions.waitForTrueInFunction(
+                "Seems like application closed and Robotium cannot show views.",
+                new Callable<Boolean>() {
+                    public Boolean call() throws Exception {
+                        ArrayList<View> views;
+                        try {
+                            views = DataProvider.getInstance().getSolo().getViews();
+                        } catch (Exception ignored) {
+                            return false;
+                        }
+                        return views != null;
+                    }
+                });
         return BaseINScreen.getINButton() != null;
     }
 
@@ -153,9 +175,10 @@ public final class LoginActions {
         }
 
         // Open Expose screen.
-        if (!ScreenExpose.isOnExposeScreen()) {
+        while (!ScreenExpose.isOnExposeScreen()) {
             BaseINScreen.tapOnINButton();
-        }
+            WaitActions.waitForScreenUpdate();
+        }        
         ScreenExpose screenExpose = new ScreenExpose(null);
 
         // Open Settings Screen.
@@ -169,7 +192,7 @@ public final class LoginActions {
 
         // Wait for Sign Out happens.
         WaitActions.waitSingleActivity(ScreenLogin.ACTIVITY_SHORT_CLASSNAME, "Login",
-                DataProvider.WAIT_DELAY_LONG);
+                DataProvider.WAIT_SIGNOUT_DELAY);
         Logger.i("Log out complete");
     }
 }

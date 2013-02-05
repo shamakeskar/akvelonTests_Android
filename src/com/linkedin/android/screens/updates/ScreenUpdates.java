@@ -9,7 +9,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewParent;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +25,7 @@ import com.linkedin.android.screens.common.ScreenJobDetails;
 import com.linkedin.android.screens.common.ScreenLogin;
 import com.linkedin.android.screens.common.ScreenSearch;
 import com.linkedin.android.screens.common.ScreenUpdatedProfileRollup;
+import com.linkedin.android.screens.more.ScreenCompanies;
 import com.linkedin.android.screens.more.ScreenDiscussionDetailsFromRecentUpdates;
 import com.linkedin.android.screens.you.ScreenYou;
 import com.linkedin.android.tests.data.DataProvider;
@@ -58,12 +58,12 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenUpdates extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.home.NUSListActivity";
-    public static final String ACTIVITY_SHORT_CLASSNAME = "NUSListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.home.v2.NUSListActivityV2";
+    public static final String ACTIVITY_SHORT_CLASSNAME = "NUSListActivityV2";
     public static final String HELPACTIVITY_CLASSNAME = "com.linkedin.android.help.HelpActivity";
     public static final String HELPACTIVITY_SHORT_CLASSNAME = "HelpActivity";
 
-    public static final String LINKEDIN_TODAY_LABEL = "LINKEDIN TODAY";
+    public static final String LINKEDIN_TODAY_LABEL = "Top News";
     public static final String MENU_ITEM_REFRESH = "Refresh";
     public static final String NEWS_ARTICLE_SUMMARY_SHARED_BY_CURRENT_USER_WITHOUT_COMMENT = "You shared this";
 
@@ -75,7 +75,7 @@ public class ScreenUpdates extends BaseListScreen {
     // ImageButton: like it button
     private static final ViewIdName LIKE_BUTTON = new ViewIdName("like_button");
     private static final ViewIdName CALENDAR_VIEW = new ViewIdName("calendar_overlay_button");
-    public static final ViewIdName NUS_LAYOUT = new ViewIdName("nus_simple_rich_row");
+    public static final ViewIdName NUS_LAYOUT = new ViewIdName("tt1_container");
     public static final ViewIdName NUS_IMAGE_LAYOUT = new ViewIdName("image");
     public static final ViewIdName NUS_HEADER_LAYOUT = new ViewIdName("header");
     public static final ViewIdName NUS_TIMESTAMP_LAYOUT = new ViewIdName("timestamp");
@@ -90,11 +90,11 @@ public class ScreenUpdates extends BaseListScreen {
     public static final ViewIdName NUS_FOOTER_COMMENTS_LAYOUT = new ViewIdName("comments");
     public static final ViewIdName NUS_FOOTER_VIA1_LAYOUT = new ViewIdName("footer_via_1");
     public static final ViewIdName NUS_FOOTER_LOGO1_LAYOUT = new ViewIdName("footer_logo_1");
-    public static final ViewIdName NUS_ROLLUP_HEADER_VIEW = new ViewIdName("rollup_header");
+    public static final ViewIdName NUS_ROLLUP_HEADER_VIEW = new ViewIdName("sht3_text");
     private static final ViewIdName COMMENTS_AND_LIKES_LAYOUT = new ViewIdName(
             "likes_comments_container");
     // Default count of scrolls to scroll whole screen.
-    private static final int DEFAULT_SCROLLS_COUNT = 50;
+    private static final int DEFAULT_SCROLLS_COUNT = 150;
 
     private static final String COMMENTS_LABEL = " Comments";
     private static final String LIKES_LABEL = " Likes";
@@ -129,25 +129,21 @@ public class ScreenUpdates extends BaseListScreen {
                         + HELPACTIVITY_SHORT_CLASSNAME + ")",
                 curActivityName.equals(ACTIVITY_SHORT_CLASSNAME)
                         || curActivityName.equals(HELPACTIVITY_SHORT_CLASSNAME));
-        if (curActivityName.equals(ACTIVITY_SHORT_CLASSNAME))
-            WaitActions.waitForScreenUpdate();// Wait for current activity changed.
-        if (getSolo().getCurrentActivity().getClass().getSimpleName().equals(ACTIVITY_SHORT_CLASSNAME)) {
-            // Wait for more than 20 news are loaded.
-            WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
-                    "'Updates' screen is not present (List with NUS is not loaded)",
-                    new Callable<Boolean>() {
-                        public Boolean call() {
-                            ListView listView = ListViewUtils.getFirstListView();
-                            if (listView == null)
-                                return false;
-                            return (listView.getCount() > 20);
-                        }
-                    });
 
-            // Check that list views is not empty.
-            Assert.assertTrue("List views is not present", !getSolo().getCurrentListViews()
-                    .isEmpty());
-        }
+        // Wait for more than 20 news are loaded.
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
+                "'Updates' screen is not present (List with NUS is not loaded)",
+                new Callable<Boolean>() {
+                    public Boolean call() {
+                        ListView listView = ListViewUtils.getFirstListView();
+                        if (listView == null)
+                            return false;
+                        return (listView.getCount() > 20);
+                    }
+                });
+
+        // Check that list views is not empty.
+        Assert.assertTrue("List views is not present", !getSolo().getCurrentListViews().isEmpty());
     }
 
     @Override
@@ -167,9 +163,8 @@ public class ScreenUpdates extends BaseListScreen {
      * @return <b>true</b> if current screen - Updates.
      */
     public static boolean isOnUpdatesScreen() {
-        String activityName = getSolo().getCurrentActivity().getClass().getSimpleName();
-        return activityName.equals(ACTIVITY_SHORT_CLASSNAME)
-                || activityName.equals(HELPACTIVITY_SHORT_CLASSNAME);
+        return getSolo().getCurrentActivity().getClass().getSimpleName()
+                .equals(ACTIVITY_SHORT_CLASSNAME);
     }
 
     /**
@@ -601,10 +596,10 @@ public class ScreenUpdates extends BaseListScreen {
      *               screen.
      */
     public ScreenLinkedInToday openLinkedInTodayScreen() {
-        String bannerText = getLinkedInTodayBannerText();
+        TextViewUtils.searchAndScrollToVisibleText(LINKEDIN_TODAY_LABEL);
 
-        Logger.i("Tapping on 'LINKEDIN TODAY' banner");
-        getSolo().clickOnText(bannerText);
+        TextView textView = getSolo().getText(LINKEDIN_TODAY_LABEL);
+        ViewUtils.tapOnView(textView, "'Top News' banner");
 
         return new ScreenLinkedInToday();
     }
@@ -615,7 +610,7 @@ public class ScreenUpdates extends BaseListScreen {
      * @return {@code SearchScreen} with just opened 'SEARCH' screen.
      */
     public ScreenSearch openSearchScreen() {
-        EditText searchBar = getSearchBar();
+        View searchBar = getSearchBar();
         Assert.assertNotNull("Search bar is not present", searchBar);
         ViewUtils.tapOnView(searchBar, "search bar");
         return new ScreenSearch();
@@ -950,39 +945,6 @@ public class ScreenUpdates extends BaseListScreen {
     }
 
     /**
-     * Returns LINKEDIN TODAY banner text ("LINKEDIN_TODAY" or "News").
-     * 
-     * @return LINKEDIN TODAY {@code String} banner
-     */
-    private String getLinkedInTodayBannerText() {
-        final String NEWS_LABEL = "News";
-
-        String bannerText = "";
-
-        // If we don't see 'LINKEDIN TODAY' banner then scroll up.
-        HardwareActions.scrollUp();
-
-        boolean isBannerPresent = getSolo().waitForText(LINKEDIN_TODAY_LABEL, 1,
-                DataProvider.WAIT_DELAY_DEFAULT, false, false);
-
-        if (isBannerPresent) {
-            bannerText = LINKEDIN_TODAY_LABEL;
-            return bannerText;
-        }
-
-        // If 'LINKEDIN TODAY' banner is not present then search for the 'News'
-        // banner.
-        isBannerPresent = getSolo().getText(NEWS_LABEL).isShown();
-        if (isBannerPresent) {
-            bannerText = NEWS_LABEL;
-        }
-
-        Assert.assertTrue("'LINKEDIN TODAY' banner is not present.", isBannerPresent);
-
-        return bannerText;
-    }
-
-    /**
      * Taps on 'New Connection' roll up.
      */
     public void tapOnFirstNewConnectionsRollUp() {
@@ -1022,7 +984,7 @@ public class ScreenUpdates extends BaseListScreen {
                         }
                     }
                 });
-        Assert.assertNotNull("No 'people changed jobs' view on update stream", rollupView);
+
         ViewUtils.tapOnView(rollupView, "first jobs roll up");
     }
 
@@ -1047,6 +1009,7 @@ public class ScreenUpdates extends BaseListScreen {
      */
     public ScreenNewJobsRollUp openFirstNewJobsRollUp() {
         tapOnFirstNewJobsRollUp();
+
         return new ScreenNewJobsRollUp();
     }
 
@@ -1483,7 +1446,7 @@ public class ScreenUpdates extends BaseListScreen {
 
     @TestAction(value = "updates_scroll_load_more_reset")
     public static void updates_scroll_load_more_reset() {
-        HardwareActions.scrollUp();
+        HardwareActions.scrollToTop();
 
         TestUtils.delayAndCaptureScreenshot("updates_scroll_load_more_reset");
     }
@@ -1495,8 +1458,13 @@ public class ScreenUpdates extends BaseListScreen {
 
         ViewGroupUtils.tapFirstViewInLayout(nusView, true, "first update", null);
 
-        verifyNUSSscreen();
-
+        String[] activities = new String[] {ScreenFeedDetail.ACTIVITY_SHORT_CLASSNAME, ScreenCompanies.ACTIVITY_SHORT_CLASSNAME};
+        WaitActions.waitMultiplyActivities(activities);
+        if (getSolo().getCurrentActivity().getClass().getSimpleName().equals(activities[0])){
+            new ScreenFeedDetail();
+        } else {
+            new ScreenCompanies();
+        }
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 

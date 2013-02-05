@@ -2,6 +2,7 @@ package com.linkedin.android.utils;
 
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.concurrent.Callable;
 
 import android.app.Activity;
 import android.content.res.Resources.NotFoundException;
@@ -100,7 +101,7 @@ public final class Logger {
      *            if <b>true</b> then write location and size in inches
      */
     public static void logElements(boolean onlyVisible, boolean onlyShown, String filter) {
-        Solo solo = DataProvider.getInstance().getSolo();
+        final Solo solo = DataProvider.getInstance().getSolo();
         Formatter formatter;
         String type = null;
         int id = 0;
@@ -121,13 +122,32 @@ public final class Logger {
         d("=========================================================================================================================");
         formatter.close();
 
-        for (View element : solo.getViews()) {
+        // Wait until getSolo().getViews() starts return views, not exception.
+        WaitActions.waitForTrueInFunction(
+                "Seems like application closed and Robotium cannot show views.",
+                new Callable<Boolean>() {
+                    public Boolean call() throws Exception {
+                        ArrayList<View> views;
+                        try {
+                            views = solo.getViews();
+                        } catch (Exception ignored) {
+                            return false;
+                        }
+                        return views != null;
+                    }
+                });
+        ArrayList<View> views = solo.getViews();
+        for (int viewIndex = 0; viewIndex < views.size(); viewIndex++) {
+            View element = views.get(viewIndex);
             idName = "<noname>";
             try {
                 type = element.getClass().getSimpleName();
                 id = element.getId();
                 isShown = ((Boolean) element.isShown()).toString();
-                parent = element.getParent().getClass().getSimpleName();
+                if (element.getParent() != null)
+                    parent = element.getParent().getClass().getSimpleName();
+                else
+                    parent = "<no parent>";
                 rectI = new Rect2DP(element);
                 // stay it at the end, cause NotFoundException
                 if (id > 0) {
@@ -201,7 +221,7 @@ public final class Logger {
             }
             if (isLog) {
                 formatter = new Formatter();
-                d(formatter.format("%4d) %15s %4.0f %4.0f %4.0f %4.0f %6s %8d:%-50s %-1s", i, type,
+                d(formatter.format("%4d) %15s %4.0f %4.0f %4.0f %4.0f %6s %8d:%-60s %-1s", i, type,
                         rectI.x, rectI.y, rectI.width, rectI.height, isShown, id, idName,
                         custom.toString()).toString());
                 formatter.close();
@@ -236,6 +256,42 @@ public final class Logger {
      */
     public static void logElements(boolean onlyVisible, boolean onlyShown) {
         logElements(onlyVisible, onlyShown, null);
+    }
+
+    /**
+     * Logs (as debug) info about view.
+     * 
+     * @param view
+     *            view to log.
+     */
+    public static void logView(View view) {
+        if (view == null) {
+            d("logView: view is null!");
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append("class:").append(view.getClass().getSimpleName());
+        Rect2DP rect = new Rect2DP(view);
+        builder.append(", x:").append(rect.x).append(", y:").append(rect.y).append(", width:")
+                .append(rect.width).append(", height:").append(rect.height);
+        builder.append(", isShown:").append(view.isShown());
+        builder.append(", visibility:");
+        switch (view.getVisibility()) {
+        case View.VISIBLE:
+            builder.append("VISIBLE");
+            break;
+        case View.INVISIBLE:
+            builder.append("INVISIBLE");
+            break;
+        case View.GONE:
+            builder.append("GONE");
+            break;
+        default:
+            builder.append("???");
+        }
+        builder.append(", ID:").append(view.getId());
+        builder.append(", Screen:").append(ScreenResolution.getScreenWidthDP()).append("*")
+                .append(ScreenResolution.getScreenHeightDP());
+        d(builder.toString());
     }
 
     /**

@@ -3,7 +3,10 @@ package com.linkedin.android.screens.common;
 import junit.framework.Assert;
 
 import com.linkedin.android.screens.base.BaseINScreen;
+import com.linkedin.android.screens.more.ScreenJobs;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.utils.TestAction;
+import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.ScreenResolution;
@@ -17,7 +20,7 @@ import com.linkedin.android.utils.WaitActions;
  */
 public class ScreenJobDetails extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.jsbridge.JobsActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.jsbridge.JobsActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "JobsActivity";
     public static final String WEB_ACTIVITY_CLASSNAME = "com.linkedin.android.jsbridge.LiWebViewActivity";
     public static final String WEB_ACTIVITY_SHORT_CLASSNAME = "LiWebViewActivity";
@@ -57,6 +60,16 @@ public class ScreenJobDetails extends BaseINScreen {
     @Override
     public String getActivityShortClassName() {
         return ACTIVITY_SHORT_CLASSNAME;
+    }
+
+    /**
+     * Check that opened Job Details screen
+     * 
+     * @return <b>true</b> if current screen - Jobs Detail
+     */
+    public static boolean isOnJobDetailsScreen() {
+        return getSolo().getCurrentActivity().getClass().getSimpleName()
+                .equals(ACTIVITY_SHORT_CLASSNAME);
     }
 
     /**
@@ -163,5 +176,14 @@ public class ScreenJobDetails extends BaseINScreen {
     public ScreenJobDetails openRecommendedJob() {
         tapOnRecommendedJob();
         return new ScreenJobDetails();
+    }
+
+    // ACTIONS --------------------------------------------------------------
+
+    @TestAction(value = "jobs_detail_tap_jobs_home")
+    public static void jobs_detail_tap_jobs_home() {
+        HardwareActions.pressBack();
+        new ScreenJobs();
+        TestUtils.delayAndCaptureScreenshot("jobs_detail_tap_jobs_home");
     }
 }

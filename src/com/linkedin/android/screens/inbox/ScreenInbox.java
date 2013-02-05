@@ -10,7 +10,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.view.View;
 import android.view.ViewParent;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -43,7 +42,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenInbox extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.notifications.NotificationCenterListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.notifications.NotificationCenterListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "NotificationCenterListActivity";
 
     public static final int MESSAGES_LIST_VIEW_INDEX = 0;
@@ -62,8 +61,8 @@ public class ScreenInbox extends BaseListScreen {
     private static final int INVITATION_INFO_LAYOUT_INDEX = 1;
 
     // Button indexes relatively "Invitation info" layout
-    private static final int ACCEPT_INVITATION_BUTTON_INDEX = 4;
-    private static final int DECLINE_INVITATION_BUTTON_INDEX = 5;
+    private static final int ACCEPT_INVITATION_BUTTON_INDEX = 5;
+    private static final int DECLINE_INVITATION_BUTTON_INDEX = 4;
 
     private static final String ACCEPT_INVITATION_BUTTON_LABEL = "Accept invitation";
     private static final String DECLINE_INVITATION_BUTTON_LABEL = "Decline invitation";
@@ -93,11 +92,11 @@ public class ScreenInbox extends BaseListScreen {
         // Wait for screen load completely
         WaitActions.delay(WAIT_FOR_SCREEN_LOAD_COMPLETELY);
 
-        // Verify presence IN Button.
-        verifyINButton();
-
         // Verify presence Compose button
         verifyComposeButton();
+
+        Assert.assertTrue("'Inbox' label is not present on 'Inbox' screen",
+                TextViewUtils.searchTextViewInActivity("Your Inbox", true) != null);
     }
 
     @Override
@@ -291,7 +290,7 @@ public class ScreenInbox extends BaseListScreen {
      * @return {@code SearchScreen} with just opened 'SEARCH' screen.
      */
     public ScreenSearch openSearchScreen() {
-        EditText searchBar = getSearchBar();
+        View searchBar = getSearchBar();
         getSolo().clickOnView(searchBar);
         Logger.i("Tapping on 'Search bar'");
         ScreenSearch searchScreen = new ScreenSearch();
@@ -613,6 +612,7 @@ public class ScreenInbox extends BaseListScreen {
     public static void inbox_pull_refresh() {
         new ScreenInbox().refreshScreen();
         new ScreenInbox();
+        TestUtils.delayAndCaptureScreenshot("inbox_pull_refresh");
     }
 
     @TestAction(value = "inbox_tap_invitation")
@@ -623,7 +623,7 @@ public class ScreenInbox extends BaseListScreen {
         ViewGroupUtils.tapFirstViewInLayout(invitationLayout, true, "'Invitation' row", null);
 
         new ScreenInvitationDetails();
-        TestUtils.delayAndCaptureScreenshot("inbox_tap_all_invitations");
+        TestUtils.delayAndCaptureScreenshot("inbox_tap_invitation");
     }
 
     @TestAction(value = "inbox_tap_invitation_reset")
@@ -654,8 +654,7 @@ public class ScreenInbox extends BaseListScreen {
     @TestAction(value = "inbox_tap_all_mail_reset")
     public static void inbox_tap_all_mail_reset() {
         HardwareActions.pressBack();
-        HardwareActions.scrollToTop();
-        WaitActions.waitForScreenUpdate(); // Wait until animation ended.
+        getSolo().scrollToTop();
         new ScreenInbox();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_all_mail_reset");
     }
@@ -668,8 +667,7 @@ public class ScreenInbox extends BaseListScreen {
         if (allInvitationsLayout == null) {
             ListViewUtils.scrollToNewItems();
         }
-        allInvitationsLayout = (RelativeLayout) Id
-                .getViewByViewIdName(ALL_INVITATION_LAYOUT);
+        allInvitationsLayout = (RelativeLayout) Id.getViewByViewIdName(ALL_INVITATION_LAYOUT);
         Assert.assertNotNull("'All Invitations' button is not present on 'Inbox' screen",
                 allInvitationsLayout);
         ViewGroupUtils.tapFirstViewInLayout(allInvitationsLayout, true, "'All Invitations' button",
@@ -682,8 +680,7 @@ public class ScreenInbox extends BaseListScreen {
     @TestAction(value = "inbox_tap_all_invitations_reset")
     public static void inbox_tap_all_invitations_reset() {
         HardwareActions.pressBack();
-        HardwareActions.scrollToTop();
-        WaitActions.waitForScreenUpdate(); // Wait until animation ended.
+        getSolo().scrollToTop();
         new ScreenInbox();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_all_invitations_reset");
     }
@@ -711,8 +708,7 @@ public class ScreenInbox extends BaseListScreen {
     @TestAction(value = "inbox_tap_notification_reset")
     public static void inbox_tap_notification_reset() {
         HardwareActions.goBackOnPreviousActivity();
-        HardwareActions.scrollToTop();
-        WaitActions.waitForScreenUpdate(); // Wait until animation ended.
+        getSolo().scrollToTop();
         TestUtils.delayAndCaptureScreenshot("inbox_tap_notification_reset");
     }
 
@@ -720,17 +716,12 @@ public class ScreenInbox extends BaseListScreen {
     public static void inbox_tap_invitation_accept() {
         RelativeLayout invitationLayout = (RelativeLayout) Id
                 .getViewByViewIdName(INVITATION_LAYOUT);
-        final String displayName = ((TextView) invitationLayout.getChildAt(1)).getText().toString();
 
         ImageView acceptInvitationButton = ViewGroupUtils.getChildViewByIndexSafely(
                 invitationLayout, ACCEPT_INVITATION_BUTTON_INDEX, ImageView.class);
-        new ScreenInbox().tapOnButton(acceptInvitationButton, ACCEPT_INVITATION_BUTTON_LABEL);
-        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
-                "'Invitation' row is not dissapear", new Callable<Boolean>() {
-                    public Boolean call() {
-                        return (getSolo().searchText(displayName, 1, false, true) != true);
-                    }
-                });
+        ScreenInbox inbox = new ScreenInbox();
+        inbox.tapOnButton(acceptInvitationButton, ACCEPT_INVITATION_BUTTON_LABEL);
+        inbox.verifyToast("Accepted");
         TestUtils.delayAndCaptureScreenshot("inbox_tap_invitation_accept");
     }
 

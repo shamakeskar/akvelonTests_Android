@@ -41,7 +41,7 @@ public class ScreenDiscussionDetails extends BaseDiscussionDetailsScreen {
     protected static final int LIKE_BUTTON_INDEX = 0;
     protected static final int COMMENT_BUTTON_INDEX = 1;
 
-    private static final ViewIdName HEADER_LAYOUT = new ViewIdName("navigation_bar_title");
+    private static final ViewIdName FOOTER_LAYOUT = new ViewIdName("nav_footer");
     private static final ViewIdName UP_LAYOUT = new ViewIdName("nav_inbox_previous");
     private static final ViewIdName DOWN_LAYOUT = new ViewIdName("nav_inbox_next");
     private static final ViewIdName PROFILE_LAYOUT = new ViewIdName("profile_template_2");
@@ -59,13 +59,11 @@ public class ScreenDiscussionDetails extends BaseDiscussionDetailsScreen {
     public void verify() {
         ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
 
-        WaitActions.waitForTrueInFunction("Title '.. of ..' is not present",
+        WaitActions.waitForTrueInFunction("Group discussion detail screen is not present",
                 new Callable<Boolean>() {
                     public Boolean call() {
-                        TextView header = (TextView) Id.getViewByViewIdName(HEADER_LAYOUT);
-                        Assert.assertNotNull("Header of Discussion Detail screen is not present",
-                                header);
-                        return ((String) header.getText()).indexOf(" of") > -1;
+                        View footer = (View) Id.getViewByViewIdName(FOOTER_LAYOUT);
+                        return footer != null;
                     }
                 });
     }

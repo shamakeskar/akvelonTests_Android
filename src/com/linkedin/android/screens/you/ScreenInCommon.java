@@ -3,7 +3,6 @@ package com.linkedin.android.screens.you;
 import java.util.concurrent.Callable;
 
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseListScreen;
 import com.linkedin.android.screens.common.ScreenSearch;
@@ -16,6 +15,7 @@ import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
+import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
  * Class for 'In Common' screen.
@@ -25,11 +25,10 @@ import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
  */
 public class ScreenInCommon extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.connections.ConnectionListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.connections.ConnectionListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "ConnectionListActivity";
 
     private static final ViewIdName CONNECTION_ROW_LAYOUT = new ViewIdName("connections_row");
-    private static final ViewIdName TITLE_VIEW = new ViewIdName("navigation_bar_title");
     private static final String TITLE = "In Common";
 
     // PROPERTIES -----------------------------------------------------------
@@ -45,11 +44,11 @@ public class ScreenInCommon extends BaseListScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        WaitActions.waitForTrueInFunction("Title in navigation bar is not '" + TITLE + "'",
+        verifyCurrentActivity();
+        WaitActions.waitForTrueInFunction2("'In Common' screen is not present (list with profiles is not present)",
                 new Callable<Boolean>() {
                     public Boolean call() {
-                        TextView title = (TextView) Id.getViewByViewIdName(TITLE_VIEW);
-                        return (title.getText().toString().equals(TITLE));
+                        return ViewUtils.getViewByClassName("PinnedHeaderListView") != null;
                     }
                 });
     }

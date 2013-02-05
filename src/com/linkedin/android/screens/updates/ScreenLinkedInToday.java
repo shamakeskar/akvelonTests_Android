@@ -9,7 +9,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseListScreen;
-import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
@@ -33,8 +32,8 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenLinkedInToday extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.news.NewsListActivity";
-    public static final String ACTIVITY_SHORT_CLASSNAME = "NewsListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.home.v2.StreamViewActivity";
+    public static final String ACTIVITY_SHORT_CLASSNAME = "StreamViewActivity";
 
     static final int NEWS_ARTICLE_IMAGE_INDEX = 1;
     static final int NEWS_ARTICLE_IMAGE_RELATIVE_LAYOUT_INDEX = 1;
@@ -61,16 +60,7 @@ public class ScreenLinkedInToday extends BaseListScreen {
     // METHODS --------------------------------------------------------------
     public void verify() {
         ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-
-        // Scroll to the top of activity to ensure News big image is on screen
-        HardwareActions.scrollUp();
-
-        Assert.assertTrue("'LINKEDIN TODAY' screen is not present",
-                getSolo().waitForText("News", 3, DataProvider.WAIT_DELAY_DEFAULT, false, false));
-
         verifyINButton();
-
-        HardwareActions.takeCurrentActivityScreenshot("LINKEDIN TODAY screen");
     };
 
     @Override
@@ -281,6 +271,8 @@ public class ScreenLinkedInToday extends BaseListScreen {
     @TestAction(value = "news_tap_back")
     public static void news_tap_back() {
         HardwareActions.pressBack();
+        WaitActions.waitForScreenUpdate(); // Wait until screen is loaded.
+        HardwareActions.scrollToTop();
         new ScreenUpdates();
 
         TestUtils.delayAndCaptureScreenshot("news_tap_back");

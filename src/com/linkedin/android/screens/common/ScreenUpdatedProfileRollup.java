@@ -1,5 +1,7 @@
 package com.linkedin.android.screens.common;
 
+import java.util.concurrent.Callable;
+
 import junit.framework.Assert;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -15,6 +17,7 @@ import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -26,10 +29,8 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 public class ScreenUpdatedProfileRollup extends BaseINScreen {
 
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.home.NUSListActivity";
-    public static final String ACTIVITY_SHORT_CLASSNAME = "NUSListActivity";
-
-    private static final String DETAILS_LABEL = "Details";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.home.v2.StreamDetailListActivity";
+    public static final String ACTIVITY_SHORT_CLASSNAME = "StreamDetailListActivity";
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -42,18 +43,14 @@ public class ScreenUpdatedProfileRollup extends BaseINScreen {
     @Override
     public void verify() {
         verifyCurrentActivity();
-        WaitActions.waitForText(DETAILS_LABEL, "There is no '" + DETAILS_LABEL + "' label.");
 
-        verifyINButton();
-
-        // Wait for updatedProfilesList width equal to screen width
-        ListView updatedProfilesList = getUpdatedProfilesList();
-        WaitActions.waitForListViewWidthEqualToScreenWidth(updatedProfilesList,
-                DataProvider.WAIT_DELAY_DEFAULT);
-
-        assertUpdatedProfilesList(updatedProfilesList);
-
-        HardwareActions.takeCurrentActivityScreenshot("Update Profile rollup screen");
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
+                "Updates Profile rollup list is not present", new Callable<Boolean>() {
+                    public Boolean call() {
+                        return TextViewUtils.searchTextViewInActivity(
+                                " has updated these sections", false) != null;
+                    }
+                });
     }
 
     @Override
@@ -64,15 +61,6 @@ public class ScreenUpdatedProfileRollup extends BaseINScreen {
     @Override
     public String getActivityShortClassName() {
         return ACTIVITY_SHORT_CLASSNAME;
-    }
-
-    /**
-     * Verifies 'Updated profiles' list.
-     */
-    private void assertUpdatedProfilesList(ListView updatedProfilesList) {
-        Assert.assertNotNull("'Updated profiles' list is not present", updatedProfilesList);
-        Assert.assertTrue("'Updated profiles' list is empty",
-                ListViewUtils.isListViewNotEmpty(updatedProfilesList));
     }
 
     /**
@@ -123,7 +111,7 @@ public class ScreenUpdatedProfileRollup extends BaseINScreen {
     @TestAction(value = "go_to_updates_profile_rollup_list")
     public static void go_to_updates_profile_rollup_list(String email, String password) {
         LoginActions.openUpdatesScreenOnStart(email, password);
-        
+
         updates_profile_rollup_list("go_to_updates_profile_rollup_list");
     }
 
@@ -131,7 +119,7 @@ public class ScreenUpdatedProfileRollup extends BaseINScreen {
     public static void updates_profile_rollup_list() {
         updates_profile_rollup_list("updates_profile_rollup_list");
     }
-    
+
     public static void updates_profile_rollup_list(String screenshotName) {
         new ScreenUpdates().openFirstUpdateProfileRollUpScreen();
 
@@ -141,6 +129,8 @@ public class ScreenUpdatedProfileRollup extends BaseINScreen {
     @TestAction(value = "updates_profile_rollup_list_tap_back")
     public static void updates_profile_rollup_list_tap_back() {
         HardwareActions.pressBack();
+        WaitActions.waitForScreenUpdate(); // Wait until screen is loaded.
+        HardwareActions.scrollToTop();
         new ScreenUpdates();
 
         TestUtils.delayAndCaptureScreenshot("updates_profile_rollup_list_tap_back");

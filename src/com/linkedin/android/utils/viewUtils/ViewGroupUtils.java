@@ -3,6 +3,7 @@ package com.linkedin.android.utils.viewUtils;
 import junit.framework.Assert;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -76,18 +77,17 @@ public final class ViewGroupUtils {
      * @param errorMessage
      *            is message for logging error
      */
-    public static void tapFirstViewInLayout(ViewGroup layout, boolean tapOnLayout,
-            String viewName, String errorMessage) {
+    public static void tapFirstViewInLayout(ViewGroup layout, boolean tapOnLayout, String viewName,
+            String errorMessage) {
         int viewIdToTap = -1;
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
-            if ((child instanceof ImageView) ||
-                    (child instanceof TextView)) {
+            if ((child instanceof ImageView) || (child instanceof TextView)) {
                 viewIdToTap = i;
                 break;
             }
         }
-        
+
         if (!tapOnLayout) {
             Assert.assertTrue(errorMessage, viewIdToTap != -1);
         } else {
@@ -97,5 +97,51 @@ public final class ViewGroupUtils {
                 ViewUtils.tapOnView(layout, viewName);
             }
         }
+    }
+
+    /**
+     * Checks that childs and subchilds of specified ViewGroup not contains
+     * specified text.
+     * 
+     * @param parent
+     *            view for check
+     * @param text
+     *            text for find
+     * @param isEqual
+     *            if <b>true</b> then find TextView with text equal <b>text</b>,
+     *            else find TextView with text contain <b>text</b>.
+     * @return View (TextView or Button) that contain <b>text</b> or null if not found.
+     */
+    public static View findChildThatContainText(View parent, String text, boolean isEqual) {
+        if (parent instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) parent;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                View view = viewGroup.getChildAt(i);
+                if (view instanceof TextView) {
+                    TextView textVeiw = (TextView) view;
+                    if (isEqual) {
+                        if (textVeiw.getText().equals(text))
+                            return textVeiw;
+                    } else {
+                        if (textVeiw.getText().toString().contains(text))
+                            return textVeiw;
+                    }
+                } else if (view instanceof Button) {
+                    Button button = (Button) view;
+                    if (isEqual) {
+                        if (button.getText().equals(text))
+                            return button;
+                    } else {
+                        if (button.getText().toString().contains(text))
+                            return button;
+                    }
+                } else if (view instanceof ViewGroup) {
+                    View viewWithText = findChildThatContainText(view, text, isEqual);
+                    if (viewWithText != null)
+                        return viewWithText;
+                }
+            }
+        }
+        return null;
     }
 }

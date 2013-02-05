@@ -1,0 +1,104 @@
+<TestSuite groups="Sanity">
+  <Test name="sanity" id="00000000">
+    <Step key="login" />
+    <Step key="login_tap_signin_precondition" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="login_tap_signin" />
+    <Step key="login_tap_sync_all_contacts" />
+    <Step key="updates_tap_news" />
+    <Step key="news_tap_back" />
+    <Step key="updates_pull_refresh" />
+    <Step key="updates_scroll_load_more" />
+    <Step key="updates_scroll_load_more_reset" />
+    
+    <!-- Cannot create precondition for create new jobs rollup.
+    <Step key="updates_new_jobs_rollup_list" />
+    <Step key="updates_new_jobs_rollup_list_tap_profile" />
+    <Step key="profile_tap_photo" />
+    <Step key="profile_photo_from_profile_tap_back"
+    <Step key="profile_tap_back" />
+    <Step key="updates_new_jobs_rollup_list_tap_back" />-->
+    
+    <!-- Cannot create precondition for create connection rollup.
+    <Step key="updates_connection_rollup_list" />
+    <Step key="updates_connection_rollup_list_tap_back" />
+    <Step key="updates_profile_rollup_list" />
+    <Step key="updates_profile_rollup_list_tap_back" />-->
+    
+    <Step key="updates_tap_search" />
+    <Step key="search_search" payload="Marc" />
+    <Step key="search_tap_profile" />
+    
+    <!-- Antispam. Can send invite to real user.
+    <Step key="profile_tap_invite" />
+    <Step key="invite_accept_pymk_tap_back" />-->
+    
+    <Step key="profile_tap_back" />
+    <Step key="search_tap_cancel" />
+    <Step key="updates_tap_update" />
+    <Step key="feed_detail_tap_profile_author_precondition" payload="John12" />
+    <Step key="feed_detail_tap_profile_author" />
+    <Step key="profile_tap_common" />
+    <Step key="incommon_tap_back" />
+    <Step key="profile_tap_back" />
+    <Step key="feed_detail_tap_back" />
+    <Step key="updates_tap_expose" />
+    <Step key="expose_tap_you" />
+    <Step key="you_tap_connections" />
+    <Step key="connections_tap_back" />
+    <Step key="you_tap_wvmp" />
+    <Step key="wvmp_tap_profile" />
+    <Step key="profile_tap_back" />
+    <Step key="wvmp_tap_back" />
+    <Step key="you_tap_expose" />
+    <Step key="expose_tap_inbox" />
+    <Step key="inbox_tap_message" />
+    <Step key="inbox_message_detail_tap_profile" />
+    <Step key="profile_tap_back" />
+    <Step key="inbox_message_detail_tap_back" />
+    
+    <!-- Cannot create precondition for sent invite.
+    <Step key="inbox_tap_invitation_accept" />-->
+    
+    <Step key="inbox_pull_refresh" />
+    
+    <!-- Cannot create precondition for sent invite.
+    <Step key="inbox_tap_invitation" />
+    <Step key="inbox_invitation_detail_tap_accept" />-->
+    
+    <Step key="inbox_tap_all_invitations" />
+    <Step key="inbox_invitations_all_tap_back" />
+    
+    <!-- Message sending doesn't work.
+    <Step key="inbox_tap_compose_actionsheet" />
+    <Step key="inbox_compose_actionsheet_tap_new_message" />
+    <Step key="message_compose_tap_add_recipients" />
+    <Step key="select_recipients_tap_select" />
+    <Step key="select_recipients_tap_done" />
+    <Step key="message_compose_tap_send_precondition" payload="Test subject,Test Message" />
+    <Step key="message_compose_tap_send" />-->
+    
+    <Step key="inbox_tap_expose" />
+    <Step key="expose_tap_groups_and_more" />
+    <Step key="groups_and_more_tap_pymk" />
+    <Step key="pymk_tap_profile" />
+    <Step key="profile_tap_back" />
+    
+    <!-- Antispam. Can send invite to real user.
+    <Step key="pymk_tap_invite" payload="Aline Kubiak" />-->
+    
+    <Step key="pymk_tap_ignore" />
+    <Step key="pymk_scroll_load_more" />
+    <Step key="pymk_tap_back" />
+    <Step key="groups_and_more_tap_jobs" />
+    <Step key="jobs_home_tap_jmbii" payload="" />
+    <Step key="jobs_detail_tap_jobs_home" />
+    <Step key="jobs_home_tap_back" />
+    <Step key="groups_and_more_tap_groups" />
+    <Step key="groups_tap_group" />
+    <Step key="groups_discussion_list_tap_discussion" />
+    <Step key="groups_discussion_detail_tap_back" />
+    <Step key="groups_discussion_detail_tap_back" />
+    <Step key="groups_tap_back" />
+    <Step key="groups_and_more_tap_expose" />
+  </Test>
+</TestSuite>

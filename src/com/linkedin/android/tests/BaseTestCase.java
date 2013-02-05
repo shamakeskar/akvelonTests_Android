@@ -50,13 +50,11 @@ public abstract class BaseTestCase extends ActivityInstrumentationTestCase2 {
     }
 
     // Variable for disable logout in end of each test.
-    protected boolean isLogoutDisabledAtEndOfCurrentTest = false;
-
+    private static boolean isLogoutDisabledAtEndOfCurrentTest = false;
     // Variable for disable finishing Activities in end of each test.
-    protected boolean isFinishActivitiesDisabledAtEndOfCurrentTest = false;
-
+    private static boolean isFinishActivitiesDisabledAtEndOfCurrentTest = false;
     // Variable for disable calling Logger.logElements() in end of test if it fail.
-    protected boolean isLogElementsDisabledAtEndOfCurrentTest = false;
+    private static boolean isLogElementsDisabledAtEndOfCurrentTest = false;
 
     // CONSTRUCTORS ---------------------------------------------------------
     /**

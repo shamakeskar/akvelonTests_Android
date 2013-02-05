@@ -8,6 +8,7 @@ import com.linkedin.android.screens.common.ScreenCalSplash;
 import com.linkedin.android.screens.common.ScreenExpose;
 import com.linkedin.android.screens.common.ScreenGroups;
 import com.linkedin.android.screens.common.ScreenGroupsYouMightLike;
+import com.linkedin.android.screens.common.ScreenJobDetails;
 import com.linkedin.android.screens.common.ScreenLogin;
 import com.linkedin.android.screens.common.ScreenNewMessage;
 import com.linkedin.android.screens.common.ScreenPYMK;
@@ -46,13 +47,13 @@ import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.screens.you.ScreenEditProfile;
 import com.linkedin.android.screens.you.ScreenInCommon;
 import com.linkedin.android.screens.you.ScreenProfile;
+import com.linkedin.android.screens.you.ScreenProfileOfNotConnectedUser;
 import com.linkedin.android.screens.you.ScreenProfilePhoto;
 import com.linkedin.android.screens.you.ScreenRecentActivity;
 import com.linkedin.android.screens.you.ScreenWhosViewedYou;
 import com.linkedin.android.screens.you.ScreenYou;
 import com.linkedin.android.screens.you.ScreenYouConnections;
 import com.linkedin.android.screens.you.ScreenYourProfilePhoto;
-import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.utils.LoginActions;
 
 /**
@@ -73,34 +74,169 @@ public class TmpRegressions extends BaseTestCase {
 
     // METHODS --------------------------------------------------------------
     public void sanity() {
-        startTest("12345678", "sanity");
+        startTest("43481665", "sanity");
 
         ScreenLogin.login();
-        ScreenLogin.login_tap_signin_precondition(StringData.test_email_large_connections,
-                StringData.test_password_large_connections);
+        ScreenLogin.login_tap_signin_precondition("user1@correo.linkedinlabs.com", "crazyman");
         ScreenLogin.login_tap_signin();
-        PopupSyncContacts.abi_tap_not_sync();
-        ScreenCalSplash.cal_splash_tap_later();
-        ScreenUpdates.updates_tap_expose();
-        ScreenExpose.expose_tap_updates();
+        ScreenLogin.login_tap_sync_all_contacts();
+        ScreenUpdates.updates_tap_news();
+        ScreenLinkedInToday.news_tap_back();
+        ScreenUpdates.updates_pull_refresh();
+        ScreenUpdates.updates_scroll_load_more();
+        ScreenUpdates.updates_scroll_load_more_reset();
+        /*
+         * User "John12-14-2010-02-03 Doe" shared very huge amount of updates.
+         * Rollup appears for a short time. We tried to use another user, but
+         * updates work only for user1.
+         * ScreenNewJobsRollUp.updates_new_jobs_rollup_list();
+         */
+
+        /*
+         * App crash after clicking on profile photo.
+         * ScreenNewJobsRollUp.updates_new_jobs_rollup_list_tap_profile();
+         * ScreenProfile.profile_tap_photo();
+         * ScreenProfilePhoto.profile_photo_from_profile_tap_back();
+         * ScreenProfile.profile_tap_back();
+         */
+
+        /*
+         * User "John12-14-2010-02-03 Doe" shared very huge amount of updates.
+         * Rollup appears for a short time. We tried to use another user, but
+         * updates work only for user1.
+         * ScreenNewJobsRollUp.updates_new_jobs_rollup_list_tap_back();
+         * ScreenNewConnectionsRollUp.updates_connection_rollup_list();
+         * ScreenNewConnectionsRollUp.updates_connection_rollup_list_tap_back();
+         * ScreenUpdatedProfileRollup.updates_profile_rollup_list();
+         * ScreenUpdatedProfileRollup.updates_profile_rollup_list_tap_back();
+         */
+
+        ScreenUpdates.updates_tap_search();
+        ScreenSearch.search_search("u102");
+        ScreenSearch.search_tap_profile("u102");
+        /*
+         * Antispam. Can sent invite to real user.
+         * ScreenProfile.profile_tap_invite();
+         * ScreenPYMK.invite_accept_pymk_tap_back();
+         */
+        ScreenProfile.profile_tap_back();
+        ScreenSearch.search_tap_cancel();
+
+        ScreenUpdates.updates_tap_update();
+        ScreenFeedDetail.feed_detail_tap_profile_author();
+        ScreenProfile.profile_tap_common();
+        ScreenInCommon.incommon_tap_back();
+        ScreenProfile.profile_tap_back();
+        ScreenFeedDetail.feed_detail_tap_back();
+
         ScreenUpdates.updates_tap_expose();
         ScreenExpose.expose_tap_you();
+        ScreenYou.you_tap_connections();
+        ScreenYouConnections.connections_tap_back();
+        ScreenYou.you_tap_wvmp();
+        ScreenWhosViewedYou.wvmp_tap_profile();
+        ScreenProfile.profile_tap_back();
+        ScreenWhosViewedYou.wvmp_tap_back();
         ScreenYou.you_tap_expose();
         ScreenExpose.expose_tap_inbox();
+        ScreenInbox.inbox_tap_message();
+        ScreenMessageDetail.inbox_message_detail_tap_profile();
+        ScreenProfile.profile_tap_back();
+        ScreenMessageDetail.inbox_message_detail_tap_back();
+        /*
+         * Need pending invitation for this action.
+         * ScreenInbox.inbox_tap_invitation_accept();
+         */
+        ScreenInbox.inbox_pull_refresh();
+        /*
+         * Need pending invitation for these actions.
+         * ScreenInbox.inbox_tap_invitation();
+         * ScreenInvitationDetails.inbox_invitation_detail_tap_accept();
+         */
+
+        ScreenInbox.inbox_tap_all_invitations();
+        ScreenInvitationsAll.inbox_invitations_all_tap_back();
+
+        /*
+         * Commented these actions because message sending doesn't work.
+         * ScreenInbox.inbox_tap_compose_actionsheet();
+         * ScreenInbox.inbox_compose_actionsheet_tap_new_message();
+         * ScreenNewMessage.message_compose_tap_add_recipients();
+         * ScreenAddConnections.select_recipients_tap_select("123 123");
+         * ScreenAddConnections.select_recipients_tap_done();
+         * ScreenNewMessage.message_compose_tap_send_precondition
+         * ("Test subject", "Test Message");
+         * ScreenNewMessage.message_compose_tap_send();
+         */
         ScreenInbox.inbox_tap_expose();
         ScreenExpose.expose_tap_groups_and_more();
         ScreenGroupsAndMore.groups_and_more_tap_pymk();
-        ScreenPYMK.pymk_back();
-        ScreenGroupsAndMore.groups_and_more_tap_groups();
-        ScreenGroups.groups_tap_back();
+        ScreenPYMK.pymk_tap_profile();
+        ScreenProfileOfNotConnectedUser.profile_tap_back();
+        /*
+         * Antispam. Can send invite to real user.
+         * ScreenPYMK.pymk_tap_invite("Aline Kubiak");
+         */
+        ScreenPYMK.pymk_tap_ignore();
+        ScreenPYMK.pymk_scroll_load_more();
+        ScreenPYMK.pymk_tap_back();
         ScreenGroupsAndMore.groups_and_more_tap_jobs();
+        ScreenJobs.jobs_home_tap_jmbii("");
+        ScreenJobDetails.jobs_detail_tap_jobs_home();
         ScreenJobs.jobs_home_tap_back();
-        ScreenGroupsAndMore.groups_and_more_tap_companies();
-        LoginActions.logout();// logout
+        ScreenGroupsAndMore.groups_and_more_tap_groups();
+        ScreenGroups.groups_tap_group();
+        ScreenGroupsDiscussionList.groups_discussion_list_tap_discussion();
+        ScreenDiscussionDetails.groups_discussion_detail_tap_back();
+        ScreenDiscussionDetails.groups_discussion_detail_tap_back();
+        ScreenGroups.groups_tap_back();
+        ScreenGroupsAndMore.groups_and_more_tap_expose();
+
+        passTest();
+    }
+
+    public void sanity_part2() {
+        startTest("43481665", "sanity");
+
+        disableLogoutAtEndForCurrentTest();
+        LoginActions.openUpdatesScreenOnStart("user1@correo.linkedinlabs.com", "crazyman");
+
+        ScreenUpdates.updates_tap_update();
+        ScreenFeedDetail.feed_detail_tap_profile_author_precondition("John12");
+        ScreenFeedDetail.feed_detail_tap_profile_author();
+        ScreenProfile.profile_tap_common();
+        ScreenInCommon.incommon_tap_back();
+        ScreenProfile.profile_tap_back();
+        ScreenFeedDetail.feed_detail_tap_back();
+
+        passTest();
+    }
+
+    public void prepush() {
+        startTest("43480459", "Prepush");
+
         ScreenLogin.login();
-        ScreenLogin.login_tap_signin_precondition(StringData.test_email_large_connections,
-                StringData.test_password_large_connections);
+        ScreenLogin.login_tap_signin_precondition("user1@correo.linkedinlabs.com", "crazyman");
         ScreenLogin.login_tap_signin();
+        PopupSyncContacts.abi_tap_not_sync();
+        ScreenUpdates.updates_tap_expose();
+        // TODO: bugs waiting updates screen
+        // ScreenExpose.expose_tap_updates();
+        // ScreenUpdates.updates_tap_expose();
+        ScreenExpose.expose_tap_you();
+        ScreenYou.you_tap_expose();
+        ScreenExpose.expose_tap_groups_and_more();
+        // TODO: Possible correct fail: Groups&More screen is not complete
+        // loading
+
+        // ScreenGroupsAndMore.groups_and_more_tap_pymk();
+        // ScreenPYMK.pymk_tap_back();
+        // ScreenGroupsAndMore.groups_and_more_tap_groups();
+        // ScreenGroups.groups_tap_back();
+        // ScreenGroupsAndMore.groups_and_more_tap_jobs();
+        // ScreenJobs.jobs_home_tap_back();
+        // ScreenGroupsAndMore.groups_and_more_tap_companies();
+        LoginActions.logout();
 
         passTest();
     }
@@ -155,7 +291,7 @@ public class TmpRegressions extends BaseTestCase {
     }
 
     public void test_regression_groups_and_more() {
-        startTest("42118115", "regression_groups_and_more");
+        startTest("43558467", "regression_groups_and_more");
 
         ScreenGroupsAndMore.go_to_groups_and_more("user1@correo.linkedinlabs.com", "crazyman");
         ScreenGroupsAndMore.groups_and_more_tap_pymk();
@@ -182,10 +318,9 @@ public class TmpRegressions extends BaseTestCase {
         ScreenGroups.go_to_groups("user1@correo.linkedinlabs.com", "crazyman");
         ScreenGroups.groups_tap_back();
         ScreenGroups.groups();
-        ScreenGroups.groups_tap_expose();
-        ScreenGroups.groups_tap_expose_reset();
-        ScreenGroups.groups_tap_gyml();
-        ScreenGroups.groups_tap_gyml_reset();
+        // TODO: now GYML screen is not loaded.
+        // ScreenGroups.groups_tap_gyml();
+        // ScreenGroups.groups_tap_gyml_reset();
         ScreenGroups.groups_tap_group();
         ScreenGroups.groups_tap_group_reset();
 
@@ -196,7 +331,7 @@ public class TmpRegressions extends BaseTestCase {
         startTest("42118141", "regression_groups");
 
         ScreenPYMK.go_to_pymk("user1@correo.linkedinlabs.com", "crazyman");
-        ScreenPYMK.pymk_back();
+        ScreenPYMK.pymk_tap_back();
         ScreenPYMK.pymk();
         ScreenPYMK.pymk_tap_expose();
         ScreenPYMK.pymk_tap_expose_reset();
@@ -246,7 +381,7 @@ public class TmpRegressions extends BaseTestCase {
         startTest("42121305", "regression_search");
 
         ScreenSearch.go_to_search("user1@correo.linkedinlabs.com", "crazyman");
-        ScreenSearch.search_tap_profile();
+        // ScreenSearch.search_tap_profile();
         ScreenSearch.search_tap_profile_reset();
         ScreenSearch.search_tap_cancel();
 
@@ -283,12 +418,9 @@ public class TmpRegressions extends BaseTestCase {
         ScreenGroupsYouMightLike.groups_gyml_tap_expose_reset();
         ScreenGroupsYouMightLike.groups_gyml_pull_refresh();
         ScreenGroupsYouMightLike.groups_gyml_scroll_load_more();
-        /*
-         * TODO: Limit on count of groups.
-         * ScreenGroupsYouMightLike.groups_gyml_tap_join();
-         * ScreenGroupsYouMightLike.groups_gyml_tap_group();
-         * ScreenGroupsYouMightLike.groups_gyml_tap_group_reset();
-         */
+        ScreenGroupsYouMightLike.groups_gyml_tap_join();
+        ScreenGroupsYouMightLike.groups_gyml_tap_group();
+        ScreenGroupsYouMightLike.groups_gyml_tap_group_reset();
 
         passTest();
     }
@@ -489,13 +621,29 @@ public class TmpRegressions extends BaseTestCase {
         // ScreenEditProfile.go_to_profile_edit();
         ScreenEditProfile.profile_edit_tap_done();
 
+        /*
+         * disableLogoutAtEndForCurrentTest(); AndroidWebDriver driver =
+         * WebViewUtils.getAndroidWebDriver();
+         * WebViewUtils.logPageHtmlCode(driver); Logger.d("start find");
+         * List<WebElement> elem = null; try { elem =
+         * driver.findElements(By.tagName("div")); } catch (Exception e){
+         * Logger.e("By.tagName('div')", e); } int i = 0; while (i <
+         * elem.size()) { Logger.d(elem.get(i).getText()); i++; }
+         * 
+         * try { elem = driver.findElements(By.tagName("span")); } catch
+         * (Exception e){ Logger.e("By.tagName('span')", e); } i = 0; while (i <
+         * elem.size()) { Logger.d(elem.get(i).getText()); i++; }
+         */
+
+        // TODO complete all webview actions.
+
         passTest();
     }
 
     public void test_regression_cal() {
         startTest("42117519", "regression_cal");
 
-        ScreenCalendar.go_to_cal("user1@correo.linkedinlabs.com", "crazyman");
+        // ScreenCalendar.go_to_cal();
         ScreenCalendar.cal_tap_back();
         ScreenCalendar.cal();
         ScreenCalendar.cal_tap_expose();
@@ -596,13 +744,12 @@ public class TmpRegressions extends BaseTestCase {
     public void test_regression_message_compose() {
         startTest("42119497", "regression_message_compose");
 
-        ScreenNewMessage.go_to_message_compose("user1@correo.linkedinlabs.com", "crazyman");
+        // ScreenNewMessage.go_to_message_compose();
         ScreenNewMessage.message_compose_tap_cancel();
         ScreenNewMessage.message_compose();
         ScreenNewMessage.message_compose_tap_add_recipients();
         ScreenNewMessage.message_compose_tap_add_recipients_reset();
-        ScreenNewMessage.message_compose_tap_send_precondition("146 146", "Test message",
-                "Test subject");
+        // ScreenNewMessage.message_compose_tap_send_precondition();
         ScreenNewMessage.message_compose_tap_send();
 
         passTest();
@@ -713,7 +860,7 @@ public class TmpRegressions extends BaseTestCase {
     public void test_regression_feed_detail() {
         startTest("42117719", "regression_feed_detail");
 
-        ScreenFeedDetail.go_to_feed_detail("user1@correo.linkedinlabs.com", "crazyman");
+        // ScreenFeedDetail.go_to_feed_detail();
         ScreenFeedDetail.feed_detail_tap_back();
         ScreenFeedDetail.feed_detail_tap_back_reset();
         ScreenFeedDetail.feed_detail_tap_expose();
@@ -721,7 +868,6 @@ public class TmpRegressions extends BaseTestCase {
         ScreenFeedDetail.feed_detail_tap_url();
         ScreenFeedDetail.feed_detail_tap_url_reset();
         ScreenFeedDetail.feed_detail_tap_like_toggle();
-
         /*
          * // TODO need precondition : open feed detail, autor is people.
          * ScreenFeedDetail.feed_detail_tap_profile_author();
@@ -771,7 +917,6 @@ public class TmpRegressions extends BaseTestCase {
          * 
          * // TODO need precondition : feed detail with open group
          * ScreenFeedDetail.feed_detail_tap_group();
-         * ScreenFeedDetail.feed_detail_tap_group_reset();
          * 
          * // TODO need precondition : feed detail with closed group
          * ScreenFeedDetail
@@ -853,7 +998,7 @@ public class TmpRegressions extends BaseTestCase {
     }
 
     public void test_regression_address_book_import() {
-        startTest("42120855", "regression_address_book_import");
+        startTest("01234567", "regression_address_book_import");
 
         ScreenAddressBookImport.go_to_address_book_import("user1@correo.linkedinlabs.com",
                 "crazyman");
@@ -943,7 +1088,7 @@ public class TmpRegressions extends BaseTestCase {
     public void test_regression_abi_toast() {
         startTest("42120880", "test_regression_ABI_Toats ");
 
-        PopupSyncContacts.go_to_popup_abi_toast("user1@correo.linkedinlabs.com", "crazyman");
+        // PopupSyncContacts.go_to_popup_abi_toast();
 
         passTest();
     }
@@ -1024,7 +1169,7 @@ public class TmpRegressions extends BaseTestCase {
     public void test_regression_profile() {
         startTest("42120927", "regression_profile");
 
-        ScreenProfile.go_to_profile("user1@correo.linkedinlabs.com", "crazyman", "evgeny agapov");
+        ScreenProfile.go_to_profile("user1@correo.linkedinlabs.com", "crazyman");
         ScreenProfile.profile_tap_back();
         ScreenProfile.profile();
         ScreenProfile.profile_tap_expose();
@@ -1082,29 +1227,15 @@ public class TmpRegressions extends BaseTestCase {
         ScreenDiscussionDetails.groups_discussion_detail_tap_discussion_up();
         ScreenDiscussionDetails.groups_discussion_detail_tap_profile_author();
         ScreenDiscussionDetails.groups_discussion_detail_tap_profile_author_reset();
-
-        /*
-         * TODO: need precondition : open feed detail with comment.
-         * ScreenDiscussionDetails.groups_discussion_detail_tap_comment();
-         * ScreenDiscussionDetails.groups_discussion_detail_tap_comment_reset();
-         * ScreenDiscussionDetails
-         * .groups_discussion_detail_tap_profile_commenter();
-         * ScreenDiscussionDetails
-         * .groups_discussion_detail_tap_profile_commenter_reset();
-         * 
-         * TODO: need precondition : open discussion with likes list.
-         * ScreenDiscussionDetails.groups_discussion_detail_tap_likes_list();
-         * ScreenDiscussionDetails
-         * .groups_discussion_detail_tap_likes_list_reset();
-         * 
-         * TODO: application bug: count of likes doesn't changed.
-         * ScreenDiscussionDetails.groups_discussion_detail_tap_like_toggle();
-         * 
-         * TODO: need precondition : open discussion with comments list.
-         * ScreenDiscussionDetails.groups_discussion_detail_tap_comments_list();
-         * ScreenDiscussionDetails
-         * .groups_discussion_detail_tap_comments_list_reset();
-         */
+        ScreenDiscussionDetails.groups_discussion_detail_tap_comment();
+        ScreenDiscussionDetails.groups_discussion_detail_tap_comment_reset();
+        ScreenDiscussionDetails.groups_discussion_detail_tap_profile_commenter();
+        ScreenDiscussionDetails.groups_discussion_detail_tap_profile_commenter_reset();
+        ScreenDiscussionDetails.groups_discussion_detail_tap_likes_list();
+        ScreenDiscussionDetails.groups_discussion_detail_tap_likes_list_reset();
+        ScreenDiscussionDetails.groups_discussion_detail_tap_like_toggle();
+        ScreenDiscussionDetails.groups_discussion_detail_tap_comments_list();
+        ScreenDiscussionDetails.groups_discussion_detail_tap_comments_list_reset();
 
         passTest();
     }
@@ -1116,7 +1247,7 @@ public class TmpRegressions extends BaseTestCase {
         ScreenAddConnections.select_recipients_tap_scrollbar();
         ScreenAddConnections.select_recipients_tap_cancel();
         ScreenAddConnections.select_recipients();
-        ScreenAddConnections.select_recipients_tap_select();
+        // ScreenAddConnections.select_recipients_tap_select();
         ScreenAddConnections.select_recipients_tap_done();
 
         passTest();

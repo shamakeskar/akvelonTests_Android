@@ -16,6 +16,7 @@ import com.linkedin.android.screens.common.ScreenCalSplash;
 import com.linkedin.android.screens.common.ScreenLogin;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
@@ -113,8 +114,8 @@ public class ScreenCalendar extends BaseListScreen {
         ScreenLogin loginScreen = new ScreenLogin();
 
         // Type credentials and tap 'Sign In'.
-        loginScreen.typeEmail(email);
-        loginScreen.typePassword(password);
+        loginScreen.typeEmail(StringData.test_email);
+        loginScreen.typePassword(StringData.test_password);
         loginScreen.tapOnSignInButton();
 
         // Tap 'Do not sync'.
@@ -164,8 +165,7 @@ public class ScreenCalendar extends BaseListScreen {
 
     @TestAction(value = "cal_scroll_load_next")
     public static void cal_scroll_load_next() {
-        Assert.assertNotNull("Where is no ListView on screen or it's null",
-                ListViewUtils.getFirstListView());
+        Assert.assertNotNull("Where is no ListView on screen or it's null", ListViewUtils.getFirstListView());
         final int countOfEvents = ListViewUtils.getFirstListView().getCount();
         Logger.i("Scroll to bottom of screen");
         HardwareActions.scrollToBottomNTimes(1, 0);
@@ -185,8 +185,7 @@ public class ScreenCalendar extends BaseListScreen {
 
     @TestAction(value = "cal_scroll_load_previous")
     public static void cal_scroll_load_previous() {
-        Assert.assertNotNull("Where is no ListView on screen or it's null",
-                ListViewUtils.getFirstListView());
+        Assert.assertNotNull("Where is no ListView on screen or it's null", ListViewUtils.getFirstListView());
         final int countOfEvents = ListViewUtils.getFirstListView().getCount();
         Logger.i("Scroll to top of screen");
         getSolo().scrollToTop();

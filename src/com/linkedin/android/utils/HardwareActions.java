@@ -155,31 +155,30 @@ public class HardwareActions {
                 + SCREENSHOT_DEFAULT_DIR;
         Logger.i("Saving screenshot '" + name + "' in '" + SCREENSHOT_DEFAULT_DIR + "'");
 
-        view.setDrawingCacheEnabled(true);
-        try {
-            view.buildDrawingCache();
+        DataProvider.getInstance().getSolo().getCurrentActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                view.setDrawingCacheEnabled(true);
+                try {
+                    view.buildDrawingCache();
 
-            File screenShotDir = new File(folder);
-            if (!screenShotDir.exists()) {
-                Assert.assertTrue("Cannot create folder '" + folder + "'", screenShotDir.mkdirs());
+                    File screenShotDir = new File(folder);
+                    if (!screenShotDir.exists()) {
+                        Assert.assertTrue("Cannot create folder '" + folder + "'", screenShotDir.mkdirs());
+                    }
+                    FileOutputStream fos = new FileOutputStream(new File(screenShotDir, name + EXTEN));
+                    try {
+                        view.buildDrawingCache(true);
+                        view.getDrawingCache().compress(CompressFormat.PNG, QUALITY, fos);
+                        view.destroyDrawingCache();
+                    } finally {
+                        fos.close();
+                    }
+                } catch (Exception e) {
+                    Logger.e("Cannot save screenshot.", e);
+                }
             }
-            FileOutputStream fos = new FileOutputStream(new File(screenShotDir, name + EXTEN));
-            try {
-                // view.measure(MeasureSpec.makeMeasureSpec(0,
-                // MeasureSpec.UNSPECIFIED),
-                // MeasureSpec.makeMeasureSpec(0,
-                // MeasureSpec.UNSPECIFIED));
-                // view.layout(0, 0, view.getMeasuredWidth(),
-                // view.getMeasuredHeight());
-                view.buildDrawingCache(true);
-                view.getDrawingCache().compress(CompressFormat.PNG, QUALITY, fos);
-                view.destroyDrawingCache();
-            } finally {
-                fos.close();
-            }
-        } catch (Exception e) {
-            Logger.e("Cannot save screenshot.", e);
-        }
+        });
     }
 
     /**
@@ -349,29 +348,6 @@ public class HardwareActions {
             solo.sleep(delayMs);
         }
     }
-    
-    /**
-     * Scrolls up to top of screen.
-     * 
-     * @param numberOfScrolls
-     *            number of scrolls to the top
-     */
-    public static void scrollToTop(int numberOfScrolls){
-        for(int i = 0; i < numberOfScrolls; i++){
-            if(DataProvider.getInstance().getSolo().scrollUp()){
-                DataProvider.getInstance().getSolo().scrollUp();
-            } else {
-                return;
-            }
-        }
-    }
-    
-    /**
-     * Scrolls up to top of screen.
-     */
-    public static void scrollToTop(){
-        scrollToTop(DataProvider.DEFAULT_SCROLLS_COUNT);
-    }
 
     // TODO implement this code from LinkedIn
     // /**
@@ -460,5 +436,28 @@ public class HardwareActions {
                     .sleep(DataProvider.WAIT_DELAY_FOR_PROGRESS_BAR_STEP);
         }
         return false;
+    }
+    
+    /**
+     * Scrolls up to top of screen.
+     * 
+     * @param numberOfScrolls
+     *            number of scrolls to the top
+     */
+    public static void scrollToTop(int numberOfScrolls){
+        for(int i = 0; i < numberOfScrolls; i++){
+            if(DataProvider.getInstance().getSolo().scrollUp()){
+                DataProvider.getInstance().getSolo().scrollToTop();
+            } else {
+                return;
+            }
+        }
+    }
+    
+    /**
+     * Scrolls up to top of screen.
+     */
+    public static void scrollToTop(){
+        scrollToTop(DataProvider.DEFAULT_SCROLLS_COUNT);
     }
 }

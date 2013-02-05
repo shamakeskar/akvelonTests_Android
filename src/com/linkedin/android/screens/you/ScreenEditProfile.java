@@ -35,7 +35,7 @@ public class ScreenEditProfile extends BaseEditProfileScreen {
     // ACTIONS --------------------------------------------------------------
     @TestAction(value = "go_to_profile_edit")
     public static void go_to_profile_edit(String email, String password) {
-        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart();
+        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart(email, password);
         screenUpdates.openExposeScreen().openYouScreen();
         profile_edit("go_to_profile_edit");
     }

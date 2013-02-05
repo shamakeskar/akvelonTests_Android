@@ -3,12 +3,10 @@ package com.linkedin.android.screens.base;
 import junit.framework.Assert;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.linkedin.android.screens.common.ScreenAddConnections;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
-import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -20,7 +18,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 @SuppressWarnings("rawtypes")
 public abstract class BaseScreenMessage extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.messages.MessageComposeActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.messages.MessageComposeActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "MessageComposeActivity";
 
     // "Add users" button (below "Share").
@@ -40,17 +38,10 @@ public abstract class BaseScreenMessage extends BaseScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        Assert.assertTrue("'" + getHeader() + "' label is not presented",
-                getSolo().waitForText(getHeader()));
+        verifyCurrentActivity();
 
         Button sendButton = getSolo().getButton(0);
-        ImageView addConnectionButton = (ImageView) Id.getViewByViewIdName(ADD_USERS_BUTTON);
-        //getSolo().getImage(0);
-
         Assert.assertNotNull("'Send' button is not presented", sendButton);
-        Assert.assertNotNull("'Add' button is not presented", addConnectionButton);
-
-        HardwareActions.takeCurrentActivityScreenshot("Message screen (" + getHeader() + ")");
     }
 
     @Override

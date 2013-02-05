@@ -43,8 +43,8 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 public class ScreenMessageDetail extends BaseINScreen {
 
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.messages.ViewMessageActivity";
-    public static final String ACTIVITY_SHORT_CLASSNAME = "ViewMessageActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.messages.swipe.ViewMessageFragmentActivity";
+    public static final String ACTIVITY_SHORT_CLASSNAME = "ViewMessageFragmentActivity";
 
     private static final int MESSAGE_AUTHOR_NAMETEXT_INDEX = 4;
     private static final int MESSAGE_AUTHOR_STATUSTEXT_INDEX = 5;
@@ -229,8 +229,8 @@ public class ScreenMessageDetail extends BaseINScreen {
      * @return ScreenProfile
      */
     public ScreenProfile openSenderProfileScreen() {
-        TextView messageAuthorNameTextView = getMessageTitleTextView();
-        getSolo().clickOnView(messageAuthorNameTextView);
+        TextView profile= (TextView) Id.getViewByViewIdName(HEADER_ID_NAME);
+        ViewUtils.tapOnView(profile, "message author profile");
 
         return new ScreenProfile();
     }

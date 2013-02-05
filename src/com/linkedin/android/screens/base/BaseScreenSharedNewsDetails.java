@@ -30,9 +30,8 @@ public abstract class BaseScreenSharedNewsDetails extends BaseINScreen {
     static final Rect2DP IMAGE_RECT = new Rect2DP(15, 95, 50, 50);
     static final Rect2DP IMAGE_NEWS_RECT = new Rect2DP(11, 222, 53, 53);
 
-    // TODO ?
-    protected static final ViewIdName CONNECTION_PROFILE_SECTION_CHEVRON = new ViewIdName(
-            "connections_chevron");
+    public static final ViewIdName CONNECTION_PROFILE_SECTION_CHEVRON = new ViewIdName(
+            "sht2_header_title");
     // ImageButton: like it button
     private static final ViewIdName LIKE_BUTTON = new ViewIdName("like_button");
     // TextView: like text '1 person likes this' for example

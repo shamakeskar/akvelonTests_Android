@@ -21,7 +21,7 @@ import com.linkedin.android.utils.WaitActions;
  */
 public class ScreenCompanies extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.jsbridge.CompaniesActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.jsbridge.CompaniesActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "CompaniesActivity";
 
     // PROPERTIES -----------------------------------------------------------

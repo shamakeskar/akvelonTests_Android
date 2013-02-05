@@ -27,8 +27,8 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 public abstract class BaseDiscussionDetailsScreen extends BaseINScreen {
 
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.groups.GroupPostActivity";
-    public static final String ACTIVITY_SHORT_CLASSNAME = "GroupPostActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.home.v2.StreamDetailActivity";
+    public static final String ACTIVITY_SHORT_CLASSNAME = "StreamDetailActivity";
 
     // Indexes relatively main screen
     protected static final int LIKE_BUTTON_INDEX = 0;

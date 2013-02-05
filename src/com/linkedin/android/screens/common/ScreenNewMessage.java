@@ -2,11 +2,7 @@ package com.linkedin.android.screens.common;
 
 import java.util.concurrent.Callable;
 
-import junit.framework.Assert;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckedTextView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseScreenMessage;
@@ -32,13 +28,10 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 public class ScreenNewMessage extends BaseScreenMessage {
     // CONSTANTS ------------------------------------------------------------
     private static final String HEADER = "New Message";
-    //private static final ViewIdName ID_NAME_CHECKBOX = new ViewIdName("checkbox");
-    private static final ViewIdName ID_NAME_OF_TITLE = new ViewIdName("navigation_bar_title");
-
-    private static int INDEX_OF_DONE_BUTTON = 0;
+    private static final ViewIdName SEND_BUTTON = new ViewIdName("share_button");
 
     // PROPERTIES -------------------------------------------------------------
-
+    
     // CONSTRUCTORS -----------------------------------------------------------
 
     // METHODS -----------------------------------------------------------
@@ -48,12 +41,12 @@ public class ScreenNewMessage extends BaseScreenMessage {
         WaitActions.waitForTrueInFunction("New Message label is not present",
                 new Callable<Boolean>() {
                     public Boolean call() {
-                        TextView title = (TextView) Id.getViewByViewIdName(ID_NAME_OF_TITLE);
-                        return (title.getText().toString().equalsIgnoreCase("New Message"));
+                        TextView sendButton = (TextView) Id.getViewByViewIdName(SEND_BUTTON);
+                        return sendButton != null;
                     }
                 });
     }
-
+    
     protected String getHeader() {
         return HEADER;
     }
@@ -95,43 +88,16 @@ public class ScreenNewMessage extends BaseScreenMessage {
     }
 
     @TestAction(value = "message_compose_tap_send_precondition")
-    public static void message_compose_tap_send_precondition(String recipient, String message,
-            String subject) {
-        message_compose_tap_add_recipients();
-        TextView connection = TextViewUtils.getTextViewByText(recipient);
-        final RelativeLayout layout = (RelativeLayout) connection.getParent();
-        CheckedTextView check = null;
-        int indexOfCheckBox;
-        for (indexOfCheckBox = 0; indexOfCheckBox < layout.getChildCount(); indexOfCheckBox++) {
-            if (layout.getChildAt(indexOfCheckBox) instanceof CheckedTextView) {
-                check = (CheckedTextView) layout.getChildAt(indexOfCheckBox);
-                break;
-            }
-        }
-        Assert.assertNotNull("There is no checkBox on screen", check);
-        final boolean isChecked = check.isChecked();
-        ViewUtils.tapOnView(check, "Checkbox of " + recipient);
-        final int secondIndex = indexOfCheckBox;
-        WaitActions.waitForTrueInFunction("CheckBox is not checked", new Callable<Boolean>() {
-            public Boolean call() {
-                if (!(layout.getChildAt(secondIndex) instanceof CheckedTextView)) return false;
-                boolean cheked = ((CheckedTextView) layout.getChildAt(secondIndex)).isChecked();
-                return (cheked != isChecked);
-            }
-        });
-
-        Button done = getSolo().getButton(INDEX_OF_DONE_BUTTON);
-        ViewUtils.tapOnView(done, "'Done' button");
-        new ScreenNewMessage();
-        TestUtils.typeTextInEditText1(TestUtils.verifyText(subject));
-        TestUtils.typeTextInEditText2(TestUtils.verifyText(message));
+    public static void message_compose_tap_send_precondition(String subject, String body) {
+        TestUtils.typeTextInEditText0(subject);
+        TestUtils.typeTextInEditText1(body);
         TestUtils.delayAndCaptureScreenshot("message_compose_tap_send_precondition");
     }
 
     @TestAction(value = "message_compose_tap_send")
     public static void message_compose_tap_send() {
-        Button send = getSolo().getButton(0);
-        ViewUtils.tapOnView(send, "'Send' button");
+        TextView sendButton = (TextView) Id.getViewByViewIdName(SEND_BUTTON);
+        ViewUtils.tapOnView(sendButton, "'Send' button");
         new ScreenInbox();
         TestUtils.delayAndCaptureScreenshot("message_compose_tap_send");
     }

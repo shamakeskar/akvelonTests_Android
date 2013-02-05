@@ -26,9 +26,7 @@ public final class StringData {
 
     //Search string for custom search.
     public static final String test_custom_user_search = "William Pineros";
-    
-  //Search string for custom search.
-    public static final String user_for_searching = "evgeny agapov";
+
 
     // Account with additional info (further AI account).
     public static final String test_email_additional_info = "";//"akvtesting5@gmail.com";

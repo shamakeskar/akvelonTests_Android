@@ -1,8 +1,10 @@
 package com.linkedin.android.screens.common;
 
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 import junit.framework.Assert;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -18,7 +20,10 @@ import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
+import com.linkedin.android.utils.Rect2DP;
+import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -31,7 +36,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 @SuppressWarnings("rawtypes")
 public class ScreenLogin extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.authenticator.AuthenticatorActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.authenticator.v2.AuthenticatorActivity";
 
     public static final String ACTIVITY_SHORT_CLASSNAME = "AuthenticatorActivity";
 
@@ -41,6 +46,7 @@ public class ScreenLogin extends BaseScreen {
     public static final ViewIdName STATUS_MESSAGE = new ViewIdName("status_message");
     // TextView's for Sign up link.
     public static final ViewIdName SIGN_UP_LINK = new ViewIdName("login_signup_link");
+    public static final ViewIdName LOGIN_BUTTON = new ViewIdName("login_ok_button");
 
     // Sizes of 'Sign In' button.
     public static final int SIGNIN_BUTTON_WIDTH = 418;
@@ -56,14 +62,17 @@ public class ScreenLogin extends BaseScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        getSolo().assertCurrentActivity(
-                "Wrong activity (expected '" + ACTIVITY_SHORT_CLASSNAME + "', get '"
-                        + getSolo().getCurrentActivity().getClass().getName() + "')",
-                ACTIVITY_SHORT_CLASSNAME);
-        Assert.assertTrue("'Sign In' button not present", getSolo().searchText("Sign In"));
-        Assert.assertTrue("'Sign up to join LinkedIn' text not present",
-                getSolo().searchText("Sign up to join LinkedIn"));
-        // HardwareActions.takeCurrentActivityScreenshot("Login");
+        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
+                "'Login' screen is not present", new Callable<Boolean>() {
+                    public Boolean call() {
+                        Button loginButton = (Button) Id.getViewByViewIdName(LOGIN_BUTTON);
+                        Assert.assertNotNull("'Login' button is not present", loginButton);
+                        Rect2DP viewRect = new Rect2DP(loginButton);
+                        return loginButton.getVisibility() == View.VISIBLE
+                                && viewRect.x < ScreenResolution.getScreenWidthDP();
+                    }
+                });
     }
 
     @Override
@@ -86,7 +95,7 @@ public class ScreenLogin extends BaseScreen {
     public void typeEmail(String email) {
         Assert.assertNotNull("Email field is not found", getSolo().getEditText(0));
         Logger.i("Enter '" + email + "' in user name field");
-        getSolo().enterText(0, email);
+        TestUtils.typeTextInEditText0(email);
     }
 
     /**
@@ -98,16 +107,15 @@ public class ScreenLogin extends BaseScreen {
     public void typePassword(String password) {
         Assert.assertNotNull("Password field is not found", getSolo().getEditText(1));
         Logger.i("Enter '" + password + "' in user password field");
-        getSolo().enterText(1, password);
+        TestUtils.typeTextInEditText1(password);
     }
 
     /**
      * Taps on 'Sign In' button.
      */
     public void tapOnSignInButton() {
-        Assert.assertNotNull("Password field is not found", getSolo().getButton("Sign In"));
-        Logger.i("Tapping on 'Sign In' button");
-        getSolo().clickOnButton("Sign In");
+        Button loginButton = (Button) Id.getViewByViewIdName(LOGIN_BUTTON);
+        ViewUtils.tapOnView(loginButton, "'Login' button", false);
     }
 
     /**
@@ -212,12 +220,6 @@ public class ScreenLogin extends BaseScreen {
         PopupSyncContacts psc = new PopupSyncContacts();
         psc.tapOnDoNotSync();
 
-        if (isCalendarSplashPresents()) {
-            // Handle CalendarSplash.
-            handleCalendarSplash();
-            // Handle blue hint for IN button.
-            handleInButtonHint();
-        }
         // Return Updates screen.
         return new ScreenUpdates();
     }
@@ -307,7 +309,10 @@ public class ScreenLogin extends BaseScreen {
     @TestAction(value = "login")
     public static void login() {
         LoginActions.logout();
+        ScreenIntermediateLogin intermediateLoginScreen = new ScreenIntermediateLogin();
+        intermediateLoginScreen.tapOnSignInButton();
         new ScreenLogin();
+
         TestUtils.delayAndCaptureScreenshot("login");
     }
 
@@ -376,5 +381,12 @@ public class ScreenLogin extends BaseScreen {
         screenLogin.tapOnSignInButton();
         screenLogin.verifyToast("Oops, please check your email address and password.");
         TestUtils.delayAndCaptureScreenshot("login_error_dialog_tap_ok");
+    }
+
+    @TestAction(value = "login_tap_sync_all_contacts")
+    public static void login_tap_sync_all_contacts() {
+        new PopupSyncContacts().tapOnSyncAll();
+        new ScreenUpdates();
+        TestUtils.delayAndCaptureScreenshot("login_tap_sync_all_contacts");
     }
 }

@@ -1,9 +1,10 @@
 package com.linkedin.android.screens.common;
 
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+
 import junit.framework.Assert;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jayway.android.robotium.solo.Solo;
@@ -22,6 +23,7 @@ import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -33,7 +35,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 public class ScreenExpose extends BaseINScreen {
 
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.common.ExposeActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.common.ExposeActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "ExposeActivity";
 
     private static final ViewIdName UPDATES_PANEL_RESOURCE_NAME = new ViewIdName(
@@ -43,7 +45,9 @@ public class ScreenExpose extends BaseINScreen {
             "global_nav_inbox");
     private static final ViewIdName GROUPS_AND_MORE_PANEL_RESOURCE_NAME = new ViewIdName(
             "global_nav_network");
-    private static final ViewIdName SETTINGS_RESOURCE_NAME = new ViewIdName("nav_settings");
+    private static final ViewIdName SETTINGS_RESOURCE_NAME = new ViewIdName("menu_settings");
+    private static final ViewIdName SEARCH_RESOURCE_NAME = new ViewIdName("menu_search");
+    private static final ViewIdName ITEM_LAYOUT_ID = new ViewIdName("expose_widget_text");
 
     private static final String UPDATES_LABEL = "Updates";
     private static final String YOU_LABEL = "You";
@@ -78,12 +82,21 @@ public class ScreenExpose extends BaseINScreen {
      * Verifies 'Expose' screen
      */
     public void verify() {
-        WaitActions.waitForText(UPDATES_LABEL,
-                "Cannot wait to open 'Expose' ('Updates' label is not present)");
-        WaitActions.waitForText(GROUPS_AND_MORE_LABEL,
-                "Cannot wait to open 'Expose' ('Updates' label is not present)");
-
-        verifyINButton();
+        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
+                "'Groups and More' screen is not loaded", new Callable<Boolean>() {
+                    public Boolean call() {
+                        ArrayList<View> views = Id.getListOfViewByViewIdName(ITEM_LAYOUT_ID);
+                        if (views.size() >= 4) {
+                            for (int i = 0; i < views.size(); i++) {
+                                if (!views.get(i).isShown())
+                                    return false;
+                            }
+                            return true;
+                        }
+                        return false;
+                    }
+                });
     }
 
     @Override
@@ -155,7 +168,6 @@ public class ScreenExpose extends BaseINScreen {
      *         screen.
      */
     public ScreenGroupsAndMore openGroupsAndMoreScreen() {
-        ViewUtils.waitForToastDisappear();
         tapOnGroupsAndMoreButton();
         return new ScreenGroupsAndMore();
     }
@@ -198,8 +210,7 @@ public class ScreenExpose extends BaseINScreen {
         assertExposeMenuTextView(textViewText);
         Solo solo = DataProvider.getInstance().getSolo();
         TextView textView = solo.getText(textViewText);
-        Logger.i("Tapping on '" + textViewText + "' TextView");
-        solo.clickOnView(textView);
+        ViewUtils.tapOnView(textView, "'" + textViewText + "' label");
     }
 
     /**
@@ -224,7 +235,7 @@ public class ScreenExpose extends BaseINScreen {
      * @return ScreenSettings object.
      */
     public ScreenSettings openSettingsScreen() {
-        ImageView settingsButton = (ImageView) Id.getViewByViewIdName(SETTINGS_RESOURCE_NAME);
+        View settingsButton = (View) Id.getViewByViewIdName(SETTINGS_RESOURCE_NAME);
         Logger.i("Tapping on 'Settings' button in top right corner");
         getSolo().clickOnView(settingsButton);
         return new ScreenSettings();
@@ -280,9 +291,9 @@ public class ScreenExpose extends BaseINScreen {
      * @return {@code SearchScreen} with just opened 'SEARCH' screen.
      */
     public ScreenSearch openSearchScreen() {
-        EditText searchBar = getSearchBar();
-        Assert.assertNotNull("Search bar is not present", searchBar);
-        ViewUtils.tapOnView(searchBar, "search bar");
+        View searchButton = (View) Id.getViewByViewIdName(SEARCH_RESOURCE_NAME);
+        Logger.i("Tapping on 'Search' button.");
+        getSolo().clickOnView(searchButton);
         return new ScreenSearch();
     }
 

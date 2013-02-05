@@ -22,7 +22,7 @@ import com.linkedin.android.utils.asserts.ViewAssertUtils;
 public abstract class BaseProfileScreen extends BaseListScreen {
 
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.profile.ViewProfileActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.profile.v2.ViewProfileActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "ViewProfileActivity";
 
     protected static final String CONNECTIONS_LABEL = "Connections";

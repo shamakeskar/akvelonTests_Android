@@ -6,7 +6,6 @@ import java.util.concurrent.Callable;
 import junit.framework.Assert;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -67,6 +66,7 @@ public class ScreenYou extends BaseProfileScreen {
 
     public static final ViewIdName ID_NAME_OF_ALL_TITLE = new ViewIdName("title");
     public static final ViewIdName ID_NAME_OF_FWD_BUTTON = new ViewIdName("button_3");
+    public static final ViewIdName EDIT_BUTTON = new ViewIdName("left_edit");
 
     // TextView: current user name
     private static final ViewIdName NAME = new ViewIdName("name");
@@ -88,15 +88,15 @@ public class ScreenYou extends BaseProfileScreen {
 
         WaitActions
                 .waitForTrueInFunction(
-                        "'You' screen is not present (search bar is not present or have wrong coordinates)",
+                        "'You' screen is not present.",
                         new Callable<Boolean>() {
                             @Override
                             public Boolean call() throws Exception {
-                                return getSearchBar() != null;
+                                TextView editButton = (TextView) Id.getViewByViewIdName(EDIT_BUTTON);
+                                return editButton != null;
                             }
                         });
 
-        verifyRightButtonInNavigationBar(SETTINGS_TEXT);
     }
 
     @Override
@@ -328,7 +328,7 @@ public class ScreenYou extends BaseProfileScreen {
      * @return {@code SearchScreen} with just opened 'SEARCH' screen.
      */
     public ScreenSearch openSearchScreen() {
-        EditText searchBar = getSearchBar();
+        View searchBar = getSearchBar();
         getSolo().clickOnView(searchBar);
         Logger.i("Tapping on 'Search bar'");
         ScreenSearch searchScreen = new ScreenSearch();
@@ -531,7 +531,7 @@ public class ScreenYou extends BaseProfileScreen {
     }
 
     public static void you_tap_profile_edit(String screenshotName) {
-        Button edit = getSolo().getButton("Edit");// .getButton(0);
+        TextView edit = (TextView) Id.getViewByViewIdName(EDIT_BUTTON);
         ViewUtils.tapOnView(edit, "Edit button");
         new ScreenEditProfile();
         TestUtils.delayAndCaptureScreenshot(screenshotName);

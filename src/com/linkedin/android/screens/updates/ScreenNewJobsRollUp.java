@@ -3,11 +3,13 @@ package com.linkedin.android.screens.updates;
 import java.util.concurrent.Callable;
 
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseListScreen;
 import com.linkedin.android.screens.common.ScreenNewMessage;
 import com.linkedin.android.screens.you.ScreenProfile;
+import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
@@ -26,14 +28,13 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenNewJobsRollUp extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.home.JobChangeRollupDetailsActivity";
-    public static final String ACTIVITY_SHORT_CLASSNAME = "JobChangeRollupDetailsActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.home.v2.StreamDetailListActivity";
+    public static final String ACTIVITY_SHORT_CLASSNAME = "StreamDetailListActivity";
 
-    private static final ViewIdName UPDATE_HEADER_VIEW = new ViewIdName("simple_action_row_header");
+    private static final ViewIdName PROFILE_LAYOUT = new ViewIdName("sht2_header_title");
+    private static final ViewIdName LIKE_COMMENT_BAR = new ViewIdName("like_comment_bar_container");
     private static final ViewIdName CONGRATULATION_BUTTON_VIEW = new ViewIdName(
             "simple_action_row_button");
-    private static final ViewIdName TITLE_VIEW = new ViewIdName("navigation_bar_title");
-    private static final String TITLE = "LinkedIn";
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -51,12 +52,12 @@ public class ScreenNewJobsRollUp extends BaseListScreen {
     @Override
     public void verify() {
         ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-
-        WaitActions.waitForTrueInFunction("'LinkedIn' title is not present",
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
+                "Updates New Job rollup is not present",
                 new Callable<Boolean>() {
                     public Boolean call() {
-                        TextView titleView = (TextView) Id.getViewByViewIdName(TITLE_VIEW);
-                        return ((titleView != null) && (titleView.getText().equals(TITLE)));
+                        LinearLayout barContainer = (LinearLayout) Id.getViewByViewIdName(LIKE_COMMENT_BAR);
+                        return barContainer != null;
                     }
                 });
     }
@@ -80,18 +81,6 @@ public class ScreenNewJobsRollUp extends BaseListScreen {
     @Override
     public String getActivityShortClassName() {
         return ACTIVITY_SHORT_CLASSNAME;
-    }
-
-    /**
-     * Opens profile screen by tapping on first update.
-     * 
-     * @return {@code ScreenProfile} of first's update owner.
-     */
-    public ScreenProfile openFirstUpdate() {
-        TextView updateView = (TextView) Id.getViewByViewIdName(UPDATE_HEADER_VIEW);
-        ViewUtils.tapOnView(updateView, "first update");
-
-        return new ScreenProfile();
     }
 
     /**
@@ -127,6 +116,8 @@ public class ScreenNewJobsRollUp extends BaseListScreen {
     @TestAction(value = "updates_new_jobs_rollup_list_tap_back")
     public static void updates_new_jobs_rollup_list_tap_back() {
         HardwareActions.pressBack();
+        WaitActions.waitForScreenUpdate(); // Wait until screen is loaded.
+        HardwareActions.scrollToTop();
         new ScreenUpdates();
 
         TestUtils.delayAndCaptureScreenshot("updates_new_jobs_rollup_list_tap_back");
@@ -149,7 +140,10 @@ public class ScreenNewJobsRollUp extends BaseListScreen {
 
     @TestAction(value = "updates_new_jobs_rollup_list_tap_profile")
     public static void updates_new_jobs_rollup_list_tap_profile() {
-        new ScreenNewJobsRollUp().openFirstUpdate();
+        TextView profile = (TextView) Id.getViewByViewIdName(PROFILE_LAYOUT);
+        ViewUtils.tapOnView(profile, "first connections roll up");
+
+        new ScreenProfile();
 
         TestUtils.delayAndCaptureScreenshot("updates_new_jobs_rollup_list_tap_profile");
     }

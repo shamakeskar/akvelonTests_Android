@@ -5,7 +5,6 @@ import java.util.concurrent.Callable;
 
 import junit.framework.Assert;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseINScreen;
@@ -22,6 +21,7 @@ import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -33,9 +33,9 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenGroupsAndMore extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.networkpage.NetworkPageActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.networkpage.NetworkPageActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "NetworkPageActivity";
-    private static final String LABEL_COMPANIES = "Companies";
+    private static final String LABEL_COMPANIES = "COMPANIES";
     private static final ViewIdName ITEM_LAYOUT_ID = new ViewIdName("title");
 
     // PROPERTIES -----------------------------------------------------------
@@ -48,18 +48,14 @@ public class ScreenGroupsAndMore extends BaseINScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        getSolo().assertCurrentActivity(
-                "Wrong activity (expected " + ACTIVITY_CLASSNAME + ", get "
-                        + getSolo().getCurrentActivity().getClass().getName() + ")",
-                ACTIVITY_SHORT_CLASSNAME);
+        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
         WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
                 "'Groups and More' screen is not loaded", new Callable<Boolean>() {
                     public Boolean call() {
-                        //return (getSolo().searchText(displayName, 1, false, true) != true);
                         ArrayList<View> views = Id.getListOfViewByViewIdName(ITEM_LAYOUT_ID);
-                        if(views.size() >= 4){
-                            for(int i = 0; i < views.size(); i++){
-                                if(!views.get(i).isShown())
+                        if (views.size() >= 3) {
+                            for (int i = 0; i < views.size(); i++) {
+                                if (!views.get(i).isShown())
                                     return false;
                             }
                             return true;
@@ -67,13 +63,21 @@ public class ScreenGroupsAndMore extends BaseINScreen {
                         return false;
                     }
                 });
+        String[] viewTextArray = { "PEOPLE YOU_MAY_KNOW", "GROUPS", "JOBS", LABEL_COMPANIES };
+        for (final String text : viewTextArray) {
+            WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_SHORT, "Label '" + text
+                    + "' is not present on the Groups & More screen", new Callable<Boolean>() {
+                public Boolean call() {
+                    TextView currentTextView = TextViewUtils.getTextViewByText(text);
+                    return (currentTextView != null);
+                }
+            });
+        }
     }
 
     @Override
     public void waitForMe() {
-        Assert.assertTrue("Cannot wait to launch activity '" + ACTIVITY_SHORT_CLASSNAME + "'",
-                getSolo()
-                        .waitForActivity(ACTIVITY_SHORT_CLASSNAME, DataProvider.WAIT_DELAY_DEFAULT));
+        WaitActions.waitSingleActivity(ACTIVITY_SHORT_CLASSNAME, "Groups and More");
     }
 
     @Override
@@ -87,7 +91,7 @@ public class ScreenGroupsAndMore extends BaseINScreen {
      * @return {@code ScreenPYMK}.
      */
     public ScreenPYMK openPYMKScreen() {
-        TextView text = getSolo().getText("PEOPLE YOU MAY KNOW");
+        TextView text = TextViewUtils.getTextViewByText("PEOPLE YOU MAY KNOW");
         Assert.assertNotNull("'PEOPLE YOU MAY KNOW' label not present", text);
         Assert.assertTrue("'PEOPLE YOU MAY KNOW' label not shown", text.isShown());
 
@@ -130,7 +134,7 @@ public class ScreenGroupsAndMore extends BaseINScreen {
      * Taps on 'Groups' label.
      */
     public void tapOnGroups() {
-        TextView groupsText = getSolo().getText("GROUPS");
+        TextView groupsText = TextViewUtils.getTextViewByText("GROUPS");
         ViewUtils.tapOnView(groupsText, "'GROUPS' label");
     }
 
@@ -138,7 +142,9 @@ public class ScreenGroupsAndMore extends BaseINScreen {
      * Taps on 'Jobs' label.
      */
     public void tapOnJobs() {
-        TextView jobsText = getSolo().getText("Jobs");
+        TextView jobsText = TextViewUtils.getTextViewByText("Jobs");
+        if (jobsText == null)
+            jobsText = TextViewUtils.getTextViewByText("JOBS");
         ViewUtils.tapOnView(jobsText, "'Jobs' label");
 
     }
@@ -147,12 +153,10 @@ public class ScreenGroupsAndMore extends BaseINScreen {
      * Taps on 'Companies' label.
      */
     public void tapOnCompanies() {
-
+        getSolo().scrollToBottom();
         // Scroll and wait for loading label 'Companies'.
         WaitActions.waitForTrueInFunction("'Companies' label is not present",
                 new Callable<Boolean>() {
-
-                    @Override
                     public Boolean call() {
                         return getSolo().searchText(LABEL_COMPANIES);
                     }
@@ -188,9 +192,8 @@ public class ScreenGroupsAndMore extends BaseINScreen {
      * @return {@code SearchScreen} with just opened 'SEARCH' screen.
      */
     public ScreenSearch openSearchScreen() {
-        EditText searchBar = getSearchBar();
-        getSolo().clickOnView(searchBar);
-        Logger.i("Tapping on 'Search bar'");
+        View searchBar = getSearchBar();
+        ViewUtils.tapOnView(searchBar, "Search bar");
         ScreenSearch searchScreen = new ScreenSearch();
         return searchScreen;
     }
@@ -242,6 +245,7 @@ public class ScreenGroupsAndMore extends BaseINScreen {
 
     public static void groups_and_more_tap_jobs(String screenshotName) {
         ScreenGroupsAndMore GroupsAndMore = new ScreenGroupsAndMore();
+        getSolo().scrollDown();
         GroupsAndMore.openJobsScreen();
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }

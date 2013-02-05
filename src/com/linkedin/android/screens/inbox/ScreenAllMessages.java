@@ -4,10 +4,12 @@ import java.util.concurrent.Callable;
 
 import junit.framework.Assert;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseListScreen;
 import com.linkedin.android.screens.common.ScreenExpose;
 import com.linkedin.android.screens.common.ScreenNewMessage;
+import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
@@ -26,9 +28,10 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenAllMessages extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.notifications.NewMessageListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.notifications.NewMessageListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "NewMessageListActivity";
     public static final ViewIdName ID_NAME_ALL_MESSAGES = new ViewIdName("chevron");
+    public static final ViewIdName NAV_LABEL = new ViewIdName("abs__action_bar_title");
     static final Rect2DP RIGHT_NAV_BUTTON_RECT = new Rect2DP(265.4f, 28.0f, 54.6f, 49.3f);
 
     // PROPERTIES -----------------------------------------------------------
@@ -42,9 +45,14 @@ public class ScreenAllMessages extends BaseListScreen {
     @Override
     public void verify() {
         verifyCurrentActivity();
-
-        Assert.assertTrue("'LinkedIn' label is not present on 'Inbox' screen", getSolo()
-                .waitForText("LinkedIn", 1, 20));
+        WaitActions.waitForTrueInFunction("'All Messages' screen is not present",
+                new Callable<Boolean>() {
+                    public Boolean call() {
+                        TextView navLabel = (TextView) Id.getViewByViewIdName(NAV_LABEL);
+                        Assert.assertNotNull("Navigation title is not present", navLabel);
+                        return navLabel.getText() != "Mail";
+                    }
+                });
     }
 
     @Override
@@ -78,7 +86,6 @@ public class ScreenAllMessages extends BaseListScreen {
     @TestAction(value = "inbox_mail_all_tap_back")
     public static void inbox_mail_all_tap_back() {
         HardwareActions.pressBack();
-        HardwareActions.scrollToTop();
         new ScreenInbox();
         TestUtils.delayAndCaptureScreenshot("inbox_mail_all_tap_back");
     }

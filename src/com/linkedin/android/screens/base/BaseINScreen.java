@@ -1,13 +1,16 @@
 package com.linkedin.android.screens.base;
 
 import junit.framework.Assert;
-import android.widget.EditText;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.linkedin.android.screens.common.ScreenExpose;
+import com.linkedin.android.tests.data.Id;
+import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
+import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
  * Base class for screens with 'in' button in left top corner.
@@ -22,6 +25,9 @@ public abstract class BaseINScreen extends BaseScreen {
     static final Rect2DP IN_BUTTON_RECT = new Rect2DP(0.0f, 28.0f, 54.6f, 49.3f);
     static final Rect2DP RIGHT_NAV_BUTTON_RECT = new Rect2DP(265.4f, 28.0f, 54.6f, 49.3f);
     static final float SEARCHBAR_HEIGHT_DP = 48.0f;
+
+    public static final ViewIdName IN_BUTTON = new ViewIdName("abs__home");
+    private static final ViewIdName SEARCH_BUTTON = new ViewIdName("menu_search");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -46,21 +52,16 @@ public abstract class BaseINScreen extends BaseScreen {
     /**
      * Returns 'IN' button.
      * 
-     * @return if exist 'IN' button {@code ImageView}, else <b>null</b>
+     * @return if exist 'IN' button {@code Button}, else <b>null</b>
      */
-    public static ImageView getINButton() {
-        for (ImageView view : getSolo().getCurrentImageViews()) {
-            if (view == null)
-                continue;
-            if (view.isShown()
-                    && LayoutUtils.isViewPlacedInLayout(view, LayoutUtils.UPPER_LEFT_BUTTON_LAYOUT)) {
-                Rect2DP viewRect = new Rect2DP(view);
-                if (viewRect.isSizeEqual(IN_BUTTON_RECT.width, IN_BUTTON_RECT.height, 1.0f)) {
-                    return view;
-                }
-            }
+    public static View getINButton() {
+        View inButton = ViewUtils.getViewByClassName("HomeView");
+        if (inButton != null && inButton.isShown()) {
+            return inButton;
+        } else {
+            return null;
         }
-        return null;
+
     }
 
     /**
@@ -82,23 +83,22 @@ public abstract class BaseINScreen extends BaseScreen {
      * 
      * @return if exist search bar {@code EditText}, else <b>null</b>
      */
-    public EditText getSearchBar() {
-        for (EditText view : getSolo().getCurrentEditTexts()) {
-            if (LayoutUtils.isViewPlacedInLayout(view, LayoutUtils.SEARCH_BAR_LAYOUT)) {
-                Rect2DP viewRect = new Rect2DP(view);
-                if (Math.abs(viewRect.height - SEARCHBAR_HEIGHT_DP) < 1.0f) {
-                    return view;
-                }
-            }
+    public View getSearchBar() {
+        // View search = ImageButtonUtils.getImageButtonByIndex(0);
+        // return search;
+        View searchButton = Id.getViewByViewIdName(SEARCH_BUTTON);
+        if (searchButton != null && searchButton.isShown()) {
+            return searchButton;
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
      * Verifies 'IN' button.
      */
     public void verifyINButton() {
-        ImageView in = getINButton();
+        View in = getINButton();
         Assert.assertNotNull("'IN' button is not presented", in);
     }
 
@@ -134,7 +134,7 @@ public abstract class BaseINScreen extends BaseScreen {
      * Taps on 'IN' button.
      */
     public static void tapOnINButton() {
-        ImageView inButton = getINButton();
+        View inButton = getINButton();
         Assert.assertNotNull("'IN' button is not presented", inButton);
 
         Logger.i("Tapping on 'IN' button");

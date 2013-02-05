@@ -1,15 +1,10 @@
 package com.linkedin.android.tests;
 
-import junit.framework.Assert;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.linkedin.android.screens.common.ScreenNewMessage;
 import com.linkedin.android.screens.common.ScreenSearch;
 import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.screens.you.ScreenProfileOfConnectedUser;
 import com.linkedin.android.screens.you.ScreenProfileOfNotConnectedUser;
-import com.linkedin.android.tests.utils.ContactInfoUtils;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
@@ -88,7 +83,7 @@ public class SearchScreenTests extends BaseTestCase {
         Logger.i(DONE + "Search screen loads properly.");
 
         // Search for contact with 2 degree.
-        final String secondDegreeContactName = "evgeny agapov";
+        /*final String secondDegreeContactName = "evgeny agapov";
         TextView foundContact = screenSearch.searchForContact(secondDegreeContactName);
         ImageView foundContactDegree = screenSearch.getContactDegree(foundContact);
         int contactDegree = ContactInfoUtils.getContactDegree(foundContactDegree);
@@ -97,7 +92,7 @@ public class SearchScreenTests extends BaseTestCase {
         final int expectedContactDegree = 2;
         Assert.assertTrue("Degree of found contact is not " + expectedContactDegree,
                 contactDegree == expectedContactDegree);
-        Logger.i(DONE + "Contact with 2 degree was found.");
+        Logger.i(DONE + "Contact with 2 degree was found.");*/
 
         // Open "Profile of connected user" screen of found contact.
         screenSearch.tapOnFirstVisibleConnectionProfileScreen();

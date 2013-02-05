@@ -3,6 +3,7 @@ package com.linkedin.android.tests.utils;
 import java.util.concurrent.Callable;
 
 import junit.framework.Assert;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,12 +23,12 @@ import com.linkedin.android.utils.WaitActions;
 public final class DetailsScreensUtils {
     // CONSTANTS ------------------------------------------------------------
     private static final ViewIdName COMMENTS_LAYOUT = new ViewIdName("comments_layout");
-    //private static final ViewIdName LIKES_LAYOUT = new ViewIdName("likes_layout");
+    private static final ViewIdName LIKES_LAYOUT = new ViewIdName("likes_layout");
     private static final ViewIdName UP_LAYOUT = new ViewIdName("nav_inbox_previous");
     private static final ViewIdName DOWN_LAYOUT = new ViewIdName("nav_inbox_next");
-    private static final ViewIdName LIKES_TEXT_ID_NAME = new ViewIdName("likes_text");
 
     private static final String VIEW_ALL_TEXT = "View all";
+    private static final String LIKE_THIS_TEXT = " like ";
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -40,10 +41,18 @@ public final class DetailsScreensUtils {
      * @return {@code TextView} object with text 'n people liked this'.
      */
     public static TextView getPeopleLikedLabel() {
-        TextView likesText = (TextView) Id.getViewByViewIdName(LIKES_TEXT_ID_NAME);
-        if (likesText == null)
-            return null;
-        return likesText;
+        ViewGroup likesCommentsLayouts = (ViewGroup) Id.getViewByViewIdName(LIKES_LAYOUT);
+        for (int i = 0; i < likesCommentsLayouts.getChildCount(); i++) {
+            try {
+                TextView commentField = (TextView) likesCommentsLayouts.getChildAt(i);
+                if (commentField.getText().toString().indexOf(LIKE_THIS_TEXT) != -1) {
+                    return commentField;
+                }
+            } catch (ClassCastException e) {
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -116,7 +125,7 @@ public final class DetailsScreensUtils {
         else
             return new ScreenCompanyDetails();
     }
-
+    
     /**
      * Tapping on Up button to load previous screen
      */
@@ -126,7 +135,7 @@ public final class DetailsScreensUtils {
         Logger.i("Tapping on 'Up' button");
         DataProvider.getInstance().getSolo().clickOnView(upButton);
     }
-
+    
     /**
      * Tapping on Down button to load next screen
      */

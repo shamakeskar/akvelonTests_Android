@@ -21,7 +21,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  */
 public class ScreenGroups extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.groups.GroupsListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.groupsandnews.groups.GroupsListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "GroupsListActivity";
 
     // PROPERTIES -----------------------------------------------------------

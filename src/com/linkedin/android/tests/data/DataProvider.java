@@ -20,9 +20,9 @@ public class DataProvider {
     // Instance of DataProvider.
     private static volatile DataProvider instance;
     // Target package.
-    public static final String TARGET_PACKAGE_ID = "com.linkedin.android";
+    public static final String TARGET_PACKAGE_ID = "com.linkedin.android.redesign";
     // Launcher activity class names.
-    public static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.linkedin.android.authenticator.LaunchActivity";
+    public static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME = "com.linkedin.android.redesign.authenticator.v2.AuthenticatorActivity";
     public static final String LAUNCHACTIVITY_SHORT_CLASSNAME = "LaunchActivity";
     // Logcat tag for find logs from this app.
     private static final String LOGCAT_TAG = "LinkedIn_Android_Tests";
@@ -36,6 +36,7 @@ public class DataProvider {
     public static final int WAIT_DELAY_DEFAULT = 20000;
     // Long time delay in ms.
     public static final int WAIT_DELAY_LONG = 50000;
+    public static final int WAIT_SIGNOUT_DELAY = 100000;
     // Delay for Save/Unsave button change in sec.
     public static final float WAIT_SAVE_UNSAVE_JOB_BUTTON_CHANGED = 10.0f;
     // Default timeout for wait until progress bar disappear.
@@ -47,7 +48,7 @@ public class DataProvider {
     // Default time between events onChange() during screen refreshing in ms.
     public static final int TIME_BETWEEN_REFRESH_LOADS = 10000;
     // Default count of scrolls to scroll whole screen.
-    public static final int DEFAULT_SCROLLS_COUNT = 50;
+    public static final int DEFAULT_SCROLLS_COUNT = 150;
 
     // PROPERTIES -----------------------------------------------------------
     // Activity of apk to test.

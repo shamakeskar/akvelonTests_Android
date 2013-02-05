@@ -1,17 +1,18 @@
 package com.linkedin.android.screens.common;
 
-import junit.framework.Assert;
+import java.util.concurrent.Callable;
+
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.linkedin.android.screens.base.BaseListScreen;
 import com.linkedin.android.screens.more.ScreenGroupsDiscussionList;
-import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -23,7 +24,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
 // Group join request sent.
 public class ScreenGroupsYouMightLike extends BaseListScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.groupsandnews.groups.GroupsYouMightLikeListActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.groupsandnews.groups.GroupsYouMightLikeListActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "GroupsYouMightLikeListActivity";
 
     static int INDEX_OF_LAYOUT_CHILD = 3;
@@ -40,11 +41,12 @@ public class ScreenGroupsYouMightLike extends BaseListScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        Assert.assertTrue(
-                "'You Might Like' label is not present",
-                getSolo().waitForText("You Might Like", 1, DataProvider.WAIT_DELAY_LONG, false,
-                        false));
-
+        WaitActions.waitForTrueInFunction("'Groups You Might Like' label is not present",
+                new Callable<Boolean>() {
+                    public Boolean call() {
+                        return TextViewUtils.getTextViewByText("Groups You Might Like") != null;
+                    }
+                });
         verifyINButton();
     }
 

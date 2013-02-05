@@ -1,5 +1,5 @@
 <TestSuite groups="Regressions">
-  <Test name="regression_groups_and_more" id="42118115">
+  <Test name="regression_groups_and_more" id="43558467">
     <Step key="go_to_groups_and_more" payload="user1@correo.linkedinlabs.com,crazyman" />
     <Step key="groups_and_more_tap_pymk" />
     <Step key="groups_and_more_tap_pymk_reset" />
