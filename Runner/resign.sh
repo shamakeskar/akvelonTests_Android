@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo "You need to type passphrase 'android' there:"
 if [ -z "$1" ];then
     APK="../Build/LinkedIn.apk"
 else

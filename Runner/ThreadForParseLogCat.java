@@ -7,7 +7,7 @@ class ThreadForParseLogCat extends Thread {
     // CONSTANTS ------------------------------------------------------------
     private static final String CMD_CLEAR_LOGCAT = "logcat -c";
     private static final String STRING_TAG_FOR_LOGCAT_FILTER = "LinkedIn_Android_Tests";
-    private static final String CMD_START_LOGCAT = "logcat -v long " + STRING_TAG_FOR_LOGCAT_FILTER
+    private static final String CMD_START_LOGCAT = "logcat -v time " + STRING_TAG_FOR_LOGCAT_FILTER
             + ":V *:S";
     private static final String STRING_START_TEST = "Start test '";
     private static final String STRING_END_TEST = "Test over.-------------------------------------------------------------------";
@@ -104,6 +104,8 @@ class ThreadForParseLogCat extends Thread {
      * @return name of current test.
      */
     public synchronized String getCurrentTestName() {
+        if (currentTestNameString == null)
+            return null;
         Matcher matcher = Pattern.compile("'.*'").matcher(currentTestNameString);
         if (matcher.find()) {
             String name = matcher.group(0);

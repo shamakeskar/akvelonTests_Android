@@ -28,6 +28,7 @@ public class Runner {
     private static final String PARAM_TESTS = "-t";
     private static final String PARAM_DEVICE_ID = "-d";
     private static final String PARAM_OUTPUT_FILE = "-r";
+    private static final String PARAM_ALL_TESTS = "--all_tests";
     private static final String PARAM_HELP = "-h";
     private static final String PARAM_HELP_LONG = "--help";
 
@@ -50,7 +51,6 @@ public class Runner {
     // Default settings constants.
     private static final String FILE_TO_PUSH = "tests.xml";
     private static final String FOLDER_WITH_XML = "../TestDefinitions";
-    private static final String APK_TESTED = "../Build/LinkedIn.apk";
     private static final String APK_TESTS = "../bin/LinkedIn_Android_Tests.apk";
     private static final String PATH_TO_PUSH = "/mnt/sdcard/";
     private static final String FILE_OUTPUT = "output.log";
@@ -63,10 +63,10 @@ public class Runner {
 
     // PROPERTIES -----------------------------------------------------------
     // Path to tested apk.
-    private static String apkTested = APK_TESTED;
+    private static String apkTested = null;
     // Path to tests apk.
     private static String apkTests = APK_TESTS;
-    // Path to tests apk.
+    // Path to folder with XML's.
     private static String pathToXmlFolder = FOLDER_WITH_XML;
     // File for save output log.
     private static File outputFile = new File(FILE_OUTPUT);
@@ -76,6 +76,8 @@ public class Runner {
     private static String deviceId = null;
     // List of tests to run.
     private static ArrayList<String> tests = new ArrayList<String>();
+    // Flag that need run all tests from pathToXmlFolder.
+    private static boolean isAllTests = false;
     // Custom file to push.
     private static String pathToFileWithTests = null;
     // File with tests to run.
@@ -87,7 +89,7 @@ public class Runner {
 
     // METHODS --------------------------------------------------------------
     /**
-     * Point to run script.
+     * Entry point.
      * 
      * @param args
      *            array of arguments from command line.
@@ -119,6 +121,9 @@ public class Runner {
                         System.err.println("Please specify at least one test!");
                         showUsage(1);
                     }
+                    break;
+                case PARAM_ALL_TESTS:
+                    isAllTests = true;
                     break;
                 case PARAM_CUSTOM_TESTED_APK:
                     if (isProperParameter(args[i + 1])) {
@@ -196,11 +201,18 @@ public class Runner {
         log("    '* ' - output of instrument parser,");
         log("    '# ' - output of logcat parser");
 
-        // Prepare parameters.
-        if (getOs().equals("Windows")) {
-            // Replace '/' to '\'.
-        } else {
-            // Replace '\' to '/'.
+        // If need run all tests in folder then find all xml's in
+        // pathToXmlFolder.
+        if (isAllTests) {
+            File xmlFolder = new File(pathToXmlFolder);
+            File[] listOfFiles = xmlFolder.listFiles();
+            for (int i = 0; i < listOfFiles.length; i++) {
+                File file = listOfFiles[i];
+                String fileName = file.getName();
+                if (file.isFile() && (fileName.contains(".xml") || fileName.contains(".XML"))) {
+                    tests.add(fileName.substring(0, fileName.length() - 4));
+                }
+            }
         }
 
         // Check that all XML's exist.
@@ -216,7 +228,8 @@ public class Runner {
         // Log parameters.
         StringBuilder builder = new StringBuilder();
         builder.append("Android device ID: ").append(deviceId).append('\n');
-        builder.append("Tested APK: ").append(apkTested).append('\n');
+        if (apkTested != null)
+            builder.append("Tested APK: ").append(apkTested).append('\n');
         builder.append("Tests APK: ").append(apkTests).append('\n');
         if (pathToFileWithTests != null)
             builder.append("File with tests: ").append(pathToFileWithTests).append('\n');
@@ -350,7 +363,7 @@ public class Runner {
                             + "': " + e.toString());
                 }
             }
-            
+
             // Log content
             log("Content of file to push:");
             log("****************************");
@@ -399,8 +412,7 @@ public class Runner {
         builder.append("OPTIONS\n");
         builder.append("    -d           <device_id>      Android device/emulator ID. You may not specify this if you have only one android.\n");
         builder.append("    -t           <list_of_tests>  List of tests to run.\n");
-        builder.append("    --tested_apk <path_to_apk>    Path to tested apk (default is '")
-                .append(APK_TESTED).append("').\n");
+        builder.append("    --tested_apk <path_to_apk>    Path to tested apk (if not specified then will not be installed).\n");
         builder.append("    --tests_apk  <path_to_apk>    Path to tests apk (default is '")
                 .append(APK_TESTS).append("').\n");
         builder.append(
@@ -429,13 +441,14 @@ public class Runner {
         StringBuilder cmdBuilder = getStartAdbCommand();
 
         // Install tested apk in device.
-        /*
-         * exitValue = runCommandInRuntime(new
-         * StringBuilder(cmdBuilder).append(CMD_INSTALL)
-         * .append(apkTested).toString()); if (exitValue != 0) {
-         * logError("Cannot install tested apk on to android device.");
-         * System.exit(1); }
-         */
+        if (apkTested != null) {
+            exitValue = runCommandInRuntime(new StringBuilder(cmdBuilder).append(CMD_INSTALL)
+                    .append(apkTested).toString());
+            if (exitValue != 0) {
+                logError("Cannot install tested apk on to android device.");
+                System.exit(1);
+            }
+        }
 
         // Install tests apk in device.
         exitValue = runCommandInRuntime(new StringBuilder(cmdBuilder).append(CMD_INSTALL)
@@ -480,6 +493,11 @@ public class Runner {
             private boolean isCopyInstrumentStatus = false;
             private int numberOfDoneTests = 0;
 
+            /**
+             * Returns String like "[##---]" for 2 of 5 passed tests.
+             * 
+             * @return
+             */
             private String getProgressString() {
                 StringBuilder builder = new StringBuilder("[");
                 int i = 0;
@@ -488,7 +506,7 @@ public class Runner {
                     i++;
                 }
                 while (i < numberOfTests) {
-                    builder.append('_');
+                    builder.append('-');
                     i++;
                 }
                 return builder.append(']').toString();
@@ -525,7 +543,12 @@ public class Runner {
                         if (statusCode == 1) {
                             instrumentLog = new StringBuilder();
                             isCopyInstrumentLog = true;
-                            Runner.logAndOutput("Started test: '" + currentTestName + "' "
+                            String testName = currentTestName;
+                            if (currentTestName.equals("testActions")
+                                    && numberOfDoneTests < tests.size()) {
+                                testName = tests.get(numberOfDoneTests);
+                            }
+                            Runner.logAndOutput("Started test: '" + testName + "' "
                                     + getProgressString());
                         } else {
                             isCopyInstrumentLog = false;
