@@ -54,7 +54,6 @@ public class Runner {
     private static final String APK_TESTS = "../bin/LinkedIn_Android_Tests.apk";
     private static final String PATH_TO_PUSH = "/mnt/sdcard/";
     private static final String FILE_OUTPUT = "output.log";
-    private static final String[] OS = { "Windows", "Mac OS", "Unix" };
 
     // Interface for parse commands output in runCommandInRuntime method.
     public interface RuntimeCommandParser {
@@ -99,16 +98,14 @@ public class Runner {
         for (int i = 0; i < args.length; i++) {
             String currentParameter = args[i];
             if (currentParameter.charAt(0) == '-') {
-                switch (currentParameter) {
-                case PARAM_DEVICE_ID:
+                if (currentParameter.equals(PARAM_DEVICE_ID)) {
                     if (isProperParameter(args[i + 1])) {
                         deviceId = args[++i];
                     } else {
                         System.err.println("Please specify Device ID!");
                         showUsage(1);
                     }
-                    break;
-                case PARAM_TESTS:
+                } else if (currentParameter.equals(PARAM_TESTS)) {
                     for (i += 1; i < args.length; i++) {
                         if (isProperParameter(args[i])) {
                             tests.add(args[i]);
@@ -121,54 +118,47 @@ public class Runner {
                         System.err.println("Please specify at least one test!");
                         showUsage(1);
                     }
-                    break;
-                case PARAM_ALL_TESTS:
+                } else if (currentParameter.equals(PARAM_ALL_TESTS)) {
                     isAllTests = true;
-                    break;
-                case PARAM_CUSTOM_TESTED_APK:
+                } else if (currentParameter.equals(PARAM_CUSTOM_TESTED_APK)) {
                     if (isProperParameter(args[i + 1])) {
                         apkTested = args[++i];
                     } else {
                         System.err.println("Please specify path to tested apk!");
                         showUsage(1);
                     }
-                    break;
-                case PARAM_CUSTOM_TESTS_APK:
+                } else if (currentParameter.equals(PARAM_CUSTOM_TESTS_APK)) {
                     if (isProperParameter(args[i + 1])) {
                         apkTests = args[++i];
                     } else {
                         System.err.println("Please specify path to tests apk!");
                         showUsage(1);
                     }
-                    break;
-                case PARAM_CUSTOM_FOLDER_WITH_XML:
+                } else if (currentParameter.equals(PARAM_CUSTOM_FOLDER_WITH_XML)) {
                     if (isProperParameter(args[i + 1])) {
                         pathToXmlFolder = args[++i];
                     } else {
                         System.err.println("Please specify path to directory with xml!");
                         showUsage(1);
                     }
-                    break;
-                case PARAM_FILE_WITH_TESTS:
+                } else if (currentParameter.equals(PARAM_FILE_WITH_TESTS)) {
                     if (isProperParameter(args[i + 1])) {
                         pathToFileWithTests = args[++i];
                     } else {
                         System.err.println("Please specify path to file with tests!");
                         showUsage(1);
                     }
-                    break;
-                case PARAM_OUTPUT_FILE:
+                } else if (currentParameter.equals(PARAM_OUTPUT_FILE)) {
                     if (isProperParameter(args[i + 1])) {
                         outputFile = new File(args[++i]);
                     } else {
                         System.err.println("Please specify path to file for output logs.");
                         showUsage(1);
                     }
-                    break;
-                case PARAM_HELP:
-                case PARAM_HELP_LONG:
+                } else if (currentParameter.equals(PARAM_HELP)) {
+                } else if (currentParameter.equals(PARAM_HELP_LONG)) {
                     showUsage(0);
-                default:
+                } else {
                     System.err.println("Unknown parameter '" + currentParameter + "'");
                 }
                 continue;
@@ -234,7 +224,7 @@ public class Runner {
         if (pathToFileWithTests != null)
             builder.append("File with tests: ").append(pathToFileWithTests).append('\n');
         builder.append("File with output: ").append(outputFile.getAbsolutePath()).append('\n');
-        builder.append("Operating system: ").append(getOs()).append('\n');
+        builder.append("Operating system: ").append(System.getProperty("os.name")).append('\n');
         if (tests.size() > 0) {
             builder.append("Tests for run:").append('\n');
             for (int i = 0; i < tests.size(); i++) {
@@ -372,20 +362,15 @@ public class Runner {
         }
 
         // Run script for current OS.
-        switch (getOs()) {
-        case "Windows":
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.indexOf("win") >= 0)
             runWindowsScript();
-            break;
-        case "Mac":
-        case "Mac OS":
+        else if (os.indexOf("mac") >= 0)
             runMacScript();
-            break;
-        case "Unix":
+        else if (os.indexOf("nix") >= 0)
             runUnixScript();
-            break;
-        default:
-            throw new NullPointerException("Unknown OS :" + getOs());
-        }
+        else
+            throw new NullPointerException("Unknown OS :" + System.getProperty("os.name"));
     }
 
     /**
@@ -637,18 +622,6 @@ public class Runner {
             return new StringBuilder(CMD_ADB);
         else
             return new StringBuilder(CMD_ADB_S).append(deviceId).append(" ");
-    }
-
-    // Check type OS.
-    private static String getOs() {
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.indexOf("win") >= 0)
-            return OS[0];
-        if (os.indexOf("mac") >= 0)
-            return OS[1];
-        if (os.indexOf("nix") >= 0)
-            return OS[2];
-        throw new NullPointerException("Unknown OS :" + os);
     }
 
     /**
