@@ -6,7 +6,6 @@ import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 
 @SuppressWarnings("rawtypes")
 public class ScreenSettingsOnOfFeatures extends BaseScreen {
@@ -24,8 +23,7 @@ public class ScreenSettingsOnOfFeatures extends BaseScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-
+        verifyCurrentActivity();
         Assert.assertTrue("Checbox's are not found.", getSolo().getCurrentCheckBoxes().size() > 0);
 
         // Scroll down.

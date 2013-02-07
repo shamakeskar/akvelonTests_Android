@@ -14,7 +14,6 @@ import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
 
 /**
@@ -38,8 +37,7 @@ public class ScreenLikesList extends BaseListScreen {
 
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-
+        verifyCurrentActivity();
         WaitActions.waitForTrueInFunction("'Likes' title is not present", new Callable<Boolean>() {
             public Boolean call() {
                 TextView titleView = (TextView) Id.getViewByViewIdName(TITLE_VIEW);

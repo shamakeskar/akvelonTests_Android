@@ -21,7 +21,6 @@ import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -48,7 +47,7 @@ public class ScreenGroupsAndMore extends BaseINScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
         WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
                 "'Groups and More' screen is not loaded", new Callable<Boolean>() {
                     public Boolean call() {
@@ -63,15 +62,21 @@ public class ScreenGroupsAndMore extends BaseINScreen {
                         return false;
                     }
                 });
-        String[] viewTextArray = { "PEOPLE YOU_MAY_KNOW", "GROUPS", "JOBS", LABEL_COMPANIES };
-        for (final String text : viewTextArray) {
-            WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_SHORT, "Label '" + text
-                    + "' is not present on the Groups & More screen", new Callable<Boolean>() {
-                public Boolean call() {
-                    TextView currentTextView = TextViewUtils.getTextViewByText(text);
-                    return (currentTextView != null);
-                }
-            });
+        String[] viewTextArray = { "PEOPLE YOU MAY KNOW", "GROUPS", "JOBS",
+                LABEL_COMPANIES };
+        for (int i = 0; i < viewTextArray.length; i++) {
+            ViewUtils.waitForToastDisappear();
+            final String text = viewTextArray[i];
+            WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_SHORT,
+                    "Label '" + text + "' is not present on the screen",
+                    new Callable<Boolean>() {
+                        public Boolean call() {
+                            return getSolo().searchText(text);
+                        }
+                    });
+            if (i >= 2){
+                getSolo().scrollToBottom();
+            }            
         }
     }
 

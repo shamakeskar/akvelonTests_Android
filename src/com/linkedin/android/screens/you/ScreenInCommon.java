@@ -45,7 +45,7 @@ public class ScreenInCommon extends BaseListScreen {
     @Override
     public void verify() {
         verifyCurrentActivity();
-        WaitActions.waitForTrueInFunction2("'In Common' screen is not present (list with profiles is not present)",
+        WaitActions.waitForTrueInFunction("'In Common' screen is not present (list with profiles is not present)",
                 new Callable<Boolean>() {
                     public Boolean call() {
                         return ViewUtils.getViewByClassName("PinnedHeaderListView") != null;

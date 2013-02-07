@@ -7,15 +7,12 @@ import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseScreenMessage;
 import com.linkedin.android.screens.inbox.ScreenInbox;
-import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
-import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -37,7 +34,7 @@ public class ScreenNewMessage extends BaseScreenMessage {
     // METHODS -----------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
         WaitActions.waitForTrueInFunction("New Message label is not present",
                 new Callable<Boolean>() {
                     public Boolean call() {
@@ -53,9 +50,7 @@ public class ScreenNewMessage extends BaseScreenMessage {
 
     @TestAction(value = "go_to_message_compose")
     public static void go_to_message_compose(String email, String password) {
-        LoginActions.openUpdatesScreenOnStart(email, password);
-        ScreenUpdates.updates_tap_expose();
-        ScreenExpose.expose_tap_inbox();
+        ScreenInbox.go_to_inbox(email, password);
         message_compose("go_to_message_compose");
     }
 
@@ -89,9 +84,19 @@ public class ScreenNewMessage extends BaseScreenMessage {
 
     @TestAction(value = "message_compose_tap_send_precondition")
     public static void message_compose_tap_send_precondition(String subject, String body) {
-        TestUtils.typeTextInEditText0(subject);
-        TestUtils.typeTextInEditText1(body);
+        TestUtils.typeTextInEditText1(subject);
+        TestUtils.typeTextInEditText2(body);
         TestUtils.delayAndCaptureScreenshot("message_compose_tap_send_precondition");
+    }
+    
+    @TestAction(value = "message_compose_tap_send_regression_precondition")
+    public static void message_compose_tap_send_regression_precondition(String subject, String body, String recipient) {
+        ScreenNewMessage.message_compose_tap_add_recipients();
+        ScreenAddConnections.select_recipients_tap_select(recipient);
+        ScreenAddConnections.select_recipients_tap_done();
+        TestUtils.typeTextInEditText1(subject);
+        TestUtils.typeTextInEditText2(body);
+        TestUtils.delayAndCaptureScreenshot("message_compose_tap_send_regression_precondition");
     }
 
     @TestAction(value = "message_compose_tap_send")

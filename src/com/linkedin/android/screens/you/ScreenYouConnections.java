@@ -17,7 +17,6 @@ import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -38,8 +37,7 @@ public class ScreenYouConnections extends BaseListScreen {
 
     // METHODS --------------------------------------------------------------
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-
+        verifyCurrentActivity();
         Assert.assertTrue("'Connections' label is not present",
                 getSolo().waitForText(CONNECTIONS_LABEL));
     }
@@ -149,7 +147,7 @@ public class ScreenYouConnections extends BaseListScreen {
         return new ScreenPYMK();
     }
 
-    // Tap 'Back' buutton and verify ScreenYouConnections
+    // Tap 'Back' button and verify ScreenYouConnections
     public static void backInYouConnections(String screenName) {
         HardwareActions.goBackOnPreviousActivity();
         new ScreenYouConnections();
@@ -180,6 +178,7 @@ public class ScreenYouConnections extends BaseListScreen {
     @TestAction(value = "connections_tap_back")
     public static void connections_tap_back() {
         HardwareActions.goBackOnPreviousActivity();
+        HardwareActions.scrollToTop();
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("connections_tap_back");
     }

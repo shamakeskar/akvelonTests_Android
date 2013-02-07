@@ -10,6 +10,7 @@ import junit.framework.Assert;
 import android.annotation.SuppressLint;
 import android.view.View;
 import android.webkit.ConsoleMessage;
+import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
@@ -23,6 +24,12 @@ import com.linkedin.android.tests.data.DataProvider;
 @SuppressLint("SetJavaScriptEnabled")
 public class WebViewHandler {
     // CONSTANTS ------------------------------------------------------------
+    // Prefix for find single line message in ConsoleMessage.
+    private final static String MESSAGE_PREFIX = "ConsoleMessage";
+    // Prefix for find partial message in ConsoleMessage.
+    private final static String MESSAGE_PART_PREFIX = "ConsolePart";
+    // Tag to find the end of multiline console message in ConsoleMessage.
+    private final static String END_OF_MESSAGE = "ConsoleEnd";
 
     // PROPERTIES -----------------------------------------------------------
     // Instance of WebView for interactions.
@@ -53,6 +60,50 @@ public class WebViewHandler {
 
     // METHODS --------------------------------------------------------------
     /**
+     * Wait for the end of message tag.
+     */
+    private void waitForConsole() {
+        waitForConsole(DataProvider.WAIT_DELAY_DEFAULT);
+    }
+
+    /**
+     * Wait for the end of message tag in specified timeout.
+     * 
+     * @param timeout timeout in ms
+     */
+    private void waitForConsole(int timeout) {
+        waitForConsole(null, DataProvider.WAIT_DELAY_DEFAULT);
+    }
+
+    /**
+     * Wait for the end of message tag.
+     * 
+     * @param errorMessage message in case of timeout
+     */
+    private void waitForConsole(String errorMessage) {
+        waitForConsole(errorMessage, DataProvider.WAIT_DELAY_DEFAULT);
+    }
+
+    /**
+     * Wait for the end of message tag in specified timeout.
+     * 
+     * @param errorMessage message in case of timeout
+     * @param timeout timeout in ms
+     */
+    private void waitForConsole(String errorMessage, int timeout) {
+        boolean success = WaitActions.isTrueInFunction(timeout, new Callable<Boolean>() {
+            public Boolean call() {
+                return client.isMessageReceived();
+            }
+        });
+        if (!success) {
+            Logger.d(client.getRawConsole());
+            Assert.fail(errorMessage == null ? "No answer from console. Make sure '" + END_OF_MESSAGE
+                    + "' tag is present in JS" : errorMessage);
+        }
+    }
+
+    /**
      * Clicking on link in web view
      * 
      * @param browser
@@ -61,20 +112,22 @@ public class WebViewHandler {
      *            http link of the page to click on.
      */
     public void clickOnLink(String link) {
-        // Javascript to click on anchor link in web view
-        webView.loadUrl("javascript:links=document.getElementsByTagName('a');var linkPresent=false;"
+        client.cleanConsoleMessage();
+        webView.loadUrl("javascript:links=document.getElementsByTagName('a');var found=false;"
                 + "for(var i=0;i<links.length;i++){"
                 + "if(links[i].innerHTML=='"
                 + link
-                + "'){ linkPresent=true;"
+                + "'){ found=true;"
                 + "var event = document.createEvent('MouseEvents');"
                 + "event.initMouseEvent('click', true, window, 1, 0, 0, 0, 0, false, false, false, 1, document.body.parentNode);"
                 + "links[i].dispatchEvent(event);"
                 + "}"
-                + "} if(linkPresent==false){console.log('ConsoleMessage'+'LinkNotPresent');}");
-
-        // Checking if link is not present in web view
-        // waitForConsoleMessage("LinkNotPresent");
+                + "} if(found){console.log('" + MESSAGE_PREFIX + "' + 'class is found');}"
+                + "else{console.log('" + END_OF_MESSAGE + "');}");
+        waitForConsole();
+        if (!client.getConsoleMessage().contains("class is found")) {
+            Assert.fail("Cannot tap on link " + link);
+        }
     }
 
     /**
@@ -86,60 +139,43 @@ public class WebViewHandler {
      *            partial text inside of tag
      */
     public void clickOnClass(String className, String innerText) {
+        client.cleanConsoleMessage();
         webView.loadUrl("javascript:elements=document.getElementsByClassName('"
                 + className
-                + "');var linkPresent=false;"
+                + "');var found=false;"
                 + "for(var i=0;i<elements.length;i++){"
                 + "if(elements[i].innerText.indexOf(\""
                 + innerText
-                + "\") !== -1) { linkPresent=true;"
+                + "\") !== -1) { found=true;"
+                + "elements[i].scrollIntoView(true);"
                 + "var event = document.createEvent('MouseEvents');"
                 + "event.initMouseEvent('click', true, window, 1, 0, 0, 0, 0, false, false, false, 1, document.body.parentNode);"
                 + "elements[i].dispatchEvent(event);" + "break; }"
-                + "} if(linkPresent==false){console.log('ConsoleMessage'+'LinkNotPresent');}");
+                + "} if(found){console.log('" + MESSAGE_PREFIX + "' + 'class is found');}"
+                + "else{console.log('" + END_OF_MESSAGE + "');}");
+        waitForConsole();
+        if (!client.getConsoleMessage().contains("class is found")) {
+            Assert.fail("Cannot tap on web element with class '" + className 
+                    + "' and text '" + innerText + "'");
+        }
     }
-    
+
     /**
      * Logs (as debug) innerText of all classes with specified name.
      * 
      * @param className
      */
     public void logAllClasses(String className) {
+        client.cleanConsoleMessage();
         webView.loadUrl("javascript:elements=document.getElementsByClassName('"
                 + className
-                + "');for(var i=0;i<elements.length;i++);console.log('ConsoleMessage'+i+':'+elements[i].innerText+'\n');");
-        boolean isFound = WaitActions.isTrueInFunction(new Callable<Boolean>() {
-            public Boolean call() {
-                return client.isTextPresent();
-            }
-        });
-        if (isFound) {
-            Logger.d("innerText of classes with name '" + className + "':");
-            Logger.d(client.getConsoleMessage());
-        } else {
-            Logger.d("Cannot found classes with names '" + className + "'");
-        }
+                + "');for(var i=0;i<elements.length;i++) { "
+                + "console.log('" + MESSAGE_PART_PREFIX + "'+i+':'+elements[i].innerText+' '+elements[i].offsetTop);}"
+                + "console.log('" + END_OF_MESSAGE + "');");
+        waitForConsole();
+        Logger.d(client.getConsoleMessage());
     }
 
-    /**
-     * Checking for text appears in web view in specified timeout.
-     * 
-     * @param text string to search
-     * @param timeout timeout in ms
-     * @return <b>true</b> if text appears in <b>timeout</b>.
-     */
-    public boolean isTextPresent(String text, int timeout) {
-        client.cleanConsoleMessage();
-        client.setFinalText(text);
-        // Passing entire html doc to console log.
-        webView.loadUrl("javascript:console.log('ConsoleMessage'+document.body.innerText);");
-        return WaitActions.isTrueInFunction(new Callable<Boolean>() {
-            public Boolean call() {
-                return client.isTextPresent();
-            }
-        });
-    }
-    
     /**
      * Checking for text appears in web view in timeout = WAIT_DELAY_DEFAULT.
      * 
@@ -151,19 +187,29 @@ public class WebViewHandler {
     }
 
     /**
+     * Checking for text appears in web view in specified timeout.
+     * 
+     * @param text string to search
+     * @param timeout timeout in ms
+     * @return <b>true</b> if text appears in <b>timeout</b>.
+     */
+    public boolean isTextPresent(String text, int timeout) {
+        client.cleanConsoleMessage();
+        // Passing entire html doc to console log.
+        webView.loadUrl("javascript:console.log('" + MESSAGE_PREFIX + "'+document.body.innerText);");
+        waitForConsole("Cannot get innerText for webview content", timeout);
+        return client.getConsoleMessage().contains(text);
+    }
+
+    /**
      * Returns HTML code of current page.
      * 
      * @return whole HTML page
      */
     public String getHTML() {
         client.cleanConsoleMessage();
-        webView.loadUrl("javascript:console.log('ConsoleMessage'+document.body.innerHTML);");
-        WaitActions.waitForTrueInFunction("Cannot get 'document.body.innerHTML' of current page.",
-                new Callable<Boolean>() {
-                    public Boolean call() {
-                        return client.getConsoleMessage() != null;
-                    }
-                });
+        webView.loadUrl("javascript:console.log('" + MESSAGE_PREFIX + "'+document.body.innerHTML);");
+        waitForConsole("Cannot get innerHTML for webview content");
         return client.getConsoleMessage();
     }
 
@@ -197,16 +243,14 @@ public class WebViewHandler {
      * @author alexey.makhalov
      */
     static class ChromeClient extends WebChromeClient {
-        // Prefix for find console messages in ConsoleMessage.
-        private final String PREFIX = "ConsoleMessage";
-        // Text for determine end of message.
-        private String finalText;
-        // Flag that finalText found in console messages.
-        private boolean isTextPresent = false;
         // Instance of ConsoleMessage.
         private static ChromeClient client;
-        // Last console message.
-        private String consoleMessage;
+        // Whole console message.
+        private String consoleMessage = "";
+        // Flag that indicates whole message is received.
+        private boolean isMessageReceived = false;
+        // Raw console data.
+        private String consoleRaw = "";
 
         // Creating singleton object
         private ChromeClient() {
@@ -223,28 +267,31 @@ public class WebViewHandler {
             return client;
         }
 
-        /**
-         * Set text for determine end of message.
-         * 
-         * @param text
-         *            string for determine end of message.
-         */
-        private void setFinalText(String text) {
-            finalText = text;
-            isTextPresent = false;
-        }
-
         @Override
         public boolean onConsoleMessage(ConsoleMessage cmsg) {
             // Checking prefix.
-            if (cmsg.message().startsWith(PREFIX)) {
-                // This is console message - handle it.
-                consoleMessage = cmsg.message().substring(PREFIX.length() - 1);
-                if (finalText != null)
-                    isTextPresent = consoleMessage.contains(finalText);
-                return true;
+            if (cmsg.message().startsWith(MESSAGE_PREFIX)) {
+                // We get whole message. Stop receiving.
+                consoleMessage = cmsg.message().substring(MESSAGE_PREFIX.length());
+                isMessageReceived = true;
+            }            
+            if (cmsg.message().startsWith(MESSAGE_PART_PREFIX)) {
+                // We get part of a message. Wait for more or the end tag.
+                consoleMessage += cmsg.message().substring(MESSAGE_PART_PREFIX.length()) + "\n";
+            } else if (cmsg.message().startsWith(END_OF_MESSAGE)) {
+                // Stop receiving.
+                isMessageReceived = true;
+            } else {
+                consoleRaw += cmsg.message() + "\n";
             }
-            return false;
+            return true;
+        }
+
+        @Override
+        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+            Logger.d(message);
+            result.confirm();
+            return true;
         }
 
         /**
@@ -252,25 +299,34 @@ public class WebViewHandler {
          * 
          * @return <b>true</b> if text found.
          */
-        public boolean isTextPresent() {
-            return isTextPresent;
+        public boolean isMessageReceived() {
+            return isMessageReceived;
         }
 
         /**
          * Returns console message.
-         * 
          * @return console message.
          */
         public String getConsoleMessage() {
             return consoleMessage;
         }
+        
+        /**
+         * Returns raw console data.
+         * @return raw console data.
+         */
+        public String getRawConsole() {
+            return consoleRaw;
+        }
+
 
         /**
          * Cleans console message in ChromeClient.
          */
         public void cleanConsoleMessage() {
-            consoleMessage = null;
-            isTextPresent = false;
+            consoleMessage = "";
+            consoleRaw = "";
+            isMessageReceived = false;
         }
     }
 }

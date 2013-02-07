@@ -1,14 +1,24 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class ThreadForParseLogCat extends Thread {
     // CONSTANTS ------------------------------------------------------------
-    private static final String CMD_CLEAR_LOGCAT = "logcat -c";
+    private static final String[] CMD_CLEAR_LOGCAT = new String[] { "logcat", "-c" };
     private static final String STRING_TAG_FOR_LOGCAT_FILTER = "LinkedIn_Android_Tests";
-    private static final String CMD_START_LOGCAT = "logcat -v time " + STRING_TAG_FOR_LOGCAT_FILTER
-            + ":V *:S";
+    private static final List<String> CMD_START_LOGCAT = new ArrayList<String>();
+    static {
+        CMD_START_LOGCAT.add("logcat");
+        CMD_START_LOGCAT.add("-v");
+        CMD_START_LOGCAT.add("time");
+        CMD_START_LOGCAT.add(STRING_TAG_FOR_LOGCAT_FILTER);
+        CMD_START_LOGCAT.add(":V");
+        CMD_START_LOGCAT.add("*:S");
+    }
+    
     private static final String STRING_START_TEST = "Start test '";
     private static final String STRING_END_TEST = "Test over.-------------------------------------------------------------------";
     // private static final String STRING_PASS_TEST = "Pass test ";
@@ -30,21 +40,26 @@ class ThreadForParseLogCat extends Thread {
         try {
             int exitValue = Integer.MAX_VALUE;
             // Clear logcat.
-            exitValue = Runner.runCommandInRuntime(Runner.getStartAdbCommand()
-                    .append(CMD_CLEAR_LOGCAT).toString());
+            exitValue = Runner.runCommandInRuntime(Runner.createAdbCommand(CMD_CLEAR_LOGCAT));
             if (exitValue != 0) {
                 Runner.logError("Cannot clear logcat!");
             }
 
+            // Prepare variables to start logcat parse.
+            StringBuilder command = new StringBuilder();
+            for (int i = 0; i < CMD_START_LOGCAT.size(); i++) {
+                command.append(CMD_START_LOGCAT.get(i)).append(' ');
+            }
+            ProcessBuilder processBuilder = new ProcessBuilder(CMD_START_LOGCAT);
+            Process process = null;
+
             // Start logcat for parse.
-            Runtime runtime = Runtime.getRuntime();
-            String command = Runner.getStartAdbCommand().append(CMD_START_LOGCAT).toString();
-            Runner.logAndOutput("Running command for logcat parse: '" + command + "':");
+            Runner.logAndOutput("Running command for logcat parse: '" + command.toString() + "':");
             try {
-                process = runtime.exec(command);
+                process = processBuilder.start();
             } catch (Exception e) {
-                Runner.logError("While running '" + command + "' throws exception: "
-                        + e.getMessage());
+                Runner.logError("ThreadForParseLogCat: While running '" + command.toString()
+                        + "' throws exception: " + e.getMessage());
             }
             BufferedReader stdOutput = new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
@@ -77,11 +92,11 @@ class ThreadForParseLogCat extends Thread {
                     Runner.log("# " + line);
                 }
             } catch (Exception e) {
-                Runner.logError("While running '" + command + "'throws exception: "
-                        + e.getMessage());
+                Runner.logError("ThreadForParseLogCat: While parsing output of '"
+                        + command.toString() + "' throws exception: " + e.getMessage());
             }
         } catch (Exception e1) {
-            Runner.logError("Exception while parsing logcat: " + e1.getMessage());
+            Runner.logError("Exception while run ThreadForParseLogCat: " + e1.getMessage());
         }
     }
 

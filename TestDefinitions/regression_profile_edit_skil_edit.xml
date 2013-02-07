@@ -1,0 +1,10 @@
+<TestSuite groups="Regressions">
+  <Test name="Edit skills - profile_edit_skil_edit " id="43627081">
+    <Step key="go_to_profile_edit" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="profile_edit_skil_edit" />
+    <Step key="profile_edit_skil_edit_tap_back" />
+
+    <!-- *cannot Remove
+    Step key="profile_edit_skil_edit_tap_remove" /-->
+  </Test>
+</TestSuite>

@@ -5,6 +5,7 @@ import java.util.concurrent.Callable;
 
 import junit.framework.Assert;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.jayway.android.robotium.solo.Solo;
 import com.linkedin.android.popups.PopupMessageCancel;
@@ -16,7 +17,9 @@ import com.linkedin.android.screens.common.ScreenLogin;
 import com.linkedin.android.screens.settings.ScreenSettings;
 import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.tests.data.DataProvider;
+import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.StringData;
+import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
@@ -32,6 +35,8 @@ public final class LoginActions {
     private static final String START_VIDEO_ACTIVITY_SHORT_CLASSNAME = "LiMediaPlayerVideo";
     private static final int COUNT_TRIES_TAP_BACK = 10;
     private static final String START_SIGN_IN_ACTIVITY_SHORT_CLASSNAME = "LaunchActivity";
+    
+    public static ViewIdName EXPOSE_ARROW_ID = new ViewIdName("abs__up");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -115,7 +120,8 @@ public final class LoginActions {
                         return views != null;
                     }
                 });
-        return BaseINScreen.getINButton() != null;
+        ImageView exposeArrow = (ImageView) Id.getViewByViewIdName(EXPOSE_ARROW_ID);
+        return BaseINScreen.getINButton() != null && exposeArrow != null && exposeArrow.isShown() == false;
     }
 
     /**
@@ -175,10 +181,10 @@ public final class LoginActions {
         }
 
         // Open Expose screen.
-        while (!ScreenExpose.isOnExposeScreen()) {
+        if (!ScreenExpose.isOnExposeScreen()) {
             BaseINScreen.tapOnINButton();
-            WaitActions.waitForScreenUpdate();
-        }        
+            new ScreenExpose(null);
+        }
         ScreenExpose screenExpose = new ScreenExpose(null);
 
         // Open Settings Screen.
@@ -186,7 +192,7 @@ public final class LoginActions {
 
         // Scroll to bottom.
         solo.scrollToBottom();
-
+        
         // Tap on 'Sign Out' button.
         screenSettings.tapOnSignOutButton();
 

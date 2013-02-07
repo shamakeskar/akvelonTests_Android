@@ -3,7 +3,8 @@ package com.linkedin.android.screens.inbox;
 import java.util.concurrent.Callable;
 
 import junit.framework.Assert;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseListScreen;
@@ -14,10 +15,10 @@ import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
-import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
+import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -32,6 +33,8 @@ public class ScreenAllMessages extends BaseListScreen {
     public static final String ACTIVITY_SHORT_CLASSNAME = "NewMessageListActivity";
     public static final ViewIdName ID_NAME_ALL_MESSAGES = new ViewIdName("chevron");
     public static final ViewIdName NAV_LABEL = new ViewIdName("abs__action_bar_title");
+    public static final ViewIdName COMPOSE_BUTTON_ID = new ViewIdName("compose");
+    public static final ViewIdName MESSAGE_ROW = new ViewIdName("message_row");
     static final Rect2DP RIGHT_NAV_BUTTON_RECT = new Rect2DP(265.4f, 28.0f, 54.6f, 49.3f);
 
     // PROPERTIES -----------------------------------------------------------
@@ -114,16 +117,8 @@ public class ScreenAllMessages extends BaseListScreen {
 
     @TestAction(value = "inbox_mail_all_tap_compose_new_message")
     public static void inbox_mail_all_tap_compose_new_message() {
-        for (ImageView view : getSolo().getCurrentImageViews()) {
-            if (LayoutUtils.isViewPlacedInLayout(view, LayoutUtils.UPPER_RIGHT_BUTTON_LAYOUT)) {
-                Rect2DP viewRect = new Rect2DP(view);
-                if (viewRect.isSizeEqual(RIGHT_NAV_BUTTON_RECT.width, RIGHT_NAV_BUTTON_RECT.height,
-                        1.0f)) {
-                    ViewUtils.tapOnView(view, "'Share' icon");
-                    break;
-                }
-            }
-        }
+        View compose = (View) Id.getViewByViewIdName(COMPOSE_BUTTON_ID);
+        ViewUtils.tapOnView(compose, "'Compose' button");
         new ScreenNewMessage();
         TestUtils.delayAndCaptureScreenshot("inbox_mail_all_tap_compose_new_message");
     }
@@ -140,9 +135,17 @@ public class ScreenAllMessages extends BaseListScreen {
     }
 
     public static void inbox_mail_all_tap_message(String screenName) {
-        ImageView view = getSolo().getImage(2);
-        ViewUtils.tapOnView(view, "First message");
+        RelativeLayout message = (RelativeLayout) Id.getViewByViewIdName(MESSAGE_ROW);
+        Assert.assertNotNull("Message is not present on 'Inbox Mail All' screen", message);
+
+        ViewGroupUtils.tapFirstViewInLayout(message, true, "first message", null);
         new ScreenMessageDetail();
         TestUtils.delayAndCaptureScreenshot(screenName);
+    }
+    
+    @TestAction(value = "inbox_mail_all_tap_message_reset")
+    public static void inbox_mail_all_tap_message_reset() {
+        HardwareActions.goBackOnPreviousActivity();
+        TestUtils.delayAndCaptureScreenshot("inbox_mail_all_tap_message_reset");
     }
 }

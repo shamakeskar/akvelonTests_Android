@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseScreen;
+import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.TestAction;
@@ -21,7 +22,6 @@ import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.asserts.ViewAssertUtils;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
@@ -68,7 +68,7 @@ public class ScreenAddConnections extends BaseScreen {
     // METHODS --------------------------------------------------------------{
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
     }
 
     @Override
@@ -215,16 +215,20 @@ public class ScreenAddConnections extends BaseScreen {
         Assert.assertNotNull("Checkbox is not present", check);
         final boolean isChecked = check.isChecked();
         ViewUtils.tapOnView(check, "check box");
-        WaitActions.waitForTrueInFunction("CheckBox is not checked", new Callable<Boolean>() {
-            public Boolean call() {
-                TextView connection = TextViewUtils.getTextViewByText(recipient);
-                RelativeLayout layout = (RelativeLayout) connection.getParent();
-                CheckedTextView check = (CheckedTextView) layout.getChildAt(3);
-                Assert.assertNotNull("Checkbox is not present", check);
-                boolean checked = check.isChecked();
-                return (checked != isChecked);
-            }
-        });
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
+                "CheckBox is not checked", new Callable<Boolean>() {
+                    public Boolean call() {
+                        TextView connection = TextViewUtils.getTextViewByText(recipient);
+                        RelativeLayout layout = (RelativeLayout) connection.getParent();
+                        CheckedTextView check = (CheckedTextView) layout.getChildAt(3);
+                        if (check == null) {
+                            return false;
+                        } else {
+                            boolean checked = check.isChecked();
+                            return (checked != isChecked);
+                        }
+                    }
+                });
 
         TestUtils.delayAndCaptureScreenshot("select_recipients_tap_select");
     }

@@ -19,7 +19,6 @@ import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -51,9 +50,9 @@ public class ScreenWhosViewedYou extends BaseINScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-
+        verifyCurrentActivity();
         verifyINButton();
+        // TODO complete verify
     }
 
     @Override

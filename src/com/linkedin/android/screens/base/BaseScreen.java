@@ -207,9 +207,10 @@ public abstract class BaseScreen<T extends Activity> {
      * getActivityShortClassName()).
      */
     protected void verifyCurrentActivity() {
-        Assert.assertTrue("Wrong activity " + getActivityShortClassName(), getSolo()
-                .getCurrentActivity().getClass().getSimpleName()
-                .equals(getActivityShortClassName()));
+        String currentActivity = getSolo().getCurrentActivity().getClass().getSimpleName();
+        Assert.assertTrue("Wrong activity: expected '" + getActivityShortClassName()
+                + "' but get '" + currentActivity + "'",
+                currentActivity.equals(getActivityShortClassName()));
     }
 
     /**

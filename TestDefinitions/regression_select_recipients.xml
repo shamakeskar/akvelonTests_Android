@@ -4,7 +4,7 @@
     <Step key="select_recipients_tap_scrollbar" />
     <Step key="select_recipients_tap_cancel" />
     <Step key="select_recipients" />
-    <Step key="select_recipients_tap_select" />
+    <Step key="select_recipients_tap_select" payload="114 f 114" />
     <Step key="select_recipients_tap_done" />
   </Test>
 </TestSuite>

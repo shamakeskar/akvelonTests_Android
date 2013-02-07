@@ -6,7 +6,6 @@ import android.widget.Button;
 import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 @SuppressWarnings("rawtypes")
@@ -25,8 +24,7 @@ public class ScreenSettingsSendReport extends BaseScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-
+        verifyCurrentActivity();
         Assert.assertTrue("'LinkedIn' label is not presented", getSolo().waitForText("LinkedIn"));
 
         Assert.assertTrue("'Device log attached' label is not presented",

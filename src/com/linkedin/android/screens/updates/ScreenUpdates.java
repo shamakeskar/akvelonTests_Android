@@ -130,7 +130,7 @@ public class ScreenUpdates extends BaseListScreen {
                 curActivityName.equals(ACTIVITY_SHORT_CLASSNAME)
                         || curActivityName.equals(HELPACTIVITY_SHORT_CLASSNAME));
 
-        // Wait for more than 20 news are loaded.
+        // Wait for more than 15 news are loaded.
         WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
                 "'Updates' screen is not present (List with NUS is not loaded)",
                 new Callable<Boolean>() {
@@ -138,7 +138,7 @@ public class ScreenUpdates extends BaseListScreen {
                         ListView listView = ListViewUtils.getFirstListView();
                         if (listView == null)
                             return false;
-                        return (listView.getCount() > 20);
+                        return (listView.getCount() > 15);
                     }
                 });
 

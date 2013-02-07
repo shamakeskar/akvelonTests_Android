@@ -23,7 +23,6 @@ import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.StringUtils;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
@@ -66,7 +65,7 @@ public class ScreenPYMK extends BaseListScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
         Assert.assertTrue(
                 "PYMK screen is not present ('People You May Know' label is not present)",
                 getSolo().searchText("People You May Know", 1, false));

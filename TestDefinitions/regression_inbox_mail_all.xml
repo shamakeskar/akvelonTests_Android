@@ -8,5 +8,6 @@
     <Step key="inbox_mail_all_tap_compose_new_message" />
     <Step key="inbox_mail_all_tap_compose_new_message_reset" />
     <Step key="inbox_mail_all_tap_message" />
+    <Step key="inbox_mail_all_tap_message_reset" />
   </Test>
 </TestSuite>

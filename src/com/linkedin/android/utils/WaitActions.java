@@ -176,11 +176,11 @@ public final class WaitActions {
     public static void waitSingleActivity(String activityShortName, String screenName, int timeout) {
         Solo solo = DataProvider.getInstance().getSolo();
         if (!solo.waitForActivity(activityShortName, timeout)) {
-            String activityName = solo.getCurrentActivity().getClass().getSimpleName();
+            String currentActivityShortName = solo.getCurrentActivity().getClass().getSimpleName();
             // Double check.
             Assert.assertTrue("Cannot wait (" + timeout + " ms) to launch activity for '"
-                    + screenName + "' screen. Current Activity: " + activityName,
-                    activityShortName.equals(activityName));
+                    + screenName + "' screen. Current Activity: " + currentActivityShortName,
+                    activityShortName.equals(currentActivityShortName));
         }
     }
 
@@ -359,15 +359,14 @@ public final class WaitActions {
     public static void waitForTrueInFunction(int timeout, String message, Callable<Boolean> function) {
         if (message == null)
             message = "Cannot wait some condition";
-        int waitStepsCount = timeout / DataProvider.WAIT_DELAY_STEP;
+        long startTime = System.currentTimeMillis();
         try {
-            for (int i = 0; i < waitStepsCount; i++) {
+            while (startTime + timeout > System.currentTimeMillis()) {
                 if (function.call())
                     return;
-                DataProvider.getInstance().getSolo().sleep(DataProvider.WAIT_DELAY_STEP);
             }
         } catch (Exception e) {
-            Logger.e("Cannot run the function", e);
+            Logger.e(message, e);
             Assert.fail(e.getMessage());
         }
         Assert.fail(message);
@@ -389,52 +388,6 @@ public final class WaitActions {
     }
 
     /**
-     * Waits for the function 'function' return true if it didn't than fail with
-     * 'message'. Used System.currentTimeMillis for check timeout.
-     * 
-     * @param function
-     *            - function to check which must return true or anything
-     *            another.
-     * @param timeout
-     *            - timeout to wait in ms.
-     * @param message
-     *            - custom message to be shown if function not return true by
-     *            timeout.
-     */
-    public static void waitForTrueInFunction2(int timeout, String message,
-            Callable<Boolean> function) {
-        if (message == null)
-            message = "Cannot wait some condition";
-        long startTime = System.currentTimeMillis();
-        try {
-            while (startTime + timeout > System.currentTimeMillis()) {
-                if (function.call())
-                    return;
-            }
-        } catch (Exception e) {
-            Logger.e(message, e);
-            Assert.fail(e.getMessage());
-        }
-        Assert.fail(message);
-    }
-
-    /**
-     * Waits for the function 'function' return true if it didn't than fail with
-     * 'message'. Used System.currentTimeMillis for check timeout =
-     * WAIT_DELAY_DEFAULT.
-     * 
-     * @param message
-     *            - custom message to be shown if function not return true by
-     *            timeout.
-     * @param function
-     *            - function to check which must return true or anything
-     *            another.
-     */
-    public static void waitForTrueInFunction2(String message, Callable<Boolean> function) {
-        waitForTrueInFunction2(DataProvider.WAIT_DELAY_DEFAULT, message, function);
-    }
-
-    /**
      * Checks that function return true in specified timeout.
      * 
      * @param timeout
@@ -445,12 +398,11 @@ public final class WaitActions {
      *         <b>false</b>
      */
     public static boolean isTrueInFunction(int timeout, Callable<Boolean> function) {
-        int waitStepsCount = timeout / DataProvider.WAIT_DELAY_STEP;
+        long startTime = System.currentTimeMillis();
         try {
-            for (int i = 0; i < waitStepsCount; i++) {
+            while (startTime + timeout > System.currentTimeMillis()) {
                 if (function.call())
                     return true;
-                DataProvider.getInstance().getSolo().sleep(DataProvider.WAIT_DELAY_STEP);
             }
         } catch (Exception e) {
             Assert.fail(e.getMessage());

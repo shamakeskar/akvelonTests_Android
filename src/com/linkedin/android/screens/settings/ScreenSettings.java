@@ -1,7 +1,10 @@
 package com.linkedin.android.screens.settings;
 
+import java.util.concurrent.Callable;
+
 import junit.framework.Assert;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -12,18 +15,17 @@ import com.linkedin.android.popups.PopupSyncContacts;
 import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.screens.common.ScreenBrowser;
 import com.linkedin.android.screens.common.ScreenExpose;
-import com.linkedin.android.screens.common.ScreenLogin;
-import com.linkedin.android.screens.updates.ScreenUpdates;
+import com.linkedin.android.screens.common.ScreenIntermediateLogin;
 import com.linkedin.android.screens.you.ScreenYou;
+import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
-import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.viewUtils.TextViewUtils;
+import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -37,7 +39,8 @@ public class ScreenSettings extends BaseScreen {
     // CONSTANTS ------------------------------------------------------------
     public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.settings.SettingsActivity2";
     public static final String ACTIVITY_SHORT_CLASSNAME = "SettingsActivity2";
-    public static final ViewIdName ID_NAME_OF_ADD_CONNECTIONS = new ViewIdName("add_connections_text");
+    public static final ViewIdName ID_NAME_OF_ADD_CONNECTIONS = new ViewIdName(
+            "add_connections_text");
 
     static final String PRIVATE_POLICY_TEXT = "Privacy Policy";
     static final String GEGERALl_SETTINGS_TEXT = "General Settings";
@@ -57,13 +60,10 @@ public class ScreenSettings extends BaseScreen {
     static final String TURN_OF_NOTIFICATION = "Turn on notifications";
     static final String CONTACTS_SYNC = "Contacts Sync";
 
-    @TestAction(value = "go_to_settings")
-    public static void go_to_settings(String email, String password) {
-        ScreenUpdates screenUpdates = LoginActions.openUpdatesScreenOnStart(email, password);
-        ScreenExpose screenExpose = screenUpdates.openExposeScreen();
-        screenExpose.openSettingsScreen();
-        TestUtils.delayAndCaptureScreenshot("go_to_settings");
-    }
+    private static final ViewIdName ADD_CALENDAR = new ViewIdName("add_calendar_option_layout");
+    private static final ViewIdName NOTIFICATION_CHECKBOX = new ViewIdName("push_notifications");
+    private static final ViewIdName SYNC_OPTION = new ViewIdName("sync_option_layout");
+    private static final ViewIdName SIGNOUT_BUTTON = new ViewIdName("signout");
 
     // EditText: new server URL text input
     private static final ViewIdName NEW_SERVER = new ViewIdName("debug_new_server_url");
@@ -124,8 +124,6 @@ public class ScreenSettings extends BaseScreen {
         AssertItem(CONFIGURE_RICH_STREAM_TEXT);
 
         AssertButton("Sign Out");
-
-        HardwareActions.takeCurrentActivityScreenshot("Settings screen");
     }
 
     /**
@@ -234,35 +232,6 @@ public class ScreenSettings extends BaseScreen {
     }
 
     /**
-     * Taps on 'Add your Calendar'
-     * 
-     */
-    public ScreenSettingsCalendar tapOnAddYourCalendar() {
-        // Get TextView by text
-        TextView item;
-        int maxCountScroll = 5;
-        do {
-            item = TextViewUtils.getTextViewByText(ADD_YOUR_CALENDAR_TEXT);
-            if (item != null)
-                break;
-            getSolo().scrollDown();
-            maxCountScroll--;
-        } while (maxCountScroll > 0);
-        Assert.assertNotNull("'Add Your Calendar' is not present", item);
-
-        // Tap on TextVview
-        ViewUtils.tapOnView(item, ADD_YOUR_CALENDAR_TEXT);
-
-        // Extract new ScreenCalendar
-        ScreenSettingsCalendar screenCalendar = new ScreenSettingsCalendar();
-
-        // Assert ScreenCalendar
-        Assert.assertNotNull("'" + ADD_YOUR_CALENDAR_TEXT
-                + "' not are ScreenSettingsCalendar screen.", screenCalendar);
-        return screenCalendar;
-    }
-
-    /**
      * Open new Popup Language settings.
      * 
      */
@@ -348,12 +317,8 @@ public class ScreenSettings extends BaseScreen {
      * Taps on 'Sign Out' button.
      */
     public void tapOnSignOutButton() {
-        while (getSolo().scrollDown())
-            ;
-        Assert.assertNotNull("'Sign Out' button is not present.", getSolo().getButton("Sign Out"));
-
-        Logger.i("Tapping on 'Sign Out' button");
-        getSolo().clickOnButton("Sign Out");
+        Button signout = (Button) Id.getViewByViewIdName(SIGNOUT_BUTTON);
+        ViewUtils.tapOnView(signout, "'Signout' button");
     }
 
     /**
@@ -391,19 +356,40 @@ public class ScreenSettings extends BaseScreen {
             getSolo().clickOnCheckBox(0);
         }
     }
+
+    // ACTIONS --------------------------------------------------------------
+
+    @TestAction(value = "go_to_settings")
+    public static void go_to_settings(String email, String password) {
+        ScreenExpose.go_to_expose(email, password);
+        settings("go_to_settings");
+    }
     
+    @TestAction(value = "settings_precondition")
+    public static void settings_precondition() {
+        HardwareActions.goBackOnPreviousActivity();
+        TestUtils.delayAndCaptureScreenshot("settings_precondition");
+    }
+
     @TestAction(value = "settings")
     public static void settings() {
-        new ScreenExpose(null).openSettingsScreen();
-        TestUtils.delayAndCaptureScreenshot("settings");
+        settings("settings");
     }
-    
+
+    public static void settings(String screenshotName) {
+        new ScreenExpose(null).openSettingsScreen();
+        TestUtils.delayAndCaptureScreenshot(screenshotName);
+    }
+
     @TestAction(value = "settings_tap_sync_calendar")
     public static void settings_tap_sync_calendar() {
-        new ScreenSettings().tapOnAddYourCalendar();
+        RelativeLayout addCalendar = (RelativeLayout) Id.getViewByViewIdName(ADD_CALENDAR);
+        Assert.assertNotNull("'Add Calendar' is not present on 'Settings' screen", addCalendar);
+        ViewGroupUtils.tapFirstViewInLayout(addCalendar, true, "'Add Calendar' button", null);
+        new ScreenSettingsCalendar();
         TestUtils.delayAndCaptureScreenshot("settings_tap_sync_calendar");
     }
-    
+
     @TestAction(value = "settings_tap_add_con")
     public static void settings_tap_add_con() {
         TextView addCon = (TextView) Id.getViewByViewIdName(ID_NAME_OF_ADD_CONNECTIONS);
@@ -412,53 +398,44 @@ public class ScreenSettings extends BaseScreen {
         TestUtils.delayAndCaptureScreenshot("settings_tap_add_con");
     }
 
-    @TestAction(value = "settings_toggle_push_notifications")
-    public static void settings_toggle_push_notifications() {
-        new ScreenSettings().tickInPushNotifications();
-        TestUtils.delayAndCaptureScreenshot("settings_toggle_push_notifications");
-    }
-    
-    @TestAction(value = "settings_toggle_push_notifications_reset")
-    public static void settings_toggle_push_notifications_reset() {
-        new ScreenSettings().tickInPushNotifications();
-        TestUtils.delayAndCaptureScreenshot("settings_toggle_push_notifications_reset");
+    public static void settings_toggle_push_notifications(String ScreenshotName) {
+        CheckBox checkbox = (CheckBox) Id.getViewByViewIdName(NOTIFICATION_CHECKBOX);
+        Assert.assertNotNull("Turn on notification checkbox is not present", checkbox);
+        final boolean check = checkbox.isChecked();
+        ViewUtils.tapOnView(checkbox, "Turn on notification checkbox");
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
+                "CheckBox is not checked", new Callable<Boolean>() {
+                    public Boolean call() {
+                        CheckBox checkbox = (CheckBox) Id
+                                .getViewByViewIdName(NOTIFICATION_CHECKBOX);
+                        if (checkbox == null) {
+                            return false;
+                        } else {
+                            boolean checked = checkbox.isChecked();
+                            return (check != checked);
+                        }
+                    }
+                });
+        TestUtils.delayAndCaptureScreenshot(ScreenshotName);
     }
 
-    /**
-     * Put a tick in paragraph notification.
-     */
-    public void tickInPushNotifications() {
-        TextView notifications;
-        int maxCountScroll = 5;
-        do {
-            notifications = TextViewUtils.getTextViewByText(TURN_OF_NOTIFICATION);
-            if (notifications != null)
-                break;
-            getSolo().scrollUp();
-            maxCountScroll--;
-        } while (maxCountScroll > 0);
-        Assert.assertNotNull("'" + TURN_OF_NOTIFICATION
-                + "' item is not present on Settings screen.", notifications);
-        RelativeLayout parent = (RelativeLayout) notifications.getParent();
-        CheckBox checkBox = (CheckBox) parent.getChildAt(1);
-        Assert.assertNotNull("' Check box " + TURN_OF_NOTIFICATION
-                + "' is not present on Settings screen.", checkBox);
-        boolean isChecked = checkBox.isChecked();
-        Logger.i("Tapping in Check box '" + TURN_OF_NOTIFICATION + "'");
-        getSolo().clickOnView(checkBox);
-        // Wait for check mark;
-        WaitActions.waitForScreenUpdate();
-        if (checkBox.isChecked() != isChecked)
-            return;
-        Assert.fail("Checkmark is not present");
+    @TestAction(value = "settings_toggle_push_notifications")
+    public static void settings_toggle_push_notifications() {
+        settings_toggle_push_notifications("settings_toggle_push_notifications");
     }
-    
+
+    @TestAction(value = "settings_toggle_push_notifications_reset")
+    public static void settings_toggle_push_notifications_reset() {
+        settings_toggle_push_notifications("settings_toggle_push_notifications_reset");
+    }
+
     @TestAction(value = "settings_tap_signout")
     public static void settings_tap_signout() {
+        getSolo().scrollToBottom();
         new ScreenSettings().tapOnSignOutButton();
-        new ScreenLogin();
+        new ScreenIntermediateLogin();
     }
-    
+
     @TestAction(value = "settings_tap_sync_calendar_reset")
     public static void settings_tap_sync_calendar_reset() {
         ScreenSettings.backInScreenSetting("settings_tap_sync_calendar_reset");
@@ -480,11 +457,12 @@ public class ScreenSettings extends BaseScreen {
         new ScreenSettings();
         TestUtils.delayAndCaptureScreenshot(screenName);
     }
-    
+
     @TestAction(value = "settings_dialog_tap_sync_all_contacts")
     public static void settings_dialog_tap_sync_all_contacts() {
         PopupSyncContacts popup = new ScreenSettings().popupSyncContacts();
         popup.tapOnSyncAll();
+        new ScreenSettings();
         TestUtils.delayAndCaptureScreenshot("settings_dialog_tap_sync_all_contacts");
     }
 
@@ -494,38 +472,24 @@ public class ScreenSettings extends BaseScreen {
      * @return popup 'Sync LinkedIn Contacts'.
      */
     public PopupSyncContacts popupSyncContacts() {
-        // Get TextView by text
-        int maxCountScroll = 5;
-        TextView sync;
-        do {
-            sync = TextViewUtils.getTextViewByText("Debug Options");
-            if (sync != null)
-                break;
-            getSolo().scrollDown();
-            maxCountScroll--;
-        } while (maxCountScroll > 0);
-        Assert.assertNotNull(CONTACTS_SYNC + " not present", getSolo().getText(CONTACTS_SYNC));
-        Logger.i("Tapping on Sync LinkedIn Contacts");
-        getSolo().clickOnText(SYNC_All_TEXT.substring(1, 4), 2);
+        RelativeLayout sync_option = (RelativeLayout) Id.getViewByViewIdName(SYNC_OPTION);
+        Assert.assertNotNull("Sync option dialogis not present", sync_option);
+        ViewGroupUtils.tapFirstViewInLayout(sync_option, true, "'Sync option' dialog", null);
         return new PopupSyncContacts();
     }
-    
+
     @TestAction(value = "settings_dialog_tap_sync_existing_contacts")
     public static void settings_dialog_tap_sync_existing_contacts() {
         PopupSyncContacts popup = new ScreenSettings().popupSyncContacts();
-        popup.tapOnDoNotSync();
+        popup.tapOnSyncWithExistingContacts();
+        new ScreenSettings();
         TestUtils.delayAndCaptureScreenshot("settings_dialog_tap_sync_existing_contacts");
     }
-    
+
     @TestAction(value = "settings_dialog_tap_sync_cancel")
     public static void settings_dialog_tap_sync_cancel() {
-        new ScreenSettings().popupSyncContacts();
-        backInScreenSetting("settings_dialog_tap_sync_cancel");
-    }
-
-    @TestAction(value = "settings_precondition")
-    public static void settings_precondition() {
-        HardwareActions.goBackOnPreviousActivity();
-        TestUtils.delayAndCaptureScreenshot("settings_precondition");
+        PopupSyncContacts popup = new ScreenSettings().popupSyncContacts();
+        popup.tapOnDoNotSync();
+        new ScreenSettings();
     }
 }

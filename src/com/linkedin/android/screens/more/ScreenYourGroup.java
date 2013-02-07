@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -32,7 +31,7 @@ public class ScreenYourGroup extends BaseINScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
         WaitActions.waitForTrueInFunction("'Popular Posts' label is not present",
                 new Callable<Boolean>() {
                     public Boolean call() {

@@ -10,7 +10,6 @@ import com.linkedin.android.screens.you.ScreenProfileOfNotConnectedUser;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -37,8 +36,7 @@ public class ScreenNewConnectionDetails extends BaseINScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-
+        verifyCurrentActivity();
         WaitActions.waitForTrueInFunction("'Details' title is not present",
                 new Callable<Boolean>() {
                     public Boolean call() {

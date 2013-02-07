@@ -23,7 +23,6 @@ import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -82,7 +81,7 @@ public class ScreenExpose extends BaseINScreen {
      * Verifies 'Expose' screen
      */
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
         WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
                 "'Groups and More' screen is not loaded", new Callable<Boolean>() {
                     public Boolean call() {

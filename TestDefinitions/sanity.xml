@@ -10,38 +10,44 @@
     <Step key="updates_scroll_load_more" />
     <Step key="updates_scroll_load_more_reset" />
     
-    <!-- Cannot create precondition for create new jobs rollup.
-    <Step key="updates_new_jobs_rollup_list" />
+    <!-- User "John12-14-2010-02-03 Doe" shared very huge amount of updates.
+    Rollup appears for a short time. We tried to use another user, but updates work only for user1.
+    <Step key="updates_new_jobs_rollup_list" />-->
+    
+    <!-- App crash after clicking on profile photo.
     <Step key="updates_new_jobs_rollup_list_tap_profile" />
     <Step key="profile_tap_photo" />
     <Step key="profile_photo_from_profile_tap_back"
-    <Step key="profile_tap_back" />
-    <Step key="updates_new_jobs_rollup_list_tap_back" />-->
+    <Step key="profile_tap_back" />-->
     
-    <!-- Cannot create precondition for create connection rollup.
+    <!-- User "John12-14-2010-02-03 Doe" shared very huge amount of updates.
+    Rollup appears for a short time. We tried to use another user, but updates work only for user1.
+    <Step key="updates_new_jobs_rollup_list_tap_back" />
     <Step key="updates_connection_rollup_list" />
     <Step key="updates_connection_rollup_list_tap_back" />
     <Step key="updates_profile_rollup_list" />
     <Step key="updates_profile_rollup_list_tap_back" />-->
     
     <Step key="updates_tap_search" />
-    <Step key="search_search" payload="Marc" />
-    <Step key="search_tap_profile" />
+    <Step key="search_search" payload="u102" />
+    <Step key="search_tap_profile" payload="u102" />
     
-    <!-- Antispam. Can send invite to real user.
+    <!-- Antispam. Can sent invite to real user.
     <Step key="profile_tap_invite" />
     <Step key="invite_accept_pymk_tap_back" />-->
     
     <Step key="profile_tap_back" />
     <Step key="search_tap_cancel" />
     <Step key="updates_tap_update" />
-    <Step key="feed_detail_tap_profile_author_precondition" payload="John12" />
     <Step key="feed_detail_tap_profile_author" />
     <Step key="profile_tap_common" />
     <Step key="incommon_tap_back" />
     <Step key="profile_tap_back" />
     <Step key="feed_detail_tap_back" />
     <Step key="updates_tap_expose" />
+    
+    <!-- Possible application crash on android 2.2.
+    "Unable to pause activity {com.linkedin.android.redesign/com.linkedin.android.redesign.profile.v2.ViewProfileActivity}"
     <Step key="expose_tap_you" />
     <Step key="you_tap_connections" />
     <Step key="connections_tap_back" />
@@ -49,26 +55,27 @@
     <Step key="wvmp_tap_profile" />
     <Step key="profile_tap_back" />
     <Step key="wvmp_tap_back" />
-    <Step key="you_tap_expose" />
+    <Step key="you_tap_expose" />-->
+    
     <Step key="expose_tap_inbox" />
     <Step key="inbox_tap_message" />
     <Step key="inbox_message_detail_tap_profile" />
     <Step key="profile_tap_back" />
     <Step key="inbox_message_detail_tap_back" />
     
-    <!-- Cannot create precondition for sent invite.
+    <!-- Need pending invitation for this action.
     <Step key="inbox_tap_invitation_accept" />-->
     
     <Step key="inbox_pull_refresh" />
     
-    <!-- Cannot create precondition for sent invite.
+    <!-- Need pending invitation for this action.
     <Step key="inbox_tap_invitation" />
     <Step key="inbox_invitation_detail_tap_accept" />-->
     
     <Step key="inbox_tap_all_invitations" />
     <Step key="inbox_invitations_all_tap_back" />
     
-    <!-- Message sending doesn't work.
+    <!-- Commented these actions because message sending doesn't work.
     <Step key="inbox_tap_compose_actionsheet" />
     <Step key="inbox_compose_actionsheet_tap_new_message" />
     <Step key="message_compose_tap_add_recipients" />

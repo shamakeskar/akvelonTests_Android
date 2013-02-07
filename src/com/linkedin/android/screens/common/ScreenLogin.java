@@ -23,7 +23,6 @@ import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -62,7 +61,7 @@ public class ScreenLogin extends BaseScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
         WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
                 "'Login' screen is not present", new Callable<Boolean>() {
                     public Boolean call() {

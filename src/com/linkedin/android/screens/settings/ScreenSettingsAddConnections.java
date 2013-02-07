@@ -8,9 +8,9 @@ import com.linkedin.android.utils.WaitActions;
 
 public class ScreenSettingsAddConnections extends BaseINScreen {
     // CONSTANTS ------------------------------------------------------------
-    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.connections.abi.FindConnectionsActivity";
+    public static final String ACTIVITY_CLASSNAME = "com.linkedin.android.redesign.connections.abi.FindConnectionsActivity";
     public static final String ACTIVITY_SHORT_CLASSNAME = "FindConnectionsActivity";
-    
+
     // PROPERTIES -----------------------------------------------------------
 
     // CONSTRUCTORS ---------------------------------------------------------
@@ -22,8 +22,11 @@ public class ScreenSettingsAddConnections extends BaseINScreen {
 
     @Override
     public void verify() {
-        Assert.assertTrue("'Add Connections' screen is not present",
-                getSolo().waitForText("Add Connections", 1, DataProvider.WAIT_DELAY_SHORT, false, false));
+        verifyCurrentActivity();
+        Assert.assertTrue(
+                "'Add Connections' screen is not present",
+                getSolo().waitForText("Add Connections", 1, DataProvider.WAIT_DELAY_SHORT, false,
+                        false));
     }
 
     @Override

@@ -10,15 +10,19 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Runner {
     // CONSTANTS ------------------------------------------------------------
     // Runtime command constants.
-    private static final String CMD_ADB = "adb ";
-    private static final String CMD_ADB_S = "adb -s ";
-    private static final String CMD_PUSH = "push ";
-    private static final String CMD_RUN_ALL_TESTS = "shell am instrument -r -w com.linkedin.android.test/com.linkedin.android.test.AkvelonInstrumentationTestRunner";
-    private static final String CMD_INSTALL = "install -r ";
+    private static final String CMD_ADB = "adb";
+    private static final String CMD_ADB_S_PARAMETER = "-s";
+    private static final String CMD_PUSH = "push";
+    private static final String[] CMD_RUN_ALL_TESTS = new String[] { "shell", "am", "instrument",
+            "-r", "-w",
+            "com.linkedin.android.test/com.linkedin.android.test.AkvelonInstrumentationTestRunner" };
+    private static final String CMD_INSTALL = "install";
+    private static final String CMD_INSTALL_R_PARAMETER = "-r";
 
     // Script parameters constants.
     private static final String PARAM_FILE_WITH_TESTS = "-f";
@@ -155,8 +159,8 @@ public class Runner {
                         System.err.println("Please specify path to file for output logs.");
                         showUsage(1);
                     }
-                } else if (currentParameter.equals(PARAM_HELP)) {
-                } else if (currentParameter.equals(PARAM_HELP_LONG)) {
+                } else if (currentParameter.equals(PARAM_HELP)
+                        || currentParameter.equals(PARAM_HELP_LONG)) {
                     showUsage(0);
                 } else {
                     System.err.println("Unknown parameter '" + currentParameter + "'");
@@ -423,12 +427,10 @@ public class Runner {
     @SuppressWarnings("deprecation")
     private static void runWindowsScript() {
         int exitValue = Integer.MAX_VALUE;
-        StringBuilder cmdBuilder = getStartAdbCommand();
-
         // Install tested apk in device.
         if (apkTested != null) {
-            exitValue = runCommandInRuntime(new StringBuilder(cmdBuilder).append(CMD_INSTALL)
-                    .append(apkTested).toString());
+            exitValue = runCommandInRuntime(createAdbCommand(new String[] { CMD_INSTALL,
+                    CMD_INSTALL_R_PARAMETER, apkTested }));
             if (exitValue != 0) {
                 logError("Cannot install tested apk on to android device.");
                 System.exit(1);
@@ -436,17 +438,16 @@ public class Runner {
         }
 
         // Install tests apk in device.
-        exitValue = runCommandInRuntime(new StringBuilder(cmdBuilder).append(CMD_INSTALL)
-                .append(apkTests).toString());
+        exitValue = runCommandInRuntime(createAdbCommand(new String[] { CMD_INSTALL,
+                CMD_INSTALL_R_PARAMETER, apkTests }));
         if (exitValue != 0) {
             logError("Cannot install tests apk on to android device.");
             System.exit(1);
         }
 
         // Push to android file with tags.
-        StringBuilder pushCmdBuilder = new StringBuilder(cmdBuilder).append(CMD_PUSH)
-                .append(fileWithTests.getAbsolutePath()).append(" ").append(PATH_TO_PUSH);
-        exitValue = runCommandInRuntime(pushCmdBuilder.toString());
+        exitValue = runCommandInRuntime(createAdbCommand(new String[] { CMD_PUSH,
+                fileWithTests.getAbsolutePath(), PATH_TO_PUSH }));
         if (exitValue != 0) {
             logError("Cannot push file '" + fileWithTests.getAbsolutePath()
                     + "' to android device.");
@@ -465,128 +466,131 @@ public class Runner {
         }
 
         // Run tests.
-        StringBuilder runCmdBuilder = new StringBuilder(cmdBuilder).append(CMD_RUN_ALL_TESTS);
-        exitValue = runCommandInRuntime(runCmdBuilder.toString(), new RuntimeCommandParser() {
-            // Test data.
-            private String currentTestName = new String();
-            private StringBuilder instrumentLog = new StringBuilder();
-            private StringBuilder instrumentStatus = new StringBuilder();
-            // Parser manage variables.
-            private Integer numberOfTests = null;
-            private boolean isSaveNextLines = false;
-            private boolean isCopyInstrumentLog = false;
-            private boolean isCopyInstrumentStatus = false;
-            private int numberOfDoneTests = 0;
+        exitValue = runCommandInRuntime(createAdbCommand(CMD_RUN_ALL_TESTS),
+                new RuntimeCommandParser() {
+                    // Test data.
+                    private String currentTestName = new String();
+                    private StringBuilder instrumentLog = new StringBuilder();
+                    private StringBuilder instrumentStatus = new StringBuilder();
+                    // Parser manage variables.
+                    private Integer numberOfTests = null;
+                    private boolean isSaveNextLines = false;
+                    private boolean isCopyInstrumentLog = false;
+                    private boolean isCopyInstrumentStatus = false;
+                    private int numberOfDoneTests = 0;
 
-            /**
-             * Returns String like "[##---]" for 2 of 5 passed tests.
-             * 
-             * @return
-             */
-            private String getProgressString() {
-                StringBuilder builder = new StringBuilder("[");
-                int i = 0;
-                while (i < numberOfDoneTests) {
-                    builder.append('#');
-                    i++;
-                }
-                while (i < numberOfTests) {
-                    builder.append('-');
-                    i++;
-                }
-                return builder.append(']').toString();
-            }
-
-            @Override
-            public void parse(String line) {
-                if (line.length() == 0) {
-                    // Skip empty lines.
-                    return;
-                } else if (line.startsWith(STRING_INSTRUMENTATION_STATUS)) {
-                    // Strings starts from "INSTRUMENTATION_STATUS: ".
-                    // Stop copy to log output.
-                    isSaveNextLines = false;
-                    if (line.startsWith(STRING_IS_TEST)) {
-                        // Set test name (local).
-                        currentTestName = line.substring(STRING_IS_TEST.length());
-                    } else if (line.startsWith(STRING_IS_NUMTESTS)) {
-                        // Set total count of tests (global).
-                        numberOfTests = Runner.convertStringToIntegerSafely(line
-                                .substring(STRING_IS_NUMTESTS.length()));
-                    } else if (line.startsWith(STRING_IS_STACK)) {
-                        // Start copy error from output to log.
-                        isSaveNextLines = true;
-                    }
-                } else if (line.startsWith(STRING_INSTRUMENTATION_STATUS_CODE)) {
-                    // Strings starts from "INSTRUMENTATION_STATUS_CODE: ".
-                    // Check status code and fill report.
-                    Integer statusCode = Runner.convertStringToIntegerSafely(line
-                            .substring(STRING_INSTRUMENTATION_STATUS_CODE.length()));
-                    if (statusCode != null) {
-                        // If statusCode = 1 then start copy instrumentLog. Else
-                        // - stop copy.
-                        if (statusCode == 1) {
-                            instrumentLog = new StringBuilder();
-                            isCopyInstrumentLog = true;
-                            String testName = currentTestName;
-                            if (currentTestName.equals("testActions")
-                                    && numberOfDoneTests < tests.size()) {
-                                testName = tests.get(numberOfDoneTests);
-                            }
-                            Runner.logAndOutput("Started test: '" + testName + "' "
-                                    + getProgressString());
-                        } else {
-                            isCopyInstrumentLog = false;
-                            // Check pass/fail test state.
-                            if (statusCode == 0) {
-                                // Test pass.
-                                String name = threadParceLogCat.getCurrentTestName();
-                                if (name == null)
-                                    name = currentTestName;
-                                Runner.report.addPassTest(name,
-                                        threadParceLogCat.getCurrentTestId(),
-                                        instrumentLog.toString(),
-                                        threadParceLogCat.getLogcatForCurrentTest());
-                                numberOfDoneTests++;
-                            } else if (statusCode < 0) {
-                                // Test fail.
-                                String name = threadParceLogCat.getCurrentTestName();
-                                if (name == null)
-                                    name = currentTestName;
-                                Runner.report.addFailTest(name,
-                                        threadParceLogCat.getCurrentTestId(),
-                                        instrumentLog.toString(),
-                                        threadParceLogCat.getLogcatForCurrentTest());
-                                numberOfDoneTests++;
-                            }
+                    /**
+                     * Returns String like "[##---]" for 2 of 5 passed tests.
+                     * 
+                     * @return
+                     */
+                    private String getProgressString() {
+                        StringBuilder builder = new StringBuilder("[");
+                        int i = 0;
+                        while (i < numberOfDoneTests) {
+                            builder.append('#');
+                            i++;
                         }
+                        while (i < numberOfTests) {
+                            builder.append('-');
+                            i++;
+                        }
+                        return builder.append(']').toString();
                     }
-                } else if (line.startsWith(STRING_INSTRUMENTATION_RESULT)) {
-                    instrumentStatus = new StringBuilder();
-                    isCopyInstrumentStatus = true;
-                } else if (line.startsWith(STRING_FAILURE_IN) || line.startsWith(STRING_ERROR_IN)) {
-                    // Start copy error from output to log.
-                    isSaveNextLines = true;
-                } else if (line.startsWith(STRING_INSTRUMENTATION_CODE)) {
-                    // Strings starts from "INSTRUMENTATION_CODE: ".
-                    isCopyInstrumentStatus = false;
-                    instrumentStatus.append(line).append('\n');
-                    Runner.report.setInstrumentStatus(instrumentStatus.toString());
-                }
-                // Fill instrumentLog.
-                if (isCopyInstrumentLog) {
-                    instrumentLog.append(line).append('\n');
-                }
-                // Fill instrumentStatus.
-                if (isCopyInstrumentStatus) {
-                    instrumentStatus.append(line).append('\n');
-                }
 
-                if (isSaveNextLines)
-                    logAndOutput("Fail: " + line);
-                log("* " + line);
-            }
-        });
+                    @Override
+                    public void parse(String line) {
+                        if (line.length() == 0) {
+                            // Skip empty lines.
+                            return;
+                        } else if (line.startsWith(STRING_INSTRUMENTATION_STATUS)) {
+                            // Strings starts from "INSTRUMENTATION_STATUS: ".
+                            // Stop copy to log output.
+                            isSaveNextLines = false;
+                            if (line.startsWith(STRING_IS_TEST)) {
+                                // Set test name (local).
+                                currentTestName = line.substring(STRING_IS_TEST.length());
+                            } else if (line.startsWith(STRING_IS_NUMTESTS)) {
+                                // Set total count of tests (global).
+                                numberOfTests = Runner.convertStringToIntegerSafely(line
+                                        .substring(STRING_IS_NUMTESTS.length()));
+                            } else if (line.startsWith(STRING_IS_STACK)) {
+                                // Start copy error from output to log.
+                                isSaveNextLines = true;
+                            }
+                        } else if (line.startsWith(STRING_INSTRUMENTATION_STATUS_CODE)) {
+                            // Strings starts from
+                            // "INSTRUMENTATION_STATUS_CODE: ".
+                            // Check status code and fill report.
+                            Integer statusCode = Runner.convertStringToIntegerSafely(line
+                                    .substring(STRING_INSTRUMENTATION_STATUS_CODE.length()));
+                            if (statusCode != null) {
+                                // If statusCode = 1 then start copy
+                                // instrumentLog. Else
+                                // - stop copy.
+                                if (statusCode == 1) {
+                                    instrumentLog = new StringBuilder();
+                                    isCopyInstrumentLog = true;
+                                    String testName = currentTestName;
+                                    if (currentTestName.equals("testActions")
+                                            && numberOfDoneTests < tests.size()) {
+                                        testName = tests.get(numberOfDoneTests);
+                                    }
+                                    Runner.logAndOutput("Started test: '" + testName + "' "
+                                            + getProgressString());
+                                } else {
+                                    isCopyInstrumentLog = false;
+                                    // Check pass/fail test state.
+                                    if (statusCode == 0) {
+                                        // Test pass.
+                                        String name = threadParceLogCat.getCurrentTestName();
+                                        if (name == null)
+                                            name = currentTestName;
+                                        Runner.report.addPassTest(name,
+                                                threadParceLogCat.getCurrentTestId(),
+                                                instrumentLog.toString(),
+                                                threadParceLogCat.getLogcatForCurrentTest());
+                                        numberOfDoneTests++;
+                                    } else if (statusCode < 0) {
+                                        // Test fail.
+                                        String name = threadParceLogCat.getCurrentTestName();
+                                        if (name == null)
+                                            name = currentTestName;
+                                        Runner.report.addFailTest(name,
+                                                threadParceLogCat.getCurrentTestId(),
+                                                instrumentLog.toString(),
+                                                threadParceLogCat.getLogcatForCurrentTest());
+                                        numberOfDoneTests++;
+                                    }
+                                }
+                            }
+                        } else if (line.startsWith(STRING_INSTRUMENTATION_RESULT)) {
+                            instrumentStatus = new StringBuilder();
+                            isCopyInstrumentStatus = true;
+                        } else if (line.startsWith(STRING_FAILURE_IN)
+                                || line.startsWith(STRING_ERROR_IN)) {
+                            // Start copy error from output to log.
+                            isSaveNextLines = true;
+                        } else if (line.startsWith(STRING_INSTRUMENTATION_CODE)) {
+                            // Strings starts from "INSTRUMENTATION_CODE: ".
+                            isCopyInstrumentStatus = false;
+                            instrumentStatus.append(line).append('\n');
+                            Runner.report.setInstrumentStatus(instrumentStatus.toString());
+                        }
+                        // Fill instrumentLog.
+                        if (isCopyInstrumentLog) {
+                            instrumentLog.append(line).append('\n');
+                        }
+                        // Fill instrumentStatus.
+                        if (isCopyInstrumentStatus) {
+                            instrumentStatus.append(line).append('\n');
+                        }
+
+                        if (isSaveNextLines)
+                            logAndOutput("Fail: " + line);
+                        log("* " + line);
+                    }
+                });
         if (exitValue != 0) {
             logError("Instrument error: exit code = " + exitValue);
         }
@@ -615,38 +619,51 @@ public class Runner {
     /**
      * Returns string with "adb " or "adb -d 'deviceId' "
      * 
-     * @return adb command start string as {@code StringBuilder}
+     * @param commandPieces
+     *            parameters to adb command
+     * @return adb command as List<String>
      */
-    public synchronized static StringBuilder getStartAdbCommand() {
-        if (deviceId == null)
-            return new StringBuilder(CMD_ADB);
-        else
-            return new StringBuilder(CMD_ADB_S).append(deviceId).append(" ");
+    public synchronized static List<String> createAdbCommand(String[] commandPieces) {
+        List<String> commandWords = new ArrayList<String>();
+        commandWords.add(CMD_ADB);
+        if (deviceId != null) {
+            commandWords.add(CMD_ADB_S_PARAMETER);
+            commandWords.add(deviceId);
+        }
+        for (int i = 0; i < commandPieces.length; i++) {
+            commandWords.add(commandPieces[i]);
+        }
+        return commandWords;
     }
 
     /**
      * Runs specified command in runtime and returns exit value.
      * 
-     * @param command
-     *            command for run
+     * @param commandArray
+     *            command for run as strings split by whitespace
      * @param parser
      *            {@code RuntimeCommandParser} object for parse this command
      *            output.
      * @return exit value.
      */
-    public static int runCommandInRuntime(String command, RuntimeCommandParser parser) {
-        Runtime runtime = Runtime.getRuntime();
+    public static int runCommandInRuntime(List<String> commandArray, RuntimeCommandParser parser) {
+        StringBuilder command = new StringBuilder();
+        for (int i = 0; i < commandArray.size(); i++) {
+            command.append(commandArray.get(i)).append(' ');
+        }
+        ProcessBuilder processBuilder = new ProcessBuilder(commandArray);
         Process process = null;
+
         int exitValue = Integer.MAX_VALUE;
         if (parser == null) {
-            logAndOutput("Running command: '" + command + "':");
+            logAndOutput("Running command: '" + command.toString() + "':");
         } else {
-            logAndOutput("Running command with custom parser: '" + command + "'.");
+            logAndOutput("Running command with custom parser: '" + command.toString() + "'.");
         }
         try {
-            process = runtime.exec(command);
+            process = processBuilder.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            logError(e.getMessage());
         }
         BufferedReader stdOutput = new BufferedReader(new InputStreamReader(
                 process.getInputStream()));
@@ -679,12 +696,12 @@ public class Runner {
     /**
      * Runs specified command in runtime and returns exit value.
      * 
-     * @param command
-     *            command for run
+     * @param commandArray
+     *            command for run as strings split by whitespace
      * @return exit value.
      */
-    public static int runCommandInRuntime(String command) {
-        return runCommandInRuntime(command, null);
+    public static int runCommandInRuntime(List<String> commandArray) {
+        return runCommandInRuntime(commandArray, null);
     }
 
     /**

@@ -29,7 +29,6 @@ import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.StringUtils;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ImageViewUtils;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
@@ -73,7 +72,7 @@ public class ScreenSearch extends BaseScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
 
         WaitActions.waitForTrueInFunction(
                 "Search screen is not present (list with search results is not present)",
@@ -277,7 +276,6 @@ public class ScreenSearch extends BaseScreen {
     @TestAction(value = "search_tap_cancel")
     public static void search_tap_cancel() {
         HardwareActions.goBackOnPreviousActivity();
-        new ScreenUpdates();
         TestUtils.delayAndCaptureScreenshot("search_tap_cancel");
     }
 

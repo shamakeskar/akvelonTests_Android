@@ -22,7 +22,6 @@ import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
@@ -57,7 +56,7 @@ public class ScreenDiscussionDetails extends BaseDiscussionDetailsScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
 
         WaitActions.waitForTrueInFunction("Group discussion detail screen is not present",
                 new Callable<Boolean>() {

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseProfileScreen;
@@ -32,6 +33,7 @@ import com.linkedin.android.utils.ScreenResolution;
 import com.linkedin.android.utils.StringDefaultValues;
 import com.linkedin.android.utils.WaitActions;
 import com.linkedin.android.utils.viewUtils.TextViewUtils;
+import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -67,6 +69,8 @@ public class ScreenYou extends BaseProfileScreen {
     public static final ViewIdName ID_NAME_OF_ALL_TITLE = new ViewIdName("title");
     public static final ViewIdName ID_NAME_OF_FWD_BUTTON = new ViewIdName("button_3");
     public static final ViewIdName EDIT_BUTTON = new ViewIdName("left_edit");
+    private static final ViewIdName CONNECTIONS_LAYOUT = new ViewIdName("connections_layout");
+    private static final ViewIdName WVMP_LAYOUT = new ViewIdName("profile_wvmp_layout");
 
     // TextView: current user name
     private static final ViewIdName NAME = new ViewIdName("name");
@@ -86,16 +90,13 @@ public class ScreenYou extends BaseProfileScreen {
                         + getSolo().getCurrentActivity().getClass().getName() + ")",
                 ACTIVITY_SHORT_CLASSNAME);
 
-        WaitActions
-                .waitForTrueInFunction(
-                        "'You' screen is not present.",
-                        new Callable<Boolean>() {
-                            @Override
-                            public Boolean call() throws Exception {
-                                TextView editButton = (TextView) Id.getViewByViewIdName(EDIT_BUTTON);
-                                return editButton != null;
-                            }
-                        });
+        WaitActions.waitForTrueInFunction("'You' screen is not present.", new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                TextView editButton = (TextView) Id.getViewByViewIdName(EDIT_BUTTON);
+                return editButton != null;
+            }
+        });
 
     }
 
@@ -477,8 +478,10 @@ public class ScreenYou extends BaseProfileScreen {
 
     @TestAction(value = "you_tap_connections")
     public static void you_tap_connections() {
-        TextView connections = TextViewUtils.searchTextViewInActivity("Connections", false);
-        ViewUtils.tapOnView(connections, "'Connections'");
+        RelativeLayout connectionsLayout = (RelativeLayout) ViewUtils.scrollToViewById(
+                CONNECTIONS_LAYOUT, ViewUtils.SCROLL_DOWN, 5);
+        Assert.assertNotNull("'Connections' section is not present", connectionsLayout);
+        ViewGroupUtils.tapFirstViewInLayout(connectionsLayout, true, "'Connections' section", null);
         new ScreenYouConnections();
         TestUtils.delayAndCaptureScreenshot("you_tap_connections");
     }
@@ -570,8 +573,10 @@ public class ScreenYou extends BaseProfileScreen {
 
     @TestAction(value = "you_tap_wvmp")
     public static void you_tap_wvmp() {
-        TextView wvmp = TextViewUtils.searchTextViewInActivity("Who's viewed your profile", false);
-        ViewUtils.tapOnView(wvmp, "'WVMP' label");
+        RelativeLayout connectionsLayout = (RelativeLayout) ViewUtils.scrollToViewById(WVMP_LAYOUT,
+                ViewUtils.SCROLL_DOWN, 5);
+        Assert.assertNotNull("'Connections' section is not present", connectionsLayout);
+        ViewGroupUtils.tapFirstViewInLayout(connectionsLayout, true, "'Connections' section", null);
         new ScreenWhosViewedYou();
         TestUtils.delayAndCaptureScreenshot("you_tap_wvmp");
     }

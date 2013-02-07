@@ -187,7 +187,7 @@ public class ScreenProfile extends BaseProfileScreen {
     // ACTIONS --------------------------------------------------------------
 
     public static void profile(String screenshotName) {
-        //ScreenSearch.search_tap_profile();
+        // ScreenSearch.search_tap_profile();
         TestUtils.delayAndCaptureScreenshot(screenshotName);
     }
 
@@ -344,9 +344,16 @@ public class ScreenProfile extends BaseProfileScreen {
 
     @TestAction(value = "profile_tap_common")
     public static void profile_tap_common() {
-        RelativeLayout incommonLayout = (RelativeLayout) ViewUtils.scrollToViewById(
-                INCOMMON_LAYOUT, ViewUtils.SCROLL_DOWN, 5);
-        Assert.assertNotNull("'Incommon' section is not present", incommonLayout);
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
+                "'Incommon' section is not present", new Callable<Boolean>() {
+                    public Boolean call() {
+                        RelativeLayout incommonLayout = (RelativeLayout) Id
+                                .getViewByViewIdName(INCOMMON_LAYOUT);
+                        return incommonLayout != null;
+                    }
+                });
+        RelativeLayout incommonLayout = (RelativeLayout) Id
+                .getViewByViewIdName(INCOMMON_LAYOUT);
         ViewUtils.tapOnView(incommonLayout, "'In Common' section");
         new ScreenInCommon();
         TestUtils.delayAndCaptureScreenshot("profile_tap_common");

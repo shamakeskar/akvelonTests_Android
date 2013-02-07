@@ -3,7 +3,6 @@ package com.linkedin.android.screens.more;
 import com.linkedin.android.screens.base.BaseDiscussionDetailsScreen;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 
 /**
  * Class for "Discussion details from Recent updates" screen.
@@ -24,8 +23,7 @@ public class ScreenDiscussionDetailsFromRecentUpdates extends BaseDiscussionDeta
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-        
+        verifyCurrentActivity();
         WaitActions.waitForText(DETAILS_LABEL, "'" + DETAILS_LABEL + "' label is not present");
         
         assertLikeButton();

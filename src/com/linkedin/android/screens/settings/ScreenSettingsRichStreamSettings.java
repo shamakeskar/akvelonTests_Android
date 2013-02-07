@@ -6,7 +6,6 @@ import android.widget.CheckBox;
 import com.linkedin.android.screens.base.BaseScreen;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 
 @SuppressWarnings("rawtypes")
 public class ScreenSettingsRichStreamSettings extends BaseScreen {
@@ -24,8 +23,7 @@ public class ScreenSettingsRichStreamSettings extends BaseScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-
+        verifyCurrentActivity();
         assertChecBox();
 
         HardwareActions.takeCurrentActivityScreenshot("Rich Stream Settings screen.");

@@ -8,7 +8,8 @@ import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
+import com.linkedin.android.utils.WebViewHandler;
+import com.linkedin.android.utils.viewUtils.TextViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -27,9 +28,9 @@ public class ScreenEditProfile extends BaseEditProfileScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
         Assert.assertTrue("Edit Profile screen is not present",
-                getSolo().getText("Edit Profile") != null);
+                TextViewUtils.getTextViewByText("Edit Profile") != null);
     }
 
     // ACTIONS --------------------------------------------------------------
@@ -52,10 +53,25 @@ public class ScreenEditProfile extends BaseEditProfileScreen {
 
     @TestAction(value = "profile_edit_tap_done")
     public static void profile_edit_tap_done() {
-        TextView doneButton = getSolo().getText("Done");
+        TextView doneButton = TextViewUtils.getTextViewByText("Done");
         ViewUtils.tapOnView(doneButton, "'Done' button");
         new ScreenYou();
         TestUtils.delayAndCaptureScreenshot("profile_edit_tap_done");
+    }
 
+    @TestAction(value = "profile_edit_skil_add")
+    public static void profile_edit_skil_add() {
+        WebViewHandler wv = new WebViewHandler();
+        wv.clickOnClass("action add-new-section", "Add skills & expertise");
+        new ScreenEditProfileAddSkills();
+        TestUtils.delayAndCaptureScreenshot("profile_edit_skil_add");
+    }
+
+    @TestAction(value = "profile_edit_skil_edit")
+    public static void profile_edit_skil_edit() {
+        WebViewHandler wv = new WebViewHandler();
+        wv.clickOnClass("section-details has-chevron", "Current skills & expertise");
+        new ScreenEditProfileAddSkills();
+        TestUtils.delayAndCaptureScreenshot("profile_edit_skil_edit");
     }
 }

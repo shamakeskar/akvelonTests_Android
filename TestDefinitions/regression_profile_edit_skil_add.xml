@@ -1,0 +1,11 @@
+<TestSuite groups="Regressions">
+  <Test name="Add skills - profile_edit_skil_add" id="43627073">
+    <Step key="go_to_profile_edit" payload="user1@correo.linkedinlabs.com,crazyman"/>
+    <Step key="profile_edit_skil_add" />
+    <Step key="profile_edit_skil_add_tap_back" />
+
+    <!-- *cannot Add/*cannot Dismiss
+    Step key="profile_edit_skil_add_tap_add" />
+    <Step key="profile_edit_skil_add_tap_dismiss" />-->
+  </Test>
+</TestSuite>

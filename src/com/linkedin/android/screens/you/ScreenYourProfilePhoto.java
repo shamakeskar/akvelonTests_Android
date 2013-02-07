@@ -12,7 +12,6 @@ import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -36,8 +35,7 @@ public class ScreenYourProfilePhoto extends BaseProfileScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-
+        verifyCurrentActivity();
         WaitActions.waitForTrueInFunction("'Profile Photo' is not present",
                 new Callable<Boolean>() {
                     public Boolean call() {

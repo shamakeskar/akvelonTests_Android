@@ -1,5 +1,7 @@
 package com.linkedin.android.screens.updates;
 
+import java.util.concurrent.Callable;
+
 import junit.framework.Assert;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.linkedin.android.screens.base.BaseListScreen;
+import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.tests.utils.LoginActions;
@@ -19,7 +22,6 @@ import com.linkedin.android.utils.LayoutUtils;
 import com.linkedin.android.utils.Logger;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ListViewUtils;
 import com.linkedin.android.utils.viewUtils.ViewGroupUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
@@ -49,6 +51,7 @@ public class ScreenLinkedInToday extends BaseListScreen {
     // ListView: news
     private static final ViewIdName NEWS_LIST = new ViewIdName(Id.ANDROID_PACKAGE_NAME, "list");
     public static final ViewIdName MANAGE_BUTTON = new ViewIdName("nav_settings");
+    public static final ViewIdName NEWS_ROOT_LAYOUT = new ViewIdName("nus_list_root");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -59,8 +62,15 @@ public class ScreenLinkedInToday extends BaseListScreen {
 
     // METHODS --------------------------------------------------------------
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-        verifyINButton();
+        verifyCurrentActivity();
+        WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_DEFAULT,
+                "'Top News' screen is not present", new Callable<Boolean>() {
+                    public Boolean call() {
+                        RelativeLayout newsLayout = (RelativeLayout) Id
+                                .getViewByViewIdName(NEWS_ROOT_LAYOUT);
+                        return newsLayout != null;
+                    }
+                });
     };
 
     @Override

@@ -11,7 +11,6 @@ import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 
 /**
  * @author kate.dzhgundzhgiya
@@ -35,7 +34,7 @@ public class ScreenDiscussionCommentList extends BaseINScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
         WaitActions.waitForTrueInFunction("'Comments' title is not present",
                 new Callable<Boolean>() {
                     public Boolean call() {

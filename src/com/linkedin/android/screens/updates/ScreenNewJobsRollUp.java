@@ -17,7 +17,6 @@ import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.viewUtils.ViewUtils;
 
 /**
@@ -51,7 +50,7 @@ public class ScreenNewJobsRollUp extends BaseListScreen {
      */
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
+        verifyCurrentActivity();
         WaitActions.waitForTrueInFunction(DataProvider.WAIT_DELAY_LONG,
                 "Updates New Job rollup is not present",
                 new Callable<Boolean>() {

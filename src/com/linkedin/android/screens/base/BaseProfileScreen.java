@@ -10,7 +10,6 @@ import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.utils.Rect2DP;
 import com.linkedin.android.utils.WaitActions;
-import com.linkedin.android.utils.asserts.ScreenAssertUtils;
 import com.linkedin.android.utils.asserts.ViewAssertUtils;
 
 /**
@@ -41,8 +40,7 @@ public abstract class BaseProfileScreen extends BaseListScreen {
     // METHODS --------------------------------------------------------------
     @Override
     public void verify() {
-        ScreenAssertUtils.assertValidActivity(ACTIVITY_SHORT_CLASSNAME);
-        
+        verifyCurrentActivity();
         WaitActions.waitForTrueInFunction("Photo is not present", new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
