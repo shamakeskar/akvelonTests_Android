@@ -3,9 +3,7 @@ package com.linkedin.android.tests.utils;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
-import junit.framework.Assert;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.jayway.android.robotium.solo.Solo;
 import com.linkedin.android.popups.PopupMessageCancel;
@@ -17,7 +15,6 @@ import com.linkedin.android.screens.common.ScreenLogin;
 import com.linkedin.android.screens.settings.ScreenSettings;
 import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.tests.data.DataProvider;
-import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.data.ViewIdName;
 import com.linkedin.android.utils.HardwareActions;
@@ -101,7 +98,7 @@ public final class LoginActions {
     }
 
     /**
-     * Checks that we are on screen with IN button.
+     * Checks that we are on screen with IN button (not Expose).
      * 
      * @return <b>true</b> if we are on screen with IN button.
      */
@@ -120,30 +117,9 @@ public final class LoginActions {
                         return views != null;
                     }
                 });
-        ImageView exposeArrow = (ImageView) Id.getViewByViewIdName(EXPOSE_ARROW_ID);
-        return BaseINScreen.getINButton() != null && exposeArrow != null && exposeArrow.isShown() == false;
-    }
-
-    /**
-     * If start video present, then wait until it disappear.
-     */
-    private static boolean handleStartVideo() {
-        for (int i = 0; i < 30; i++) {
-            boolean isExit = true;
-            if (DataProvider.getInstance().getSolo().getCurrentActivity().getClass()
-                    .getSimpleName().equals(START_VIDEO_ACTIVITY_SHORT_CLASSNAME)) {
-                isExit = false;
-                WaitActions.waitForScreenUpdate();
-            }
-            if (isExit) {
-                if (i == 0)
-                    return false;
-                else
-                    return true;
-            }
-        }
-        Assert.fail("Cannot wait start video");
-        return false;
+        //ImageView exposeArrow = (ImageView) Id.getViewByViewIdName(EXPOSE_ARROW_ID);
+        //&& exposeArrow != null && exposeArrow.isShown() == false
+        return BaseINScreen.getINButton() != null;
     }
 
     /**
@@ -151,7 +127,7 @@ public final class LoginActions {
      */
     @TestAction(value = "logout")
     public static void logout() {
-        Logger.i("Start log out");
+        Logger.i("Start log out...");
         if (DataProvider.getInstance().getSolo().getCurrentActivity().getClass().getSimpleName()
                 .equalsIgnoreCase(START_SIGN_IN_ACTIVITY_SHORT_CLASSNAME)) {
             WaitActions.waitSingleActivity(ScreenLogin.ACTIVITY_SHORT_CLASSNAME, "Login screen");
@@ -159,16 +135,12 @@ public final class LoginActions {
         // If on Login screen, then return.
         if (ScreenLogin.isOnLoginScreen())
             return;
-        // If on handle Start Video screen, then return.
-        if (handleStartVideo())
-            return;
 
         Solo solo = DataProvider.getInstance().getSolo();
         // Go to IN screen.
         int counterTries = COUNT_TRIES_TAP_BACK;
         while (!isWeAreOnINScreen() && counterTries > 0) {
             HardwareActions.pressBack();
-            // Handle MessageExit popup if present.
             WaitActions.waitForScreenUpdate();// Wait new screen.
             if (PopupMessageExit.isOnMessageExitPopup()) {
                 new PopupMessageExit().tapOnYesButton();

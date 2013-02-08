@@ -617,21 +617,21 @@ public class Runner {
     }
 
     /**
-     * Returns string with "adb " or "adb -d 'deviceId' "
+     * Returns array with first elements "adb" or "adb -d 'deviceId'"
      * 
-     * @param commandPieces
+     * @param commandParameters
      *            parameters to adb command
      * @return adb command as List<String>
      */
-    public synchronized static List<String> createAdbCommand(String[] commandPieces) {
+    public synchronized static List<String> createAdbCommand(String[] commandParameters) {
         List<String> commandWords = new ArrayList<String>();
         commandWords.add(CMD_ADB);
         if (deviceId != null) {
             commandWords.add(CMD_ADB_S_PARAMETER);
             commandWords.add(deviceId);
         }
-        for (int i = 0; i < commandPieces.length; i++) {
-            commandWords.add(commandPieces[i]);
+        for (int i = 0; i < commandParameters.length; i++) {
+            commandWords.add(commandParameters[i]);
         }
         return commandWords;
     }

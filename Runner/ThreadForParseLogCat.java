@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,17 +7,8 @@ import java.util.regex.Pattern;
 class ThreadForParseLogCat extends Thread {
     // CONSTANTS ------------------------------------------------------------
     private static final String[] CMD_CLEAR_LOGCAT = new String[] { "logcat", "-c" };
-    private static final String STRING_TAG_FOR_LOGCAT_FILTER = "LinkedIn_Android_Tests";
-    private static final List<String> CMD_START_LOGCAT = new ArrayList<String>();
-    static {
-        CMD_START_LOGCAT.add("logcat");
-        CMD_START_LOGCAT.add("-v");
-        CMD_START_LOGCAT.add("time");
-        CMD_START_LOGCAT.add(STRING_TAG_FOR_LOGCAT_FILTER);
-        CMD_START_LOGCAT.add(":V");
-        CMD_START_LOGCAT.add("*:S");
-    }
-    
+    private static final String[] CMD_START_LOGCAT = new String[] { "logcat", "-v", "time",
+            "LinkedIn_Android_Tests:V", "*:S" };
     private static final String STRING_START_TEST = "Start test '";
     private static final String STRING_END_TEST = "Test over.-------------------------------------------------------------------";
     // private static final String STRING_PASS_TEST = "Pass test ";
@@ -46,12 +36,12 @@ class ThreadForParseLogCat extends Thread {
             }
 
             // Prepare variables to start logcat parse.
+            List<String> commandWords = Runner.createAdbCommand(CMD_START_LOGCAT);
             StringBuilder command = new StringBuilder();
-            for (int i = 0; i < CMD_START_LOGCAT.size(); i++) {
-                command.append(CMD_START_LOGCAT.get(i)).append(' ');
+            for (int i = 0; i < commandWords.size(); i++) {
+                command.append(commandWords.get(i)).append(' ');
             }
-            ProcessBuilder processBuilder = new ProcessBuilder(CMD_START_LOGCAT);
-            Process process = null;
+            ProcessBuilder processBuilder = new ProcessBuilder(commandWords);
 
             // Start logcat for parse.
             Runner.logAndOutput("Running command for logcat parse: '" + command.toString() + "':");
