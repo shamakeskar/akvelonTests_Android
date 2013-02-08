@@ -1,5 +1,0 @@
-<TestSuite groups="Regressions">
-  <Test name="regression_abi_learn_more" id="42120887">
-    <Step key="go_to_abi_learn_more" payload="user1@correo.linkedinlabs.com,crazyman" />
-  </Test>
-</TestSuite>

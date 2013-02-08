@@ -1,6 +1,7 @@
 package com.linkedin.android.screens.base;
 
 import junit.framework.Assert;
+import android.app.Activity;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,8 +19,7 @@ import com.linkedin.android.utils.viewUtils.ViewUtils;
  * @author alexander.makarov
  * @created Aug 6, 2012 4:35:35 PM
  */
-@SuppressWarnings("rawtypes")
-public abstract class BaseINScreen extends BaseScreen {
+public abstract class BaseINScreen extends BaseScreen<Activity> {
 
     // CONSTANTS ------------------------------------------------------------
     static final Rect2DP IN_BUTTON_RECT = new Rect2DP(0.0f, 28.0f, 54.6f, 49.3f);

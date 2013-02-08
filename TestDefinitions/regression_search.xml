@@ -1,8 +1,0 @@
-<TestSuite groups="Regressions">
-  <Test name="regression_search" id="42121305">
-    <Step key="go_to_search" payload="user1@correo.linkedinlabs.com,crazyman" />
-    <Step key="search_tap_profile" />
-    <Step key="search_tap_profile_reset" />
-    <Step key="search_tap_cancel" />
-  </Test>
-</TestSuite>

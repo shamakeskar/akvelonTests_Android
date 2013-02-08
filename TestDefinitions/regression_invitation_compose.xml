@@ -1,9 +1,0 @@
-<TestSuite groups="Regressions">
-  <Test name="regression_invitation_compose" id="42119347">
-    <Step key="go_to_invitation_compose" payload="user1@correo.linkedinlabs.com,crazyman" />
-    <Step key="invitation_compose_tap_cancel" />
-    <Step key="invitation_compose_tap_cancel_reset" />
-    <Step key="invitation_compose_tap_send_precondition" />
-    <Step key="invitation_compose_tap_send" />
-  </Test>
-</TestSuite>

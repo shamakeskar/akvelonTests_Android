@@ -1,9 +1,0 @@
-<TestSuite groups="Regressions" >
-  <Test id="42120147" name="regression_profile_photo" >
-    <Step key="go_toprofile_photo" payload="user1@correo.linkedinlabs.com,crazyman"/>
-    <Step key="profile_photo_tap_back" />
-    <Step key="profile_photo" />
-    <Step key="profile_photo_tap_edit" />
-    <Step key="profile_photo_actionsheet_tap_cancel" />
-  </Test>
-</TestSuite>

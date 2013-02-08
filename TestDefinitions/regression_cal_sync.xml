@@ -1,8 +1,0 @@
-<TestSuite groups="Regressions">
-  <Test name="regression_cal_sync" id="42121087">
-    <Step key="go_to_cal_sync" payload="user1@correo.linkedinlabs.com,crazyman" />
-    <Step key="cal_sync_tap_back" />
-    <Step key="cal_sync_tap_back_reset" />
-    <Step key="cal_sync_toggle_add_cal" />
-  </Test>
-</TestSuite>
