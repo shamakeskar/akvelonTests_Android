@@ -5,7 +5,7 @@
     <Step key="message_compose" />
     <Step key="message_compose_tap_add_recipients" />
     <Step key="message_compose_tap_add_recipients_reset" />
-    <Step key="message_compose_tap_send_regression_precondition" payload="Test subject,Test message,114 f 114"/>
+    <Step key="message_compose_tap_send_regression_precondition" payload="Greeting,Hello my dear friend,114 f 114"/>
     <Step key="message_compose_tap_send" />
   </Test>
 </TestSuite>

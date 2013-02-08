@@ -12,8 +12,11 @@ import com.linkedin.android.screens.base.BaseINScreen;
 import com.linkedin.android.screens.common.ScreenExpose;
 import com.linkedin.android.screens.common.ScreenIntermediateLogin;
 import com.linkedin.android.screens.common.ScreenLogin;
+import com.linkedin.android.screens.inbox.ScreenInbox;
+import com.linkedin.android.screens.more.ScreenGroupsAndMore;
 import com.linkedin.android.screens.settings.ScreenSettings;
 import com.linkedin.android.screens.updates.ScreenUpdates;
+import com.linkedin.android.screens.you.ScreenYou;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.StringData;
 import com.linkedin.android.tests.data.ViewIdName;
@@ -29,10 +32,9 @@ import com.linkedin.android.utils.WaitActions;
  */
 public final class LoginActions {
     // CONSTANTS ------------------------------------------------------------
-    private static final String START_VIDEO_ACTIVITY_SHORT_CLASSNAME = "LiMediaPlayerVideo";
     private static final int COUNT_TRIES_TAP_BACK = 10;
     private static final String START_SIGN_IN_ACTIVITY_SHORT_CLASSNAME = "LaunchActivity";
-    
+
     public static ViewIdName EXPOSE_ARROW_ID = new ViewIdName("abs__up");
 
     // PROPERTIES -----------------------------------------------------------
@@ -76,16 +78,17 @@ public final class LoginActions {
                 ScreenLogin loginScreen = new ScreenLogin();
                 screenUpdates = loginScreen.login(email, password);
             } else {
-                WaitActions.waitForTrueInFunction("Not implemented case: It is not IN and not Login screen."
-                        + " Current screen is "
-                        + DataProvider.getInstance().getSolo().getCurrentActivity().getClass()
-                                .getSimpleName(), new Callable<Boolean>() {
-                    
-                    @Override
-                    public Boolean call() throws Exception {
-                        return ScreenUpdates.isOnUpdatesScreen();
-                    }
-                });
+                WaitActions.waitForTrueInFunction(
+                        "Not implemented case: It is not IN and not Login screen."
+                                + " Current screen is "
+                                + DataProvider.getInstance().getSolo().getCurrentActivity()
+                                        .getClass().getSimpleName(), new Callable<Boolean>() {
+
+                            @Override
+                            public Boolean call() throws Exception {
+                                return ScreenUpdates.isOnUpdatesScreen();
+                            }
+                        });
                 screenUpdates = new ScreenUpdates();
             }
         } else {
@@ -98,7 +101,7 @@ public final class LoginActions {
     }
 
     /**
-     * Checks that we are on screen with IN button (not Expose).
+     * Checks that we are on screen with IN button.
      * 
      * @return <b>true</b> if we are on screen with IN button.
      */
@@ -117,9 +120,16 @@ public final class LoginActions {
                         return views != null;
                     }
                 });
-        //ImageView exposeArrow = (ImageView) Id.getViewByViewIdName(EXPOSE_ARROW_ID);
-        //&& exposeArrow != null && exposeArrow.isShown() == false
-        return BaseINScreen.getINButton() != null;
+
+        String activity = DataProvider.getInstance().getSolo().getCurrentActivity().getClass()
+                .getSimpleName();
+        if (activity.equals(ScreenUpdates.ACTIVITY_SHORT_CLASSNAME)
+                || activity.equals(ScreenGroupsAndMore.ACTIVITY_SHORT_CLASSNAME)
+                || activity.equals(ScreenInbox.ACTIVITY_SHORT_CLASSNAME)
+                || activity.equals(ScreenYou.ACTIVITY_SHORT_CLASSNAME)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -164,7 +174,7 @@ public final class LoginActions {
 
         // Scroll to bottom.
         solo.scrollToBottom();
-        
+
         // Tap on 'Sign Out' button.
         screenSettings.tapOnSignOutButton();
 

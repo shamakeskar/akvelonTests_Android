@@ -134,14 +134,11 @@ public class TmpRegressions extends BaseTestCase {
         /*
          * Possible application crash on android 2.2.
          * "Unable to pause activity {com.linkedin.android.redesign/com.linkedin.android.redesign.profile.v2.ViewProfileActivity}"
-         * ScreenExpose.expose_tap_you(); 
-         * ScreenYou.you_tap_connections();
+         * ScreenExpose.expose_tap_you(); ScreenYou.you_tap_connections();
          * ScreenYouConnections.connections_tap_back();
-         * ScreenYou.you_tap_wvmp(); 
-         * ScreenWhosViewedYou.wvmp_tap_profile();
+         * ScreenYou.you_tap_wvmp(); ScreenWhosViewedYou.wvmp_tap_profile();
          * ScreenProfile.profile_tap_back();
-         * ScreenWhosViewedYou.wvmp_tap_back(); 
-         * ScreenYou.you_tap_expose();
+         * ScreenWhosViewedYou.wvmp_tap_back(); ScreenYou.you_tap_expose();
          */
 
         ScreenExpose.expose_tap_inbox();
@@ -208,8 +205,7 @@ public class TmpRegressions extends BaseTestCase {
         startTest("43480459", "Prepush");
 
         ScreenLogin.login();
-        ScreenLogin.login_tap_signin_precondition(
-                "user1@correo.linkedinlabs.com", "crazyman");
+        ScreenLogin.login_tap_signin_precondition("user1@correo.linkedinlabs.com", "crazyman");
         ScreenLogin.login_tap_signin();
         PopupSyncContacts.abi_tap_not_sync();
         ScreenUpdates.updates_tap_expose();
@@ -310,9 +306,8 @@ public class TmpRegressions extends BaseTestCase {
         ScreenGroups.go_to_groups("user1@correo.linkedinlabs.com", "crazyman");
         ScreenGroups.groups_tap_back();
         ScreenGroups.groups();
-        // TODO: now GYML screen is not loaded.
-        // ScreenGroups.groups_tap_gyml();
-        // ScreenGroups.groups_tap_gyml_reset();
+        ScreenGroups.groups_tap_gyml();
+        ScreenGroups.groups_tap_gyml_reset();
         ScreenGroups.groups_tap_group();
         ScreenGroups.groups_tap_group_reset();
 
@@ -357,13 +352,13 @@ public class TmpRegressions extends BaseTestCase {
         ScreenSettings.settings();
         ScreenSettings.settings_tap_sync_calendar();
         ScreenSettings.settings_tap_sync_calendar_reset();
-        ScreenSettings.settings_tap_add_con();
-        ScreenSettings.settings_tap_add_con_reset();
         ScreenSettings.settings_toggle_push_notifications();
         ScreenSettings.settings_toggle_push_notifications_reset();
         ScreenSettings.settings_dialog_tap_sync_all_contacts();
         ScreenSettings.settings_dialog_tap_sync_existing_contacts();
         ScreenSettings.settings_dialog_tap_sync_cancel();
+        ScreenSettings.settings_tap_add_con();
+        ScreenSettings.settings_tap_add_con_reset();
         ScreenSettings.settings_tap_signout();
 
         passTest();
@@ -742,7 +737,8 @@ public class TmpRegressions extends BaseTestCase {
         ScreenNewMessage.message_compose();
         ScreenNewMessage.message_compose_tap_add_recipients();
         ScreenNewMessage.message_compose_tap_add_recipients_reset();
-        ScreenNewMessage.message_compose_tap_send_regression_precondition("Test subject", "Test Message", "114 f 114");
+        ScreenNewMessage.message_compose_tap_send_regression_precondition("Greeting",
+                "Hello my dear friend", "114 f 114");
         ScreenNewMessage.message_compose_tap_send();
 
         passTest();

@@ -62,7 +62,6 @@ import com.linkedin.android.screens.you.ScreenYouConnections;
 import com.linkedin.android.screens.you.ScreenYourProfilePhoto;
 import com.linkedin.android.tests.ActionSuiteTest;
 import com.linkedin.android.tests.BaseTestCase;
-import com.linkedin.android.tests.TmpRegressions;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.Registry;
@@ -137,9 +136,9 @@ public class AkvelonInstrumentationTestRunner extends InstrumentationTestRunner 
     }
 
     // Variables for run custom classes or methods.
-    private Class<? extends BaseTestCase> customClass = TmpRegressions.class;
+    private Class<? extends BaseTestCase> customClass = null;
     // in sample = TmpRegressions.class;
-    private String customMethodName = "prepush";
+    private String customMethodName = "sanity_part2";
     // in sample = "test_regression_news";
 
     // CONSTRUCTORS ---------------------------------------------------------

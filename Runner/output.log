@@ -2,13 +2,726 @@ Output of 'runner.jar'. If line starts from:
     '> ' - output of command without special parser,
     '* ' - output of instrument parser,
     '# ' - output of logcat parser
-Android device ID: null
+Android device ID: emulator-5554
 Tests APK: ../bin/LinkedIn_Android_Tests.apk
 File with output: D:\eclipse_workspace\LinkedIn_Android_Tests\Runner\output.log
 Operating system: Windows 7
+Tests for run:
+  - prepush
+  - sanity
 
 Content of file to push:
 ****************************
+<TestSuite groups="Sanity">
+  <Test name="Prepush" id="43480459">
+    <Step key="login" />
+    <Step key="login_tap_signin_precondition" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="login_tap_signin" />
+    <Step key="abi_tap_not_sync" />
+    <Step key="updates_tap_expose" />
+    <Step key="expose_tap_updates" />
+    <Step key="updates_tap_expose" />
+    <Step key="expose_tap_you" />
+    <Step key="you_tap_expose" />
+    <Step key="expose_tap_groups_and_more" />
+    <Step key="groups_and_more_tap_pymk" />
+    <Step key="pymk_tap_back" />
+    <Step key="groups_and_more_tap_groups" />
+    <Step key="groups_tap_back" />
+    <Step key="groups_and_more_tap_jobs" />
+    <Step key="jobs_home_tap_back" />
+    <Step key="groups_and_more_tap_companies" />
+    <Step key="logout" />
+  </Test>
+  <Test name="sanity" id="00000000">
+    <Step key="login" />
+    <Step key="login_tap_signin_precondition" payload="user1@correo.linkedinlabs.com,crazyman" />
+    <Step key="login_tap_signin" />
+    <Step key="login_tap_sync_all_contacts" />
+    <Step key="updates_tap_news" />
+    <Step key="news_tap_back" />
+    <Step key="updates_pull_refresh" />
+    <Step key="updates_scroll_load_more" />
+    <Step key="updates_scroll_load_more_reset" />
+    
+    <!-- User "John12-14-2010-02-03 Doe" shared very huge amount of updates.
+    Rollup appears for a short time. We tried to use another user, but updates work only for user1.
+    <Step key="updates_new_jobs_rollup_list" />-->
+    
+    <!-- App crash after clicking on profile photo.
+    <Step key="updates_new_jobs_rollup_list_tap_profile" />
+    <Step key="profile_tap_photo" />
+    <Step key="profile_photo_from_profile_tap_back"
+    <Step key="profile_tap_back" />-->
+    
+    <!-- User "John12-14-2010-02-03 Doe" shared very huge amount of updates.
+    Rollup appears for a short time. We tried to use another user, but updates work only for user1.
+    <Step key="updates_new_jobs_rollup_list_tap_back" />
+    <Step key="updates_connection_rollup_list" />
+    <Step key="updates_connection_rollup_list_tap_back" />
+    <Step key="updates_profile_rollup_list" />
+    <Step key="updates_profile_rollup_list_tap_back" />-->
+    
+    <Step key="updates_tap_search" />
+    <Step key="search_search" payload="u102" />
+    <Step key="search_tap_profile" payload="u102" />
+    
+    <!-- Antispam. Can sent invite to real user.
+    <Step key="profile_tap_invite" />
+    <Step key="invite_accept_pymk_tap_back" />-->
+    
+    <Step key="profile_tap_back" />
+    <Step key="search_tap_cancel" />
+    <Step key="updates_tap_update" />
+    <Step key="feed_detail_tap_profile_author" />
+    <Step key="profile_tap_common" />
+    <Step key="incommon_tap_back" />
+    <Step key="profile_tap_back" />
+    <Step key="feed_detail_tap_back" />
+    <Step key="updates_tap_expose" />
+    
+    <!-- Possible application crash on android 2.2.
+    "Unable to pause activity {com.linkedin.android.redesign/com.linkedin.android.redesign.profile.v2.ViewProfileActivity}"
+    <Step key="expose_tap_you" />
+    <Step key="you_tap_connections" />
+    <Step key="connections_tap_back" />
+    <Step key="you_tap_wvmp" />
+    <Step key="wvmp_tap_profile" />
+    <Step key="profile_tap_back" />
+    <Step key="wvmp_tap_back" />
+    <Step key="you_tap_expose" />-->
+    
+    <Step key="expose_tap_inbox" />
+    <Step key="inbox_tap_message" />
+    <Step key="inbox_message_detail_tap_profile" />
+    <Step key="profile_tap_back" />
+    <Step key="inbox_message_detail_tap_back" />
+    
+    <!-- Need pending invitation for this action.
+    <Step key="inbox_tap_invitation_accept" />-->
+    
+    <Step key="inbox_pull_refresh" />
+    
+    <!-- Need pending invitation for this action.
+    <Step key="inbox_tap_invitation" />
+    <Step key="inbox_invitation_detail_tap_accept" />-->
+    
+    <Step key="inbox_tap_all_invitations" />
+    <Step key="inbox_invitations_all_tap_back" />
+    
+    <!-- Commented these actions because message sending doesn't work.
+    <Step key="inbox_tap_compose_actionsheet" />
+    <Step key="inbox_compose_actionsheet_tap_new_message" />
+    <Step key="message_compose_tap_add_recipients" />
+    <Step key="select_recipients_tap_select" />
+    <Step key="select_recipients_tap_done" />
+    <Step key="message_compose_tap_send_precondition" payload="Test subject,Test Message" />
+    <Step key="message_compose_tap_send" />-->
+    
+    <Step key="inbox_tap_expose" />
+    <Step key="expose_tap_groups_and_more" />
+    <Step key="groups_and_more_tap_pymk" />
+    <Step key="pymk_tap_profile" />
+    <Step key="profile_tap_back" />
+    
+    <!-- Antispam. Can send invite to real user.
+    <Step key="pymk_tap_invite" payload="Aline Kubiak" />-->
+    
+    <Step key="pymk_tap_ignore" />
+    <Step key="pymk_scroll_load_more" />
+    <Step key="pymk_tap_back" />
+    <Step key="groups_and_more_tap_jobs" />
+    <Step key="jobs_home_tap_jmbii" payload="" />
+    <Step key="jobs_detail_tap_jobs_home" />
+    <Step key="jobs_home_tap_back" />
+    <Step key="groups_and_more_tap_groups" />
+    <Step key="groups_tap_group" />
+    <Step key="groups_discussion_list_tap_discussion" />
+    <Step key="groups_discussion_detail_tap_back" />
+    <Step key="groups_discussion_detail_tap_back" />
+    <Step key="groups_tap_back" />
+    <Step key="groups_and_more_tap_expose" />
+  </Test>
+</TestSuite>
 
 ****************************
-Running command: 'adb install -r ../bin/LinkedIn_Android_Tests.apk':
+Running command: 'adb -s emulator-5554 install -r ../bin/LinkedIn_Android_Tests.apk ':
+> 	pkg: /data/local/tmp/LinkedIn_Android_Tests.apk
+> 
+> Success
+> 
+> 91 KB/s (270971 bytes in 2.879s)
+Running command: 'adb -s emulator-5554 push D:\eclipse_workspace\LinkedIn_Android_Tests\Runner\tests.xml /mnt/sdcard/ ':
+> 36 KB/s (5478 bytes in 0.146s)
+Running command: 'adb -s emulator-5554 logcat -c ':
+Running command for logcat parse: 'adb -s emulator-5554 logcat -v time LinkedIn_Android_Tests:V *:S ':
+Running command with custom parser: 'adb -s emulator-5554 shell am instrument -r -w com.linkedin.android.test/com.linkedin.android.test.AkvelonInstrumentationTestRunner '.
+# 02-08 15:46:59.359 V/LinkedIn_Android_Tests(  286): Registered class 'LoginActions' with actions: logout, openUpdatesScreenOnStart, 
+# 02-08 15:46:59.409 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenLogin' with actions: go_to_login, login, login_error_dialog_tap_ok, login_tap_signin, login_tap_signin_precondition, login_tap_signin_reset, login_tap_signup, login_tap_sync_all_contacts, 
+# 02-08 15:46:59.419 V/LinkedIn_Android_Tests(  286): Registered class 'PopupSyncContacts' with actions: abi_tap_not_sync, go_to_popup_abi_toast, 
+# 02-08 15:46:59.449 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenCalSplash' with actions: cal_splash, cal_splash_tap_later, cal_splash_tap_later_reset, cal_splash_tap_learn_more, cal_splash_tap_learn_more_reset, cal_splash_tap_sync, cal_splash_tap_sync_reset, 
+# 02-08 15:46:59.500 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenExpose' with actions: expose, expose_tap_expose, expose_tap_expose_reset, expose_tap_groups_and_more, expose_tap_groups_and_more_reset, expose_tap_inbox, expose_tap_inbox_reset, expose_tap_search, expose_tap_search_reset, expose_tap_settings, expose_tap_settings_reset, expose_tap_updates, expose_tap_updates_reset, expose_tap_you, expose_tap_you_reset, go_to_expose, 
+# 02-08 15:46:59.619 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenGroupsAndMore' with actions: go_to_groups_and_more, groups_and_more, groups_and_more_tap_companies, groups_and_more_tap_companies_reset, groups_and_more_tap_expose, groups_and_more_tap_expose_reset, groups_and_more_tap_groups, groups_and_more_tap_groups_reset, groups_and_more_tap_jobs, groups_and_more_tap_jobs_reset, groups_and_more_tap_pymk, groups_and_more_tap_pymk_reset, groups_and_more_tap_search, groups_and_more_tap_search_reset, groups_and_more_tap_share, groups_and_more_tap_share_reset, 
+# 02-08 15:46:59.659 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenGroups' with actions: go_to_groups, groups, groups_tap_back, groups_tap_expose, groups_tap_expose_reset, groups_tap_group, groups_tap_group_reset, groups_tap_gyml, groups_tap_gyml_reset, 
+# 02-08 15:46:59.719 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenPYMK' with actions: go_to_invite_accept_pymk, go_to_pymk, invite_accept_pymk, invite_accept_pymk_tap_back, invite_accept_pymk_tap_expose, invite_accept_pymk_tap_expose_reset, invite_accept_pymk_tap_profile, invite_accept_pymk_tap_profile_reset, invite_accept_pymk_tap_search, invite_accept_pymk_tap_search_reset, pymk, pymk_pull_refresh, pymk_scroll_load_more, pymk_tap_back, pymk_tap_expose, pymk_tap_expose_reset, pymk_tap_ignore, pymk_tap_invite, pymk_tap_profile, pymk_tap_profile_reset, 
+# 02-08 15:46:59.739 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenJobs' with actions: go_to_jobs_home, jobs_home, jobs_home_tap_back, jobs_home_tap_expose, jobs_home_tap_expose_reset, jobs_home_tap_jmbii, 
+# 02-08 15:46:59.849 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenSettings' with actions: go_to_settings, settings, settings_dialog_tap_sync_all_contacts, settings_dialog_tap_sync_cancel, settings_dialog_tap_sync_existing_contacts, settings_precondition, settings_tap_add_con, settings_tap_add_con_reset, settings_tap_signout, settings_tap_sync_calendar, settings_tap_sync_calendar_reset, settings_toggle_push_notifications, settings_toggle_push_notifications_reset, 
+# 02-08 15:46:59.869 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenSearch' with actions: go_to_search, search_search, search_tap_cancel, search_tap_profile, search_tap_profile_reset, 
+# 02-08 15:46:59.929 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenUpdates' with actions: go_to_updates, updates, updates_pull_refresh, updates_scroll_load_more, updates_scroll_load_more_reset, updates_tap_cal, updates_tap_cal_reset, updates_tap_expose, updates_tap_expose_reset, updates_tap_news, updates_tap_news_reset, updates_tap_search, updates_tap_search_reset, updates_tap_share, updates_tap_share_reset, updates_tap_update, updates_tap_update_reset, 
+# 02-08 15:46:59.969 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenGroupsYouMightLike' with actions: go_to_groups_gyml, groups_gyml, groups_gyml_pull_refresh, groups_gyml_scroll_load_more, groups_gyml_tap_back, groups_gyml_tap_expose, groups_gyml_tap_expose_reset, groups_gyml_tap_group, groups_gyml_tap_group_reset, groups_gyml_tap_join, 
+# 02-08 15:47:00.089 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenAllPopularDiscussion' with actions: go_to_groups_discussion_list_view_popular, groups_discussion_list_view_popular, groups_discussion_list_view_popular_scroll_load_more, groups_discussion_list_view_popular_tap_back, groups_discussion_list_view_popular_tap_discussion, groups_discussion_list_view_popular_tap_discussion_reset, groups_discussion_list_view_popular_tap_expose, groups_discussion_list_view_popular_tap_expose_reset, groups_discussion_list_view_popular_tap_post_new_discussion, groups_discussion_list_view_popular_tap_post_new_discussion_reset, 
+# 02-08 15:47:00.129 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenLinkedInToday' with actions: go_to_news, news, news_manage_reset, news_pull_refresh, news_tap_article, news_tap_article_reset, news_tap_back, news_tap_expose, news_tap_expose_reset, news_tap_manage, 
+# 02-08 15:47:00.169 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenYouConnections' with actions: connections_pull_refresh, connections_tap_add_con, connections_tap_add_con_reset, connections_tap_back, connections_tap_back_reset, connections_tap_expose, connections_tap_expose_reset, connections_tap_profile, connections_tap_profile_reset, connections_tap_pymk, connections_tap_pymk_reset, connections_tap_search, connections_tap_search_reset, go_to_connections, 
+# 02-08 15:47:00.209 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenGroupsDiscussionList' with actions: go_to_groups_discussion_list, groups_discussion_list, groups_discussion_list_scroll_load_more, groups_discussion_list_tap_back, groups_discussion_list_tap_discussion, groups_discussion_list_tap_discussion_reset, groups_discussion_list_tap_expose, groups_discussion_list_tap_expose_reset, groups_discussion_list_tap_post_new_discussion, groups_discussion_list_tap_post_new_discussion_reset, groups_discussion_list_tap_view_all_popular, groups_discussion_list_tap_view_all_popular_reset, 
+# 02-08 15:47:00.229 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenShareUpdate' with actions: go_to_share, share, share_tap_cancel, share_tap_visibility, share_tap_visibility_reset, 
+# 02-08 15:47:00.249 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenNewDiscussion' with actions: go_to_groups_discussion_list_compose, groups_discussion_list_compose, groups_discussion_list_compose_tap_cancel, 
+# 02-08 15:47:00.329 V/LinkedIn_Android_Tests(  286): Registered class 'PopupShareUpdateVisibility' with actions: go_to_share_visibility, share_visibility_tap_anyone, share_visibility_tap_back, share_visibility_tap_back_reset, share_visibility_tap_connections_only, share_visibility_tap_connections_only_reset, 
+# 02-08 15:47:00.349 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenReportProblem' with actions: go_to_report_problem, report_problem, report_problem_tap_back, 
+# 02-08 15:47:00.369 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenCategories' with actions: go_to_news_manage, news_manage, news_manage_tap_back, news_manage_tap_expose, news_manage_tap_expose_reset, 
+# 02-08 15:47:00.389 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenUpdatedProfileRollup' with actions: go_to_updates_profile_rollup_list, updates_profile_rollup_list, updates_profile_rollup_list_tap_back, updates_profile_rollup_list_tap_expose, updates_profile_rollup_list_tap_expose_reset, updates_profile_rollup_list_tap_update, updates_profile_rollup_list_tap_update_reset, 
+# 02-08 15:47:00.439 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenWhosViewedYou' with actions: go_to_wvmp, go_to_wvmp_profiles_rollup, wvmp, wvmp_back, wvmp_expose, wvmp_expose_reset, wvmp_profiles_rollup, wvmp_profiles_rollup_tap_back, wvmp_profiles_rollup_tap_expose, wvmp_profiles_rollup_tap_expose_reset, wvmp_profiles_rollup_tap_profile, wvmp_tap_back, wvmp_tap_profile, wvmp_tap_profile_reset, 
+# 02-08 15:47:00.459 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenYourProfilePhoto' with actions: go_to_profile_photo, profile_photo, profile_photo_actionsheet_tap_cancel, profile_photo_tap_back, profile_photo_tap_edit, 
+# 02-08 15:47:00.479 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenEditProfile' with actions: go_to_profile_edit, profile_edit, profile_edit_skil_add, profile_edit_skil_edit, profile_edit_tap_done, 
+# 02-08 15:47:00.509 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenCalendar' with actions: cal, cal_scroll_load_next, cal_scroll_load_previous, cal_tap_back, cal_tap_expose, cal_tap_expose_reset, cal_tap_today, go_to_cal, 
+# 02-08 15:47:00.589 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenCompanies' with actions: companies_tap_back, companies_tap_back_reset, companies_tap_expose, companies_tap_expose_reset, go_to_companies, 
+# 02-08 15:47:00.619 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenNewConnectionsRollUp' with actions: go_to_updates_connection_rollup_list, updates_connection_rollup_list, updates_connection_rollup_list_tap_back, updates_connection_rollup_list_tap_expose, updates_connection_rollup_list_tap_expose_reset, updates_connection_rollup_list_tap_update, updates_connection_rollup_list_tap_update_reset, 
+# 02-08 15:47:00.649 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenRecentActivity' with actions: go_to_recent_activity, recent_activity, recent_activity_back, recent_activity_expose, recent_activity_expose_reset, recent_activity_tap_detail, recent_activity_tap_detail_reset, 
+# 02-08 15:47:00.679 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenAllMessages' with actions: go_to_inbox_mail_all, inbox_mail_all, inbox_mail_all_pull_refresh, inbox_mail_all_scroll_load_more, inbox_mail_all_tap_back, inbox_mail_all_tap_compose_new_message, inbox_mail_all_tap_compose_new_message_reset, inbox_mail_all_tap_message, inbox_mail_all_tap_message_reset, 
+# 02-08 15:47:00.699 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenAddComment' with actions: comment_compose_tap_cancel, comment_compose_tap_cancel_reset, go_to_comment_compose, 
+# 02-08 15:47:00.709 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenProfilePhoto' with actions: go_to_profile_photo_from_profile, profile_photo_from_profile, profile_photo_from_profile_tap_back, 
+# 02-08 15:47:00.749 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenNewMessage' with actions: go_to_message_compose, message_compose, message_compose_tap_add_recipients, message_compose_tap_add_recipients_reset, message_compose_tap_cancel, message_compose_tap_send, message_compose_tap_send_precondition, message_compose_tap_send_regression_precondition, 
+# 02-08 15:47:00.849 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenNewJobsRollUp' with actions: go_to_updates_new_jobs_rollup_list, updates_new_jobs_rollup_list, updates_new_jobs_rollup_list_tap_back, updates_new_jobs_rollup_list_tap_expose, updates_new_jobs_rollup_list_tap_expose_reset, updates_new_jobs_rollup_list_tap_message, updates_new_jobs_rollup_list_tap_message_reset, updates_new_jobs_rollup_list_tap_profile, updates_new_jobs_rollup_list_tap_profile_reset, 
+# 02-08 15:47:00.879 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenSettingsCalendar' with actions: cal_sync_tap_back, cal_sync_tap_back_reset, cal_sync_toggle_add_cal, go_to_cal_sync, 
+# 02-08 15:47:00.959 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenInbox' with actions: go_to_inbox, inbox, inbox_compose_actionsheet_tap_new_invitation, inbox_compose_actionsheet_tap_new_invitation_reset, inbox_compose_actionsheet_tap_new_message, inbox_compose_actionsheet_tap_new_message_reset, inbox_pull_refresh, inbox_tap_all_invitations, inbox_tap_all_invitations_reset, inbox_tap_all_mail, inbox_tap_all_mail_reset, inbox_tap_compose_actionsheet, inbox_tap_compose_actionsheet_reset, inbox_tap_expose, inbox_tap_expose_reset, inbox_tap_invitation, inbox_tap_invitation_accept, inbox_tap_invitation_decline, inbox_tap_invitation_reset, inbox_tap_message, inbox_tap_message_reset, inbox_tap_notification, inbox_tap_notification_reset, inbox_tap_search, inbox_tap_search_reset, 
+# 02-08 15:47:00.979 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenInCommon' with actions: go_to_incommon, incommon, incommon_tap_back, incommon_tap_expose, incommon_tap_expose_reset, incommon_tap_profile, incommon_tap_profile_reset, 
+# 02-08 15:47:01.089 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenInvitationsAll' with actions: go_to_inbox_invitations_all, inbox_invitations_all, inbox_invitations_all_pull_refresh, inbox_invitations_all_scroll_load_more, inbox_invitations_all_tap_back, inbox_invitations_all_tap_compose_new_invitation, inbox_invitations_all_tap_compose_new_invitation_reset, inbox_invitations_all_tap_expose, inbox_invitations_all_tap_expose_reset, inbox_invitations_all_tap_invitation, inbox_invitations_all_tap_invitation_accept, inbox_invitations_all_tap_invitation_decline, inbox_invitations_all_tap_invitation_reset, 
+# 02-08 15:47:01.259 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenFeedDetail' with actions: feed_detail_actionsheet_tap_cancel, feed_detail_actionsheet_tap_reply_privately, feed_detail_actionsheet_tap_reply_privately_reset, feed_detail_actionsheet_tap_send_to_connection, feed_detail_actionsheet_tap_send_to_connection_reset, feed_detail_actionsheet_tap_share, feed_detail_actionsheet_tap_share_reset, feed_detail_join_closed_group_dialog_tap_cancel, feed_detail_join_closed_group_dialog_tap_cancel_precondition, feed_detail_join_closed_group_dialog_tap_join, feed_detail_rollup_list_tap_update_reset, feed_detail_tap_actionsheet, feed_detail_tap_back, feed_detail_tap_back_reset, feed_detail_tap_comment, feed_detail_tap_comment_reset, feed_detail_tap_company, feed_detail_tap_company_reset, feed_detail_tap_expose, feed_detail_tap_expose_reset, feed_detail_tap_group, feed_detail_tap_hashtag, feed_detail_tap_hashtag_reset, feed_detail_tap_like_toggle, feed_detail_tap_likes_list, feed_detail_tap_likes_list_reset, feed_detail_tap_profile_author, feed_detail_tap_profile_author_precondition, feed_detail_tap_profile_author_reset, feed_detail_tap_profile_commenter, feed_detail_tap_profile_commenter_reset, feed_detail_tap_profile_new_connection, feed_detail_tap_profile_new_connection_reset, feed_detail_tap_twiiter_handle, feed_detail_tap_twiiter_handle_reset, feed_detail_tap_update, feed_detail_tap_url, feed_detail_tap_url_reset, go_to_feed_detail, 
+# 02-08 15:47:01.359 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenYou' with actions: go_to_you, you, you_fwd_actionsheet_tap_cancel, you_fwd_actionsheet_tap_email, you_fwd_actionsheet_tap_email_reset, you_fwd_actionsheet_tap_send, you_fwd_actionsheet_tap_send_reset, you_photo_actionsheet_tap_cancel, you_tap_activity, you_tap_activity_reset, you_tap_change_photo, you_tap_connections, you_tap_connections_reset, you_tap_expose, you_tap_fwd, you_tap_groups, you_tap_groups_reset, you_tap_photo, you_tap_photo_reset, you_tap_profile_edit, you_tap_profile_edit_reset, you_tap_search, you_tap_search_reset, you_tap_share, you_tap_share_reset, you_tap_twitter, you_tap_twitter_reset, you_tap_website, you_tap_website_reset, you_tap_wvmp, you_tap_wvmp_reset, 
+# 02-08 15:47:01.469 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenNewsArticleDetailsFromLinkedInToday' with actions: go_to_news_detail, news_detail, news_detail_tap_article_down, news_detail_tap_article_up, news_detail_tap_back, news_detail_tap_expose, news_detail_tap_expose_reset, news_detail_tap_message, news_detail_tap_message_reset, news_detail_tap_share, news_detail_tap_share_reset, news_detail_tap_view_article_header, news_detail_tap_view_article_header_reset, news_detail_tap_view_article_image, news_detail_tap_view_article_image_reset, 
+# 02-08 15:47:01.479 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenAbiLearnMore' with actions: abi_learn_more, go_to_abi_learn_more, 
+# 02-08 15:47:01.489 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenAddressBookImport' with actions: 
+# 02-08 15:47:01.509 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenAddConnections' with actions: go_to_select_recipients, select_recipients, select_recipients_tap_cancel, select_recipients_tap_done, select_recipients_tap_scrollbar, select_recipients_tap_select, 
+# 02-08 15:47:01.539 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenCommentsList' with actions: feed_detail_comments_list, feed_detail_comments_list_scroll_load_more, feed_detail_comments_list_tap_back, feed_detail_comments_list_tap_expose, feed_detail_comments_list_tap_expose_reset, feed_detail_comments_list_tap_profile_author, feed_detail_comments_list_tap_profile_author_reset, go_to_feed_detail_comments_list, 
+# 02-08 15:47:01.590 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenInvitationDetails' with actions: go_to_inbox_invitation_detail, inbox_invitation_detail, inbox_invitation_detail_tap_accept, inbox_invitation_detail_tap_back, inbox_invitation_detail_tap_decline, inbox_invitation_detail_tap_expose, inbox_invitation_detail_tap_expose_reset, inbox_invitation_detail_tap_invitation_down, inbox_invitation_detail_tap_invitation_up, inbox_invitation_detail_tap_profile, inbox_invitation_detail_tap_profile_reset, inbox_invitation_detail_tap_reply, inbox_invitation_detail_tap_reply_reset, 
+# 02-08 15:47:01.619 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenLikesList' with actions: feed_detail_likes_list, feed_detail_likes_list_scroll_load_more, feed_detail_likes_list_tap_back, feed_detail_likes_list_tap_expose, feed_detail_likes_list_tap_expose_reset, feed_detail_likes_list_tap_profile, feed_detail_likes_list_tap_profile_reset, go_to_feed_detail_likes_list, 
+# 02-08 15:47:01.719 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenBrowser' with actions: browser, browser_actionsheet_tap_send_to_connection, browser_actionsheet_tap_share, browser_actionsheet_tap_share_reset, browser_tap_actionsheet, browser_tap_back, browser_tap_expose, browser_tap_expose_reset, browser_tap_refresh, go_to_browser, go_to_browser_precondition, 
+# 02-08 15:47:01.889 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenMessageDetail' with actions: go_to_inbox_message_detail, inbox_message_detail, inbox_message_detail_compose_actionsheet_tap_cancel, inbox_message_detail_compose_actionsheet_tap_new_invitation, inbox_message_detail_compose_actionsheet_tap_new_invitation_reset, inbox_message_detail_compose_actionsheet_tap_new_message, inbox_message_detail_compose_actionsheet_tap_new_message_reset, inbox_message_detail_respond_actionsheet_tap_cancel, inbox_message_detail_respond_actionsheet_tap_forward, inbox_message_detail_respond_actionsheet_tap_forward_reset, inbox_message_detail_respond_actionsheet_tap_reply, inbox_message_detail_respond_actionsheet_tap_reply_all, inbox_message_detail_respond_actionsheet_tap_reply_all_reset, inbox_message_detail_respond_actionsheet_tap_reply_reset, inbox_message_detail_tap_archive, inbox_message_detail_tap_archive_reset, inbox_message_detail_tap_back, inbox_message_detail_tap_back_reset, inbox_message_detail_tap_compose_actionsheet, inbox_message_detail_tap_delete, inbox_message_detail_tap_delete_reset, inbox_message_detail_tap_expose, inbox_message_detail_tap_expose_reset, inbox_message_detail_tap_message_down, inbox_message_detail_tap_message_up, inbox_message_detail_tap_profile, inbox_message_detail_tap_profile_reset, inbox_message_detail_tap_respond_actionsheet, inbox_message_detail_tap_url, inbox_message_detail_tap_url_precondition, inbox_message_detail_tap_url_reset, inbox_message_detail_toggle_read_state, 
+# 02-08 15:47:01.909 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenNewInvitation' with actions: go_to_invitation_compose, invitation_compose_tap_cancel, invitation_compose_tap_cancel_reset, invitation_compose_tap_send, invitation_compose_tap_send_precondition, 
+# 02-08 15:47:02.089 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenProfile' with actions: go_to_profile, profile, profile_fwd_actionsheet_tap_cancel, profile_fwd_actionsheet_tap_email, profile_fwd_actionsheet_tap_email_reset, profile_fwd_actionsheet_tap_send, profile_fwd_actionsheet_tap_send_reset, profile_tap_accept_invite, profile_tap_accept_invite_precondition, profile_tap_activity, profile_tap_activity_reset, profile_tap_address, profile_tap_address_reset, profile_tap_back, profile_tap_common, profile_tap_common_reset, profile_tap_connections, profile_tap_connections_reset, profile_tap_exp_company, profile_tap_exp_company_reset, profile_tap_expose, profile_tap_expose_reset, profile_tap_fwd, profile_tap_groups, profile_tap_groups_reset, profile_tap_invite, profile_tap_invite_precondition, profile_tap_message, profile_tap_message_reset, profile_tap_photo, profile_tap_photo_reset, profile_tap_profile, profile_tap_profile_reset, profile_tap_search, profile_tap_search_reset, profile_tap_twitter, profile_tap_twitter_reset, profile_tap_website, profile_tap_website_reset, 
+# 02-08 15:47:02.159 V/LinkedIn_Android_Tests(  286): Registered class 'ScreenDiscussionDetails' with actions: go_to_groups_discussion_detail, groups_discussion_detail, groups_discussion_detail_tap_back, groups_discussion_detail_tap_comment, groups_discussion_detail_tap_comment_reset, groups_discussion_detail_tap_comments_list, groups_discussion_detail_tap_comments_list_reset, groups_discussion_detail_tap_discussion_down, groups_discussion_detail_tap_discussion_up, groups_discussion_detail_tap_expose, groups_discussion_detail_tap_expose_reset, groups_discussion_detail_tap_like_toggle, groups_discussion_detail_tap_likes_list, groups_discussion_detail_tap_likes_list_reset, groups_discussion_detail_tap_profile_author, groups_discussion_detail_tap_profile_author_reset, groups_discussion_detail_tap_profile_commenter, groups_discussion_detail_tap_profile_commenter_reset, 
+* INSTRUMENTATION_STATUS: id=InstrumentationTestRunner
+* INSTRUMENTATION_STATUS: current=1
+* INSTRUMENTATION_STATUS: class=com.linkedin.android.tests.ActionSuiteTest
+* INSTRUMENTATION_STATUS: stream=
+* com.linkedin.android.tests.ActionSuiteTest:
+* INSTRUMENTATION_STATUS: numtests=2
+* INSTRUMENTATION_STATUS: test=testActions
+Started test: 'prepush' [--]
+* INSTRUMENTATION_STATUS_CODE: 1
+# 02-08 15:47:06.619 V/LinkedIn_Android_Tests(  286): setUp
+# 02-08 15:47:06.619 I/LinkedIn_Android_Tests(  286): Start test 'Prepush' (43480459)
+# 02-08 15:47:06.629 D/LinkedIn_Android_Tests(  286): >>> Run action 'login':
+# 02-08 15:47:06.629 I/LinkedIn_Android_Tests(  286): Start log out...
+# 02-08 15:47:15.704 I/LinkedIn_Android_Tests(  286): Saving screenshot 'login' in '0_tmp'
+# 02-08 15:47:15.720 D/LinkedIn_Android_Tests(  286): >>> Run action 'login_tap_signin_precondition' with payload 'user1@correo.linkedinlabs.com, crazyman':
+# 02-08 15:47:16.260 I/LinkedIn_Android_Tests(  286): Enter 'user1@correo.linkedinlabs.com' in user name field
+# 02-08 15:47:18.890 I/LinkedIn_Android_Tests(  286): Enter 'crazyman' in user password field
+# 02-08 15:47:25.481 I/LinkedIn_Android_Tests(  286): Saving screenshot 'login_tap_signin_precondition' in '0_tmp'
+# 02-08 15:47:25.481 D/LinkedIn_Android_Tests(  286): >>> Run action 'login_tap_signin':
+# 02-08 15:47:25.489 I/LinkedIn_Android_Tests(  286): Tapping on 'Login' button
+# 02-08 15:47:37.400 I/LinkedIn_Android_Tests(  286): Saving screenshot 'login_tap_signin' in '0_tmp'
+# 02-08 15:47:37.420 D/LinkedIn_Android_Tests(  286): >>> Run action 'abi_tap_not_sync':
+# 02-08 15:47:42.809 I/LinkedIn_Android_Tests(  286): Tapping on Do not sync LinkedIn contacts view
+# 02-08 15:47:47.959 I/LinkedIn_Android_Tests(  286): Saving screenshot 'abi_tap_not_sync' in '0_tmp'
+# 02-08 15:47:47.979 D/LinkedIn_Android_Tests(  286): >>> Run action 'updates_tap_expose':
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at junit.framework.Assert.fail(Assert.java:47)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_expose(ScreenUpdates.java:1347)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at java.lang.reflect.Method.invokeNative(Native Method)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at java.lang.reflect.Method.invoke(Method.java:521)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at junit.framework.TestCase.runBare(TestCase.java:127)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at junit.framework.TestResult$1.protect(TestResult.java:106)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at junit.framework.TestResult.runProtected(TestResult.java:124)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at junit.framework.TestResult.run(TestResult.java:109)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at junit.framework.TestCase.run(TestCase.java:118)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+# 02-08 15:48:38.000 E/LinkedIn_Android_Tests(  286): 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+# 02-08 15:48:38.040 D/LinkedIn_Android_Tests(  286): Settings for log: onlyVisible=false, onlyShown=false, filter=null. Current Activity: NUSListActivityV2
+# 02-08 15:48:38.040 D/LinkedIn_Android_Tests(  286): Level            Type   X    Y Width Height Shown          ID:Package:Type/Entry       >>>Custom
+# 02-08 15:48:38.040 D/LinkedIn_Android_Tests(  286): =========================================================================================================================
+# 02-08 15:48:38.060 D/LinkedIn_Android_Tests(  286):    0)       ImageView   15    8   32   35   true 2131165449:com.linkedin.android.redesign:id/status_icon                 >>> isEnabled=true, isClickable=false
+# 02-08 15:48:38.060 D/LinkedIn_Android_Tests(  286):   -1)       ImageView  289   19   16   15   true 2131165918:com.linkedin.android.redesign:id/status_chevron              >>> isEnabled=true, isClickable=false
+# 02-08 15:48:38.060 D/LinkedIn_Android_Tests(  286):    0)        TextView   47   15  243   21   true 2131165450:com.linkedin.android.redesign:id/status_message              >>> Text='See who you know on LinkedIn'
+# 02-08 15:48:38.070 D/LinkedIn_Android_Tests(  286):   -1)        TextView    0    0    0    0  false 2131165919:com.linkedin.android.redesign:id/status_notification_count   >>> Text=''
+# 02-08 15:48:38.080 D/LinkedIn_Android_Tests(  286):    0)  RelativeLayout    0    0  320   52   true 2131165917:com.linkedin.android.redesign:id/status_in_app_notification_popup  
+# 02-08 15:48:38.089 D/LinkedIn_Android_Tests(  286):   -1)     FrameLayout    0    0  320  427   true       -1:<noname>                                                      
+# 02-08 15:48:38.089 D/LinkedIn_Android_Tests(  286):    0)    LinearLayout    0   25  320  401   true       -1:<noname>                                                      
+# 02-08 15:48:38.110 D/LinkedIn_Android_Tests(  286):    1) ActionBarContainer    0   25  320   48   true 2131165308:com.linkedin.android.redesign:id/abs__action_bar_container    
+# 02-08 15:48:38.110 D/LinkedIn_Android_Tests(  286):    2)   ActionBarView    0   25  320   48   true 2131165309:com.linkedin.android.redesign:id/abs__action_bar              
+# 02-08 15:48:38.121 D/LinkedIn_Android_Tests(  286):    3)        HomeView    9   25   39   48   true       -1:<noname>                                                      
+# 02-08 15:48:38.430 D/LinkedIn_Android_Tests(  286):    4)       ImageView    9   25    0    0  false 2131165195:com.linkedin.android.redesign:id/abs__up                     >>> isEnabled=true, isClickable=false
+# 02-08 15:48:38.430 D/LinkedIn_Android_Tests(  286):    4)       ImageView   13   35   31   31   true 2131165194:com.linkedin.android.redesign:id/abs__home                   >>> isEnabled=true, isClickable=false
+# 02-08 15:48:38.450 D/LinkedIn_Android_Tests(  286):    3)  ActionMenuView  208   25  112   48   true       -1:<noname>                                                      
+# 02-08 15:48:38.450 D/LinkedIn_Android_Tests(  286):    4) ActionMenuItemView  208   25   56   48   true 2131165977:com.linkedin.android.redesign:id/menu_search                  
+# 02-08 15:48:38.460 D/LinkedIn_Android_Tests(  286):    5)     ImageButton  216   29   40   40   true 2131165293:com.linkedin.android.redesign:id/abs__imageButton             
+# 02-08 15:48:38.470 D/LinkedIn_Android_Tests(  286):    5) CapitalizingButton  208   25    0    0  false 2131165294:com.linkedin.android.redesign:id/abs__textButton              
+# 02-08 15:48:38.480 D/LinkedIn_Android_Tests(  286):    4)    LinearLayout  264   25   56   48   true       -1:<noname>                                                      
+# 02-08 15:48:38.490 D/LinkedIn_Android_Tests(  286):    5)     ImageButton  276   33   32   32   true 2131165325:com.linkedin.android.redesign:id/button                       
+# 02-08 15:48:38.490 D/LinkedIn_Android_Tests(  286):    2) ActionBarContextView    0   25    0    0  false 2131165310:com.linkedin.android.redesign:id/abs__action_context_bar      
+# 02-08 15:48:38.520 D/LinkedIn_Android_Tests(  286):    1) NineFrameLayout    0   73  320  353   true 16908290:android:id/content                                            
+# 02-08 15:48:38.520 D/LinkedIn_Android_Tests(  286):    2)  RelativeLayout    0   73  320  353   true 2131165647:com.linkedin.android.redesign:id/nus_list_root                
+# 02-08 15:48:38.530 D/LinkedIn_Android_Tests(  286):    3) NoSaveStateFrameLayout    0   73  320  353   true       -1:<noname>                                                      
+# 02-08 15:48:38.540 D/LinkedIn_Android_Tests(  286):    4)  RelativeLayout    0   73  320  353   true 2131165641:com.linkedin.android.redesign:id/nus_list_fragment            
+# 02-08 15:48:38.550 D/LinkedIn_Android_Tests(  286):    5)  RelativeLayout    0   73  320  353   true       -1:<noname>                                                      
+# 02-08 15:48:38.550 D/LinkedIn_Android_Tests(  286):    6)        TextView    0   73  320  353   true 16908292:android:id/empty                                             >>> Text='Loading…'
+# 02-08 15:48:38.570 D/LinkedIn_Android_Tests(  286):    6)        ListView    0   73    0    0  false 16908298:android:id/list                                              >>> Count=0
+# 02-08 15:48:38.570 D/LinkedIn_Android_Tests(  286):    6)    LinearLayout    0   73    0    0  false 2131165534:com.linkedin.android.redesign:id/page_header                  
+# 02-08 15:48:38.580 D/LinkedIn_Android_Tests(  286):    7)        TextView    0   73    0    0  false 2131165557:com.linkedin.android.redesign:id/section_header_text         >>> Text='Invitations (%1$d)'
+# 02-08 15:48:38.580 D/LinkedIn_Android_Tests(  286):    7)            View    0   73    0    0  false       -1:<noname>                                                      
+# 02-08 15:48:38.590 D/LinkedIn_Android_Tests(  286):    7) ActionBarContainer    0   25    0    0  false 2131165311:com.linkedin.android.redesign:id/abs__split_action_bar        
+# 02-08 15:48:38.600 D/LinkedIn_Android_Tests(  286):   -1)       DecorView    0    0  320  427   true       -1:<noname>                                                      
+# 02-08 15:48:38.600 I/LinkedIn_Android_Tests(  286): Saving screenshot ''Prepush' fail' in '0_tmp'
+# 02-08 15:48:38.620 E/LinkedIn_Android_Tests(  286): Fail in test 'Prepush' (43480459)
+# 02-08 15:48:38.620 I/LinkedIn_Android_Tests(  286): Test over.-------------------------------------------------------------------
+# 02-08 15:48:38.620 I/LinkedIn_Android_Tests(  286): Start log out...
+# 02-08 15:48:38.630 I/LinkedIn_Android_Tests(  286): Tapping on 'IN' button
+# 02-08 15:48:43.719 I/LinkedIn_Android_Tests(  286): Tapping on 'Settings' button in top right corner
+# 02-08 15:48:47.679 I/LinkedIn_Android_Tests(  286): Tapping on 'Signout' button
+# 02-08 15:49:08.339 I/LinkedIn_Android_Tests(  286): Log out complete
+# 02-08 15:49:09.749 V/LinkedIn_Android_Tests(  286): tearDown
+* INSTRUMENTATION_STATUS: id=InstrumentationTestRunner
+* INSTRUMENTATION_STATUS: current=1
+* INSTRUMENTATION_STATUS: class=com.linkedin.android.tests.ActionSuiteTest
+* INSTRUMENTATION_STATUS: stream=
+Fail: Failure in testActions:
+* Failure in testActions:
+Fail: junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+* junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+Fail: 	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+* 	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+Fail: 	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+* 	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+Fail: 	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+* 	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+Fail: 	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+* 	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_expose(ScreenUpdates.java:1347)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_expose(ScreenUpdates.java:1347)
+Fail: 	at java.lang.reflect.Method.invokeNative(Native Method)
+* 	at java.lang.reflect.Method.invokeNative(Native Method)
+Fail: 	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+* 	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+Fail: 	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+* 	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+Fail: 	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+* 	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+Fail: 	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+* 	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+Fail: 	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+* 	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+Fail: 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+* 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+Fail: 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+* 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+Fail: 	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+* 	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+Fail: 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+* 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+* INSTRUMENTATION_STATUS: numtests=2
+Fail: INSTRUMENTATION_STATUS: stack=junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+* INSTRUMENTATION_STATUS: stack=junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+Fail: 	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+* 	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+Fail: 	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+* 	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+Fail: 	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+* 	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+Fail: 	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+* 	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_expose(ScreenUpdates.java:1347)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_expose(ScreenUpdates.java:1347)
+Fail: 	at java.lang.reflect.Method.invokeNative(Native Method)
+* 	at java.lang.reflect.Method.invokeNative(Native Method)
+Fail: 	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+* 	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+Fail: 	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+* 	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+Fail: 	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+* 	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+Fail: 	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+* 	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+Fail: 	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+* 	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+Fail: 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+* 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+Fail: 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+* 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+Fail: 	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+* 	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+Fail: 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+* 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+* INSTRUMENTATION_STATUS: test=testActions
+* INSTRUMENTATION_STATUS_CODE: -2
+* INSTRUMENTATION_STATUS: id=InstrumentationTestRunner
+* INSTRUMENTATION_STATUS: current=2
+* INSTRUMENTATION_STATUS: class=com.linkedin.android.tests.ActionSuiteTest
+* INSTRUMENTATION_STATUS: stream=
+* INSTRUMENTATION_STATUS: numtests=2
+* INSTRUMENTATION_STATUS: test=testActions
+Started test: 'sanity' [#-]
+* INSTRUMENTATION_STATUS_CODE: 1
+# 02-08 15:49:10.769 V/LinkedIn_Android_Tests(  286): setUp
+# 02-08 15:49:10.769 I/LinkedIn_Android_Tests(  286): Start test 'sanity' (00000000)
+# 02-08 15:49:10.779 D/LinkedIn_Android_Tests(  286): >>> Run action 'login':
+# 02-08 15:49:10.779 I/LinkedIn_Android_Tests(  286): Start log out...
+# 02-08 15:49:19.861 I/LinkedIn_Android_Tests(  286): Saving screenshot 'login' in '0_tmp'
+# 02-08 15:49:19.880 D/LinkedIn_Android_Tests(  286): >>> Run action 'login_tap_signin_precondition' with payload 'user1@correo.linkedinlabs.com, crazyman':
+# 02-08 15:49:20.400 I/LinkedIn_Android_Tests(  286): Enter 'user1@correo.linkedinlabs.com' in user name field
+# 02-08 15:49:23.139 I/LinkedIn_Android_Tests(  286): Enter 'crazyman' in user password field
+# 02-08 15:49:29.795 I/LinkedIn_Android_Tests(  286): Saving screenshot 'login_tap_signin_precondition' in '0_tmp'
+# 02-08 15:49:29.795 D/LinkedIn_Android_Tests(  286): >>> Run action 'login_tap_signin':
+# 02-08 15:49:29.799 I/LinkedIn_Android_Tests(  286): Tapping on 'Login' button
+# 02-08 15:49:40.910 I/LinkedIn_Android_Tests(  286): Saving screenshot 'login_tap_signin' in '0_tmp'
+# 02-08 15:49:40.930 D/LinkedIn_Android_Tests(  286): >>> Run action 'login_tap_sync_all_contacts':
+# 02-08 15:49:46.039 I/LinkedIn_Android_Tests(  286): Tapping on Sync all view
+# 02-08 15:50:02.320 I/LinkedIn_Android_Tests(  286): Saving screenshot 'login_tap_sync_all_contacts' in '0_tmp'
+# 02-08 15:50:02.320 D/LinkedIn_Android_Tests(  286): >>> Run action 'updates_tap_news':
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at junit.framework.Assert.fail(Assert.java:47)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_news(ScreenUpdates.java:1392)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at java.lang.reflect.Method.invokeNative(Native Method)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at java.lang.reflect.Method.invoke(Method.java:521)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at junit.framework.TestCase.runBare(TestCase.java:127)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at junit.framework.TestResult$1.protect(TestResult.java:106)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at junit.framework.TestResult.runProtected(TestResult.java:124)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at junit.framework.TestResult.run(TestResult.java:109)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at junit.framework.TestCase.run(TestCase.java:118)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+# 02-08 15:50:52.329 E/LinkedIn_Android_Tests(  286): 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+# 02-08 15:50:52.329 D/LinkedIn_Android_Tests(  286): Settings for log: onlyVisible=false, onlyShown=false, filter=null. Current Activity: NUSListActivityV2
+# 02-08 15:50:52.339 D/LinkedIn_Android_Tests(  286): Level            Type   X    Y Width Height Shown          ID:Package:Type/Entry       >>>Custom
+# 02-08 15:50:52.339 D/LinkedIn_Android_Tests(  286): =========================================================================================================================
+# 02-08 15:50:52.349 D/LinkedIn_Android_Tests(  286):    0)     FrameLayout    0    0  320  427   true       -1:<noname>                                                      
+# 02-08 15:50:52.359 D/LinkedIn_Android_Tests(  286):    1)    LinearLayout    0   25  320  401   true       -1:<noname>                                                      
+# 02-08 15:50:52.369 D/LinkedIn_Android_Tests(  286):    2) ActionBarContainer    0   25  320   48   true 2131165308:com.linkedin.android.redesign:id/abs__action_bar_container    
+# 02-08 15:50:52.369 D/LinkedIn_Android_Tests(  286):    3)   ActionBarView    0   25  320   48   true 2131165309:com.linkedin.android.redesign:id/abs__action_bar              
+# 02-08 15:50:52.379 D/LinkedIn_Android_Tests(  286):    4)        HomeView    9   25   39   48   true       -1:<noname>                                                      
+# 02-08 15:50:52.389 D/LinkedIn_Android_Tests(  286):    5)       ImageView    9   25    0    0  false 2131165195:com.linkedin.android.redesign:id/abs__up                     >>> isEnabled=true, isClickable=false
+# 02-08 15:50:52.389 D/LinkedIn_Android_Tests(  286):    5)       ImageView   13   35   31   31   true 2131165194:com.linkedin.android.redesign:id/abs__home                   >>> isEnabled=true, isClickable=false
+# 02-08 15:50:52.399 D/LinkedIn_Android_Tests(  286):    4)  ActionMenuView  208   25  112   48   true       -1:<noname>                                                      
+# 02-08 15:50:52.409 D/LinkedIn_Android_Tests(  286):    5) ActionMenuItemView  208   25   56   48   true 2131165977:com.linkedin.android.redesign:id/menu_search                  
+# 02-08 15:50:52.419 D/LinkedIn_Android_Tests(  286):    6)     ImageButton  216   29   40   40   true 2131165293:com.linkedin.android.redesign:id/abs__imageButton             
+# 02-08 15:50:52.419 D/LinkedIn_Android_Tests(  286):    6) CapitalizingButton  208   25    0    0  false 2131165294:com.linkedin.android.redesign:id/abs__textButton              
+# 02-08 15:50:52.429 D/LinkedIn_Android_Tests(  286):    5)    LinearLayout  264   25   56   48   true       -1:<noname>                                                      
+# 02-08 15:50:52.439 D/LinkedIn_Android_Tests(  286):    6)     ImageButton  276   33   32   32   true 2131165325:com.linkedin.android.redesign:id/button                       
+# 02-08 15:50:52.439 D/LinkedIn_Android_Tests(  286):    3) ActionBarContextView    0   25    0    0  false 2131165310:com.linkedin.android.redesign:id/abs__action_context_bar      
+# 02-08 15:50:52.450 D/LinkedIn_Android_Tests(  286):    2) NineFrameLayout    0   73  320  353   true 16908290:android:id/content                                            
+# 02-08 15:50:52.459 D/LinkedIn_Android_Tests(  286):    3)  RelativeLayout    0   73  320  353   true 2131165647:com.linkedin.android.redesign:id/nus_list_root                
+# 02-08 15:50:52.469 D/LinkedIn_Android_Tests(  286):    4) NoSaveStateFrameLayout    0   73  320  353   true       -1:<noname>                                                      
+# 02-08 15:50:52.469 D/LinkedIn_Android_Tests(  286):    5)  RelativeLayout    0   73  320  353   true 2131165641:com.linkedin.android.redesign:id/nus_list_fragment            
+# 02-08 15:50:52.479 D/LinkedIn_Android_Tests(  286):    6)  RelativeLayout    0   73  320  353   true       -1:<noname>                                                      
+# 02-08 15:50:52.489 D/LinkedIn_Android_Tests(  286):    7)        TextView    0   73  320  353  false 16908292:android:id/empty                                             >>> Text='Loading…'
+# 02-08 15:50:52.489 D/LinkedIn_Android_Tests(  286):    7)        ListView    0   73  320  353   true 16908298:android:id/list                                              >>> Count=15
+# 02-08 15:50:52.499 D/LinkedIn_Android_Tests(  286):    8)    LinearLayout    5   73  309  232   true       -1:<noname>                                                      
+# 02-08 15:50:52.509 D/LinkedIn_Android_Tests(  286):    9)  RelativeLayout    5   84  309  221   true 2131165513:com.linkedin.android.redesign:id/hero1_container              
+# 02-08 15:50:52.509 D/LinkedIn_Android_Tests(  286):   10)       ImageView    5   84   51  221   true 2131165514:com.linkedin.android.redesign:id/hero1_icon                  >>> isEnabled=true, isClickable=false
+# 02-08 15:50:52.759 D/LinkedIn_Android_Tests(  286):   10)     FrameLayout   56   84  259  221   true       -1:<noname>                                                      
+# 02-08 15:50:52.769 D/LinkedIn_Android_Tests(  286):   11)       ImageView   56   84  259  221   true 2131165515:com.linkedin.android.redesign:id/hero1_image                 >>> isEnabled=true, isClickable=false
+# 02-08 15:50:52.779 D/LinkedIn_Android_Tests(  286):   11)       ImageView   56   84  259  221   true 2131165516:com.linkedin.android.redesign:id/hero1_image_gradient        >>> isEnabled=true, isClickable=false
+# 02-08 15:50:52.779 D/LinkedIn_Android_Tests(  286):   10)       ImageView  303  189    7   11   true 2131165517:com.linkedin.android.redesign:id/hero1_chevron               >>> isEnabled=true, isClickable=false
+# 02-08 15:50:52.789 D/LinkedIn_Android_Tests(  286):   10)    LinearLayout   67  161  231   65   true 2131165518:com.linkedin.android.redesign:id/hero_text_section            
+# 02-08 15:50:52.800 D/LinkedIn_Android_Tests(  286):   11)        TextView   67  167  231   17   true 2131165519:com.linkedin.android.redesign:id/hero1_text                  >>> Text='Top Stories For You'
+# 02-08 15:50:52.800 D/LinkedIn_Android_Tests(  286):   11)        TextView   67  184  231   37   true 2131165520:com.linkedin.android.redesign:id/hero1_detail_text           >>> Text='7 Tips for Making Your Blog a Content Marketing Magnet'
+# 02-08 15:50:52.809 D/LinkedIn_Android_Tests(  286):   10)       ImageView    5   84  309  221   true 2131165521:com.linkedin.android.redesign:id/click_bacground             >>> isEnabled=true, isClickable=true
+# 02-08 15:50:52.819 D/LinkedIn_Android_Tests(  286):    8)    LinearLayout    5  320  309  153   true       -1:<noname>                                                      
+# 02-08 15:50:52.819 D/LinkedIn_Android_Tests(  286):    9)  RelativeLayout    9  324  301   56   true 2131165509:com.linkedin.android.redesign:id/header_view                  
+# 02-08 15:50:52.829 D/LinkedIn_Android_Tests(  286):   10)  RelativeLayout    9  324    0    0  false 2131165869:com.linkedin.android.redesign:id/sht1_container               
+# 02-08 15:50:52.839 D/LinkedIn_Android_Tests(  286):   11)       ImageView    9  324    0    0  false 2131165870:com.linkedin.android.redesign:id/sht1_header_photo           >>> isEnabled=true, isClickable=false
+# 02-08 15:50:52.839 D/LinkedIn_Android_Tests(  286):   11)        TextView    9  324    0    0  false 2131165871:com.linkedin.android.redesign:id/sht1_header_title           >>> Text=''
+# 02-08 15:50:52.849 D/LinkedIn_Android_Tests(  286):   11)        TextView    9  324    0    0  false 2131165872:com.linkedin.android.redesign:id/sht1_header_subtitle        >>> Text=''
+# 02-08 15:50:52.859 D/LinkedIn_Android_Tests(  286):   11)  RelativeLayout    9  324  301   56   true 2131165873:com.linkedin.android.redesign:id/sht2_container               
+# 02-08 15:50:52.859 D/LinkedIn_Android_Tests(  286):   12)       ImageView   17  332   40   40   true 2131165874:com.linkedin.android.redesign:id/sht2_header_photo           >>> isEnabled=true, isClickable=false
+# 02-08 15:50:52.869 D/LinkedIn_Android_Tests(  286):   12)        TextView   64  332  189   21   true 2131165875:com.linkedin.android.redesign:id/sht2_header_title           >>> Text='Some <script> Some very very very long name'
+# 02-08 15:50:52.880 D/LinkedIn_Android_Tests(  286):   12)        TextView  253  332   39   19   true 2131165876:com.linkedin.android.redesign:id/sht2_time_since_post        >>> Text='3 h'
+# 02-08 15:50:52.899 D/LinkedIn_Android_Tests(  286):   12)        TextView   64  353  181   19   true 2131165877:com.linkedin.android.redesign:id/sht2_header_subtitle        >>> Text='Some <script> joined a group'
+# 02-08 15:50:52.909 D/LinkedIn_Android_Tests(  286):   12)  RelativeLayout    9  324    0    0  false 2131165878:com.linkedin.android.redesign:id/sht3_container               
+# 02-08 15:50:52.909 D/LinkedIn_Android_Tests(  286):   13)       ImageView    9  324    0    0  false 2131165879:com.linkedin.android.redesign:id/sht3_icon                   >>> isEnabled=true, isClickable=false
+# 02-08 15:50:52.929 D/LinkedIn_Android_Tests(  286):   13)        TextView    9  324    0    0  false 2131165880:com.linkedin.android.redesign:id/sht3_text                   >>> Text=''
+# 02-08 15:50:52.929 D/LinkedIn_Android_Tests(  286):   13)  RelativeLayout    9  324    0    0  false 2131165881:com.linkedin.android.redesign:id/sht4_container               
+# 02-08 15:50:52.939 D/LinkedIn_Android_Tests(  286):   14)       ImageView    9  324    0    0  false 2131165882:com.linkedin.android.redesign:id/sht4_header_photo           >>> isEnabled=true, isClickable=false
+# 02-08 15:50:52.939 D/LinkedIn_Android_Tests(  286):   14)        TextView    9  324    0    0  false 2131165883:com.linkedin.android.redesign:id/sht4_header_title           >>> Text=''
+# 02-08 15:50:52.949 D/LinkedIn_Android_Tests(  286):   14) AnimatedActionImageView    9  324    0    0  false 2131165884:com.linkedin.android.redesign:id/sht4_right_icon              
+# 02-08 15:50:52.960 D/LinkedIn_Android_Tests(  286):   14)        TextView    9  324    0    0  false 2131165885:com.linkedin.android.redesign:id/sht4_header_subtitle        >>> Text=''
+# 02-08 15:50:52.969 D/LinkedIn_Android_Tests(  286):   14)  RelativeLayout    9  324    0    0  false 2131165886:com.linkedin.android.redesign:id/sht5_container               
+# 02-08 15:50:52.969 D/LinkedIn_Android_Tests(  286):   15)       ImageView    9  324    0    0  false 2131165887:com.linkedin.android.redesign:id/sht5_header_photo           >>> isEnabled=true, isClickable=false
+# 02-08 15:50:52.979 D/LinkedIn_Android_Tests(  286):   15)        TextView    9  324    0    0  false 2131165888:com.linkedin.android.redesign:id/sht5_header_title           >>> Text=''
+# 02-08 15:50:52.989 D/LinkedIn_Android_Tests(  286):   15)        TextView    9  324    0    0  false 2131165889:com.linkedin.android.redesign:id/sht5_time_since_post        >>> Text=''
+# 02-08 15:50:52.999 D/LinkedIn_Android_Tests(  286):   15)        TextView    9  324    0    0  false 2131165890:com.linkedin.android.redesign:id/sht5_header_subtitle        >>> Text=''
+# 02-08 15:50:53.010 D/LinkedIn_Android_Tests(  286):   15)        TextView    9  324    0    0  false 2131165891:com.linkedin.android.redesign:id/sht5_header_comment_text    >>> Text=''
+# 02-08 15:50:53.010 D/LinkedIn_Android_Tests(  286):   15)  RelativeLayout    9  324    0    0  false 2131165892:com.linkedin.android.redesign:id/sht6_container               
+# 02-08 15:50:53.019 D/LinkedIn_Android_Tests(  286):   16)        TextView    9  324    0    0  false 2131165893:com.linkedin.android.redesign:id/sht6_text                   >>> Text=''
+# 02-08 15:50:53.029 D/LinkedIn_Android_Tests(  286):   16)        TextView    9  324    0    0  false 2131165894:com.linkedin.android.redesign:id/sht6_time_since_post        >>> Text=''
+# 02-08 15:50:53.029 D/LinkedIn_Android_Tests(  286):    9)            View    9  380  301    1   true       -1:<noname>                                                      
+# 02-08 15:50:53.040 D/LinkedIn_Android_Tests(  286):    9)    LinearLayout    9  381  301   88   true 2131165900:com.linkedin.android.redesign:id/st3_container                
+# 02-08 15:50:53.059 D/LinkedIn_Android_Tests(  286):   10)  RelativeLayout    9  381  301   88   true 2131165802:com.linkedin.android.redesign:id/rt1_container                
+# 02-08 15:50:53.059 D/LinkedIn_Android_Tests(  286):   11)       ImageView    9  381    0    0  false 2131165803:com.linkedin.android.redesign:id/rt1_image                   >>> isEnabled=true, isClickable=false
+# 02-08 15:50:53.069 D/LinkedIn_Android_Tests(  286):   11) AnimatedActionImageView  259  403   45   45   true 2131165804:com.linkedin.android.redesign:id/rt1_icon                     
+# 02-08 15:50:53.079 D/LinkedIn_Android_Tests(  286):   11)        TextView   21  388  227   21   true 2131165805:com.linkedin.android.redesign:id/rt1_title                   >>> Text='SDET Jobs'
+# 02-08 15:50:53.089 D/LinkedIn_Android_Tests(  286):   11)        TextView   21  409  227   33   true 2131165806:com.linkedin.android.redesign:id/rt1_subtitle                >>> Text='SDET or Software Design Engineer in Test'
+# 02-08 15:50:53.089 D/LinkedIn_Android_Tests(  286):   11)        TextView   21  443  227   20   true 2131165807:com.linkedin.android.redesign:id/rt1_toast                   >>> Text=''
+# 02-08 15:50:53.099 D/LinkedIn_Android_Tests(  286):   10)    LinearLayout    5  320    0    0  false 2131165461:com.linkedin.android.redesign:id/footer                       
+# 02-08 15:50:53.109 D/LinkedIn_Android_Tests(  286):   11)            View    5  320    0    0  false       -1:<noname>                                                      
+# 02-08 15:50:53.120 D/LinkedIn_Android_Tests(  286):   11)  RelativeLayout    5  320    0    0  false       -1:<noname>                                                      
+# 02-08 15:50:53.129 D/LinkedIn_Android_Tests(  286):   12)    LinearLayout    5  320    0    0  false 2131165486:com.linkedin.android.redesign:id/ft1_container                
+# 02-08 15:50:53.129 D/LinkedIn_Android_Tests(  286):   13)    LinearLayout    5  320    0    0  false 2131165487:com.linkedin.android.redesign:id/ft1_rollup_container         
+# 02-08 15:50:53.139 D/LinkedIn_Android_Tests(  286):   14)        TextView    5  320    0    0  false 2131165488:com.linkedin.android.redesign:id/ft1_bottom_text             >>> Text=''
+# 02-08 15:50:53.149 D/LinkedIn_Android_Tests(  286):   12)    LinearLayout    0   73    0    0  false 2131165534:com.linkedin.android.redesign:id/page_header                  
+# 02-08 15:50:53.159 D/LinkedIn_Android_Tests(  286):   13)        TextView    0   73    0    0  false 2131165557:com.linkedin.android.redesign:id/section_header_text         >>> Text='Invitations (%1$d)'
+# 02-08 15:50:53.169 D/LinkedIn_Android_Tests(  286):   13)            View    0   73    0    0  false       -1:<noname>                                                      
+# 02-08 15:50:53.169 D/LinkedIn_Android_Tests(  286):   13) ActionBarContainer    0   25    0    0  false 2131165311:com.linkedin.android.redesign:id/abs__split_action_bar        
+# 02-08 15:50:53.179 D/LinkedIn_Android_Tests(  286):   -1)       DecorView    0    0  320  427   true       -1:<noname>                                                      
+# 02-08 15:50:53.179 I/LinkedIn_Android_Tests(  286): Saving screenshot ''sanity' fail' in '0_tmp'
+# 02-08 15:50:53.209 E/LinkedIn_Android_Tests(  286): Fail in test 'sanity' (00000000)
+# 02-08 15:50:53.209 I/LinkedIn_Android_Tests(  286): Test over.-------------------------------------------------------------------
+# 02-08 15:50:53.209 I/LinkedIn_Android_Tests(  286): Start log out...
+# 02-08 15:50:53.219 I/LinkedIn_Android_Tests(  286): Tapping on 'IN' button
+# 02-08 15:50:55.530 I/LinkedIn_Android_Tests(  286): Tapping on 'Settings' button in top right corner
+# 02-08 15:50:57.400 I/LinkedIn_Android_Tests(  286): Tapping on 'Signout' button
+# 02-08 15:51:09.569 I/LinkedIn_Android_Tests(  286): Log out complete
+# 02-08 15:51:11.125 V/LinkedIn_Android_Tests(  286): tearDown
+* INSTRUMENTATION_STATUS: id=InstrumentationTestRunner
+* INSTRUMENTATION_STATUS: current=2
+* INSTRUMENTATION_STATUS: class=com.linkedin.android.tests.ActionSuiteTest
+* INSTRUMENTATION_STATUS: stream=
+Fail: Failure in testActions:
+* Failure in testActions:
+Fail: junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+* junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+Fail: 	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+* 	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+Fail: 	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+* 	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+Fail: 	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+* 	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+Fail: 	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+* 	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_news(ScreenUpdates.java:1392)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_news(ScreenUpdates.java:1392)
+Fail: 	at java.lang.reflect.Method.invokeNative(Native Method)
+* 	at java.lang.reflect.Method.invokeNative(Native Method)
+Fail: 	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+* 	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+Fail: 	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+* 	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+Fail: 	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+* 	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+Fail: 	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+* 	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+Fail: 	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+* 	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+Fail: 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+* 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+Fail: 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+* 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+Fail: 	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+* 	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+Fail: 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+* 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+* INSTRUMENTATION_STATUS: numtests=2
+Fail: INSTRUMENTATION_STATUS: stack=junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+* INSTRUMENTATION_STATUS: stack=junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+Fail: 	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+* 	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+Fail: 	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+* 	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+Fail: 	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+* 	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+Fail: 	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+* 	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+Fail: 	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_news(ScreenUpdates.java:1392)
+* 	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_news(ScreenUpdates.java:1392)
+Fail: 	at java.lang.reflect.Method.invokeNative(Native Method)
+* 	at java.lang.reflect.Method.invokeNative(Native Method)
+Fail: 	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+* 	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+Fail: 	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+* 	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+Fail: 	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+* 	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+Fail: 	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+* 	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+Fail: 	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+* 	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+Fail: 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+* 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+Fail: 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+* 	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+Fail: 	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+* 	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+Fail: 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+* 	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+* INSTRUMENTATION_STATUS: test=testActions
+* INSTRUMENTATION_STATUS_CODE: -2
+* INSTRUMENTATION_RESULT: stream=
+* Test results for AkvelonInstrumentationTestRunner=.F.F
+* Time: 248.559
+* FAILURES!!!
+* Tests run: 2,  Failures: 2,  Errors: 0
+* INSTRUMENTATION_CODE: -1
+All results:
+NAME: testActions
+ID: null
+IS PASS: false
+INSTRUMENT LOG: INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: id=InstrumentationTestRunner
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: class=com.linkedin.android.tests.ActionSuiteTest
+INSTRUMENTATION_STATUS: stream=
+Failure in testActions:
+junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_expose(ScreenUpdates.java:1347)
+	at java.lang.reflect.Method.invokeNative(Native Method)
+	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stack=junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_expose(ScreenUpdates.java:1347)
+	at java.lang.reflect.Method.invokeNative(Native Method)
+	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+INSTRUMENTATION_STATUS: test=testActions
+
+LOGCAT: 
+-----------------------------------
+NAME: testActions
+ID: null
+IS PASS: false
+INSTRUMENT LOG: INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: id=InstrumentationTestRunner
+INSTRUMENTATION_STATUS: current=2
+INSTRUMENTATION_STATUS: class=com.linkedin.android.tests.ActionSuiteTest
+INSTRUMENTATION_STATUS: stream=
+Failure in testActions:
+junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_news(ScreenUpdates.java:1392)
+	at java.lang.reflect.Method.invokeNative(Native Method)
+	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+INSTRUMENTATION_STATUS: numtests=2
+INSTRUMENTATION_STATUS: stack=junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+	at com.linkedin.android.utils.WaitActions.waitForTrueInFunction(WaitActions.java:372)
+	at com.linkedin.android.screens.updates.ScreenUpdates.verify(ScreenUpdates.java:134)
+	at com.linkedin.android.screens.base.BaseScreen.<init>(BaseScreen.java:59)
+	at com.linkedin.android.screens.base.BaseINScreen.<init>(BaseINScreen.java:40)
+	at com.linkedin.android.screens.base.BaseListScreen.<init>(BaseListScreen.java:28)
+	at com.linkedin.android.screens.updates.ScreenUpdates.<init>(ScreenUpdates.java:119)
+	at com.linkedin.android.screens.updates.ScreenUpdates.updates_tap_news(ScreenUpdates.java:1392)
+	at java.lang.reflect.Method.invokeNative(Native Method)
+	at com.linkedin.android.tests.utils.Registry$1.testAction(Registry.java:66)
+	at com.linkedin.android.tests.utils.Registry.processAction(Registry.java:145)
+	at com.linkedin.android.tests.utils.Tag.processNextAction(Tag.java:57)
+	at com.linkedin.android.tests.ActionSuiteTest.runActions(ActionSuiteTest.java:94)
+	at com.linkedin.android.tests.ActionSuiteTest.runTest(ActionSuiteTest.java:80)
+	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:169)
+	at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:154)
+	at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:520)
+	at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1447)
+INSTRUMENTATION_STATUS: test=testActions
+
+LOGCAT: 
+-----------------------------------
+<<<<<<<<<< Fails 2 test(s) of 2. >>>>>>>>>>
+
+Instrument status: Tests run: 2,  Failures: 2,  Errors: 0
+
+PASSED (0):
+
+
+FAILED (2):
+testActions: junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+testActions: junit.framework.AssertionFailedError: 'Updates' screen is not present (List with NUS is not loaded)
+
+

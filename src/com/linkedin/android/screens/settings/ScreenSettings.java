@@ -357,6 +357,20 @@ public class ScreenSettings extends BaseScreen {
         }
     }
 
+    /**
+     * Gets 'Add Connection' row screen.
+     * 
+     * @return 'Add Connection' text view.
+     */
+    public static TextView getAddConnectionRow() {
+        TextView addCon = (TextView) Id.getViewByViewIdName(ID_NAME_OF_ADD_CONNECTIONS);
+        Assert.assertNotNull("'Add Connection' layout is not present on 'Settings' screen", addCon);
+        Assert.assertTrue(
+                "'Add Connection' row is not shown. Possible reason: you don't have contacts in address book.",
+                addCon.isShown());
+        return addCon;
+    }
+
     // ACTIONS --------------------------------------------------------------
 
     @TestAction(value = "go_to_settings")
@@ -364,7 +378,7 @@ public class ScreenSettings extends BaseScreen {
         ScreenExpose.go_to_expose(email, password);
         settings("go_to_settings");
     }
-    
+
     @TestAction(value = "settings_precondition")
     public static void settings_precondition() {
         HardwareActions.goBackOnPreviousActivity();
@@ -392,7 +406,7 @@ public class ScreenSettings extends BaseScreen {
 
     @TestAction(value = "settings_tap_add_con")
     public static void settings_tap_add_con() {
-        TextView addCon = (TextView) Id.getViewByViewIdName(ID_NAME_OF_ADD_CONNECTIONS);
+        TextView addCon = getAddConnectionRow();
         ViewUtils.tapOnView(addCon, "Add Connections", true);
         new ScreenSettingsAddConnections();
         TestUtils.delayAndCaptureScreenshot("settings_tap_add_con");
@@ -491,5 +505,6 @@ public class ScreenSettings extends BaseScreen {
         PopupSyncContacts popup = new ScreenSettings().popupSyncContacts();
         popup.tapOnDoNotSync();
         new ScreenSettings();
+        TestUtils.delayAndCaptureScreenshot("settings_dialog_tap_sync_cancel");
     }
 }

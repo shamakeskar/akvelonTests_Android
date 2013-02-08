@@ -5,13 +5,13 @@
     <Step key="settings" />
     <Step key="settings_tap_sync_calendar" />
     <Step key="settings_tap_sync_calendar_reset" />
-    <Step key="settings_tap_add_con" />
-    <Step key="settings_tap_add_con_reset" />
     <Step key="settings_toggle_push_notifications" />
     <Step key="settings_toggle_push_notifications_reset" />
     <Step key="settings_dialog_tap_sync_all_contacts" />
     <Step key="settings_dialog_tap_sync_existing_contacts" />
     <Step key="settings_dialog_tap_sync_cancel" />
+    <Step key="settings_tap_add_con" />
+    <Step key="settings_tap_add_con_reset" />
     <Step key="settings_tap_signout" />
   </Test>
 </TestSuite>

@@ -7,12 +7,9 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 
 import com.linkedin.android.screens.base.BaseINScreen;
-import com.linkedin.android.screens.common.ScreenExpose;
-import com.linkedin.android.screens.updates.ScreenUpdates;
 import com.linkedin.android.tests.data.DataProvider;
 import com.linkedin.android.tests.data.Id;
 import com.linkedin.android.tests.data.ViewIdName;
-import com.linkedin.android.tests.utils.LoginActions;
 import com.linkedin.android.tests.utils.TestAction;
 import com.linkedin.android.tests.utils.TestUtils;
 import com.linkedin.android.utils.HardwareActions;

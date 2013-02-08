@@ -76,6 +76,7 @@ public class ScreenInbox extends BaseListScreen {
             "invite_reconnect_person_row");
     private static final ViewIdName ALL_MAIL_LAYOUT = new ViewIdName("nc_mail_layout");
     private static final ViewIdName ALL_INVITATION_LAYOUT = new ViewIdName("nc_invite_layout");
+    public static final ViewIdName COMPOSE_BUTTON_ID = new ViewIdName("compose");
 
     // PROPERTIES -----------------------------------------------------------
 
@@ -156,7 +157,8 @@ public class ScreenInbox extends BaseListScreen {
      * @return {@code PopupCompose}.
      */
     public PopupCompose openPopupCompose() {
-        tapOnComposeButton();
+        View compose = (View) Id.getViewByViewIdName(COMPOSE_BUTTON_ID);
+        ViewUtils.tapOnView(compose, "'Compose' button");
         return new PopupCompose();
     }
 

@@ -138,7 +138,7 @@ public class ScreenUpdates extends BaseListScreen {
                         ListView listView = ListViewUtils.getFirstListView();
                         if (listView == null)
                             return false;
-                        return (listView.getCount() > 15);
+                        return (listView.getCount() >= 15);
                     }
                 });
 

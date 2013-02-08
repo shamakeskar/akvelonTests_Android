@@ -653,6 +653,7 @@ public class Runner {
             command.append(commandArray.get(i)).append(' ');
         }
         ProcessBuilder processBuilder = new ProcessBuilder(commandArray);
+        processBuilder = processBuilder.redirectErrorStream(true);
         Process process = null;
 
         int exitValue = Integer.MAX_VALUE;
@@ -668,15 +669,11 @@ public class Runner {
         }
         BufferedReader stdOutput = new BufferedReader(new InputStreamReader(
                 process.getInputStream()));
-        BufferedReader stdError = new BufferedReader(
-                new InputStreamReader(process.getErrorStream()));
         String line = null;
         try {
             while (true) {
                 // Try get line.
                 line = stdOutput.readLine();
-                if (line == null)
-                    line = stdError.readLine();
                 if (line == null)
                     break;
 
@@ -690,6 +687,13 @@ public class Runner {
         } catch (Exception e) {
             logError("While running '" + command + "'throws exception: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            try {
+                stdOutput.close();
+            } catch (Exception e) {
+                logError("runCommandInRuntime: While closing buffer reader throws exception: "
+                        + e.getMessage());
+            }
         }
         return exitValue;
     }
