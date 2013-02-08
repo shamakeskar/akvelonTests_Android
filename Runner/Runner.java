@@ -612,8 +612,9 @@ public class Runner {
             threadParceLogCat.stop();
         }
 
-        report.report();
         report.logAllResults(false);
+        exitValue = report.report();
+        System.exit(exitValue);
     }
 
     /**

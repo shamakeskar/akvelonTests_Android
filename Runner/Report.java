@@ -18,8 +18,10 @@ public class Report {
     // METHODS --------------------------------------------------------------
     /**
      * Report current state.
+     * 
+     * @return count of failed tests.
      */
-    public void report() {
+    public int report() {
         StringBuilder builder;
         // Check report.
         if (instrumentStatus == null) {
@@ -76,6 +78,7 @@ public class Report {
             }
             Runner.logAndOutput(builder.append('\n').toString());
         }
+        return countFail;
     }
 
     /**
