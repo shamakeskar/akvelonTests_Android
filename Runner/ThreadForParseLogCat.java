@@ -42,6 +42,7 @@ class ThreadForParseLogCat extends Thread {
                 command.append(commandWords.get(i)).append(' ');
             }
             ProcessBuilder processBuilder = new ProcessBuilder(commandWords);
+            processBuilder = processBuilder.redirectErrorStream(true);
 
             // Start logcat for parse.
             Runner.logAndOutput("Running command for logcat parse: '" + command.toString() + "':");
@@ -51,10 +52,9 @@ class ThreadForParseLogCat extends Thread {
                 Runner.logError("ThreadForParseLogCat: While running '" + command.toString()
                         + "' throws exception: " + e.getMessage());
             }
+
             BufferedReader stdOutput = new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(
-                    process.getErrorStream()));
             String line = null;
             boolean isTestStarted = false;
             try {
@@ -62,8 +62,6 @@ class ThreadForParseLogCat extends Thread {
                 while (process != null) {
                     // Try get line.
                     line = stdOutput.readLine();
-                    if (line == null)
-                        line = stdError.readLine();
                     if (line == null)
                         break;// End of stream reached.
 
@@ -82,10 +80,19 @@ class ThreadForParseLogCat extends Thread {
                     Runner.log("# " + line);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 Runner.logError("ThreadForParseLogCat: While parsing output of '"
                         + command.toString() + "' throws exception: " + e.getMessage());
+            } finally {
+                try {
+                    stdOutput.close();
+                } catch (Exception e) {
+                    Runner.logError("ThreadForParseLogCat: While closing buffer reader throws exception: "
+                            + e.getMessage());
+                }
             }
         } catch (Exception e1) {
+            e1.printStackTrace();
             Runner.logError("Exception while run ThreadForParseLogCat: " + e1.getMessage());
         }
     }
